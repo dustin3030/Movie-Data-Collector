@@ -47,7 +47,7 @@
             this.deleteFavoriteButton = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.getFileNamesButton = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.parentPathLabel = new System.Windows.Forms.Label();
             this.formatLabel = new System.Windows.Forms.Label();
             this.formatCombo = new System.Windows.Forms.ComboBox();
             this.currentFileNamesLabel = new System.Windows.Forms.Label();
@@ -93,7 +93,7 @@
             this.openToolStripMenuItem.BackColor = System.Drawing.Color.GreenYellow;
             this.openToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.openToolStripMenuItem.Text = "Open";
             // 
             // aboutToolStripMenuItem
@@ -101,7 +101,7 @@
             this.aboutToolStripMenuItem.BackColor = System.Drawing.Color.GreenYellow;
             this.aboutToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.aboutToolStripMenuItem.Text = "About";
             // 
             // instructionsToolStripMenuItem
@@ -109,7 +109,7 @@
             this.instructionsToolStripMenuItem.BackColor = System.Drawing.Color.GreenYellow;
             this.instructionsToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.instructionsToolStripMenuItem.Name = "instructionsToolStripMenuItem";
-            this.instructionsToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.instructionsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.instructionsToolStripMenuItem.Text = "Instructions";
             // 
             // closeToolStripMenuItem
@@ -117,7 +117,7 @@
             this.closeToolStripMenuItem.BackColor = System.Drawing.Color.GreenYellow;
             this.closeToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.closeToolStripMenuItem.Text = "Close";
             // 
             // goToToolStripMenuItem
@@ -247,17 +247,16 @@
             this.getFileNamesButton.Text = "&Get File Names";
             this.getFileNamesButton.UseVisualStyleBackColor = false;
             // 
-            // label1
+            // parentPathLabel
             // 
-            this.label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.GreenYellow;
-            this.label1.Location = new System.Drawing.Point(126, 187);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(623, 20);
-            this.label1.TabIndex = 11;
-            this.label1.Text = "label1";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.parentPathLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.parentPathLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.parentPathLabel.ForeColor = System.Drawing.Color.GreenYellow;
+            this.parentPathLabel.Location = new System.Drawing.Point(126, 187);
+            this.parentPathLabel.Name = "parentPathLabel";
+            this.parentPathLabel.Size = new System.Drawing.Size(623, 20);
+            this.parentPathLabel.TabIndex = 11;
+            this.parentPathLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // formatLabel
             // 
@@ -416,7 +415,7 @@
             this.Controls.Add(this.currentFileNamesLabel);
             this.Controls.Add(this.formatCombo);
             this.Controls.Add(this.formatLabel);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.parentPathLabel);
             this.Controls.Add(this.getFileNamesButton);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.deleteFavoriteButton);
@@ -460,7 +459,7 @@
         private System.Windows.Forms.Button deleteFavoriteButton;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button getFileNamesButton;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label parentPathLabel;
         private System.Windows.Forms.Label formatLabel;
         private System.Windows.Forms.ComboBox formatCombo;
         private System.Windows.Forms.Label currentFileNamesLabel;
