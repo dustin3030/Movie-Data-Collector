@@ -12,9 +12,15 @@ namespace MovieDataCollector
 {
     public partial class MainForm : Form
     {
+        string configDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector"; //Writable folder location for config file.
+        string configPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector\\Config.txt"; //Writable file location for config file.
+        string configString = ""; //Holds configuration file text from when the file is first read in.
+
         public MainForm()
         {
             InitializeComponent();
+            Activate(); //Opens form on top of others but doesn't force topmost always
         }
+
     }
 }
