@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConversionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConversionForm.Designer.cs">
+      <DependentUpon>ConversionForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -66,6 +72,9 @@
     <Compile Include="TVForm.Designer.cs">
       <DependentUpon>TVForm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="ConversionForm.resx">
+      <DependentUpon>ConversionForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -112,6 +121,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Images\film-reel %28Small%29.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\xbox.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Roku.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

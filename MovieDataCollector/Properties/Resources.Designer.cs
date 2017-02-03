@@ -103,9 +103,29 @@ namespace MovieDataCollector.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Roku {
+            get {
+                object obj = ResourceManager.GetObject("Roku", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Universal {
             get {
                 object obj = ResourceManager.GetObject("Universal", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap xbox {
+            get {
+                object obj = ResourceManager.GetObject("xbox", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
