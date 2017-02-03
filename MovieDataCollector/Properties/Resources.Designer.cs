@@ -63,6 +63,16 @@ namespace MovieDataCollector.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap film_reel__Small_ {
+            get {
+                object obj = ResourceManager.GetObject("film-reel (Small)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap highlight_reel {
             get {
                 object obj = ResourceManager.GetObject("highlight-reel", resourceCulture);
