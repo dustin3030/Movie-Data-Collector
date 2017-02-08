@@ -70,6 +70,12 @@
     <Compile Include="MovieForm.Designer.cs">
       <DependentUpon>MovieForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="TVSeriesSelection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TVSeriesSelection.Designer.cs">
+      <DependentUpon>TVSeriesSelection.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TVForm.cs">
@@ -79,6 +85,7 @@
       <DependentUpon>TVForm.cs</DependentUpon>
     </Compile>
     <Compile Include="TVSeriesInfo.cs" />
+    <Compile Include="TVSeriesSearch.cs" />
     <EmbeddedResource Include="ConversionForm.resx">
       <DependentUpon>ConversionForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -90,6 +97,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MovieForm.resx">
       <DependentUpon>MovieForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TVSeriesSelection.resx">
+      <DependentUpon>TVSeriesSelection.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
