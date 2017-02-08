@@ -93,7 +93,7 @@
             this.openToolStripMenuItem.BackColor = System.Drawing.Color.GreenYellow;
             this.openToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.openToolStripMenuItem.Text = "Open";
             // 
             // aboutToolStripMenuItem
@@ -101,7 +101,7 @@
             this.aboutToolStripMenuItem.BackColor = System.Drawing.Color.GreenYellow;
             this.aboutToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.aboutToolStripMenuItem.Text = "About";
             // 
             // instructionsToolStripMenuItem
@@ -109,7 +109,7 @@
             this.instructionsToolStripMenuItem.BackColor = System.Drawing.Color.GreenYellow;
             this.instructionsToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.instructionsToolStripMenuItem.Name = "instructionsToolStripMenuItem";
-            this.instructionsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.instructionsToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.instructionsToolStripMenuItem.Text = "Instructions";
             // 
             // closeToolStripMenuItem
@@ -117,7 +117,7 @@
             this.closeToolStripMenuItem.BackColor = System.Drawing.Color.GreenYellow;
             this.closeToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.closeToolStripMenuItem.Text = "Close";
             // 
             // goToToolStripMenuItem
@@ -173,9 +173,9 @@
             this.seriesIDTitleLabel.ForeColor = System.Drawing.Color.GreenYellow;
             this.seriesIDTitleLabel.Location = new System.Drawing.Point(299, 31);
             this.seriesIDTitleLabel.Name = "seriesIDTitleLabel";
-            this.seriesIDTitleLabel.Size = new System.Drawing.Size(103, 13);
+            this.seriesIDTitleLabel.Size = new System.Drawing.Size(107, 13);
             this.seriesIDTitleLabel.TabIndex = 4;
-            this.seriesIDTitleLabel.Text = "Series ID or Title";
+            this.seriesIDTitleLabel.Text = " Series ID or Title";
             // 
             // seriesImagePicturebox
             // 

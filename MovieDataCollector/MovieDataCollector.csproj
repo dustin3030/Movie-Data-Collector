@@ -78,6 +78,7 @@
     <Compile Include="TVForm.Designer.cs">
       <DependentUpon>TVForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="TVSeriesInfo.cs" />
     <EmbeddedResource Include="ConversionForm.resx">
       <DependentUpon>ConversionForm.cs</DependentUpon>
     </EmbeddedResource>
