@@ -22,5 +22,19 @@ namespace MovieDataCollector
             Activate(); //Opens form on top of others but doesn't force topmost always
         }
 
+        private void invisibleCloseButton_Click(object sender, EventArgs e)
+        {
+            this.Close(); //Located behind the bottom button
+        }
+
+        private void tvButton_Click(object sender, EventArgs e)
+        {
+            // calls the form’s constructor
+            TVForm TV = new TVForm();
+            //  shows the form as a dialog
+            this.Hide();
+            TV.ShowDialog();
+            this.Show();
+        }
     }
 }

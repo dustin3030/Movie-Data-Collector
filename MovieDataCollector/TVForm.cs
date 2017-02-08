@@ -171,5 +171,7 @@ namespace MovieDataCollector
             notificationLabel.Invalidate();
             notificationLabel.Update();
         }
+
+        private void getHTMLButton_Click(object sender, EventArgs e) { getHTML(); }
     }
 }

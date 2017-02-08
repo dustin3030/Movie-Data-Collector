@@ -41,7 +41,6 @@
             this.favoritesLabel = new System.Windows.Forms.Label();
             this.seriesIDTitleTextbox = new System.Windows.Forms.TextBox();
             this.seriesIDTitleLabel = new System.Windows.Forms.Label();
-            this.seriesImagePicturebox = new System.Windows.Forms.PictureBox();
             this.getHTMLButton = new System.Windows.Forms.Button();
             this.addFavoriteButton = new System.Windows.Forms.Button();
             this.deleteFavoriteButton = new System.Windows.Forms.Button();
@@ -60,6 +59,7 @@
             this.absoluteCb = new System.Windows.Forms.CheckBox();
             this.titleCb = new System.Windows.Forms.CheckBox();
             this.notificationLabel = new System.Windows.Forms.Label();
+            this.seriesImagePicturebox = new System.Windows.Forms.PictureBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.seriesImagePicturebox)).BeginInit();
             this.SuspendLayout();
@@ -177,16 +177,6 @@
             this.seriesIDTitleLabel.TabIndex = 4;
             this.seriesIDTitleLabel.Text = " Series ID or Title";
             // 
-            // seriesImagePicturebox
-            // 
-            this.seriesImagePicturebox.BackColor = System.Drawing.Color.Transparent;
-            this.seriesImagePicturebox.Location = new System.Drawing.Point(82, 75);
-            this.seriesImagePicturebox.Name = "seriesImagePicturebox";
-            this.seriesImagePicturebox.Size = new System.Drawing.Size(668, 109);
-            this.seriesImagePicturebox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.seriesImagePicturebox.TabIndex = 5;
-            this.seriesImagePicturebox.TabStop = false;
-            // 
             // getHTMLButton
             // 
             this.getHTMLButton.BackColor = System.Drawing.Color.GreenYellow;
@@ -198,6 +188,7 @@
             this.getHTMLButton.TabIndex = 6;
             this.getHTMLButton.Text = "Get &HTML";
             this.getHTMLButton.UseVisualStyleBackColor = false;
+            this.getHTMLButton.Click += new System.EventHandler(this.getHTMLButton_Click);
             // 
             // addFavoriteButton
             // 
@@ -397,8 +388,19 @@
             this.notificationLabel.TabIndex = 23;
             this.notificationLabel.Text = "notificationLabel";
             // 
+            // seriesImagePicturebox
+            // 
+            this.seriesImagePicturebox.BackColor = System.Drawing.Color.Transparent;
+            this.seriesImagePicturebox.Location = new System.Drawing.Point(82, 75);
+            this.seriesImagePicturebox.Name = "seriesImagePicturebox";
+            this.seriesImagePicturebox.Size = new System.Drawing.Size(668, 109);
+            this.seriesImagePicturebox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.seriesImagePicturebox.TabIndex = 5;
+            this.seriesImagePicturebox.TabStop = false;
+            // 
             // TVForm
             // 
+            this.AcceptButton = this.getHTMLButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
