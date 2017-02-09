@@ -70,6 +70,12 @@
     <Compile Include="MovieForm.Designer.cs">
       <DependentUpon>MovieForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="TVManualRename.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TVManualRename.Designer.cs">
+      <DependentUpon>TVManualRename.cs</DependentUpon>
+    </Compile>
     <Compile Include="TVSeriesSelection.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -97,6 +103,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MovieForm.resx">
       <DependentUpon>MovieForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TVManualRename.resx">
+      <DependentUpon>TVManualRename.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TVSeriesSelection.resx">
       <DependentUpon>TVSeriesSelection.cs</DependentUpon>

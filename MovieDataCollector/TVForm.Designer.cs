@@ -237,6 +237,7 @@
             this.getFileNamesButton.TabIndex = 10;
             this.getFileNamesButton.Text = "&Get File Names";
             this.getFileNamesButton.UseVisualStyleBackColor = false;
+            this.getFileNamesButton.Click += new System.EventHandler(this.getFileNamesButton_Click);
             // 
             // parentPathLabel
             // 
