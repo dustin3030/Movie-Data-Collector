@@ -1038,9 +1038,9 @@ namespace MovieDataCollector
             string seriesURL = "";
             string seriesName = "";
 
-            if (!string.IsNullOrEmpty(favoritesCombo.Text) & !string.IsNullOrEmpty(seriesIDTitletextbox.Text))
+            if (!string.IsNullOrEmpty(favoritesCombo.Text) & !string.IsNullOrEmpty(seriesIDTitleTextbox.Text))
             {
-                seriesURL = seriesIDTitletextbox.Text;
+                seriesURL = seriesIDTitleTextbox.Text;
                 seriesName = favoritesCombo.Text;
                 favoritesCombo.Items.Add(seriesName);
                 FavoriteURLList.Add(seriesURL);
@@ -1068,7 +1068,7 @@ namespace MovieDataCollector
 
                 Favorites();
 
-                seriesIDTitletextbox.Text = "";
+                seriesIDTitleTextbox.Text = "";
                 favoritesCombo.Text = "";
             }
             else
@@ -1081,7 +1081,7 @@ namespace MovieDataCollector
         private void favoritesCombo_SelectionChangeCommitted(object sender, EventArgs e)
         {
 
-            seriesIDTitletextbox.Text = FavoriteURLList[favoritesCombo.SelectedIndex].ToString(); //Matches the favorite name with the correct URL
+            seriesIDTitleTextbox.Text = FavoriteURLList[favoritesCombo.SelectedIndex].ToString(); //Matches the favorite name with the correct URL
 
             if (!string.IsNullOrEmpty(favoritesCombo.SelectedItem.ToString()))
             {
@@ -1252,7 +1252,7 @@ namespace MovieDataCollector
                     sw.Close();
                 }
                 favoritesCombo.Text = "";
-                seriesIDTitletextbox.Text = "";
+                seriesIDTitleTextbox.Text = "";
             }
             else
             {
@@ -1263,13 +1263,6 @@ namespace MovieDataCollector
         {
             deleteFavorite();
         }
-        private void instructionsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            // calls the form’s constructor
-            TVInstructions TVInstruction = new TVInstructions();
-            // shows the form keeping main window open
-            TVInstruction.Show();
-        }
         private void InvisibleCloseButton_Click(object sender, EventArgs e)
         {
             this.Close(); //Located behind the Make Changes button
@@ -1278,11 +1271,6 @@ namespace MovieDataCollector
         {
             //Get File Names
             getFileNames();
-        }
-        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            TVInfo T = new TVInfo();
-            T.Show();
         }
         private void formatCombo_SelectedIndexChanged(object sender, EventArgs e)
         {

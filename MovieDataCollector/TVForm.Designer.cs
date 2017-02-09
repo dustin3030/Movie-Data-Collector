@@ -44,7 +44,7 @@
             this.getHTMLButton = new System.Windows.Forms.Button();
             this.addFavoriteButton = new System.Windows.Forms.Button();
             this.deleteFavoriteButton = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.clearButton = new System.Windows.Forms.Button();
             this.getFileNamesButton = new System.Windows.Forms.Button();
             this.parentPathLabel = new System.Windows.Forms.Label();
             this.formatLabel = new System.Windows.Forms.Label();
@@ -60,6 +60,8 @@
             this.titleCb = new System.Windows.Forms.CheckBox();
             this.notificationLabel = new System.Windows.Forms.Label();
             this.seriesImagePicturebox = new System.Windows.Forms.PictureBox();
+            this.changeFileNamesButton = new System.Windows.Forms.Button();
+            this.InvisibleCloseButton = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.seriesImagePicturebox)).BeginInit();
             this.SuspendLayout();
@@ -139,6 +141,7 @@
             // favoritesCombo
             // 
             this.favoritesCombo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.favoritesCombo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.favoritesCombo.ForeColor = System.Drawing.Color.GreenYellow;
             this.favoritesCombo.FormattingEnabled = true;
             this.favoritesCombo.Location = new System.Drawing.Point(12, 48);
@@ -160,6 +163,7 @@
             // seriesIDTitleTextbox
             // 
             this.seriesIDTitleTextbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.seriesIDTitleTextbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.seriesIDTitleTextbox.ForeColor = System.Drawing.Color.GreenYellow;
             this.seriesIDTitleTextbox.Location = new System.Drawing.Point(302, 48);
             this.seriesIDTitleTextbox.Name = "seriesIDTitleTextbox";
@@ -201,6 +205,7 @@
             this.addFavoriteButton.TabIndex = 7;
             this.addFavoriteButton.Text = "&Add Fav";
             this.addFavoriteButton.UseVisualStyleBackColor = false;
+            this.addFavoriteButton.Click += new System.EventHandler(this.addFavoriteButton_Click);
             // 
             // deleteFavoriteButton
             // 
@@ -213,18 +218,21 @@
             this.deleteFavoriteButton.TabIndex = 8;
             this.deleteFavoriteButton.Text = "&Delete Fav";
             this.deleteFavoriteButton.UseVisualStyleBackColor = false;
+            this.deleteFavoriteButton.Click += new System.EventHandler(this.deleteFavoriteButton_Click);
             // 
-            // button1
+            // clearButton
             // 
-            this.button1.BackColor = System.Drawing.Color.GreenYellow;
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.button1.Location = new System.Drawing.Point(755, 187);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(65, 25);
-            this.button1.TabIndex = 9;
-            this.button1.Text = "&Clear All";
-            this.button1.UseVisualStyleBackColor = false;
+            this.clearButton.BackColor = System.Drawing.Color.GreenYellow;
+            this.clearButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.clearButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.clearButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.clearButton.Location = new System.Drawing.Point(755, 187);
+            this.clearButton.Name = "clearButton";
+            this.clearButton.Size = new System.Drawing.Size(65, 25);
+            this.clearButton.TabIndex = 9;
+            this.clearButton.Text = "&Clear All";
+            this.clearButton.UseVisualStyleBackColor = false;
+            this.clearButton.Click += new System.EventHandler(this.clearButton_Click);
             // 
             // getFileNamesButton
             // 
@@ -276,6 +284,7 @@
             this.formatCombo.Size = new System.Drawing.Size(78, 21);
             this.formatCombo.TabIndex = 13;
             this.formatCombo.Text = "Synology";
+            this.formatCombo.SelectedIndexChanged += new System.EventHandler(this.formatCombo_SelectedIndexChanged);
             // 
             // currentFileNamesLabel
             // 
@@ -309,6 +318,8 @@
             this.fileNamesListbox.Name = "fileNamesListbox";
             this.fileNamesListbox.Size = new System.Drawing.Size(401, 199);
             this.fileNamesListbox.TabIndex = 16;
+            this.fileNamesListbox.SelectedIndexChanged += new System.EventHandler(this.fileNamesListbox_SelectedIndexChanged);
+            this.fileNamesListbox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.fileNamesListbox_MouseDoubleClick);
             // 
             // changedFileNamesListbox
             // 
@@ -320,6 +331,8 @@
             this.changedFileNamesListbox.Name = "changedFileNamesListbox";
             this.changedFileNamesListbox.Size = new System.Drawing.Size(401, 199);
             this.changedFileNamesListbox.TabIndex = 17;
+            this.changedFileNamesListbox.SelectedIndexChanged += new System.EventHandler(this.changedFileNamesListbox_SelectedIndexChanged);
+            this.changedFileNamesListbox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.changedFileNamesListbox_MouseDoubleClick);
             // 
             // removeItemLabel
             // 
@@ -354,6 +367,7 @@
             this.previewChangesButton.TabIndex = 20;
             this.previewChangesButton.Text = "Preview Changes";
             this.previewChangesButton.UseVisualStyleBackColor = false;
+            this.previewChangesButton.Click += new System.EventHandler(this.previewChangesButton_Click);
             // 
             // absoluteCb
             // 
@@ -399,13 +413,39 @@
             this.seriesImagePicturebox.TabIndex = 5;
             this.seriesImagePicturebox.TabStop = false;
             // 
+            // changeFileNamesButton
+            // 
+            this.changeFileNamesButton.BackColor = System.Drawing.Color.GreenYellow;
+            this.changeFileNamesButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.changeFileNamesButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.changeFileNamesButton.Location = new System.Drawing.Point(658, 467);
+            this.changeFileNamesButton.Name = "changeFileNamesButton";
+            this.changeFileNamesButton.Size = new System.Drawing.Size(162, 25);
+            this.changeFileNamesButton.TabIndex = 24;
+            this.changeFileNamesButton.Text = "&Make Changes";
+            this.changeFileNamesButton.UseVisualStyleBackColor = false;
+            this.changeFileNamesButton.Click += new System.EventHandler(this.changeFileNamesButton_Click);
+            // 
+            // InvisibleCloseButton
+            // 
+            this.InvisibleCloseButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.InvisibleCloseButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.InvisibleCloseButton.Location = new System.Drawing.Point(810, 481);
+            this.InvisibleCloseButton.Name = "InvisibleCloseButton";
+            this.InvisibleCloseButton.Size = new System.Drawing.Size(10, 10);
+            this.InvisibleCloseButton.TabIndex = 25;
+            this.InvisibleCloseButton.UseVisualStyleBackColor = true;
+            this.InvisibleCloseButton.Click += new System.EventHandler(this.InvisibleCloseButton_Click);
+            // 
             // TVForm
             // 
             this.AcceptButton = this.getHTMLButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.CancelButton = this.InvisibleCloseButton;
             this.ClientSize = new System.Drawing.Size(832, 519);
+            this.Controls.Add(this.changeFileNamesButton);
             this.Controls.Add(this.notificationLabel);
             this.Controls.Add(this.titleCb);
             this.Controls.Add(this.absoluteCb);
@@ -420,7 +460,7 @@
             this.Controls.Add(this.formatLabel);
             this.Controls.Add(this.parentPathLabel);
             this.Controls.Add(this.getFileNamesButton);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.clearButton);
             this.Controls.Add(this.deleteFavoriteButton);
             this.Controls.Add(this.addFavoriteButton);
             this.Controls.Add(this.getHTMLButton);
@@ -430,6 +470,7 @@
             this.Controls.Add(this.favoritesLabel);
             this.Controls.Add(this.favoritesCombo);
             this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.InvisibleCloseButton);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "TVForm";
@@ -460,7 +501,7 @@
         private System.Windows.Forms.Button getHTMLButton;
         private System.Windows.Forms.Button addFavoriteButton;
         private System.Windows.Forms.Button deleteFavoriteButton;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button clearButton;
         private System.Windows.Forms.Button getFileNamesButton;
         private System.Windows.Forms.Label parentPathLabel;
         private System.Windows.Forms.Label formatLabel;
@@ -475,5 +516,7 @@
         private System.Windows.Forms.CheckBox absoluteCb;
         private System.Windows.Forms.CheckBox titleCb;
         private System.Windows.Forms.Label notificationLabel;
+        private System.Windows.Forms.Button changeFileNamesButton;
+        private System.Windows.Forms.Button InvisibleCloseButton;
     }
 }

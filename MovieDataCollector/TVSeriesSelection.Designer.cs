@@ -32,13 +32,13 @@
             this.label1 = new System.Windows.Forms.Label();
             this.seriesPosterPictureBox = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.titleRbtn = new System.Windows.Forms.RadioButton();
             this.yearRbtn = new System.Windows.Forms.RadioButton();
+            this.titleRbtn = new System.Windows.Forms.RadioButton();
+            this.label2 = new System.Windows.Forms.Label();
             this.seriesNameListBox = new System.Windows.Forms.ListBox();
             this.overviewTextBox = new System.Windows.Forms.TextBox();
             this.exitButton = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.AcceptBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.seriesPosterPictureBox)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -76,29 +76,6 @@
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.ForeColor = System.Drawing.Color.GreenYellow;
-            this.label2.Location = new System.Drawing.Point(6, 10);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(52, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Sort By:";
-            // 
-            // titleRbtn
-            // 
-            this.titleRbtn.AutoSize = true;
-            this.titleRbtn.Checked = true;
-            this.titleRbtn.ForeColor = System.Drawing.Color.GreenYellow;
-            this.titleRbtn.Location = new System.Drawing.Point(59, 8);
-            this.titleRbtn.Name = "titleRbtn";
-            this.titleRbtn.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.titleRbtn.Size = new System.Drawing.Size(50, 17);
-            this.titleRbtn.TabIndex = 3;
-            this.titleRbtn.Text = "Title";
-            this.titleRbtn.UseVisualStyleBackColor = true;
-            // 
             // yearRbtn
             // 
             this.yearRbtn.AutoSize = true;
@@ -110,6 +87,32 @@
             this.yearRbtn.TabIndex = 3;
             this.yearRbtn.Text = "Year";
             this.yearRbtn.UseVisualStyleBackColor = true;
+            this.yearRbtn.Click += new System.EventHandler(this.yearRbtn_Click);
+            // 
+            // titleRbtn
+            // 
+            this.titleRbtn.AutoSize = true;
+            this.titleRbtn.Checked = true;
+            this.titleRbtn.ForeColor = System.Drawing.Color.GreenYellow;
+            this.titleRbtn.Location = new System.Drawing.Point(59, 8);
+            this.titleRbtn.Name = "titleRbtn";
+            this.titleRbtn.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.titleRbtn.Size = new System.Drawing.Size(50, 17);
+            this.titleRbtn.TabIndex = 3;
+            this.titleRbtn.TabStop = true;
+            this.titleRbtn.Text = "Title";
+            this.titleRbtn.UseVisualStyleBackColor = true;
+            this.titleRbtn.Click += new System.EventHandler(this.defaultRbtn_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.ForeColor = System.Drawing.Color.GreenYellow;
+            this.label2.Location = new System.Drawing.Point(6, 10);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(52, 13);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "Sort By:";
             // 
             // seriesNameListBox
             // 
@@ -120,6 +123,7 @@
             this.seriesNameListBox.Name = "seriesNameListBox";
             this.seriesNameListBox.Size = new System.Drawing.Size(336, 160);
             this.seriesNameListBox.TabIndex = 3;
+            this.seriesNameListBox.SelectedIndexChanged += new System.EventHandler(this.seriesNameListBox_SelectedIndexChanged);
             // 
             // overviewTextBox
             // 
@@ -135,6 +139,7 @@
             // exitButton
             // 
             this.exitButton.BackColor = System.Drawing.Color.GreenYellow;
+            this.exitButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.exitButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.exitButton.Location = new System.Drawing.Point(12, 425);
             this.exitButton.Name = "exitButton";
@@ -142,25 +147,29 @@
             this.exitButton.TabIndex = 5;
             this.exitButton.Text = "&Exit";
             this.exitButton.UseVisualStyleBackColor = false;
+            this.exitButton.Click += new System.EventHandler(this.ExitButton_Click);
             // 
-            // button1
+            // AcceptBtn
             // 
-            this.button1.BackColor = System.Drawing.Color.GreenYellow;
-            this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.button1.Location = new System.Drawing.Point(466, 425);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(207, 42);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "&Accept";
-            this.button1.UseVisualStyleBackColor = false;
+            this.AcceptBtn.BackColor = System.Drawing.Color.GreenYellow;
+            this.AcceptBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.AcceptBtn.Location = new System.Drawing.Point(466, 425);
+            this.AcceptBtn.Name = "AcceptBtn";
+            this.AcceptBtn.Size = new System.Drawing.Size(207, 42);
+            this.AcceptBtn.TabIndex = 6;
+            this.AcceptBtn.Text = "&Accept";
+            this.AcceptBtn.UseVisualStyleBackColor = false;
+            this.AcceptBtn.Click += new System.EventHandler(this.AcceptBtn_Click);
             // 
             // TVSeriesSelection
             // 
+            this.AcceptButton = this.AcceptBtn;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.CancelButton = this.exitButton;
             this.ClientSize = new System.Drawing.Size(684, 477);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.AcceptBtn);
             this.Controls.Add(this.exitButton);
             this.Controls.Add(this.overviewTextBox);
             this.Controls.Add(this.seriesNameListBox);
@@ -191,6 +200,6 @@
         private System.Windows.Forms.ListBox seriesNameListBox;
         private System.Windows.Forms.TextBox overviewTextBox;
         private System.Windows.Forms.Button exitButton;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button AcceptBtn;
     }
 }
