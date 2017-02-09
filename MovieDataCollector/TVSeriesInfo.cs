@@ -159,9 +159,9 @@ namespace MovieDataCollector
 
             for (int i = 0; i < tags.Count(); i++)
             {
-                if (!string.IsNullOrEmpty(GeneralParser(inputString, "<" + tags[i] + ">", "</" + tags[i] + ">")))
+                if (!string.IsNullOrEmpty(Program.GeneralParser(inputString, "<" + tags[i] + ">", "</" + tags[i] + ">")))
                 {
-                    series.Add(tags[i], GeneralParser(inputString, "<" + tags[i] + ">", "</" + tags[i] + ">"));
+                    series.Add(tags[i], Program.GeneralParser(inputString, "<" + tags[i] + ">", "</" + tags[i] + ">"));
                 }
             }
 
@@ -207,41 +207,15 @@ namespace MovieDataCollector
 
             for (int i = 0; i < tags.Count(); i++)
             {
-                if (!string.IsNullOrEmpty(GeneralParser(inputString, "<" + tags[i] + ">", "</" + tags[i] + ">")))
+                if (!string.IsNullOrEmpty(Program.GeneralParser(inputString, "<" + tags[i] + ">", "</" + tags[i] + ">")))
                 {
                     //add information to dictionary
-                    episodeDictionary.Add(tags[i], GeneralParser(inputString, "<" + tags[i] + ">", "</" + tags[i] + ">"));
+                    episodeDictionary.Add(tags[i], Program.GeneralParser(inputString, "<" + tags[i] + ">", "</" + tags[i] + ">"));
                 }  
             }
 
             episodes.Add(episodeDictionary); //add dictionary to list
             tags.Clear();
-        }
-        private string GeneralParser(string InputString, string start, string end)
-        {
-            if (string.IsNullOrEmpty(InputString)) { return ""; }
-
-            
-
-            try
-            {
-                int startPosition = InputString.IndexOf(start) + start.Length;
-                int endPosition = InputString.IndexOf(end, startPosition);
-
-                if (startPosition == -1 || endPosition == -1) { return ""; }
-
-                if (startPosition >= endPosition) { return ""; }
-
-                if (InputString.Length - startPosition > endPosition - startPosition)
-                {
-                    return InputString.Substring(startPosition, endPosition - startPosition);
-                }
-                else { return ""; }
-            }
-            catch
-            {
-                return "";
-            }
         }
     }
 }
