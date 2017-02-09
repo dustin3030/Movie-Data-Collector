@@ -18,6 +18,13 @@ namespace MovieDataCollector
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());
         }
+        /// <summary>
+        /// Public method to parse text
+        /// </summary>
+        /// <param name="InputString"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
         public static string GeneralParser(string InputString, string start, string end)
         {
             if (string.IsNullOrEmpty(InputString)) { return ""; }
@@ -41,6 +48,25 @@ namespace MovieDataCollector
             {
                 return "";
             }
+        }
+        /// <summary>
+        /// Method to check for and create configuration file if necessary
+        /// </summary>
+        public static void CheckConfigFile()
+        {
+
+        }
+        public static void UpdateConversionFormDefaults()
+        {
+
+        }
+        public static void UpdateTVFormDefaults()
+        {
+
+        }
+        public static void UpdateMovieFormDefaults()
+        {
+
         }
     }
 }
