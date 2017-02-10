@@ -12,6 +12,7 @@ namespace MovieDataCollector
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
+
         static void Main()
         {
             Application.EnableVisualStyles();
@@ -48,25 +49,6 @@ namespace MovieDataCollector
             {
                 return "";
             }
-        }
-        /// <summary>
-        /// Method to check for and create configuration file if necessary
-        /// </summary>
-        public static void CheckConfigFile()
-        {
-
-        }
-        public static void UpdateConversionFormDefaults()
-        {
-
-        }
-        public static void UpdateTVFormDefaults()
-        {
-
-        }
-        public static void UpdateMovieFormDefaults()
-        {
-
         }
     }
 }

@@ -42,6 +42,7 @@ namespace MovieDataCollector
         List<string> FavoriteListSorter = new List<string>(); //Used to sort Favorites alphabetically when new favorites are added
         TVSeriesInfo SeriesInfo;
         List<string> ListOfEpisodeNames = new List<string>();
+        ConfigFile cf = new ConfigFile();
 
         public TVForm()
         {

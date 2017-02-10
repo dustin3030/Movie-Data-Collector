@@ -162,6 +162,7 @@
             this.CompatibilityCheckerButton.TabIndex = 1;
             this.CompatibilityCheckerButton.Text = "&Compatibility Checker";
             this.CompatibilityCheckerButton.UseVisualStyleBackColor = false;
+            this.CompatibilityCheckerButton.Click += new System.EventHandler(this.CompatibilityCheckerButton_Click);
             // 
             // invisibleCloseButton
             // 
@@ -181,7 +182,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.CancelButton = this.invisibleCloseButton;
-            this.ClientSize = new System.Drawing.Size(229, 283);
+            this.ClientSize = new System.Drawing.Size(229, 282);
             this.Controls.Add(this.CompatibilityCheckerButton);
             this.Controls.Add(this.movieButton);
             this.Controls.Add(this.tvButton);
