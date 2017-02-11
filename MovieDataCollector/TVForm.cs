@@ -1021,10 +1021,18 @@ namespace MovieDataCollector
                 seriesTitle = favoritesCombo.Text;
                 favoritesCombo.Items.Add(seriesTitle);
 
-                cf.addFavorite(seriesID, seriesTitle);
+                cf.addFavorite(seriesTitle, seriesID);
 
                 seriesIDTitleTextbox.Text = "";
                 favoritesCombo.Text = "";
+                favoritesCombo.Items.Clear();
+
+                for (int i = 0; i < cf.favoriteTitles.Count; i++)
+                {
+                    favoritesCombo.Items.Add(cf.favoriteTitles[i]);
+                }
+                
+
             }
             else
             {

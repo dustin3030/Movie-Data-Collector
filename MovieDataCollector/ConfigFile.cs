@@ -16,6 +16,7 @@ namespace MovieDataCollector
         public List<string> favoriteIDs { get; set; }
 
         string configString = ""; //Holds configuration file text from when the file is first read in.
+        
         List<string> KeyList = new List<string>()
             {   "MFPath", //C:\\
                 "TFPath",//C:\\
@@ -70,7 +71,8 @@ namespace MovieDataCollector
 
             DefaultSettings = new Dictionary<string, string>();//Dictionary containing default settings
             favoritesList = new List<string>(); //List containing favorite TV show information from config file
-
+            favoriteTitles= new List<string>(); //instantiate list
+            favoriteIDs = new List<string>(); //instantiate list
 
             checkConfigFile();
         }
@@ -213,7 +215,7 @@ namespace MovieDataCollector
         public string GenerateFavoritesString()
         {
             string favorites = "";
-            string beginning = "<Favorites>";
+            string beginning = "<Favorites>\r\n";
             string middle = "";
             string end = "</Favorites>";
             favoritesList.Clear();
@@ -227,7 +229,7 @@ namespace MovieDataCollector
             else //Need to add a check to ensure that if there are no favorites everything still works.
             {
                 //filter out section of text file to work with
-                favorites = Program.GeneralParser(configString, beginning, end);
+                favorites = Program.GeneralParser(configString, beginning, "\r\n" + end);
 
                 //Sort and create List
                 
@@ -236,7 +238,7 @@ namespace MovieDataCollector
 
                 for (int i = 0; i < favoritesList.Count; i++)
                 {
-                    middle += favoritesList[i];
+                    middle += favoritesList[i] + "\r\n";
                     favoriteTitles.Add(Program.GeneralParser(favoritesList[i], "<TVShow>", "<ShowID>"));
                     favoriteIDs.Add(Program.GeneralParser(favoritesList[i], "<ShowID>", "</TVShow>"));
                 }
@@ -268,31 +270,41 @@ namespace MovieDataCollector
                     sr.Close();
                 }
 
-                defaults = Program.GeneralParser(configString, "<Defaults>", "</Defaults>");
-                favorites = Program.GeneralParser(configString, "<Favorites>", "</Favorites>");
+                defaults = "<Defaults>\r\n" + Program.GeneralParser(configString, "<Defaults>\r\n", "</Defaults>") + "</Defaults>\r\n";
+                favorites = Program.GeneralParser(configString, "<Favorites>\r\n", "</Favorites>");
 
                 //Create List
                 favoritesList = Regex.Split(favorites, "\r\n").ToList();
 
                 //Add new item to list
-                favoritesList.Add("\t<TVShow>" + title + "<ShowID>" + id + "</TVShow>\r\n");
+                favoritesList.Add("\t<TVShow>" + title + "<ShowID>" + id + "</TVShow>");
                 favoritesList.Sort();
 
                 //recreate lists
                 for (int i = 0; i < favoritesList.Count; i++)
                 {
-                    middle += favoritesList[i];
-                    favoriteTitles.Add(Program.GeneralParser(favoritesList[i], "<TVShow>", "<ShowID>"));
-                    favoriteIDs.Add(Program.GeneralParser(favoritesList[i], "<ShowID>", "</TVShow>"));
+                    if(!string.IsNullOrEmpty(Program.GeneralParser(favoritesList[i], "<TVShow>", "<ShowID>")))
+                    {
+                        middle += favoritesList[i] + "\r\n";
+                        favoriteTitles.Add(Program.GeneralParser(favoritesList[i], "<TVShow>", "<ShowID>"));
+                        favoriteIDs.Add(Program.GeneralParser(favoritesList[i], "<ShowID>", "</TVShow>"));
+                    }
+                }
+
+
+                //Rebuild FavoritesList
+                favoritesList.Clear();
+                for (int i = 0; i < favoriteTitles.Count; i++)
+                {
+                    favoritesList.Add("\t<TVShow>" + favoriteTitles[i] + "<ShowID>" + favoriteIDs[i] + "</TVShow>\r\n");
                 }
 
                 //Generate string
                 favorites = beginning + middle + end;
-
                 //Write text file with new text
                 using (StreamWriter sw = new StreamWriter(configPath))
                 {
-                    sw.WriteLine(defaults + "\r\n" + favorites);
+                    sw.WriteLine(defaults + favorites);
                     sw.Close();
                 }
             }

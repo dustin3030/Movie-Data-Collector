@@ -18,7 +18,6 @@ namespace MovieDataCollector
             InitializeComponent();
             Activate(); //Opens form on top of others but doesn't force topmost always
             ConfigFile cf = new ConfigFile();
-            cf.checkConfigFile();
         }
         private void invisibleCloseButton_Click(object sender, EventArgs e)
         {
