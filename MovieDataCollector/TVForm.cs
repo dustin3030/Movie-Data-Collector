@@ -219,8 +219,8 @@ namespace MovieDataCollector
                     }
                 }
 
-
-                WriteDefaultFilePath();
+                cf.DefaultSettings["TFPath"] = folderPath;
+                cf.updateDefaults(); //write defaults to file
             }
             notificationLabel.Visible = false;
         }
@@ -951,11 +951,18 @@ namespace MovieDataCollector
                 R.Dispose();
             }
         }
-        private void BulkScanTVShows_Load(object sender, EventArgs e)
+        private void TVForm_Load(object sender, EventArgs e)
         {
             string format = "";
             ReadDefaultFilePath();
-            Favorites();
+            cf.checkConfigFile();
+
+            //Add items to Favorites Combo
+            for (int i = 0; i < cf.favoriteTitles.Count; i++)
+            {
+                favoritesCombo.Items.Add(cf.favoriteTitles[i]);
+            }
+
             using (StreamReader SR = new StreamReader(configPath))
             {
                 //Read configFileText to string
@@ -985,21 +992,13 @@ namespace MovieDataCollector
             configFileText = "";
             if (System.IO.File.Exists(configPath))
             {
-                //parse default path from config file and set it to folder path
-                using (StreamReader SR = new StreamReader(configPath))
+                //set formatCombo
+                switch (cf.DefaultSettings["DefaultFormat"])
                 {
-                    //Read configFileText to string
-                    configFileText = SR.ReadToEnd();
-                    folderPath = GeneralParser(configFileText, "<BulkScanTVShowStart>", "<BulkScanTVShowEnd>");
-                    defaultFormat = GeneralParser(configFileText, "<DefaultFormat>", "<DefaultFormatEnd>");
-                    SR.Close();
-                }
-                switch (defaultFormat)
-                {
-                    case "Plex":
+                    case "PLEX":
                         formatCombo.SelectedIndex = 0;
                         break;
-                    case "Kodi":
+                    case "KODI":
                         formatCombo.SelectedIndex = 1;
                         break;
                     case "Synology":
@@ -1011,63 +1010,18 @@ namespace MovieDataCollector
                 }
             }
         }
-        private void WriteDefaultFilePath()
-        {
-            string oldText = "";
-            string newText = "";
-
-            using (StreamReader SR = new StreamReader(configPath))
-            {
-                //Read configFileText to string
-                configFileText = SR.ReadToEnd();
-                defaultPathText = GeneralParser(configFileText, "<BulkScanTVShowStart>", "<BulkScanTVShowEnd>");
-                oldText = "<BulkScanTVShowStart>" + defaultPathText + "<BulkScanTVShowEnd>";
-                newText = "<BulkScanTVShowStart>" + folderPath + "<BulkScanTVShowEnd>";
-                configFileText = configFileText.Replace(oldText, newText);
-                SR.Close();
-                SR.Dispose();
-            }
-
-            using (StreamWriter sw = File.CreateText(configPath))
-            {
-                sw.WriteLine(configFileText);
-                sw.Close();
-            }
-        }
         private void addFavoriteButton_Click(object sender, EventArgs e)
         {
-            string seriesURL = "";
-            string seriesName = "";
+            string seriesID = "";
+            string seriesTitle = "";
 
             if (!string.IsNullOrEmpty(favoritesCombo.Text) & !string.IsNullOrEmpty(seriesIDTitleTextbox.Text))
             {
-                seriesURL = seriesIDTitleTextbox.Text;
-                seriesName = favoritesCombo.Text;
-                favoritesCombo.Items.Add(seriesName);
-                FavoriteURLList.Add(seriesURL);
+                seriesID = seriesIDTitleTextbox.Text;
+                seriesTitle = favoritesCombo.Text;
+                favoritesCombo.Items.Add(seriesTitle);
 
-                if (!Directory.Exists(configDirectory))
-                {
-                    Directory.CreateDirectory(configDirectory);
-                }
-
-                if (!File.Exists(configPath))
-                {
-                    using (StreamWriter FavoritesShows1 = File.CreateText(configPath)) { FavoritesShows1.Close(); }
-
-                }
-
-                using (StreamWriter FavoriteShows2 = File.AppendText(configPath))
-                {
-                    string newShow = "<TVShow>" + seriesName + "<ShowURL>" + seriesURL + "<End>";
-                    FavoriteShows2.WriteLine(newShow);
-                    FavoriteShows2.Close();
-                }
-
-                FavoriteURLList.Clear();
-                favoritesCombo.Items.Clear();
-
-                Favorites();
+                cf.addFavorite(seriesID, seriesTitle);
 
                 seriesIDTitleTextbox.Text = "";
                 favoritesCombo.Text = "";
@@ -1090,175 +1044,18 @@ namespace MovieDataCollector
             }
 
         }
-        private void Favorites()
-        {
-            string showName = "";
-            string showURL = "";
-            string fileName = configPath;
-            string textLine = "";
-            string line = "";
-            FavoriteListSorter.Clear();
-            try
-            {
-                if (File.Exists(fileName))
-                {
-                    using (StreamReader SR = new StreamReader(fileName))
-                    {
-                        //Read configFileText to string
-                        configFileText = SR.ReadToEnd();
-                        SR.Close();
-                        SR.Dispose();
-                    }
-                    defaultPaths = GeneralParser(configFileText, "--DefaultPathsStart--", "--DefaultPathsEnd--");
-                    formatCheckDefaults = GeneralParser(configFileText, "--FormatCheckDefaultsStart--", "--FormatCheckDefaultsEnd--");
-
-                    using (StreamReader SR = new StreamReader(fileName))
-                    {
-                        while (!SR.EndOfStream) //Loops through file until the end
-                        {
-                            line = SR.ReadLine();
-                            //Parse whole lines from Text File 
-                            if (line.Contains("<TVShow>"))
-                            {
-                                textLine = GeneralParser(line, "<TVShow>", "<End>");
-                                FavoriteListSorter.Add(textLine);
-                            }
-                        }
-                        SR.Close();
-                        SR.Dispose();
-                    }
-
-                    FavoriteListSorter.Sort(); //Sort List by Show Title
-
-                    //Create a new Config.txt file that is sorted
-                    using (StreamWriter sw = File.CreateText(fileName))
-                    {
-                        sw.WriteLine("--DefaultPathsStart--" + defaultPaths + "--DefaultPathsEnd--");
-                        sw.WriteLine("");
-                        sw.WriteLine("--FavoritesListStart--");
-
-                        for (int i = 0; i < FavoriteListSorter.Count(); i++)
-                        {
-                            if (!string.IsNullOrEmpty(FavoriteListSorter[i]))
-                            {
-                                sw.WriteLine("<TVShow>" + FavoriteListSorter[i] + "<End>");
-                            }
-
-                        }
-                        sw.WriteLine("--FavoritesListEnd--\r\n");
-                        sw.WriteLine("--FormatCheckDefaultsStart--" + formatCheckDefaults + "--FormatCheckDefaultsEnd--");
-                        sw.Close();
-                    }
-
-                    //Add empty space to the top of combobox and List
-                    favoritesCombo.Items.Add("");
-                    FavoriteURLList.Add("");
-
-
-                    using (StreamReader sr = new StreamReader(fileName))
-                    {
-                        while (!sr.EndOfStream) //Loops through file until the end
-                        {
-                            line = sr.ReadLine();
-                            //Parse Line to divide Common and URL names
-                            if (line.Contains("<TVShow>"))
-                            {
-
-                                showName = GeneralParser(line, "<TVShow>", "<ShowURL>");
-                                showURL = GeneralParser(line, "<ShowURL>", "<End>");
-
-                                //Fill lists
-                                favoritesCombo.Items.Add(showName);
-                                FavoriteURLList.Add(showURL);
-                            }
-                        }
-                        sr.Close();
-                        sr.Dispose();
-                    }
-
-                }
-            }
-            catch
-            {
-                CustomMessageBox.Show("Error while reading file Config.txt", 126, 343);
-            }
-        }
         private void deleteFavorite()
         {
-            string fileName = configPath;
-            string line = "";
-            string showName = "";
-            string showURL = "";
             int deleteLocation = 0;
+            cf.removeFavorite(favoritesCombo.SelectedItem.ToString()); //removes selected item
 
-            configFileText = "";
-            if (favoritesCombo.SelectedIndex >= 0 & favoritesCombo.Items.Count > 0)
-            {
+            //remove selected item from combo box and List
+            deleteLocation = favoritesCombo.SelectedIndex;
+            favoritesCombo.Items.RemoveAt(deleteLocation);
 
-                FavoriteListSorter.Clear();
-                FavoriteListSorter.Add(""); //Adds blank to match other lists and combo box
-
-                using (StreamReader SR = new StreamReader(fileName))
-                {
-                    //Read configFileText to string
-                    configFileText = SR.ReadToEnd();
-                    SR.Close();
-                    SR.Dispose();
-
-                    defaultPaths = GeneralParser(configFileText, "--DefaultPathsStart--", "--DefaultPathsEnd--");
-                    formatCheckDefaults = GeneralParser(configFileText, "--FormatCheckDefaultsStart--", "--FormatCheckDefaultsEnd--");
-                }
-
-                using (StreamReader sr = new StreamReader(fileName))
-                {
-                    while (!sr.EndOfStream) //Loops through file until the end
-                    {
-                        line = sr.ReadLine();
-                        //Parse Line to divide Common and URL names
-
-                        if (line.Contains("<TVShow>"))
-                        {
-                            showName = GeneralParser(line, "<TVShow>", "<ShowURL>");
-                            showURL = GeneralParser(line, "<ShowURL>", "<End>");
-
-                            //Fill lists
-                            FavoriteListSorter.Add("<TVShow>" + showName + "<ShowURL>" + showURL + "<End>");
-                        }
-                    }
-                    sr.Close();
-                }
-
-                //remove selected item from combo box and List
-                deleteLocation = favoritesCombo.SelectedIndex;
-                favoritesCombo.Items.RemoveAt(deleteLocation);
-                FavoriteURLList.RemoveAt(deleteLocation);
-                FavoriteListSorter.RemoveAt(deleteLocation);
-
-
-                //createfile to writeover txt file
-                using (StreamWriter sw = File.CreateText(fileName))
-                {
-                    sw.WriteLine("--DefaultPathsStart--" + defaultPaths + "--DefaultPathsEnd--");
-                    sw.WriteLine("");
-                    sw.WriteLine("--FavoritesListStart--");
-                    for (int i = 0; i < FavoriteListSorter.Count; i++) //loop through listbox items
-                    {
-                        if (!string.IsNullOrEmpty(FavoriteListSorter[i]))
-                        {
-                            sw.WriteLine(FavoriteListSorter[i]);
-                        }
-                    }
-                    sw.WriteLine("--FavoritesListEnd--\r\n");
-                    sw.WriteLine("--FormatCheckDefaultsStart--" + formatCheckDefaults + "--FormatCheckDefaultsEnd--");
-                    sw.Close();
-                }
-                favoritesCombo.Text = "";
-                seriesIDTitleTextbox.Text = "";
-            }
-            else
-            {
-                CustomMessageBox.Show("Nothing selected for deletion", 110, 227);
-            }
+            //Clear Boxes
+            favoritesCombo.Text = "";
+            seriesIDTitleTextbox.Text = "";
         }
         private void deleteFavoriteButton_Click(object sender, EventArgs e)
         {
