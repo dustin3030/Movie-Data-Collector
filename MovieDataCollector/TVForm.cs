@@ -57,19 +57,68 @@ namespace MovieDataCollector
             PLEXEpisodeNames.Clear();
             SynologyEpisodeName.Clear();
 
-
-/********** //Needs to be fixed----If you look up a series with a number it will think it's the ID. For instance 24 will display as the ID of the series not the title.*****************************************************************************************************************************************************************/
             //Scan for Series ID, if no ID found scan for series title and retrieve list of possible series to choose from then parse out the correct id.
             if (int.TryParse(TitleBox, out ID) && ID != 0)
             {
-                notificationLabel.Text = "ID found, gathering series info.";
-                notificationLabel.Invalidate();
-                notificationLabel.Update();
-                TVSeriesInfo T = new TVSeriesInfo(APIKey, ID.ToString());
-                seriesImagePicturebox.ImageLocation = "http://thetvdb.com/banners/" + T.series["banner"];
-                SeriesInfo = T;
-                if (T.series.ContainsKey("SeriesName")) { favoritesCombo.Text = T.series["SeriesName"]; }
-                seriesIDTitleTextbox.Text = T.Series_ID;
+                try
+                { 
+                    notificationLabel.Text = "ID found, gathering series info.";
+                    notificationLabel.Invalidate();
+                    notificationLabel.Update();
+                    TVSeriesInfo T = new TVSeriesInfo(APIKey, ID.ToString());
+                    seriesImagePicturebox.ImageLocation = "http://thetvdb.com/banners/" + T.series["banner"];
+                    SeriesInfo = T;
+                    if (T.series.ContainsKey("SeriesName")) { favoritesCombo.Text = T.series["SeriesName"]; }
+                    seriesIDTitleTextbox.Text = T.Series_ID;
+                }
+                catch //ID Search returned error, attempt search as a series title instead.
+                {
+                    notificationLabel.Text = "ID search failed, searching " + TitleBox + "as text";
+                    notificationLabel.Invalidate();
+                    notificationLabel.Update();
+
+                    //Create object that looks up possible TV Series based on text in SeriesURLBox
+                    TVSeriesSearch S = new TVSeriesSearch(TitleBox);
+                    //Create form object to hold results from search
+                    if (S.SeriesList.Count > 1)
+                    {
+                        notificationLabel.Text = "Multiple Series Identified";
+                        notificationLabel.Invalidate();
+                        notificationLabel.Update();
+                        TVSeriesSelection M = new TVSeriesSelection(S.SeriesList);
+                        //Show form as dialog to prevent further code from running until option selected.
+                        M.ShowDialog();
+
+                        if (M.DialogResult == DialogResult.OK)
+                        {
+                            notificationLabel.Text = "Selection Accepted, gathering series info";
+                            notificationLabel.Invalidate();
+                            notificationLabel.Update();
+
+                            //Once show is selected, use selected shows ID to gather episode information
+                            TVSeriesInfo T = new TVSeriesInfo(APIKey, M.SelectedID);
+                            //display series banner 
+                            seriesImagePicturebox.ImageLocation = "http://thetvdb.com/banners/" + T.series["banner"];
+                            SeriesInfo = T;
+                            if (T.series.ContainsKey("SeriesName")) { favoritesCombo.Text = T.series["SeriesName"]; }
+                            seriesIDTitleTextbox.Text = T.Series_ID;
+                        }
+                        else if (M.DialogResult == DialogResult.Abort || M.DialogResult == DialogResult.Cancel) { return; }
+                    }
+                    else if (S.SeriesList.Count == 1)
+                    {
+                        notificationLabel.Text = "Series Identified, gathering series info";
+                        notificationLabel.Invalidate();
+                        notificationLabel.Update();
+
+                        TVSeriesInfo T = new TVSeriesInfo(APIKey, S.SeriesList[0]["seriesid"]);
+                        seriesImagePicturebox.ImageLocation = "http://thetvdb.com/banners/" + T.series["banner"];
+                        SeriesInfo = T;
+                        if (T.series.ContainsKey("SeriesName")) { favoritesCombo.Text = T.series["SeriesName"]; }
+                        seriesIDTitleTextbox.Text = T.Series_ID;
+                    }
+                    else { CustomMessageBox.Show("No such show found", 170, 310); return; }
+                }
             }
             //Create object that looks up possible TV Series based on the text in the Series Title Box
             else if (!string.IsNullOrEmpty(TitleBox))
