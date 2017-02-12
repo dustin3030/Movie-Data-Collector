@@ -112,6 +112,9 @@
     <EmbeddedResource Include="MovieForm.resx">
       <DependentUpon>MovieForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="MovieSelection.resx">
+      <DependentUpon>MovieSelection.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TVManualRename.resx">
       <DependentUpon>TVManualRename.cs</DependentUpon>
     </EmbeddedResource>
@@ -164,6 +167,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Images\Roku.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\PlexLogo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Synology.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\kodi.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

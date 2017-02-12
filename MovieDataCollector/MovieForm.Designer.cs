@@ -50,7 +50,7 @@
             this.createFilesButton = new System.Windows.Forms.Button();
             this.clearButton = new System.Windows.Forms.Button();
             this.moviePosterPictureBox = new System.Windows.Forms.PictureBox();
-            this.formatPictureBox = new System.Windows.Forms.PictureBox();
+            this.formatPicturebox = new System.Windows.Forms.PictureBox();
             this.imdbPictureBox = new System.Windows.Forms.PictureBox();
             this.tmdbPictureBox = new System.Windows.Forms.PictureBox();
             this.backDropPictureBox = new System.Windows.Forms.PictureBox();
@@ -75,7 +75,7 @@
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.backdropNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.moviePosterPictureBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.formatPictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.formatPicturebox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imdbPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tmdbPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.backDropPictureBox)).BeginInit();
@@ -270,9 +270,8 @@
             this.formatComboBox.FormattingEnabled = true;
             this.formatComboBox.Items.AddRange(new object[] {
             "PLEX",
-            "SYNOLOGY",
-            "UNIVERSAL",
-            "KODI"});
+            "KODI",
+            "Synology"});
             this.formatComboBox.Location = new System.Drawing.Point(494, 291);
             this.formatComboBox.Name = "formatComboBox";
             this.formatComboBox.Size = new System.Drawing.Size(100, 21);
@@ -315,17 +314,17 @@
             this.moviePosterPictureBox.TabIndex = 16;
             this.moviePosterPictureBox.TabStop = false;
             // 
-            // formatPictureBox
+            // formatPicturebox
             // 
-            this.formatPictureBox.BackColor = System.Drawing.Color.Transparent;
-            this.formatPictureBox.Image = global::MovieDataCollector.Properties.Resources.Universal;
-            this.formatPictureBox.InitialImage = global::MovieDataCollector.Properties.Resources.Universal;
-            this.formatPictureBox.Location = new System.Drawing.Point(600, 280);
-            this.formatPictureBox.Name = "formatPictureBox";
-            this.formatPictureBox.Size = new System.Drawing.Size(78, 46);
-            this.formatPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.formatPictureBox.TabIndex = 13;
-            this.formatPictureBox.TabStop = false;
+            this.formatPicturebox.BackColor = System.Drawing.Color.Transparent;
+            this.formatPicturebox.Image = global::MovieDataCollector.Properties.Resources.Synology;
+            this.formatPicturebox.InitialImage = global::MovieDataCollector.Properties.Resources.Universal;
+            this.formatPicturebox.Location = new System.Drawing.Point(600, 280);
+            this.formatPicturebox.Name = "formatPicturebox";
+            this.formatPicturebox.Size = new System.Drawing.Size(78, 46);
+            this.formatPicturebox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.formatPicturebox.TabIndex = 13;
+            this.formatPicturebox.TabStop = false;
             // 
             // imdbPictureBox
             // 
@@ -561,7 +560,7 @@
             this.Controls.Add(this.moviePosterPictureBox);
             this.Controls.Add(this.clearButton);
             this.Controls.Add(this.createFilesButton);
-            this.Controls.Add(this.formatPictureBox);
+            this.Controls.Add(this.formatPicturebox);
             this.Controls.Add(this.formatComboBox);
             this.Controls.Add(this.formatLabel);
             this.Controls.Add(this.imdbIDTextBox);
@@ -588,7 +587,7 @@
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.backdropNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.moviePosterPictureBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.formatPictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.formatPicturebox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imdbPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tmdbPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.backDropPictureBox)).EndInit();
@@ -623,7 +622,7 @@
         private System.Windows.Forms.TextBox imdbIDTextBox;
         private System.Windows.Forms.Label formatLabel;
         private System.Windows.Forms.ComboBox formatComboBox;
-        private System.Windows.Forms.PictureBox formatPictureBox;
+        private System.Windows.Forms.PictureBox formatPicturebox;
         private System.Windows.Forms.Button createFilesButton;
         private System.Windows.Forms.Button clearButton;
         private System.Windows.Forms.PictureBox moviePosterPictureBox;

@@ -93,6 +93,16 @@ namespace MovieDataCollector.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap kodi {
+            get {
+                object obj = ResourceManager.GetObject("kodi", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap MovieDBLogo {
             get {
                 object obj = ResourceManager.GetObject("MovieDBLogo", resourceCulture);
@@ -103,9 +113,29 @@ namespace MovieDataCollector.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap PlexLogo {
+            get {
+                object obj = ResourceManager.GetObject("PlexLogo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Roku {
             get {
                 object obj = ResourceManager.GetObject("Roku", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Synology {
+            get {
+                object obj = ResourceManager.GetObject("Synology", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace MovieDataCollector
@@ -19,6 +20,7 @@ namespace MovieDataCollector
         {"ActorName",
             "ActorRoles",
             "ActorImages",
+            "ActorNames",
             "Backdrops",
             "CrewJobs",
             "CrewNames",
@@ -80,15 +82,15 @@ namespace MovieDataCollector
         /// <summary>
         /// Returns MPAA rating for movies
         /// </summary>
-        /// <param name="IMDB_ID"></param>
+        /// <param name="staticProperties["IMDB_ID"]"></param>
         public void getRating()
         {
             string responseContent;
-            string URL = "https://api.themoviedb.org/3/movie/" + IMDB_ID + "/releases?api_key=" + API_Key;
+            string URL = "https://api.themoviedb.org/3/movie/" + staticProperties["IMDB_ID"] + "/releases?api_key=" + staticProperties["API_Key"];
             responseContent = MyWebRequest(URL);
 
-            //With a null response there is nothing to parse so excape the method on set MPAA_Rating to Error
-            if (string.IsNullOrEmpty(responseContent)) { MPAA_Rating = "Error"; return; }
+            //With a null response there is nothing to parse so excape the method on set staticProperties["MPAA_Rating"] to Error
+            if (string.IsNullOrEmpty(responseContent)) { staticProperties["MPAA_Rating"] = "Error"; return; }
 
             //Split reponse string into array to prepare for parsing
             char[] delim = { '}' };
@@ -99,11 +101,11 @@ namespace MovieDataCollector
             {
                 if (s.Contains(":\"US\""))
                 {
-                    MPAA_Rating = GeneralParser(s, "\"certification\":\"", "\",\"", "\"certification\":null");
+                    staticProperties["MPAA_Rating"] = GeneralParser(s, "\"certification\":\"", "\",\"", "\"certification\":null");
                 }
             }
 
-            if (string.IsNullOrEmpty(MPAA_Rating)) { MPAA_Rating = "NR"; } //Fixes errors related with no rating being listed
+            if (string.IsNullOrEmpty(staticProperties["MPAA_Rating"])) { staticProperties["MPAA_Rating"] = "NR"; } //Fixes errors related with no rating being listed
         }
         /// <summary>
         /// Builds list of Currently Available Generes from the website themoviedb.org
@@ -112,7 +114,6 @@ namespace MovieDataCollector
         {
             string parsedGenres;
             string tempString;
-            GenreList = new List<string>(); //instantiates list
 
             //split string and search instead of matching to list, this will also remove necessity for genres list.
             parsedGenres = GeneralParser(responseContent, "\"genres\":[", "]", "\"genres\":null");
@@ -128,7 +129,7 @@ namespace MovieDataCollector
                 if (s.Contains("name\":") && string.IsNullOrEmpty(genreBuilder.ToString()))
                 {
                     genreBuilder.Append(GeneralParser(s, "name\":\"", "\"", "name\":null"));
-                    GenreList.Add(GeneralParser(s, "name\":\"", "\"", "name\":null"));
+                    listProperties["GenreList"].Add(GeneralParser(s, "name\":\"", "\"", "name\":null"));
                 }
                 else if (s.Contains("name\":\""))
                 {
@@ -136,7 +137,7 @@ namespace MovieDataCollector
                     if (!string.IsNullOrEmpty(tempString))
                     {
                         genreBuilder.Append(", " + tempString);
-                        GenreList.Add(tempString);
+                        listProperties["GenreList"].Add(tempString);
                     }
                 }
             }
@@ -150,38 +151,38 @@ namespace MovieDataCollector
         /// Production Country, Vote Average, Vote Count, Budget,
         /// Poster Path, Background Path
         /// </summary>
-        /// <param name="IMDB_ID"></param>
+        /// <param name="staticProperties["IMDB_ID"]"></param>
         public void getBasicInfo()
         {
 
             string responseContent;
-            string URL = "https://api.themoviedb.org/3/movie/" + IMDB_ID + "?api_key=" + API_Key;
+            string URL = "https://api.themoviedb.org/3/movie/" + staticProperties["IMDB_ID"] + "?api_key=" + staticProperties["API_Key"];
             responseContent = MyWebRequest(URL);
 
             //set defaults if response is null
             if (string.IsNullOrEmpty(responseContent))
             {
-                Adult = false;
-                OriginalTitle = "Title Not Found";
-                Title = "Title Not Found";
-                ReleaseDate = "";
-                ReleaseYear = "Year Not Found";
-                FormattedTitle = "";
-                Plot = "Plot Not Found";
-                IMDB_ID = "";
-                Popularity = "";
-                Revenue = "";
-                RunTime = "0";
-                Tag_Line = "";
-                Collection = "Not Found";
-                Genres = "Not Found";
-                Studio = "";
-                ProductionCountry = "";
-                VoteAverage = "";
-                VoteCount = "";
-                Budget = "";
-                PosterPath = "";
-                BackDropPath = "";
+                staticProperties["Adult"] = "False";
+                staticProperties["OriginalTitle"] = "Title Not Found";
+                staticProperties["Title"] = "Title Not Found";
+                staticProperties["ReleaseDate"] = "";
+                staticProperties["ReleaseYear"] = "Year Not Found";
+                staticProperties["FormattedTitle"] = "";
+                staticProperties["Plot"] = "Plot Not Found";
+                staticProperties["IMDB_ID"] = "";
+                staticProperties["Popularity"] = "";
+                staticProperties["Revenue"] = "";
+                staticProperties["RunTime"] = "0";
+                staticProperties["Tag_Line"] = "";
+                staticProperties["Collection"] = "Not Found";
+                staticProperties["Genres"] = "Not Found";
+                staticProperties["Studio"] = "";
+                staticProperties["ProductionCountry"] = "";
+                staticProperties["VoteAverage"] = "";
+                staticProperties["VoteCount"] = "";
+                staticProperties["Budget"] = "";
+                staticProperties["PosterPath"] = "";
+                staticProperties["BackDropPath"] = "";
                 return;
             }
 
@@ -193,48 +194,48 @@ namespace MovieDataCollector
             //Default to false
             string isAdult;
             isAdult = GeneralParser(responseContent, "adult\":", ",", "adult\":null");
-            if (isAdult.Contains("false") || string.IsNullOrEmpty(isAdult)) { Adult = false; }
-            else if (isAdult.Contains("true")) { Adult = true; }
-            else { Adult = false; }
+            if (isAdult.Contains("false") || string.IsNullOrEmpty(isAdult)) { staticProperties["Adult"] = "False"; }
+            else if (isAdult.Contains("true")) { staticProperties["Adult"] = "True"; }
+            else { staticProperties["Adult"] = "False"; }
 
-            OriginalTitle = GeneralParser(responseContent, "original_title\":\"", "\",", "original_title\":null");
-            Title = GeneralParser(responseContent, "\"title\":\"", "\",", "\"title\":null");
-            ReleaseDate = GeneralParser(responseContent, "release_date\":\"", "\",", "release_date\":null");
-            IMDB_ID = GeneralParser(responseContent, "\"imdb_id\":\"", "\",", "imdb_id\":null");
+            staticProperties["OriginalTitle"] = GeneralParser(responseContent, "original_title\":\"", "\",", "original_title\":null");
+            staticProperties["Title"] = GeneralParser(responseContent, "\"title\":\"", "\",", "\"title\":null");
+            staticProperties["ReleaseDate"] = GeneralParser(responseContent, "release_date\":\"", "\",", "release_date\":null");
+            staticProperties["IMDB_ID"] = GeneralParser(responseContent, "\"imdb_id\":\"", "\",", "imdb_id\":null");
 
             //Set ReleaseYear to "" as default
-            if (!string.IsNullOrEmpty(ReleaseDate) && ReleaseDate.Length > 4)
+            if (!string.IsNullOrEmpty(staticProperties["ReleaseDate"]) && staticProperties["ReleaseDate"].Length > 4)
             {
-                ReleaseYear = ReleaseDate.Remove(4, ReleaseDate.Length - 4);
+                staticProperties["ReleaseYear"] = staticProperties["ReleaseDate"].Remove(4, staticProperties["ReleaseDate"].Length - 4);
             }
-            else { ReleaseYear = ""; }
+            else { staticProperties["ReleaseYear"] = ""; }
 
             //Get valid Title by removing invalid file name characters
-            FormattedTitle = validTitle(Title + " (" + ReleaseYear + ")");
+            staticProperties["FormattedTItle"] = validTitle(staticProperties["TItle"] + " (" + staticProperties["ReleaseYear"] + ")");
 
-            Plot = GeneralParser(responseContent, "overview\":\"", "\",\"popularity\"", "overview\":null");
-            if (Plot.Contains("\\r")) { Plot = Plot.Replace("\\r", ""); }
-            if (Plot.Contains("\\n")) { Plot = Plot.Replace("\\n", ""); }
-            if (Plot.Contains("\\")) { Plot = Plot.Replace("\\", ""); }
+            staticProperties["Plot"] = GeneralParser(responseContent, "overview\":\"", "\",\"popularity\"", "overview\":null");
+            if (staticProperties["Plot"].Contains("\\r")) { staticProperties["Plot"] = staticProperties["Plot"].Replace("\\r", ""); }
+            if (staticProperties["Plot"].Contains("\\n")) { staticProperties["Plot"] = staticProperties["Plot"].Replace("\\n", ""); }
+            if (staticProperties["Plot"].Contains("\\")) { staticProperties["Plot"] = staticProperties["Plot"].Replace("\\", ""); }
 
-            Popularity = GeneralParser(responseContent, "popularity\":", ",", "popularity\":null");
-            Revenue = GeneralParser(responseContent, "revenue\":", ",", "revenue\":null");
-            RunTime = GeneralParser(responseContent, "runtime\":", ",", "runtime\":null");
-            Tag_Line = GeneralParser(responseContent, "tagline\":\"", "\",", "tagline\":null");
+            staticProperties["Popularity"] = GeneralParser(responseContent, "popularity\":", ",", "popularity\":null");
+            staticProperties["Revenue"] = GeneralParser(responseContent, "revenue\":", ",", "revenue\":null");
+            staticProperties["RunTime"] = GeneralParser(responseContent, "runtime\":", ",", "runtime\":null");
+            staticProperties["Tag_Line"] = GeneralParser(responseContent, "tagline\":\"", "\",", "tagline\":null");
 
             //Removes backslash characters from the tagline.
-            if (Tag_Line.Contains(@"\")) { Tag_Line = Tag_Line.Replace(@"\", ""); }
+            if (staticProperties["Tag_Line"].Contains(@"\")) { staticProperties["Tag_Line"] = staticProperties["Tag_Line"].Replace(@"\", ""); }
 
-            Collection = GeneralParser(responseContent, "belongs_to_collection\":{\"id\":", "\",", "belongs_to_collection\":null");
-            if (!string.IsNullOrEmpty(Collection)) { Collection = GeneralParser(Collection, "name\":\"", "Collection", "name\":null"); }
-            if (!string.IsNullOrEmpty(Collection)) { Collection = Collection.Trim() + " Collection"; }
+            staticProperties["Collection"] = GeneralParser(responseContent, "belongs_to_collection\":{\"id\":", "\",", "belongs_to_collection\":null");
+            if (!string.IsNullOrEmpty(staticProperties["Collection"])) { staticProperties["Collection"] = GeneralParser(staticProperties["Collection"], "name\":\"", "Collection", "name\":null"); }
+            if (!string.IsNullOrEmpty(staticProperties["Collection"])) { staticProperties["Collection"] = staticProperties["Collection"].Trim() + " Collection"; }
 
-            Genres = BuildGenreList(responseContent);
-            Studio = ProductionCompanies(responseContent);
-            ProductionCountry = ProductionCountries(responseContent);
-            VoteAverage = GeneralParser(responseContent, "vote_average\":", ",", "vote_average\":null");
-            VoteCount = GeneralParser(responseContent, "vote_count\":", "}", "vote_count\":null");
-            Budget = GeneralParser(responseContent, "budget\":", ",", "budget\":null");
+            staticProperties["Genres"] = BuildGenreList(responseContent);
+            staticProperties["Studio"] = ProductionCompanies(responseContent);
+            staticProperties["ProductionCountry"] = ProductionCountries(responseContent);
+            staticProperties["VoteAverage"] = GeneralParser(responseContent, "vote_average\":", ",", "vote_average\":null");
+            staticProperties["VoteCount"] = GeneralParser(responseContent, "vote_count\":", "}", "vote_count\":null");
+            staticProperties["Budget"] = GeneralParser(responseContent, "budget\":", ",", "budget\":null");
         }
         /// <summary>
         /// General Parser - string to substring
@@ -286,8 +287,6 @@ namespace MovieDataCollector
         /// <returns></returns>
         private string ProductionCompanies(string InputString)
         {
-            StudioList = new List<string>(); //Instantiate list
-
             if (string.IsNullOrEmpty(InputString)) { return ""; }
 
             string studios = "";
@@ -307,12 +306,12 @@ namespace MovieDataCollector
                 if (s.Contains("\"name\":\"") && string.IsNullOrEmpty(returnString.ToString()))
                 {
                     returnString.Append(GeneralParser(s, "\"name\":\"", "\",", "\"name\":null"));
-                    StudioList.Add(GeneralParser(s, "\"name\":\"", "\",", "\"name\":null"));
+                    listProperties["StudioList"].Add(GeneralParser(s, "\"name\":\"", "\",", "\"name\":null"));
                 }
                 else if (s.Contains("\"name\":\""))
                 {
                     returnString.Append(", " + GeneralParser(s, "\"name\":\"", "\",", "\"name\":null"));
-                    StudioList.Add(GeneralParser(s, "\"name\":\"", "\",", "\"name\":null"));
+                    listProperties["StudioList"].Add(GeneralParser(s, "\"name\":\"", "\",", "\"name\":null"));
                 }
             }
 
@@ -359,18 +358,13 @@ namespace MovieDataCollector
         /// </summary>
         public void getCredits()
         {
-            ActorImages = new List<string>();
-            ActorNames = new List<string>();
-            ActorRoles = new List<string>();
-            CrewJobs = new List<string>();
-            CrewNames = new List<string>();
 
             string castJson; //holds split string with cast information
             string crewJson; //holds split string with crew information
 
             //Creating Web Request
             string responseContent;
-            string URL = "https://api.themoviedb.org/3/movie/" + IMDB_ID + "/credits?api_key=" + API_Key + "&language=en&include_image_language=en,null";
+            string URL = "https://api.themoviedb.org/3/movie/" + staticProperties["IMDB_ID"] + "/credits?api_key=" + staticProperties["API_Key"] + "&language=en&include_image_language=en,null";
             responseContent = MyWebRequest(URL);
 
 
@@ -390,13 +384,13 @@ namespace MovieDataCollector
             {
                 if (s.Contains("\"name\":"))
                 {
-                    ActorNames.Add(GeneralParser(s, "\"name\":\"", "\",\"", "\"name\":null"));
-                    ActorRoles.Add(GeneralParser(s, "\"character\":\"", "\",\"", "\"character\":null"));
+                    listProperties["ActorNames"].Add(GeneralParser(s, "\"name\":\"", "\",\"", "\"name\":null"));
+                    listProperties["ActorRoles"].Add(GeneralParser(s, "\"character\":\"", "\",\"", "\"character\":null"));
                     if (s.Contains(".jpg"))
                     {
-                        ActorImages.Add("https://image.tmdb.org/t/p/original/" + GeneralParser(s, "\"profile_path\":\"/", "\"}", "\"profile_path\":null"));
+                        listProperties["ActorImages"].Add("https://image.tmdb.org/t/p/original/" + GeneralParser(s, "\"profile_path\":\"/", "\"}", "\"profile_path\":null"));
                     }
-                    else { ActorImages.Add("Null"); }
+                    else { listProperties["ActorImages"].Add("Null"); }
                 }
             }
 
@@ -404,14 +398,14 @@ namespace MovieDataCollector
             {
                 if (s.Contains("\"name\":") && s.Contains("Director"))
                 {
-                    Director = GeneralParser(s, "\"name\":\"", "\",\"", "\"name\":null"); //Pulls Directors Name from the string
-                    CrewNames.Add(Director); //Returns Directors name to the CrewNames list
-                    CrewJobs.Add("Director"); //Lists Directors Job as Director
+                    staticProperties["Director"] = GeneralParser(s, "\"name\":\"", "\",\"", "\"name\":null"); //Pulls Directors Name from the string
+                    listProperties["CrewNames"].Add(staticProperties["Director"]); //Returns Directors name to the CrewNames list
+                    listProperties["CrewJobs"].Add(staticProperties["Director"]); //Lists Directors Job as Director
                 }
                 else if (s.Contains("\"name\":"))
                 {
-                    CrewNames.Add(GeneralParser(s, "\"name\":\"", "\",\"", "\"name\":null"));
-                    CrewJobs.Add(GeneralParser(s, "\"job\":\"", "\",\"", "\"job\":null"));
+                    listProperties["CrewNames"].Add(GeneralParser(s, "\"name\":\"", "\",\"", "\"name\":null"));
+                    listProperties["CrewJobs"].Add(GeneralParser(s, "\"job\":\"", "\",\"", "\"job\":null"));
                 }
             }
 
@@ -433,12 +427,12 @@ namespace MovieDataCollector
         /// <summary>
         /// Creates list of titles for the film unique to the US only
         /// </summary>
-        /// <param name="IMDB_ID"></param>
+        /// <param name="staticProperties["IMDB_ID"]"></param>
         public void GetUSTitles()
         {
-            USTitles = new List<string>(); //instantiates list
+            listProperties["USTitles"] = new List<string>(); //instantiates list
             string responseContent;
-            string URL = "https://api.themoviedb.org/3/movie/" + IMDB_ID + "/alternative_titles?api_key=" + API_Key;
+            string URL = "https://api.themoviedb.org/3/movie/" + staticProperties["IMDB_ID"] + "/alternative_titles?api_key=" + staticProperties["API_Key"];
             responseContent = MyWebRequest(URL);
             if (string.IsNullOrEmpty(responseContent)) { return; }
 
@@ -450,11 +444,11 @@ namespace MovieDataCollector
             {
                 if (s.Contains("\":\"US\""))
                 {
-                    USTitles.Add(GeneralParser(s, "\"title\":\"", "\"}", "\"title\":null"));
+                    listProperties["USTitles"].Add(GeneralParser(s, "\"title\":\"", "\"}", "\"title\":null"));
                 }
                 if (s.Contains("\":\"en\""))
                 {
-                    USTitles.Add(GeneralParser(s, "\"title\":\"", "\"}", "\"title\":null"));
+                    listProperties["USTitles"].Add(GeneralParser(s, "\"title\":\"", "\"}", "\"title\":null"));
                 }
             }
         }
@@ -463,14 +457,12 @@ namespace MovieDataCollector
         /// </summary>
         public void getFilmImages()
         {
-            Backdrops = new List<string>(); //instantiate Backdrop image list
-            Posters = new List<string>(); //instantiate poster image list
-            string backdrops = ""; //string to hold the backdrop potion of the response
+            string backdrops = ""; //string to hold the backdrop portion of the response
             string posters = ""; //string to hold the poster portion of the string
 
             string responseContent;
-            //string URL = "https://api.themoviedb.org/3/movie/" + IMDB_ID + "/images?api_key=" + APIKey;
-            string URL = "https://api.themoviedb.org/3/movie/" + IMDB_ID + "/images?api_key=" + API_Key + "&language=en&include_image_language=en,null";
+            //string URL = "https://api.themoviedb.org/3/movie/" + staticProperties["IMDB_ID"] + "/images?staticProperties["API_Key"]=" + APIKey;
+            string URL = "https://api.themoviedb.org/3/movie/" + staticProperties["IMDB_ID"] + "/images?api_key=" + staticProperties["API_Key"] + "&language=en&include_image_language=en,null";
             responseContent = MyWebRequest(URL);
             if (string.IsNullOrEmpty(responseContent)) { return; }
 
@@ -486,19 +478,19 @@ namespace MovieDataCollector
             {
                 if (s.Contains("\"file_path\":\"/"))
                 {
-                    Backdrops.Add("http://image.tmdb.org/t/p/w300/" + GeneralParser(s, "\"file_path\":\"/", "\",", "\"file_path\":null"));
+                    listProperties["Backdrops"].Add("http://image.tmdb.org/t/p/w300/" + GeneralParser(s, "\"file_path\":\"/", "\",", "\"file_path\":null"));
                 }
             }
             foreach (string s in posterTokens)
             {
                 if (s.Contains("\"file_path\":\"/"))
                 {
-                    Posters.Add("http://image.tmdb.org/t/p/w154/" + GeneralParser(s, "\"file_path\":\"/", "\",", "\"file_path\":null"));
+                    listProperties["Posters"].Add("http://image.tmdb.org/t/p/w154/" + GeneralParser(s, "\"file_path\":\"/", "\",", "\"file_path\":null"));
                 }
             }
 
-            if (Posters.Count > 0) { PosterPath = Posters[0]; } else { PosterPath = ""; }
-            if (Backdrops.Count > 0) { BackDropPath = Backdrops[0]; } else { BackDropPath = ""; }
+            if (listProperties["Posters"].Count > 0) { staticProperties["PosterPath"] = listProperties["Posters"][0]; } else { staticProperties["PosterPath"] = ""; }
+            if (listProperties["Backdrops"].Count > 0) { staticProperties["BackDropPath"] = listProperties["Backdrops"][0]; } else { staticProperties["BackDropPath"] = ""; }
         }
         /// <summary>
         /// Handles web requests to themoviedatabase.org
@@ -529,12 +521,12 @@ namespace MovieDataCollector
 
             catch (Exception e)
             {
-                if (e.ToString().Contains("404") && !Errors.Contains("Request to TMDB.org Failed"))
+                if (e.ToString().Contains("404") && !listProperties["Errors"].Contains("Request to TMDB.org Failed"))
                 {
-                    Errors.Add("Request to TMDB.org Failed");
+                    listProperties["Errors"].Add("Request to TMDB.org Failed");
                     return "";
                 }
-                if (!Errors.Contains(e.ToString())) { Errors.Add(e.ToString()); }
+                if (!listProperties["Errors"].Contains(e.ToString())) { listProperties["Errors"].Add(e.ToString()); }
                 return "";
             }
 

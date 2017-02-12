@@ -101,7 +101,7 @@ namespace MovieDataCollector
 
             posterNumberLabel.Text = "of 1"; //Sets label to 1 representing the number of poster images available to select from
             backdropNumberLabel.Text = "of 1"; //Sets the label to 1 representing the number of backdrop images to select from
-            formatPictureBox.Visible = true; //displays the Universal image since it is the default for that control
+            formatPicturebox.Visible = true; //displays the Universal image since it is the default for that control
             formatComboBox.SelectedIndex = 2; //displays Universal in the dropdown as being the default for that control
         }
         /// <summary>
@@ -1163,7 +1163,7 @@ namespace MovieDataCollector
             nLabelUpdate("Gathering Plot, Title, Genre, etc");
 
             Movie.getBasicInfo(); //Returns basic film info
-            imdbIDTextBox.Text = Movie.IMDB_ID; //adds the IMDBID back to the form
+            imdbIDTextBox.Text = Movie.staticProperties["IMDB_ID"]; //adds the IMDBID back to the form
 
             nLabelUpdate("Retrieving Alternate US Titles");
 
@@ -1175,58 +1175,58 @@ namespace MovieDataCollector
             nLabelUpdate("Adding Alternate Titles");
 
             //Loop to add movie titles from movie object to the combo box
-            for (int i = 0; i < Movie.USTitles.Count; i++)
+            for (int i = 0; i < Movie.listProperties["USTitles"].Count; i++)
             {
-                titleComboBox.Items.Add(Movie.USTitles[i]);
+                titleComboBox.Items.Add(Movie.listProperties["USTitles"][i]);
             }
 
-            if (!titleComboBox.Items.Contains(Movie.Title) && !string.IsNullOrEmpty(Movie.Title))
+            if (!titleComboBox.Items.Contains(Movie.staticProperties["Title"]) && !string.IsNullOrEmpty(Movie.staticProperties["Title"]))
             {
-                titleComboBox.Items.Add(Movie.Title);
+                titleComboBox.Items.Add(Movie.staticProperties["Title"]);
             }
 
-            if (!titleComboBox.Items.Contains(Movie.OriginalTitle) && !string.IsNullOrEmpty(Movie.OriginalTitle))
+            if (!titleComboBox.Items.Contains(Movie.staticProperties["OriginalTitle"]) && !string.IsNullOrEmpty(Movie.staticProperties["OriginalTitle"]))
             {
-                titleComboBox.Items.Add(Movie.OriginalTitle);
+                titleComboBox.Items.Add(Movie.staticProperties["OriginalTitle"]);
             }
             setTitleComboBoxWidth();
 
             nLabelUpdate("Filling in Form Data");
-            titleComboBox.Text = Movie.Title; //uses the first title in the list as the default title;
-            setTextBox.Text = Movie.Collection; //uses the Collection information from the movie object to fill in the collection information
-            yearTextBox.Text = Movie.ReleaseYear; //uses the release year information from the movie object to fill in the year
-            runTimeTextBox.Text = Movie.RunTime;
-            mpaaTextBox.Text = Movie.MPAA_Rating;
-            genresTextBox.Text = Movie.Genres;
+            titleComboBox.Text = Movie.staticProperties["Title"]; //uses the first title in the list as the default title;
+            setTextBox.Text = Movie.staticProperties["Collection"]; //uses the Collection information from the movie object to fill in the collection information
+            yearTextBox.Text = Movie.staticProperties["ReleaseYear"]; //uses the release year information from the movie object to fill in the year
+            runTimeTextBox.Text = Movie.staticProperties["RunTime"];
+            mpaaTextBox.Text = Movie.staticProperties["MPAA_Rating"];
+            genresTextBox.Text = Movie.staticProperties["Genres"];
 
-            if (string.IsNullOrEmpty(Movie.Tag_Line)) { plotTextBox.Text = Movie.Plot; }
-            else { plotTextBox.Text = Movie.Tag_Line + "\r\r" + Movie.Plot; }
+            if (string.IsNullOrEmpty(Movie.staticProperties["Tag_Line"])) { plotTextBox.Text = Movie.staticProperties["Plot"]; }
+            else { plotTextBox.Text = Movie.staticProperties["Tag_Line"] + "\r\r" + Movie.staticProperties["Plot"]; }
 
 
             nLabelUpdate("Setting up images");
 
-            posterNumericUpDown.Maximum = Movie.Posters.Count() + 1;
+            posterNumericUpDown.Maximum = Movie.listProperties["Posters"].Count() + 1;
             posterNumericUpDown.Minimum = 0;
-            backdropNumericUpDown.Maximum = Movie.Backdrops.Count() + 1;
+            backdropNumericUpDown.Maximum = Movie.listProperties["Backdrops"].Count() + 1;
             backdropNumericUpDown.Minimum = 0;
 
-            posterNumberLabel.Text = "of " + Movie.Posters.Count().ToString();
-            backdropNumberLabel.Text = "of " + Movie.Backdrops.Count().ToString();
+            posterNumberLabel.Text = "of " + Movie.listProperties["Posters"].Count().ToString();
+            backdropNumberLabel.Text = "of " + Movie.listProperties["Backdrops"].Count().ToString();
             posterNumericUpDown.Value = 1;
             backdropNumericUpDown.Value = 1;
 
-            backDropPictureBox.ImageLocation = Movie.BackDropPath;
-            moviePosterPictureBox.ImageLocation = Movie.PosterPath;
+            backDropPictureBox.ImageLocation = Movie.staticProperties["BackDropPath"];
+            moviePosterPictureBox.ImageLocation = Movie.staticProperties["PosterPath"];
 
             nLabelUpdate("Gathering Film Credits");
             notificationLabel.Visible = false;
 
             //Determine if errors were encountered
 
-            if (Movie.Errors.Count > 0)
+            if (Movie.listProperties["Errors"].Count > 0)
             {
                 StringBuilder Errors = new StringBuilder();
-                foreach (string s in Movie.Errors)
+                foreach (string s in Movie.listProperties["Errors"])
                 {
                     if (string.IsNullOrEmpty(Errors.ToString())) { Errors.Append(s); }
                     else { Errors.Append("\r\r" + s); }
@@ -1335,22 +1335,22 @@ namespace MovieDataCollector
                     notificationLabel.Update();
 
                     //add images
-                    if (Movie.Posters.Count > 0)
+                    if (Movie.listProperties["Posters"].Count > 0)
                     {
-                        Movie.PosterPath = Movie.Posters[(int)posterNumericUpDown.Value - 1];
-                        Movie.PosterPath = Movie.PosterPath.Replace("/w154/", "/original/");
+                        Movie.staticProperties["PosterPath"] = Movie.listProperties["Posters"][(int)posterNumericUpDown.Value - 1];
+                        Movie.staticProperties["PosterPath"] = Movie.staticProperties["PosterPath"].Replace("/w154/", "/original/");
                     }
 
-                    if (Movie.Backdrops.Count > 0)
+                    if (Movie.listProperties["Backdrops"].Count > 0)
                     {
-                        Movie.BackDropPath = Movie.Backdrops[(int)backdropNumericUpDown.Value - 1];
-                        Movie.BackDropPath = Movie.BackDropPath.Replace("/w300/", "/original/");
+                        Movie.staticProperties["BackDropPath"] = Movie.listProperties["Backdrops"][(int)backdropNumericUpDown.Value - 1];
+                        Movie.staticProperties["BackDropPath"] = Movie.staticProperties["BackDropPath"].Replace("/w300/", "/original/");
                     }
 
                     if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".jpg")
                         & !File.Exists(newDirectoryName + "\\" + "poster.jpg")
                         & !File.Exists(newDirectoryName + "\\" + "Folder.jpg")
-                        & !string.IsNullOrEmpty(Movie.PosterPath))
+                        & !string.IsNullOrEmpty(Movie.staticProperties["PosterPath"]))
                     {
                         notificationLabel.Text = "Downloading Poster";
                         notificationLabel.Invalidate();
@@ -1367,84 +1367,84 @@ namespace MovieDataCollector
                                 switch (formatComboBox.SelectedIndex) //Formats title to plex, kodi, or synology spec
                                 {
                                     case 0: //Plex
-                                        wc.DownloadFile(Movie.PosterPath, newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".jpg");
+                                        wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".jpg");
                                         break;
                                     case 1: //Synology
-                                        wc.DownloadFile(Movie.PosterPath, newDirectoryName + "\\" + "Folder.jpg");
+                                        wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + "Folder.jpg");
                                         break;
                                     case 2: //Universal creates two identical poster files with different names to have max compatibility
-                                        wc.DownloadFile(Movie.PosterPath, newDirectoryName + "\\" + "poster.jpg");
+                                        wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + "poster.jpg");
                                         File.Copy(newDirectoryName + "\\" + "poster.jpg", newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".jpg");
                                         break;
                                     case 3: //kodi
-                                        wc.DownloadFile(Movie.PosterPath, newDirectoryName + "\\" + "poster.jpg");
+                                        wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + "poster.jpg");
                                         break;
                                 }
 
                             }
                             catch //If original file doesn't exist try w1000
                             {
-                                Movie.PosterPath = Movie.PosterPath.Replace("/original/", "/w1000/");
+                                Movie.staticProperties["PosterPath"] = Movie.staticProperties["PosterPath"].Replace("/original/", "/w1000/");
                                 try //Attempt to download w1000 size
                                 {
                                     switch (formatComboBox.SelectedIndex) //Formats title to plex, kodi, or synology spec
                                     {
                                         case 0: //Plex
-                                            wc.DownloadFile(Movie.PosterPath, newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".jpg");
+                                            wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".jpg");
                                             break;
                                         case 1: //Synology
-                                            wc.DownloadFile(Movie.PosterPath, newDirectoryName + "\\" + "Folder.jpg");
+                                            wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + "Folder.jpg");
                                             break;
                                         case 2: //Universal creates two identical poster files with different names to have max compatibility
-                                            wc.DownloadFile(Movie.PosterPath, newDirectoryName + "\\" + "poster.jpg");
+                                            wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + "poster.jpg");
                                             File.Copy(newDirectoryName + "\\" + "poster.jpg", newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".jpg");
                                             break;
                                         case 3: //kodi
-                                            wc.DownloadFile(Movie.PosterPath, newDirectoryName + "\\" + "poster.jpg");
+                                            wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + "poster.jpg");
                                             break;
                                     }
                                 }
                                 catch //If w1000 doesn't exist try w500
                                 {
-                                    Movie.PosterPath = Movie.PosterPath.Replace("/w1000/", "/w500/");
+                                    Movie.staticProperties["PosterPath"] = Movie.staticProperties["PosterPath"].Replace("/w1000/", "/w500/");
                                     try //Attempt to download w500 size
                                     {
                                         switch (formatComboBox.SelectedIndex) //Formats title to plex, kodi, or synology spec
                                         {
                                             case 0: //Plex
-                                                wc.DownloadFile(Movie.PosterPath, newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".jpg");
+                                                wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".jpg");
                                                 break;
                                             case 1: //Synology
-                                                wc.DownloadFile(Movie.PosterPath, newDirectoryName + "\\" + "Folder.jpg");
+                                                wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + "Folder.jpg");
                                                 break;
                                             case 2: //Universal creates two identical poster files with different names to have max compatibility
-                                                wc.DownloadFile(Movie.PosterPath, newDirectoryName + "\\" + "poster.jpg");
+                                                wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + "poster.jpg");
                                                 File.Copy(newDirectoryName + "\\" + "poster.jpg", newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".jpg");
                                                 break;
                                             case 3: //kodi
-                                                wc.DownloadFile(Movie.PosterPath, newDirectoryName + "\\" + "poster.jpg");
+                                                wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + "poster.jpg");
                                                 break;
                                         }
                                     }
                                     catch //if w500 doesn't exist try w300
                                     {
-                                        Movie.PosterPath = Movie.PosterPath.Replace("/w500/", "/w300/");
+                                        Movie.staticProperties["PosterPath"] = Movie.staticProperties["PosterPath"].Replace("/w500/", "/w300/");
                                         try //Attempt to download w300 size
                                         {
                                             switch (formatComboBox.SelectedIndex) //Formats title to plex, kodi, or synology spec
                                             {
                                                 case 0: //Plex
-                                                    wc.DownloadFile(Movie.PosterPath, newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".jpg");
+                                                    wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".jpg");
                                                     break;
                                                 case 1: //Synology
-                                                    wc.DownloadFile(Movie.PosterPath, newDirectoryName + "\\" + "Folder.jpg");
+                                                    wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + "Folder.jpg");
                                                     break;
                                                 case 2: //Universal creates two identical poster files with different names to have max compatibility
-                                                    wc.DownloadFile(Movie.PosterPath, newDirectoryName + "\\" + "poster.jpg");
+                                                    wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + "poster.jpg");
                                                     File.Copy(newDirectoryName + "\\" + "poster.jpg", newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".jpg");
                                                     break;
                                                 case 3: //kodi
-                                                    wc.DownloadFile(Movie.PosterPath, newDirectoryName + "\\" + "poster.jpg");
+                                                    wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + "poster.jpg");
                                                     break;
                                             }
                                         }
@@ -1459,7 +1459,7 @@ namespace MovieDataCollector
                     }
                     if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "-fanart.jpg")
                         & !File.Exists(newDirectoryName + "\\" + "fanart.jpg")
-                        & !string.IsNullOrEmpty(Movie.BackDropPath))
+                        & !string.IsNullOrEmpty(Movie.staticProperties["BackDropPath"]))
                     {
                         notificationLabel.Text = "Downloading Backdrop/Fanart";
                         notificationLabel.Invalidate();
@@ -1473,15 +1473,15 @@ namespace MovieDataCollector
                                 switch (formatComboBox.SelectedIndex) //Formats title to plex, kodi, or synology spec
                                 {
                                     case 0: //Plex
-                                        wc.DownloadFile(Movie.PosterPath, newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "-fanart.jpg");
+                                        wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "-fanart.jpg");
                                         break;
                                     case 1: //Synology
                                         break;
                                     case 2: //Universal
-                                        wc.DownloadFile(Movie.BackDropPath, newDirectoryName + "\\" + "fanart.jpg");
+                                        wc.DownloadFile(Movie.staticProperties["BackDropPath"], newDirectoryName + "\\" + "fanart.jpg");
                                         break;
                                     case 3: //kodi
-                                        wc.DownloadFile(Movie.BackDropPath, newDirectoryName + "\\" + "fanart.jpg");
+                                        wc.DownloadFile(Movie.staticProperties["BackDropPath"], newDirectoryName + "\\" + "fanart.jpg");
                                         break;
                                 }
 
@@ -1489,61 +1489,61 @@ namespace MovieDataCollector
                             catch
                             {
 
-                                Movie.BackDropPath.Replace("/original/", "/w1000/");
+                                Movie.staticProperties["BackDropPath"].Replace("/original/", "/w1000/");
                                 try //Attempt to download w1000 file
                                 {
                                     switch (formatComboBox.SelectedIndex) //Formats title to plex, kodi, or synology spec
                                     {
                                         case 0: //Plex
-                                            wc.DownloadFile(Movie.PosterPath, newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "-fanart.jpg");
+                                            wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "-fanart.jpg");
                                             break;
                                         case 1: //Synology
                                             break;
                                         case 2: //Universal
-                                            wc.DownloadFile(Movie.BackDropPath, newDirectoryName + "\\" + "fanart.jpg");
+                                            wc.DownloadFile(Movie.staticProperties["BackDropPath"], newDirectoryName + "\\" + "fanart.jpg");
                                             break;
                                         case 3: //kodi
-                                            wc.DownloadFile(Movie.BackDropPath, newDirectoryName + "\\" + "fanart.jpg");
+                                            wc.DownloadFile(Movie.staticProperties["BackDropPath"], newDirectoryName + "\\" + "fanart.jpg");
                                             break;
                                     }
                                 }
                                 catch
                                 {
-                                    Movie.BackDropPath.Replace("/w1000/", "/w500/");
+                                    Movie.staticProperties["BackDropPath"].Replace("/w1000/", "/w500/");
                                     try //Attempt to download w500 file
                                     {
                                         switch (formatComboBox.SelectedIndex) //Formats title to plex, kodi, or synology spec
                                         {
                                             case 0: //Plex
-                                                wc.DownloadFile(Movie.PosterPath, newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "-fanart.jpg");
+                                                wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "-fanart.jpg");
                                                 break;
                                             case 1: //Synology
                                                 break;
                                             case 2: //Universal
-                                                wc.DownloadFile(Movie.BackDropPath, newDirectoryName + "\\" + "fanart.jpg");
+                                                wc.DownloadFile(Movie.staticProperties["BackDropPath"], newDirectoryName + "\\" + "fanart.jpg");
                                                 break;
                                             case 3: //kodi
-                                                wc.DownloadFile(Movie.BackDropPath, newDirectoryName + "\\" + "fanart.jpg");
+                                                wc.DownloadFile(Movie.staticProperties["BackDropPath"], newDirectoryName + "\\" + "fanart.jpg");
                                                 break;
                                         }
                                     }
                                     catch
                                     {
-                                        Movie.BackDropPath.Replace("/w500/", "/w300/");
+                                        Movie.staticProperties["BackDropPath"].Replace("/w500/", "/w300/");
                                         try //Attempt to download w300 file
                                         {
                                             switch (formatComboBox.SelectedIndex) //Formats title to plex, kodi, or synology spec
                                             {
                                                 case 0: //Plex
-                                                    wc.DownloadFile(Movie.PosterPath, newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "-fanart.jpg");
+                                                    wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "-fanart.jpg");
                                                     break;
                                                 case 1: //Synology
                                                     break;
                                                 case 2: //Universal
-                                                    wc.DownloadFile(Movie.BackDropPath, newDirectoryName + "\\" + "fanart.jpg");
+                                                    wc.DownloadFile(Movie.staticProperties["BackDropPath"], newDirectoryName + "\\" + "fanart.jpg");
                                                     break;
                                                 case 3: //kodi
-                                                    wc.DownloadFile(Movie.BackDropPath, newDirectoryName + "\\" + "fanart.jpg");
+                                                    wc.DownloadFile(Movie.staticProperties["BackDropPath"], newDirectoryName + "\\" + "fanart.jpg");
                                                     break;
                                             }
                                         }
@@ -1630,8 +1630,8 @@ namespace MovieDataCollector
             runTimeTextBox.Clear();
             genresTextBox.Clear();
             plotTextBox.Clear();
-            backDropPictureBox.Image = FileRenamer.Properties.Resources.highlightreel;
-            moviePosterPictureBox.Image = FileRenamer.Properties.Resources.filmreel;
+            backDropPictureBox.Image = MovieDataCollector.Properties.Resources.highlightreel;
+            moviePosterPictureBox.Image = MovieDataCollector.Properties.Resources.filmreel;
             subfilesList.Clear();
             backdropNumberLabel.Text = "";
             posterNumberLabel.Text = " of 1";
@@ -1660,40 +1660,40 @@ namespace MovieDataCollector
         private void posterNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
 
-            if (Movie == null || Movie.Posters.Count <= 0) { moviePosterPictureBox.Image = FileRenamer.Properties.Resources.filmreel; return; }
+            if (Movie == null || Movie.listProperties["Posters"].Count <= 0) { moviePosterPictureBox.Image = MovieDataCollector.Properties.Resources.filmreel; return; }
 
-            else if (posterNumericUpDown.Value <= (Movie.Posters.Count) && posterNumericUpDown.Value >= 1)
+            else if (posterNumericUpDown.Value <= (Movie.listProperties["Posters"].Count) && posterNumericUpDown.Value >= 1)
             {
-                moviePosterPictureBox.ImageLocation = Movie.Posters[(int)posterNumericUpDown.Value - 1];
+                moviePosterPictureBox.ImageLocation = Movie.listProperties["Posters"][(int)posterNumericUpDown.Value - 1];
             }
-            else if (posterNumericUpDown.Value >= (Movie.Posters.Count))
+            else if (posterNumericUpDown.Value >= (Movie.listProperties["Posters"].Count))
             {
                 posterNumericUpDown.Value = 1;
-                moviePosterPictureBox.ImageLocation = Movie.Posters[(int)posterNumericUpDown.Value - 1];
+                moviePosterPictureBox.ImageLocation = Movie.listProperties["Posters"][(int)posterNumericUpDown.Value - 1];
             }
             else if (posterNumericUpDown.Value < 1)
             {
-                posterNumericUpDown.Value = Movie.Posters.Count;
-                moviePosterPictureBox.ImageLocation = Movie.Posters[(int)posterNumericUpDown.Value - 1];
+                posterNumericUpDown.Value = Movie.listProperties["Posters"].Count;
+                moviePosterPictureBox.ImageLocation = Movie.listProperties["Posters"][(int)posterNumericUpDown.Value - 1];
             }
         }
         private void backdropNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            if (Movie == null || Movie.Backdrops.Count <= 0) { backDropPictureBox.Image = FileRenamer.Properties.Resources.highlightreel; return; }
+            if (Movie == null || Movie.listProperties["Backdrops"].Count <= 0) { backDropPictureBox.Image = MovieDataCollector.Properties.Resources.highlightreel; return; }
 
-            else if (backdropNumericUpDown.Value <= (Movie.Backdrops.Count) && backdropNumericUpDown.Value >= 1)
+            else if (backdropNumericUpDown.Value <= (Movie.listProperties["Backdrops"].Count) && backdropNumericUpDown.Value >= 1)
             {
-                backDropPictureBox.ImageLocation = Movie.Backdrops[(int)backdropNumericUpDown.Value - 1];
+                backDropPictureBox.ImageLocation = Movie.listProperties["Backdrops"][(int)backdropNumericUpDown.Value - 1];
             }
-            else if (backdropNumericUpDown.Value >= (Movie.Backdrops.Count))
+            else if (backdropNumericUpDown.Value >= (Movie.listProperties["Backdrops"].Count))
             {
                 backdropNumericUpDown.Value = 1;
-                backDropPictureBox.ImageLocation = Movie.Backdrops[(int)backdropNumericUpDown.Value - 1];
+                backDropPictureBox.ImageLocation = Movie.listProperties["Backdrops"][(int)backdropNumericUpDown.Value - 1];
             }
             else if (backdropNumericUpDown.Value < 1)
             {
-                backdropNumericUpDown.Value = Movie.Backdrops.Count;
-                backDropPictureBox.ImageLocation = Movie.Backdrops[(int)backdropNumericUpDown.Value - 1];
+                backdropNumericUpDown.Value = Movie.listProperties["Backdrops"].Count;
+                backDropPictureBox.ImageLocation = Movie.listProperties["Backdrops"][(int)backdropNumericUpDown.Value - 1];
             }
         }
         private string CreateNFO()
@@ -1709,14 +1709,14 @@ namespace MovieDataCollector
 
             string actorsNFOString = "";
 
-            for (int i = 0; i < Movie.Posters.Count; i++)
+            for (int i = 0; i < Movie.listProperties["Posters"].Count; i++)
             {
-                postersNFOString += space + "<thumb aspect=\"poster\" preview=\"" + Movie.Posters[i].Replace("w154", "w500") + "\">" + Movie.Posters[i].Replace("w154", "original") + "</thumb>";
+                postersNFOString += space + "<thumb aspect=\"poster\" preview=\"" + Movie.listProperties["Posters"][i].Replace("w154", "w500") + "\">" + Movie.listProperties["Posters"][i].Replace("w154", "original") + "</thumb>";
             }
 
-            for (int i = 0; i < Movie.Backdrops.Count; i++)
+            for (int i = 0; i < Movie.listProperties["Backdrops"].Count; i++)
             {
-                backdropsNFOString += doubleSpace + "<thumb preview=\"" + Movie.Backdrops[i].Replace("w300", "w780") + "\">" + Movie.Backdrops[i].Replace("w300", "original") + "</thumb>";
+                backdropsNFOString += doubleSpace + "<thumb preview=\"" + Movie.listProperties["Backdrops"][i].Replace("w300", "w780") + "\">" + Movie.listProperties["Backdrops"][i].Replace("w300", "original") + "</thumb>";
 
             }
 
@@ -1747,15 +1747,15 @@ namespace MovieDataCollector
               "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>"
             + "<movie>"
             + space + "<title>" + titleComboBox.Text + "</title>"
-            + space + "<originaltitle>" + Movie.OriginalTitle + "</originaltitle>"
-            + space + "<rating>" + Movie.VoteAverage + "</rating>"
+            + space + "<originaltitle>" + Movie.staticProperties["OriginalTitle"] + "</originaltitle>"
+            + space + "<rating>" + Movie.staticProperties["VoteAverage"] + "</rating>"
             + space + "<epbookmark>0.000000</epbookmark>" //leave at zeroes
             + space + "<year>" + yearTextBox.Text + "</year>"
             + space + "<top250>0</top250>" //leave at zero
-            + space + "<votes>" + Movie.VoteCount + "</votes>"
+            + space + "<votes>" + Movie.staticProperties["VoteCount"] + "</votes>"
             + space + "<outline></outline>" //leave empty
-            + space + "<plot>" + Movie.Plot + "</plot>"
-            + space + "<Tag_Line>" + Movie.Tag_Line + "</Tag_Line>"
+            + space + "<plot>" + Movie.staticProperties["Plot"] + "</plot>"
+            + space + "<Tag_Line>" + Movie.staticProperties["Tag_Line"] + "</Tag_Line>"
             + space + "<RunTime>" + runTimeTextBox.Text + "</RunTime>"
             //Add loop for movie posters
             + postersNFOString
@@ -1766,13 +1766,13 @@ namespace MovieDataCollector
             + space + "<mpaa>" + mpaaTextBox.Text + "</mpaa>"
             + space + "<playcount>0</playcount>" //leave at 0
             + space + "<lastplayed>1601-01-01</lastplayed>" //leave like this
-            + space + "<id>" + Movie.IMDB_ID + "</id>"
+            + space + "<id>" + Movie.staticProperties["IMDB_ID"] + "</id>"
             //add loop for genres
             + genresNFOString
-            + space + "<country>" + Movie.ProductionCountry + "</country>" //leave as USA
+            + space + "<country>" + Movie.staticProperties["ProductionCountry"] + "</country>" //leave as USA
             + space + "<set>" + setTextBox.Text + "</set>"
             + space + "<credits></credits>" //leave blank
-            + space + "<director>" + Movie.Director + "</director>"
+            + space + "<director>" + Movie.staticProperties["Director"] + "</director>"
             + space + "<premiered>1601-01-01</premiered>" //leave
             + space + "<status></status>" //leave
             + space + "<code></code>" //leave
@@ -1813,13 +1813,6 @@ namespace MovieDataCollector
         {
             this.Close(); //Located behind the clear all button.
         }
-        private void instructionsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            // Creates a new movie instruction object
-            MovieInstructions MovieInstruction = new MovieInstructions();
-            // shows the form keeping main window open
-            MovieInstruction.Show();
-        }
         /// <summary>
         ///Changes picture based on selection in formatComboBox
         /// </summary>
@@ -1830,16 +1823,16 @@ namespace MovieDataCollector
             switch (formatComboBox.SelectedIndex)
             {
                 case 0:
-                    formatPicturebox.Image = FileRenamer.Properties.Resources.PlexLogo;
+                    formatPicturebox.Image = MovieDataCollector.Properties.Resources.PlexLogo;
                     break;
                 case 1:
-                    formatPicturebox.Image = FileRenamer.Properties.Resources.Synology;
+                    formatPicturebox.Image = MovieDataCollector.Properties.Resources.Synology;
                     break;
                 case 2:
-                    formatPicturebox.Image = FileRenamer.Properties.Resources.Universal;
+                    formatPicturebox.Image = MovieDataCollector.Properties.Resources.Universal;
                     break;
                 case 3:
-                    formatPicturebox.Image = FileRenamer.Properties.Resources.kodi;
+                    formatPicturebox.Image = MovieDataCollector.Properties.Resources.kodi;
                     break;
                 default:
                     formatPicturebox.Image = Properties.Resources.kodi;
