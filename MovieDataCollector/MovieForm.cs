@@ -1630,8 +1630,8 @@ namespace MovieDataCollector
             runTimeTextBox.Clear();
             genresTextBox.Clear();
             plotTextBox.Clear();
-            backDropPictureBox.Image = MovieDataCollector.Properties.Resources.highlightreel;
-            moviePosterPictureBox.Image = MovieDataCollector.Properties.Resources.filmreel;
+            backDropPictureBox.Image = MovieDataCollector.Properties.Resources.highlight_reel;
+            moviePosterPictureBox.Image = MovieDataCollector.Properties.Resources.film_reel__Small_;
             subfilesList.Clear();
             backdropNumberLabel.Text = "";
             posterNumberLabel.Text = " of 1";
@@ -1660,7 +1660,7 @@ namespace MovieDataCollector
         private void posterNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
 
-            if (Movie == null || Movie.listProperties["Posters"].Count <= 0) { moviePosterPictureBox.Image = MovieDataCollector.Properties.Resources.filmreel; return; }
+            if (Movie == null || Movie.listProperties["Posters"].Count <= 0) { moviePosterPictureBox.Image = MovieDataCollector.Properties.Resources.film_reel__Small_; return; }
 
             else if (posterNumericUpDown.Value <= (Movie.listProperties["Posters"].Count) && posterNumericUpDown.Value >= 1)
             {
@@ -1679,7 +1679,7 @@ namespace MovieDataCollector
         }
         private void backdropNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            if (Movie == null || Movie.listProperties["Backdrops"].Count <= 0) { backDropPictureBox.Image = MovieDataCollector.Properties.Resources.highlightreel; return; }
+            if (Movie == null || Movie.listProperties["Backdrops"].Count <= 0) { backDropPictureBox.Image = MovieDataCollector.Properties.Resources.highlight_reel; return; }
 
             else if (backdropNumericUpDown.Value <= (Movie.listProperties["Backdrops"].Count) && backdropNumericUpDown.Value >= 1)
             {
@@ -1720,22 +1720,22 @@ namespace MovieDataCollector
 
             }
 
-            for (int i = 0; i < Movie.ActorNames.Count; i++)
+            for (int i = 0; i < Movie.listProperties["ActorNames"].Count; i++)
             {
-                actorsNFOString += space + "<actor>" + doubleSpace + "<name>" + Movie.ActorNames[i] + "</name>"
-                    + doubleSpace + "<role>" + Movie.ActorRoles[i] + "</role>"
-                    + doubleSpace + "<thumb>" + Movie.ActorImages[i] + "</thumb>"
+                actorsNFOString += space + "<actor>" + doubleSpace + "<name>" + Movie.listProperties["ActorNames"][i] + "</name>"
+                    + doubleSpace + "<role>" + Movie.listProperties["ActorRoles"][i] + "</role>"
+                    + doubleSpace + "<thumb>" + Movie.listProperties["ActorImages"][i] + "</thumb>"
                     + space + "</actor>";
             }
 
-            for (int i = 0; i < Movie.GenreList.Count; i++)
+            for (int i = 0; i < Movie.listProperties["GenreList"].Count; i++)
             {
-                genresNFOString += space + "<genre>" + Movie.GenreList[i] + "</genre>";
+                genresNFOString += space + "<genre>" + Movie.listProperties["GenreList"][i] + "</genre>";
             }
 
-            for (int i = 0; i < Movie.StudioList.Count; i++)
+            for (int i = 0; i < Movie.listProperties["StudioList"].Count; i++)
             {
-                studiosNFOString += space + "<studio>" + Movie.StudioList[i] + "</studio>";
+                studiosNFOString += space + "<studio>" + Movie.listProperties["StudioList"][i] + "</studio>";
             }
 
             //2014-04-03 17:15:33
