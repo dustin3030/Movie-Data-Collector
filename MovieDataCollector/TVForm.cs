@@ -31,15 +31,7 @@ namespace MovieDataCollector
         string folderPath = ""; //contains path for the selected folder containing video files
         string configDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector"; //Direcory to store configuration files on host
         string configPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector\\Config.txt"; //configuration file location on host
-        string configFileText = "";
-        string defaultPathText = "";
-        string defaultFormat = "";
 
-        string defaultPaths = "";
-        string formatCheckDefaults = "";
-
-        List<string> FavoriteURLList = new List<string>(); //Contains URLs for Favorite TV Shows
-        List<string> FavoriteListSorter = new List<string>(); //Used to sort Favorites alphabetically when new favorites are added
         TVSeriesInfo SeriesInfo;
         List<string> ListOfEpisodeNames = new List<string>();
         ConfigFile cf = new ConfigFile();
@@ -706,40 +698,6 @@ namespace MovieDataCollector
             Array.Clear(characterBlocks, 0, characterBlocks.Length);
             return "";
         }
-        private string GeneralParser(string InputString, string start, string end)
-        {
-            if (string.IsNullOrEmpty(InputString)) { return ""; }
-            int startPosition = 0;
-            int endPosition = 0;
-            try
-            {
-                if (InputString.Contains(start) & InputString.Length > start.Length)
-                {
-                    startPosition = InputString.IndexOf(start) + start.Length;
-                }
-                else { return ""; }
-
-                if (InputString.Contains(end) & InputString.Length > end.Length)
-                {
-                    endPosition = InputString.IndexOf(end, startPosition);
-                }
-                else { return ""; }
-
-                if (startPosition == -1 || endPosition == -1) { return ""; }
-
-                if (startPosition >= endPosition) { return ""; }
-
-                if (InputString.Length - startPosition > endPosition - startPosition)
-                {
-                    return InputString.Substring(startPosition, endPosition - startPosition);
-                }
-                else { return ""; }
-            }
-            catch
-            {
-                return "";
-            }
-        }
         private void fileNamesListbox_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
@@ -953,7 +911,6 @@ namespace MovieDataCollector
         }
         private void TVForm_Load(object sender, EventArgs e)
         {
-            string format = "";
             cf.checkConfigFile();
 
             //Add items to Favorites Combo
@@ -979,48 +936,13 @@ namespace MovieDataCollector
                     break;
             }
         }
-        private void ReadDefaults()
-        {
-            configFileText = "";
-            if (System.IO.File.Exists(configPath))
-            {
-                //set formatCombo
-                switch (cf.DefaultSettings["DefaultFormat"])
-                {
-                    case "PLEX":
-                        formatCombo.SelectedIndex = 0;
-                        break;
-                    case "KODI":
-                        formatCombo.SelectedIndex = 1;
-                        break;
-                    case "Synology":
-                        formatCombo.SelectedIndex = 2;
-                        break;
-                    default:
-                        formatCombo.SelectedIndex = 2;
-                        break;
-                }
-
-                for (int i = 0; i < cf.favoriteTitles.Count; i++)
-                {
-                    favoritesCombo.Items.Add(cf.favoriteTitles[i]);
-                }
-
-            }
-
-        }
         private void addFavoriteButton_Click(object sender, EventArgs e)
         {
-            string seriesID = "";
-            string seriesTitle = "";
 
             if (!string.IsNullOrEmpty(favoritesCombo.Text) & !string.IsNullOrEmpty(seriesIDTitleTextbox.Text))
             {
-                seriesID = seriesIDTitleTextbox.Text;
-                seriesTitle = favoritesCombo.Text;
-                favoritesCombo.Items.Add(seriesTitle);
 
-                cf.addFavorite(seriesTitle, seriesID);
+                cf.addFavorite(favoritesCombo.Text, seriesIDTitleTextbox.Text);
 
                 seriesIDTitleTextbox.Text = "";
                 favoritesCombo.Text = "";
@@ -1051,88 +973,28 @@ namespace MovieDataCollector
             }
 
         }
-        private void deleteFavorite()
-        {
-            int deleteLocation = 0;
-            cf.removeFavorite(favoritesCombo.SelectedItem.ToString()); //removes selected item
-
-            //remove selected item from combo box and List
-            deleteLocation = favoritesCombo.SelectedIndex;
-            favoritesCombo.Items.RemoveAt(deleteLocation);
-
-            //Clear Boxes
-            favoritesCombo.Text = "";
-            seriesIDTitleTextbox.Text = "";
-        }
         private void deleteFavoriteButton_Click(object sender, EventArgs e)
         {
-            deleteFavorite();
+            cf.removeFavorite(favoritesCombo.SelectedIndex);
+            favoritesCombo.Text = "";
+            seriesIDTitleTextbox.Text = "";
+            seriesImagePicturebox.ImageLocation = "";
+
+            favoritesCombo.Items.Clear();
+            for (int i = 0; i < cf.favoriteTitles.Count; i++)
+            {
+                favoritesCombo.Items.Add(cf.favoriteTitles[i]);
+            }
+      
         }
         private void InvisibleCloseButton_Click(object sender, EventArgs e)
         {
             this.Close(); //Located behind the Make Changes button
         }
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //Get File Names
-            getFileNames();
-        }
         private void formatCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            writeFormatDefault();
-            if (fileNamesListbox.Items.Count > 0)
-            {
-                previewChanges();
-                if (changedFileNamesListbox.Items.Count > 0 & fileNamesListbox.Items.Count > 0)
-                {
-                    if (fileNamesListbox.SelectedIndex > -1)
-                    {
-                        changedFileNamesListbox.SelectedIndex = fileNamesListbox.SelectedIndex;
-                    }
-                }
-            }
-
-        }
-        private void writeFormatDefault()
-        {
-            string defaults = "";
-            string favorites = "";
-            string formatCheckDefaults = "";
-            string defaultFormat = "";
-            string movieDataCollector = "";
-            string formatCheckInput = "";
-            string bulkScanTV = "";
-            string formatCheckOutput = "";
-
-            //Read config file
-            using (StreamReader SR = new StreamReader(configPath))
-            {
-                //Read configFileText to string
-                configFileText = SR.ReadToEnd();
-                defaults = GeneralParser(configFileText, "--DefaultPathsStart--\r\n", "\r\n--DefaultPathsEnd--\r\n");
-                SR.Close();
-            }
-            //Parse Contents
-            favorites = "\r\n--FavoritesListStart--\r\n" + GeneralParser(configFileText, "\r\n--FavoritesListStart--\r\n", "\r\n--FavoritesListEnd--\r\n") + "\r\n--FavoritesListEnd--\r\n";
-            formatCheckDefaults = "\r\n--FormatCheckDefaultsStart--\r\n" + GeneralParser(configFileText, "\r\n--FormatCheckDefaultsStart--\r\n", "\r\n--FormatCheckDefaultsEnd--\r\n") + "\r\n--FormatCheckDefaultsEnd--\r\n";
-
-            movieDataCollector = "<MovieCollectorDefaultPathStart>" + GeneralParser(defaults, "<MovieCollectorDefaultPathStart>", "<MovieCollectorDefaultPathEnd>") + "<MovieCollectorDefaultPathEnd>\r\n";
-            formatCheckInput = "<FormatCheckDefaultPathStart>" + GeneralParser(defaults, "<FormatCheckDefaultPathStart>", "<FormatCheckDefaultPathEnd>") + "<FormatCheckDefaultPathEnd>\r\n";
-            formatCheckOutput = "<FormatCheckOutputStart>" + GeneralParser(defaults, "<FormatCheckOutputStart>", "<FormatCheckOutputEnd>") + "<FormatCheckOutputEnd>\r\n";
-            bulkScanTV = "<BulkScanTVShowStart>" + GeneralParser(defaults, "<BulkScanTVShowStart>", "<BulkScanTVShowEnd>") + "<BulkScanTVShowEnd>\r\n";
-
-            //Create new defaut format line
-            defaultFormat = "<DefaultFormatStart>" + formatCombo.SelectedItem.ToString() + "<DefaultFormatEnd>\r\n";
-
-            //Merge DefaultPaths area
-            defaults = "--DefaultPathsStart--\r\n" + movieDataCollector + formatCheckInput + formatCheckOutput + bulkScanTV + defaultFormat + "--DefaultPathsEnd--\r\n";
-
-            //rewrite file including the default format
-            using (StreamWriter sw = File.CreateText(configPath))
-            {
-                sw.WriteLine(defaults + favorites + formatCheckDefaults);
-                sw.Close();
-            }
+            cf.DefaultSettings["DefaultFormat"] = formatCombo.SelectedItem.ToString();
+            cf.updateDefaults();
         }
         private void theTVDBcomToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -1141,6 +1003,11 @@ namespace MovieDataCollector
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //Get File Names
+            getFileNames();
         }
     }
 }

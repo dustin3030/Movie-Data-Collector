@@ -189,7 +189,7 @@ namespace MovieDataCollector
                     sr.Close();
                 }
 
-                favorites = "<Favorites>\r\n" + Program.GeneralParser(configString, "<Favorites>", "</Favorites>\r\n");
+                favorites = returnFavorites();
 
                 //Update configuration file with defaults from dictionary
                 for (int i = 0; i < KeyList.Count; i++)
@@ -219,6 +219,8 @@ namespace MovieDataCollector
             string middle = "";
             string end = "</Favorites>";
             favoritesList.Clear();
+            favoriteTitles.Clear();
+            favoriteIDs.Clear();
 
             //If File is empty fill with default
             if (string.IsNullOrEmpty(configString))
@@ -255,29 +257,35 @@ namespace MovieDataCollector
             string end = "</Favorites>";
             string middle = "";
 
+
+            checkConfigFile(); //updates variable information
+
             favoriteTitles.Clear();
             favoriteIDs.Clear();
             favoritesList.Clear();
+
+            
 
             string defaults = "";
             string favorites = "";
 
             try
             {
-                using (StreamReader sr = new StreamReader(configPath))
-                {
-                    configString = sr.ReadToEnd();
-                    sr.Close();
-                }
 
-                defaults = "<Defaults>\r\n" + Program.GeneralParser(configString, "<Defaults>\r\n", "</Defaults>") + "</Defaults>\r\n";
-                favorites = Program.GeneralParser(configString, "<Favorites>\r\n", "</Favorites>");
+                defaults = returnDefaults();
+                favorites = returnFavorites();
+                favorites = favorites.Replace("<Favorites>\r\n", "");
+                favorites = favorites.Replace("</Favorites>", "");
 
                 //Create List
                 favoritesList = Regex.Split(favorites, "\r\n").ToList();
 
-                //Add new item to list
-                favoritesList.Add("\t<TVShow>" + title + "<ShowID>" + id + "</TVShow>");
+                //Check for duplicates and Add new item to list
+                if(!favoritesList.Contains("\t<TVShow>" + title + "<ShowID>" + id + "</TVShow>"))
+                {
+                    favoritesList.Add("\t<TVShow>" + title + "<ShowID>" + id + "</TVShow>");
+                }
+
                 favoritesList.Sort();
 
                 //recreate lists
@@ -314,59 +322,46 @@ namespace MovieDataCollector
             }
 
         }
-        public void removeFavorite(string title)
+        public void removeFavorite(int index)
         {
             string beginning = "<Favorites>\r\n";
             string end = "</Favorites>";
             string middle = "";
-
-            favoriteTitles.Clear();
-            favoriteIDs.Clear();
-            favoritesList.Clear();
-
-            string defaults = "";
             string favorites = "";
+            string defaults = returnDefaults();
 
+            favoritesList.RemoveAt(index);
+            favoriteTitles.RemoveAt(index);
+            favoriteIDs.RemoveAt(index);
+
+            for (int i = 0; i < favoritesList.Count; i++)
+            {
+                middle += favoritesList[i] + "\r\n";
+            }
+
+            //Generate string
+            favorites = beginning + middle + end;
             try
             {
-                using (StreamReader sr = new StreamReader(configPath))
-                {
-                    configString = sr.ReadToEnd();
-                    sr.Close();
-                }
-
-                defaults = Program.GeneralParser(configString, "<Defaults>", "</Defaults>");
-                favorites = Program.GeneralParser(configString, "<Favorites>", "</Favorites>");
-
-                //Create List
-                favoritesList = Regex.Split(favorites, "\r\n").ToList();
-                favoritesList.Sort();
-
-                //recreate lists
-                for (int i = 0; i < favoritesList.Count; i++)
-                {
-                    if(!favoritesList[i].Contains(title)) //Will skip adding title to list thus removing it
-                    {
-                        middle += favoritesList[i];
-                        favoriteTitles.Add(Program.GeneralParser(favoritesList[i], "<TVShow>", "<ShowID>"));
-                        favoriteIDs.Add(Program.GeneralParser(favoritesList[i], "<ShowID>", "</TVShow>"));
-                    }
-                    
-                }
-                //Generate string
-                favorites = beginning + middle + end;
-
                 //Write text file with new text
                 using (StreamWriter sw = new StreamWriter(configPath))
                 {
-                    sw.WriteLine(defaults + "\r\n" + favorites);
+                    sw.WriteLine(defaults + favorites);
                     sw.Close();
                 }
-            }
+            } 
             catch (Exception ex)
             {
                 CustomMessageBox.Show(ex.ToString(), 300, 300);
             }
+        }
+        private string returnFavorites()
+        {
+            return "<Favorites>\r\n" + Program.GeneralParser(configString, "<Favorites>\r\n", "</Favorites>") + "</Favorites>";
+        }
+        private string returnDefaults()
+        {
+            return "<Defaults>\r\n" + Program.GeneralParser(configString, "<Defaults>\r\n", "</Defaults>") + "</Defaults>\r\n";
         }
     }
 }
