@@ -195,10 +195,10 @@ namespace MovieDataCollector
                     {
                         Enum = "E" + SeriesInfo.episodes[i]["EpisodeNumber"];
                     }
-
-                    PLEXEpisodeNames.Add(SeriesInfo.series["SeriesName"] + " - " + Snum.ToLower() + Enum.ToLower() + " - " + SeriesInfo.episodes[i]["EpisodeName"] + "." + ext);
-                    KODIEpisodeNames.Add(SeriesInfo.series["SeriesName"] + "_" + Snum.ToLower() + Enum.ToLower() + "_" + SeriesInfo.episodes[i]["EpisodeName"] + "." + ext);
-                    SynologyEpisodeName.Add(SeriesInfo.series["SeriesName"] + "." + Snum + "." + Enum + "." + SeriesInfo.episodes[i]["EpisodeName"] + "." + ext);
+                    //ext not populated yet
+                    PLEXEpisodeNames.Add(SeriesInfo.series["SeriesName"] + " - " + Snum.ToLower() + Enum.ToLower() + " - " + SeriesInfo.episodes[i]["EpisodeName"]);
+                    KODIEpisodeNames.Add(SeriesInfo.series["SeriesName"] + "_" + Snum.ToLower() + Enum.ToLower() + "_" + SeriesInfo.episodes[i]["EpisodeName"]);
+                    SynologyEpisodeName.Add(SeriesInfo.series["SeriesName"] + "." + Snum + "." + Enum + "." + SeriesInfo.episodes[i]["EpisodeName"]);
                 }
             }
 
@@ -383,18 +383,19 @@ namespace MovieDataCollector
                                             Grey's Anatomy_S01E02.avi
                                             Grey's Anatomy_S01E02_The First Cut is the Deepest.avi
                                      */
-                                    switch (formatCombo.Text)
+                                    switch (formatCombo.SelectedIndex)
                                     {
-                                        case "Synology":
-                                            newTitle = SeriesInfo.series["SeriesName"] + "." + season + "." + episode + "." + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
-                                            break;
-                                        case "PLEX":
+                                        
+                                        case 0: //PLEX
                                             newTitle = SeriesInfo.series["SeriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
                                             break;
-                                        case "KODI":
+                                        case 1: //KODI
                                             newTitle = SeriesInfo.series["SeriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
                                             break;
-                                        default:
+                                        case 2: //Synology
+                                            newTitle = SeriesInfo.series["SeriesName"] + "." + season + "." + episode + "." + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
+                                            break;
+                                        default: //Synology
                                             newTitle = SeriesInfo.series["SeriesName"] + "." + season + "." + episode + "." + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
                                             break;
                                     }
@@ -440,18 +441,19 @@ namespace MovieDataCollector
                                             Grey's Anatomy_S01E02.avi
                                             Grey's Anatomy_S01E02_The First Cut is the Deepest.avi
                                      */
-                                    switch (formatCombo.Text)
+                                    switch (formatCombo.SelectedIndex)
                                     {
-                                        case "Synology":
-                                            newTitle = SeriesInfo.series["SeriesName"] + "." + season + "." + episode + "." + SeriesInfo.episodes[e]["EpisodeName"] + "." + ext;
-                                            break;
-                                        case "PLEX":
+                                        
+                                        case 0: //PLEX
                                             newTitle = SeriesInfo.series["SeriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.episodes[e]["EpisodeName"] + "." + ext;
                                             break;
-                                        case "KODI":
+                                        case 1: //KODI
                                             newTitle = SeriesInfo.series["SeriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.episodes[e]["EpisodeName"] + "." + ext;
                                             break;
-                                        default:
+                                        case 2: //Synology
+                                            newTitle = SeriesInfo.series["SeriesName"] + "." + season + "." + episode + "." + SeriesInfo.episodes[e]["EpisodeName"] + "." + ext;
+                                            break;
+                                        default: //Synology
                                             newTitle = SeriesInfo.series["SeriesName"] + "." + season + "." + episode + "." + SeriesInfo.episodes[e]["EpisodeName"] + "." + ext;
                                             break;
                                     }
@@ -717,18 +719,19 @@ namespace MovieDataCollector
                                 Grey's Anatomy_S01E02.avi
                                 Grey's Anatomy_S01E02_The First Cut is the Deepest.avi
                          */
-                        switch (formatCombo.Text)
+                        switch (formatCombo.SelectedIndex)
                         {
-                            case "Synology":
-                                newTitle = SeriesInfo.series["SeriesName"] + "." + season + "." + episode + "." + SeriesInfo.episodes[int.Parse(block) - 1]["EpisodeName"] + "." + ext;
-                                break;
-                            case "PLEX":
+                            
+                            case 0: //PLEX
                                 newTitle = SeriesInfo.series["SeriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.episodes[int.Parse(block) - 1]["EpisodeName"] + "." + ext;
                                 break;
-                            case "KODI":
+                            case 1: //KODI
                                 newTitle = SeriesInfo.series["SeriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.episodes[int.Parse(block) - 1]["EpisodeName"] + "." + ext;
                                 break;
-                            default:
+                            case 2: //Synology
+                                newTitle = SeriesInfo.series["SeriesName"] + "." + season + "." + episode + "." + SeriesInfo.episodes[int.Parse(block) - 1]["EpisodeName"] + "." + ext;
+                                break;
+                            default: //Synology
                                 newTitle = SeriesInfo.series["SeriesName"] + "." + season + "." + episode + "." + SeriesInfo.episodes[int.Parse(block) - 1]["EpisodeName"] + "." + ext;
                                 break;
                         }
