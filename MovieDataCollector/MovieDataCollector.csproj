@@ -71,6 +71,13 @@
     <Compile Include="MovieForm.Designer.cs">
       <DependentUpon>MovieForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="MovieInfo.cs" />
+    <Compile Include="MovieSelection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MovieSelection.Designer.cs">
+      <DependentUpon>MovieSelection.cs</DependentUpon>
+    </Compile>
     <Compile Include="TVManualRename.cs">
       <SubType>Form</SubType>
     </Compile>

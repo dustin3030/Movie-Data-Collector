@@ -56,7 +56,7 @@
             this.backDropPictureBox = new System.Windows.Forms.PictureBox();
             this.posterNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.poserNumberLabel = new System.Windows.Forms.Label();
+            this.posterNumberLabel = new System.Windows.Forms.Label();
             this.titleComboBox = new System.Windows.Forms.ComboBox();
             this.setTextBox = new System.Windows.Forms.TextBox();
             this.yearTextBox = new System.Windows.Forms.TextBox();
@@ -391,21 +391,21 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.Transparent;
-            this.panel2.Controls.Add(this.poserNumberLabel);
+            this.panel2.Controls.Add(this.posterNumberLabel);
             this.panel2.Controls.Add(this.posterNumericUpDown);
             this.panel2.Location = new System.Drawing.Point(579, 655);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(99, 26);
             this.panel2.TabIndex = 18;
             // 
-            // poserNumberLabel
+            // posterNumberLabel
             // 
-            this.poserNumberLabel.AutoSize = true;
-            this.poserNumberLabel.Location = new System.Drawing.Point(52, 6);
-            this.poserNumberLabel.Name = "poserNumberLabel";
-            this.poserNumberLabel.Size = new System.Drawing.Size(43, 13);
-            this.poserNumberLabel.TabIndex = 18;
-            this.poserNumberLabel.Text = "of 200";
+            this.posterNumberLabel.AutoSize = true;
+            this.posterNumberLabel.Location = new System.Drawing.Point(52, 6);
+            this.posterNumberLabel.Name = "posterNumberLabel";
+            this.posterNumberLabel.Size = new System.Drawing.Size(43, 13);
+            this.posterNumberLabel.TabIndex = 18;
+            this.posterNumberLabel.Text = "of 200";
             // 
             // titleComboBox
             // 
@@ -629,7 +629,7 @@
         private System.Windows.Forms.PictureBox moviePosterPictureBox;
         private System.Windows.Forms.NumericUpDown posterNumericUpDown;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Label poserNumberLabel;
+        private System.Windows.Forms.Label posterNumberLabel;
         private System.Windows.Forms.ComboBox titleComboBox;
         private System.Windows.Forms.TextBox setTextBox;
         private System.Windows.Forms.TextBox yearTextBox;
