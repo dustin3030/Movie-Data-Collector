@@ -173,7 +173,6 @@ namespace MovieDataCollector
         private void getHTMLButton_Click(object sender, EventArgs e) { getHTML(); }
         private void getFileNames()
         {
-            ReadDefaultFilePath();
 
             notificationLabel.Visible = true;
             notificationLabel.Text = "Querying Files";
@@ -185,14 +184,15 @@ namespace MovieDataCollector
 
             FolderBrowserDialog FBD = new FolderBrowserDialog(); //creates new instance of the FolderBrowserDialog
 
-            if (!string.IsNullOrEmpty(folderPath)) //if defaultpath contains a path, sets folderBrowserDialog to default to this path
+            if (!string.IsNullOrEmpty(cf.DefaultSettings["TFPath"])) //if defaultpath contains a path, sets folderBrowserDialog to default to this path
             {
-                FBD.SelectedPath = folderPath;
+                FBD.SelectedPath = cf.DefaultSettings["TFPath"];
             }
 
             if (FBD.ShowDialog() == DialogResult.OK) //shows folderbrowserdialog, runs addtional code if not cancelled out
             {
-                folderPath = FBD.SelectedPath;
+                cf.DefaultSettings["TFPath"] = FBD.SelectedPath;
+                //update default settings
 
                 parentPathLabel.Text = FBD.SelectedPath.ToString() + "\\"; //adds a \ to the end of folderpath, double backslash required to add a single one to a string
 
@@ -954,7 +954,6 @@ namespace MovieDataCollector
         private void TVForm_Load(object sender, EventArgs e)
         {
             string format = "";
-            ReadDefaultFilePath();
             cf.checkConfigFile();
 
             //Add items to Favorites Combo
@@ -987,7 +986,7 @@ namespace MovieDataCollector
                     break;
             }
         }
-        private void ReadDefaultFilePath()
+        private void ReadDefaults()
         {
             configFileText = "";
             if (System.IO.File.Exists(configPath))
@@ -1008,7 +1007,14 @@ namespace MovieDataCollector
                         formatCombo.SelectedIndex = 2;
                         break;
                 }
+
+                for (int i = 0; i < cf.favoriteTitles.Count; i++)
+                {
+                    favoritesCombo.Items.Add(cf.favoriteTitles[i]);
+                }
+
             }
+
         }
         private void addFavoriteButton_Click(object sender, EventArgs e)
         {
