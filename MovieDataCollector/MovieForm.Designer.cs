@@ -192,6 +192,7 @@
             0,
             0,
             0});
+            this.backdropNumericUpDown.ValueChanged += new System.EventHandler(this.backdropNumericUpDown_ValueChanged);
             // 
             // openVideoFileButton
             // 
@@ -203,6 +204,7 @@
             this.openVideoFileButton.TabIndex = 4;
             this.openVideoFileButton.Text = "&Open Video File";
             this.openVideoFileButton.UseVisualStyleBackColor = false;
+            this.openVideoFileButton.Click += new System.EventHandler(this.openVideoFileButton_Click);
             // 
             // videoPathLabel
             // 
@@ -232,6 +234,7 @@
             this.getHTMLButton.TabIndex = 7;
             this.getHTMLButton.Text = "Get &HTML";
             this.getHTMLButton.UseVisualStyleBackColor = false;
+            this.getHTMLButton.Click += new System.EventHandler(this.GetHTMLButton_Click);
             // 
             // searchLabel
             // 
@@ -274,6 +277,7 @@
             this.formatComboBox.Name = "formatComboBox";
             this.formatComboBox.Size = new System.Drawing.Size(100, 21);
             this.formatComboBox.TabIndex = 12;
+            this.formatComboBox.SelectedIndexChanged += new System.EventHandler(this.formatComboBox_SelectedIndexChanged);
             // 
             // createFilesButton
             // 
@@ -285,6 +289,7 @@
             this.createFilesButton.TabIndex = 14;
             this.createFilesButton.Text = "Create / &Rename Files";
             this.createFilesButton.UseVisualStyleBackColor = false;
+            this.createFilesButton.Click += new System.EventHandler(this.createFilesButton_Click);
             // 
             // clearButton
             // 
@@ -296,6 +301,7 @@
             this.clearButton.TabIndex = 15;
             this.clearButton.Text = "C&lear All";
             this.clearButton.UseVisualStyleBackColor = false;
+            this.clearButton.Click += new System.EventHandler(this.clearButton_Click);
             // 
             // moviePosterPictureBox
             // 
@@ -380,6 +386,7 @@
             0,
             0,
             0});
+            this.posterNumericUpDown.ValueChanged += new System.EventHandler(this.posterNumericUpDown_ValueChanged);
             // 
             // panel2
             // 

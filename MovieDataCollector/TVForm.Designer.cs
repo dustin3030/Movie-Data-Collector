@@ -364,6 +364,7 @@
             this.absoluteCb.TabIndex = 21;
             this.absoluteCb.Text = "Absolute Episode Numbers";
             this.absoluteCb.UseVisualStyleBackColor = true;
+            this.absoluteCb.CheckedChanged += new System.EventHandler(this.absoluteCb_CheckedChanged);
             // 
             // titleCb
             // 
@@ -376,6 +377,7 @@
             this.titleCb.TabIndex = 22;
             this.titleCb.Text = "Title in Filename";
             this.titleCb.UseVisualStyleBackColor = true;
+            this.titleCb.CheckedChanged += new System.EventHandler(this.titleCb_CheckedChanged);
             // 
             // notificationLabel
             // 

@@ -1011,6 +1011,32 @@ namespace MovieDataCollector
                     formatCombo.SelectedIndex = 2;
                     break;
             }
+
+            switch (cf.DefaultSettings["TVTitleInFilenameCheck"])
+            {
+                case "True":
+                    titleCb.Checked = true;
+                    break;
+                case "False":
+                    titleCb.Checked = false;
+                    break;
+                default:
+                    titleCb.Checked = false;
+                    break;
+            }
+
+            switch (cf.DefaultSettings["TVAbsoluteNumbersCheck"])
+            {
+                case "True":
+                    absoluteCb.Checked = true;
+                    break;
+                case "False":
+                    absoluteCb.Checked = false;
+                    break;
+                default:
+                    absoluteCb.Checked = false;
+                    break;
+            }
         }
         private void addFavoriteButton_Click(object sender, EventArgs e)
         {
@@ -1096,6 +1122,43 @@ namespace MovieDataCollector
         {
             //Get File Names
             getFileNames();
+        }
+        private void absoluteCb_CheckedChanged(object sender, EventArgs e)
+        {
+            switch(absoluteCb.Checked)
+            {
+                case true:
+                    cf.DefaultSettings["TVAbsoluteNumbersCheck"] = "True";
+                    cf.updateDefaults();
+                    break;
+                case false:
+                    cf.DefaultSettings["TVAbsoluteNumbersCheck"] = "False";
+                    cf.updateDefaults();
+                    break;
+                default:
+                    cf.DefaultSettings["TVAbsoluteNumbersCheck"] = "False";
+                    cf.updateDefaults();
+                    break;
+            }
+        }
+
+        private void titleCb_CheckedChanged(object sender, EventArgs e)
+        {
+            switch(titleCb.Checked)
+            {
+                case true:
+                    cf.DefaultSettings["TVTitleInFilenameCheck"] = "True";
+                    cf.updateDefaults();
+                    break;
+                case false:
+                    cf.DefaultSettings["TVTitleInFilenameCheck"] = "False";
+                    cf.updateDefaults();
+                    break;
+                default:
+                    cf.DefaultSettings["TVTitleInFilenameCheck"] = "False";
+                    cf.updateDefaults();
+                    break;
+            }
         }
     }
 }

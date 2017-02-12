@@ -22,6 +22,8 @@ namespace MovieDataCollector
                 "TFPath",//C:\\
                 "InputFilePath", //C:\\
                 "OutputFilePath", //C:\\
+                "TVAbsoluteNumbersCheck", //False
+                "TVTitleInFilenameCheck", //False
                 "DefaultFormat", //Synology
                 "AudioCodec", //AAC (FDK)
                 "AAC_Passthru", //False
@@ -45,6 +47,8 @@ namespace MovieDataCollector
                 "C:\\", //TFPath"
                 "C:\\", //InputFilePath
                 "C:\\", //OutputFilePath
+                "False", //TVAbsoluteNumbersCheck
+                "False", //TVTitleInFilenameCheck
                 "Synology", //DefaultFormat
                 "AAC (FDK)", //AudioCodec
                 "False", //AAC_Passthru
@@ -63,7 +67,6 @@ namespace MovieDataCollector
                 "Roku Compliant" //Framerate
             };
 
-        
         public ConfigFile()
         {
             configDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector";//Writable folder location for config file.
@@ -76,7 +79,6 @@ namespace MovieDataCollector
 
             checkConfigFile();
         }
-        
         /// <summary>
         /// Checks that configuration file exists and creates it with defaults if it doesn't.
         /// </summary>
