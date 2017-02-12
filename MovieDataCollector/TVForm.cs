@@ -57,7 +57,7 @@ namespace MovieDataCollector
             notificationLabel.Text = "Searching..." + seriesIDTitleTextbox.Text;
             notificationLabel.Invalidate();
             notificationLabel.Update();
-
+/********** //Needs to be fixed----If you look up a series with a number it will think it's the ID. For instance 24 will display as the ID of the series not the title.*****************************************************************************************************************************************************************/
             //Scan for Series ID, if no ID found scan for series title and retrieve list of possible series to choose from then parse out the correct id.
             if (int.TryParse(TitleBox, out ID) && ID != 0)
             {
@@ -962,15 +962,8 @@ namespace MovieDataCollector
                 favoritesCombo.Items.Add(cf.favoriteTitles[i]);
             }
 
-            using (StreamReader SR = new StreamReader(configPath))
-            {
-                //Read configFileText to string
-                configFileText = SR.ReadToEnd();
-                //<DefaultFormatStart>KODI<DefaultFormatEnd>
-                format = GeneralParser(configFileText, "<DefaultFormatStart>", "<DefaultFormatEnd>");
-                SR.Close();
-            }
-            switch (format)
+            
+            switch (cf.DefaultSettings["DefaultFormat"])
             {
                 case "PLEX":
                     formatCombo.SelectedIndex = 0;
@@ -1050,7 +1043,7 @@ namespace MovieDataCollector
         private void favoritesCombo_SelectionChangeCommitted(object sender, EventArgs e)
         {
 
-            seriesIDTitleTextbox.Text = FavoriteURLList[favoritesCombo.SelectedIndex].ToString(); //Matches the favorite name with the correct URL
+            seriesIDTitleTextbox.Text = cf.favoriteIDs[favoritesCombo.SelectedIndex]; //Matches the favorite name with the correct URL
 
             if (!string.IsNullOrEmpty(favoritesCombo.SelectedItem.ToString()))
             {

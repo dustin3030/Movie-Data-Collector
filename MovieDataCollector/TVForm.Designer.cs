@@ -148,6 +148,7 @@
             this.favoritesCombo.Name = "favoritesCombo";
             this.favoritesCombo.Size = new System.Drawing.Size(279, 21);
             this.favoritesCombo.TabIndex = 1;
+            this.favoritesCombo.SelectedValueChanged += new System.EventHandler(this.favoritesCombo_SelectionChangeCommitted);
             // 
             // favoritesLabel
             // 
@@ -475,6 +476,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "TVForm";
             this.Text = "TVForm";
+            this.Load += new System.EventHandler(this.TVForm_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.seriesImagePicturebox)).EndInit();
