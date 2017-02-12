@@ -184,7 +184,7 @@ namespace MovieDataCollector
             if (FBD.ShowDialog() == DialogResult.OK) //shows folderbrowserdialog, runs addtional code if not cancelled out
             {
                 cf.DefaultSettings["TFPath"] = FBD.SelectedPath;
-                //update default settings
+                cf.updateDefaults(); //updates default settings
 
                 parentPathLabel.Text = FBD.SelectedPath.ToString() + "\\"; //adds a \ to the end of folderpath, double backslash required to add a single one to a string
 
@@ -193,7 +193,7 @@ namespace MovieDataCollector
                 +"*.asf;*.mkv;*.flv;*.f4v;*.dvr;*.dvr-ms;*.wtv;*.ogv;*.ogm;*.3gp;*.rm;*.rmvb;";*/
 
                 string[] fileNames = Directory
-                    .GetFiles(folderPath, "*.*")
+                    .GetFiles(cf.DefaultSettings["TFPath"], "*.*")
                     .Where(file => file.ToLower().EndsWith(".mpg") || file.ToLower().EndsWith(".mpeg") || file.ToLower().EndsWith(".vob") || file.ToLower().EndsWith(".mod") || file.ToLower().EndsWith(".ts") || file.ToLower().EndsWith(".m2ts")
                     || file.ToLower().EndsWith(".mp4") || file.ToLower().EndsWith(".m4v") || file.ToLower().EndsWith(".mov") || file.ToLower().EndsWith("avi") || file.ToLower().EndsWith(".divx")
                     || file.ToLower().EndsWith(".wmv") || file.ToLower().EndsWith(".asf") || file.ToLower().EndsWith(".mkv") || file.ToLower().EndsWith(".flv") || file.ToLower().EndsWith(".f4v")
@@ -203,16 +203,13 @@ namespace MovieDataCollector
 
                 foreach (string file in fileNames) //loops through files, pulls out file names and adds them to filenameslistbox
                 {
-                    fileName = file.Replace(folderPath + "\\", "");
+                    fileName = file.Replace(cf.DefaultSettings["TFPath"] + "\\", "");
 
                     if (!fileName.StartsWith("._"))
                     {
                         fileNamesListbox.Items.Add(fileName);
                     }
                 }
-
-                cf.DefaultSettings["TFPath"] = folderPath;
-                cf.updateDefaults(); //write defaults to file
             }
             notificationLabel.Visible = false;
         }
