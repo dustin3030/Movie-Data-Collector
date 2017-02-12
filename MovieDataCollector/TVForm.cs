@@ -28,12 +28,14 @@ namespace MovieDataCollector
         string season = ""; //contains season number (S + seasonNumber
         string ext = ""; //contains the extenstion of files in the filenameslistbox
 
-        string folderPath = ""; //contains path for the selected folder containing video files
         string configDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector"; //Direcory to store configuration files on host
         string configPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector\\Config.txt"; //configuration file location on host
 
         TVSeriesInfo SeriesInfo;
         List<string> ListOfEpisodeNames = new List<string>();
+        List<string> KODIEpisodeNames = new List<string>();
+        List<string> SynologyEpisodeName = new List<string>();
+        List<string> PLEXEpisodeNames = new List<string>();
         ConfigFile cf = new ConfigFile();
 
         public TVForm()
@@ -49,6 +51,13 @@ namespace MovieDataCollector
             notificationLabel.Text = "Searching..." + seriesIDTitleTextbox.Text;
             notificationLabel.Invalidate();
             notificationLabel.Update();
+
+            //Keeps episode names list clear in cases of searching many series in one session.
+            KODIEpisodeNames.Clear();
+            PLEXEpisodeNames.Clear();
+            SynologyEpisodeName.Clear();
+
+
 /********** //Needs to be fixed----If you look up a series with a number it will think it's the ID. For instance 24 will display as the ID of the series not the title.*****************************************************************************************************************************************************************/
             //Scan for Series ID, if no ID found scan for series title and retrieve list of possible series to choose from then parse out the correct id.
             if (int.TryParse(TitleBox, out ID) && ID != 0)
@@ -138,22 +147,9 @@ namespace MovieDataCollector
                         Enum = "E" + SeriesInfo.episodes[i]["EpisodeNumber"];
                     }
 
-                    switch (formatCombo.SelectedIndex)
-                    {
-                        case 0: //Synology
-                            ListOfEpisodeNames.Add(SeriesInfo.series["SeriesName"] + "." + Snum + "." + Enum + "." + SeriesInfo.episodes[i]["EpisodeName"] + "." + ext);
-                            break;
-                        case 1: //PLEX
-                            ListOfEpisodeNames.Add(SeriesInfo.series["SeriesName"] + " - " + Snum.ToLower() + Enum.ToLower() + " - " + SeriesInfo.episodes[i]["EpisodeName"] + "." + ext);
-                            break;
-                        case 2: //KODI
-                            ListOfEpisodeNames.Add(SeriesInfo.series["SeriesName"] + "_" + Snum.ToLower() + Enum.ToLower() + "_" + SeriesInfo.episodes[i]["EpisodeName"] + "." + ext);
-                            break;
-                        default:
-                            ListOfEpisodeNames.Add(SeriesInfo.series["SeriesName"] + "." + Snum + "." + Enum + "." + SeriesInfo.episodes[i]["EpisodeName"] + "." + ext);
-                            break;
-                    }
-                    //ListOfEpisodeNames.Add(SeriesInfo.series["SeriesName"] + " " + Snum + Enum + " " + SeriesInfo.episodes[i]["EpisodeName"]);
+                    PLEXEpisodeNames.Add(SeriesInfo.series["SeriesName"] + " - " + Snum.ToLower() + Enum.ToLower() + " - " + SeriesInfo.episodes[i]["EpisodeName"] + "." + ext);
+                    KODIEpisodeNames.Add(SeriesInfo.series["SeriesName"] + "_" + Snum.ToLower() + Enum.ToLower() + "_" + SeriesInfo.episodes[i]["EpisodeName"] + "." + ext);
+                    SynologyEpisodeName.Add(SeriesInfo.series["SeriesName"] + "." + Snum + "." + Enum + "." + SeriesInfo.episodes[i]["EpisodeName"] + "." + ext);
                 }
             }
 
@@ -688,7 +684,6 @@ namespace MovieDataCollector
                                 break;
                         }
                         return newTitle;
-                        //return SeriesInfo.series["SeriesName"] + " " + season + episode + " " + SeriesInfo.episodes[int.Parse(block) - 1]["EpisodeName"] + "." + ext;
                     }
                 }
             }
@@ -859,7 +854,7 @@ namespace MovieDataCollector
         private void clearButton_Click(object sender, EventArgs e)
         {
             clearAll();
-
+            DialogResult = DialogResult.None; //prevent form from closing
         }
         private void clearAll()
         {
@@ -869,6 +864,7 @@ namespace MovieDataCollector
             parentPathLabel.Text = "";
             fileNamesListbox.Items.Clear();
             changedFileNamesListbox.Items.Clear();
+
         }
         private void fileNamesListbox_MouseDoubleClick(object sender, MouseEventArgs e)
         {
@@ -892,9 +888,40 @@ namespace MovieDataCollector
         }
         private void changedFileNamesListbox_MouseDoubleClick(object sender, MouseEventArgs e)
         {
+            ListOfEpisodeNames.Clear();
             if (changedFileNamesListbox.Items.Count > 0)
             {
                 int index = changedFileNamesListbox.SelectedIndex;
+
+                switch(formatCombo.SelectedIndex)
+                {
+                    case 0: //PLEX
+                        for (int i = 0; i < PLEXEpisodeNames.Count; i++)
+                        {
+                            ListOfEpisodeNames.Add(PLEXEpisodeNames[i]);
+                        }
+                        break;
+                    case 1: //KODI
+                        for (int i = 0; i < KODIEpisodeNames.Count; i++)
+                        {
+                            ListOfEpisodeNames.Add(KODIEpisodeNames[i]);
+                        }
+                        break;
+                    case 2: //Synology
+                        for (int i = 0; i < SynologyEpisodeName.Count; i++)
+                        {
+                            ListOfEpisodeNames.Add(SynologyEpisodeName[i]);
+                        }
+                        break;
+                    default:
+                        for (int i = 0; i < SynologyEpisodeName.Count; i++)
+                        {
+                            ListOfEpisodeNames.Add(SynologyEpisodeName[i]);
+                        }
+                        break;
+                }
+
+
                 TVManualRename R = new TVManualRename(fileNamesListbox.SelectedItem.ToString(), changedFileNamesListbox.SelectedItem.ToString(), ListOfEpisodeNames);
                 R.ShowDialog();
 
@@ -990,6 +1017,18 @@ namespace MovieDataCollector
         }
         private void formatCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if(fileNamesListbox.Items.Count > 0) //ensures that this doesnt fire when there is nothing for it to do but error
+            {
+                previewChanges(); //updates titles for seletion
+
+                if (changedFileNamesListbox.Items.Count > 0 & fileNamesListbox.Items.Count > 0)
+                {
+                    if (fileNamesListbox.SelectedIndex > -1)
+                    {
+                        changedFileNamesListbox.SelectedIndex = fileNamesListbox.SelectedIndex;
+                    }
+                }
+            }
             cf.DefaultSettings["DefaultFormat"] = formatCombo.SelectedItem.ToString();
             cf.updateDefaults();
         }
