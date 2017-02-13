@@ -203,7 +203,7 @@ namespace MovieDataCollector
             staticProperties["ReleaseDate"] = GeneralParser(responseContent, "release_date\":\"", "\",", "release_date\":null");
             staticProperties["IMDB_ID"] = GeneralParser(responseContent, "\"imdb_id\":\"", "\",", "imdb_id\":null");
 
-            //Set ReleaseYear to "" as default
+            //Set ReleaseYear to an empty string as default
             if (!string.IsNullOrEmpty(staticProperties["ReleaseDate"]) && staticProperties["ReleaseDate"].Length > 4)
             {
                 staticProperties["ReleaseYear"] = staticProperties["ReleaseDate"].Remove(4, staticProperties["ReleaseDate"].Length - 4);
