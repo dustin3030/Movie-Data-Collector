@@ -149,6 +149,7 @@
             this.movieButton.TabIndex = 1;
             this.movieButton.Text = "&Movies";
             this.movieButton.UseVisualStyleBackColor = false;
+            this.movieButton.Click += new System.EventHandler(this.movieButton_Click);
             // 
             // CompatibilityCheckerButton
             // 

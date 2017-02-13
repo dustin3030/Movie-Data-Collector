@@ -36,5 +36,15 @@ namespace MovieDataCollector
         {
             
         }
+
+        private void movieButton_Click(object sender, EventArgs e)
+        {
+            // calls the form’s constructor
+            MovieForm M = new MovieForm();
+            //  shows the form as a dialog
+            this.Hide();
+            M.ShowDialog();
+            this.Show();
+        }
     }
 }

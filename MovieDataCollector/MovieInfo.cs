@@ -211,7 +211,7 @@ namespace MovieDataCollector
             else { staticProperties["ReleaseYear"] = ""; }
 
             //Get valid Title by removing invalid file name characters
-            staticProperties["FormattedTItle"] = validTitle(staticProperties["TItle"] + " (" + staticProperties["ReleaseYear"] + ")");
+            staticProperties["FormattedTitle"] = validTitle(staticProperties["Title"] + " (" + staticProperties["ReleaseYear"] + ")");
 
             staticProperties["Plot"] = GeneralParser(responseContent, "overview\":\"", "\",\"popularity\"", "overview\":null");
             if (staticProperties["Plot"].Contains("\\r")) { staticProperties["Plot"] = staticProperties["Plot"].Replace("\\r", ""); }

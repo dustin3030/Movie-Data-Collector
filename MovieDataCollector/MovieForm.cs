@@ -93,7 +93,7 @@ namespace MovieDataCollector
         List<string> subfilesList = new List<string>();
         List<string> subExtensions = new List<string>();
         MovieInfo Movie; //Movie Object
-
+        ConfigFile CF = new ConfigFile();
         public MovieForm()
         {
             //Initiallizes components of form
@@ -102,7 +102,22 @@ namespace MovieDataCollector
             posterNumberLabel.Text = "of 1"; //Sets label to 1 representing the number of poster images available to select from
             backdropNumberLabel.Text = "of 1"; //Sets the label to 1 representing the number of backdrop images to select from
             formatPicturebox.Visible = true; //displays the Universal image since it is the default for that control
-            formatComboBox.SelectedIndex = 2; //displays Universal in the dropdown as being the default for that control
+
+            switch(CF.DefaultSettings["DefaultFormat"])
+            {
+                case "PLEX":
+                    formatComboBox.SelectedIndex = 0;
+                    break;
+                case "KODI":
+                    formatComboBox.SelectedIndex = 1;
+                    break;
+                case "Synology":
+                    formatComboBox.SelectedIndex = 2;
+                    break;
+                default:
+                    formatComboBox.SelectedIndex = 2;
+                    break;
+            }
         }
         /// <summary>
         /// Calls the openVideoFile Method
@@ -440,7 +455,225 @@ namespace MovieDataCollector
                     }
                     break;
 
-                case 1: //Synology
+                case 1: //KODI
+
+                    break;
+                case 2: //Universal
+                    /*[MovieTitle].[LanguageCode].[ext} or 
+                        *[MovieTitle].[LanguageCode].[Forced or CC or SDH].[ext]
+                    */
+                    //check for subtitles for current movie
+                    for (int i = 0; i < subfilesList.Count(); i++)
+                    {
+
+                        notificationLabel.Text = "Searching for subtitle matches ";
+
+                        if (subfilesList[i].Contains(videoFileName)) //If the subtitle file contains the movie filename
+                        {
+                            //remove movie title from subtitle file
+                            subfilesList[i].Replace(videoFileName, "");
+
+                            for (int b = 0; b < (subLanguageCodes.Length / 3); b++) //Check for language codes in the filename
+                            {
+                                if (subfilesList[i].Contains("." + subLanguageCodes[b, 0]) ||
+                                    subfilesList[i].Contains("_" + subLanguageCodes[b, 0]) ||
+                                    subfilesList[i].Contains(" " + subLanguageCodes[b, 0]) ||
+                                    subfilesList[i].Contains("-" + subLanguageCodes[b, 0]) ||
+                                    subfilesList[i].Contains("(" + subLanguageCodes[b, 0] + ")") ||
+
+                                    subfilesList[i].Contains("." + subLanguageCodes[b, 1]) ||
+                                    subfilesList[i].Contains("_" + subLanguageCodes[b, 1]) ||
+                                    subfilesList[i].Contains(" " + subLanguageCodes[b, 1]) ||
+                                    subfilesList[i].Contains("-" + subLanguageCodes[b, 1]) ||
+                                    subfilesList[i].Contains("(" + subLanguageCodes[b, 1] + ")") ||
+
+                                    subfilesList[i].Contains("." + subLanguageCodes[b, 2]) ||
+                                    subfilesList[i].Contains("_" + subLanguageCodes[b, 2]) ||
+                                    subfilesList[i].Contains(" " + subLanguageCodes[b, 2]) ||
+                                    subfilesList[i].Contains("-" + subLanguageCodes[b, 2]) ||
+                                    subfilesList[i].Contains("(" + subLanguageCodes[b, 2] + ")"))
+                                {
+                                    try //if a match is found move the file to the new folder named movietitle.languagecode.ext
+                                    {
+                                        notificationLabel.Text = "Match Discovered: " + subfilesList[i].ToString();
+
+                                        //check to see if subfile contains forced and a language code
+                                        if (subfilesList[i].Contains("forced") ||
+                                            subfilesList[i].Contains("Forced") ||
+                                            subfilesList[i].Contains("FORCED"))
+                                        {
+                                            //Check to see if file exists using 3 character sub code before writing
+                                            if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".FORCED" + subExtensions[i]))
+                                            {
+                                                File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".FORCED" + subExtensions[i]); //move file to new folder
+                                            }
+                                            //Check to see if file exists using 2 character sub code before writing
+                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".FORCED" + subExtensions[i]))
+                                            {
+                                                File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".FORCED" + subExtensions[i]);
+                                            }
+                                            //Check to see if file exists using long language code before writing
+                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".FORCED" + subExtensions[i]))
+                                            {
+                                                File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".FORCED" + subExtensions[i]);
+                                            }
+                                        }
+
+                                        else if (subfilesList[i].Contains("SDH") || //SDH - Subtitles for the Deaf and Hard of Hearing
+                                                subfilesList[i].Contains("sdh") ||
+                                                subfilesList[i].Contains("Sdh"))
+                                        {
+                                            //Check to see if file exists using 3 character sub code before writing
+                                            if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".(SDH)" + subExtensions[i]))
+                                            {
+                                                File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".(SDH)" + subExtensions[i]); //move file to new folder
+                                            }
+                                            //Check to see if file exists using 2 character sub code before writing
+                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".(SDH)" + subExtensions[i]))
+                                            {
+                                                File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".(SDH)" + subExtensions[i]);
+                                            }
+                                            //Check to see if file exists using long language code before writing
+                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".(SDH)" + subExtensions[i]))
+                                            {
+                                                File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".(SDH)" + subExtensions[i]);
+                                            }
+                                        }
+
+                                        else if (subfilesList[i].Contains("CC") || //CC - Closed Captioning
+                                                subfilesList[i].Contains("cc"))
+                                        {
+                                            //Check to see if file exists using 3 character sub code before writing
+                                            if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".(CC)" + subExtensions[i]))
+                                            {
+                                                File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".(CC)" + subExtensions[i]); //move file to new folder
+                                            }
+                                            //Check to see if file exists using 2 character sub code before writing
+                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".(CC)" + subExtensions[i]))
+                                            {
+                                                File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".(CC)" + subExtensions[i]);
+                                            }
+                                            //Check to see if file exists using long language code before writing
+                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".(CC)" + subExtensions[i]))
+                                            {
+                                                File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".(CC)" + subExtensions[i]);
+                                            }
+                                        }
+
+                                        else
+                                        {
+                                            //Check to see if file exists using 3 character sub code before writing
+                                            if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + subExtensions[i]))
+                                            {
+                                                File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + subExtensions[i]); //move file to new folder
+                                            }
+                                            //Check to see if file exists using 2 character sub code before writing
+                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + subExtensions[i]))
+                                            {
+                                                File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + subExtensions[i]);
+                                            }
+                                            //Check to see if file exists using long language code before writing
+                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + subExtensions[i]))
+                                            {
+                                                File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + subExtensions[i]);
+                                            }
+                                        }
+                                    }
+                                    catch
+                                    {
+                                        CustomMessageBox.Show("Error moving file " + parentPath.ToString() + subfilesList[i].ToString(), 200, 380);
+                                    }
+                                }
+                            }
+                            if (File.Exists(parentPath + subfilesList[i])) //If language code wasn't found get file anyway and name it as a standard movietitle.srt
+                            {
+                                try
+                                {
+                                    if (subfilesList[i].Contains("forced") ||
+                                        subfilesList[i].Contains("Forced") ||
+                                        subfilesList[i].Contains("FORCED"))
+                                    {
+                                        //check to see if file exists before writing.
+                                        if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.FORCED" + subExtensions[i]))
+                                        {
+                                            File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.FORCED" + subExtensions[i]); //move file to new folder
+                                        }
+                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.FORCED-2" + subExtensions[i]))
+                                        {
+                                            File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.FORCED-2" + subExtensions[i]); //move file to new folder
+                                        }
+                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.FORCED-3" + subExtensions[i]))
+                                        {
+                                            File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.FORCED-3" + subExtensions[i]); //move file to new folder
+                                        }
+                                    }
+
+                                    else if (subfilesList[i].Contains("SDH") || //SDH - Subtitles for the Deaf and Hard of Hearing
+                                            subfilesList[i].Contains("sdh") ||
+                                            subfilesList[i].Contains("Sdh"))
+                                    {
+                                        //check to see if file exists before writing.
+                                        if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.SDH" + subExtensions[i]))
+                                        {
+                                            File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.SDH" + subExtensions[i]); //move file to new folder
+                                        }
+                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.SDH-2" + subExtensions[i]))
+                                        {
+                                            File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.SDH-2" + subExtensions[i]); //move file to new folder
+                                        }
+                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.SDH-3" + subExtensions[i]))
+                                        {
+                                            File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.SDH-3" + subExtensions[i]); //move file to new folder
+                                        }
+                                    }
+
+                                    else if (subfilesList[i].Contains("CC") || //CC-Closed Captioning
+                                            subfilesList[i].Contains("cc"))
+                                    {
+                                        //check to see if file exists before writing.
+                                        if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.CC" + subExtensions[i]))
+                                        {
+                                            File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.CC" + subExtensions[i]); //move file to new folder
+                                        }
+                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.CC-2" + subExtensions[i]))
+                                        {
+                                            File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.CC-2" + subExtensions[i]); //move file to new folder
+                                        }
+                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.CC-3" + subExtensions[i]))
+                                        {
+                                            File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.CC-3" + subExtensions[i]); //move file to new folder
+                                        }
+                                    }
+
+                                    else
+                                    {
+                                        //check to see if file exists before writing.
+                                        if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG" + subExtensions[i]))
+                                        {
+                                            File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG" + subExtensions[i]); //move file to new folder
+                                        }
+                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.(2)" + subExtensions[i]))
+                                        {
+                                            File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.(2)" + subExtensions[i]); //move file to new folder
+                                        }
+                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.(3)" + subExtensions[i]))
+                                        {
+                                            File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.(3)" + subExtensions[i]); //move file to new folder
+                                        }
+
+                                    }
+                                }
+                                catch
+                                {
+                                    CustomMessageBox.Show("Error moving file " + parentPath.ToString() + subfilesList[i].ToString(), 200, 380);
+                                }
+                            }
+                        }
+
+                    }
+                    break;
+                case 3: //Synology
+                    //Synology
                     /*Subtitles for Synology should be formatted like:
                         * [Movie Title].[SubtitleName].[ext]
                         * Note anything in the [SubitleName] section will display
@@ -658,437 +891,6 @@ namespace MovieDataCollector
 
                     }
                     break;
-
-                case 2: //Universal
-                    /*
-                        The Universal setting is not complete. I've set it to work the 
-                        * same as the kodi setting
-                        */
-                    //check for subtitles for current movie
-                    for (int i = 0; i < subfilesList.Count(); i++)
-                    {
-
-                        notificationLabel.Text = "Searching for subtitle matches ";
-
-                        if (subfilesList[i].Contains(videoFileName)) //If the subtitle file contains the movie filename
-                        {
-                            //remove movie title from subtitle file
-                            subfilesList[i].Replace(videoFileName, "");
-
-                            for (int b = 0; b < (subLanguageCodes.Length / 3); b++) //Check for language codes in the filename
-                            {
-                                if (subfilesList[i].Contains("." + subLanguageCodes[b, 0]) ||
-                                    subfilesList[i].Contains("_" + subLanguageCodes[b, 0]) ||
-                                    subfilesList[i].Contains(" " + subLanguageCodes[b, 0]) ||
-                                    subfilesList[i].Contains("-" + subLanguageCodes[b, 0]) ||
-                                    subfilesList[i].Contains("(" + subLanguageCodes[b, 0] + ")") ||
-
-                                    subfilesList[i].Contains("." + subLanguageCodes[b, 1]) ||
-                                    subfilesList[i].Contains("_" + subLanguageCodes[b, 1]) ||
-                                    subfilesList[i].Contains(" " + subLanguageCodes[b, 1]) ||
-                                    subfilesList[i].Contains("-" + subLanguageCodes[b, 1]) ||
-                                    subfilesList[i].Contains("(" + subLanguageCodes[b, 1] + ")") ||
-
-                                    subfilesList[i].Contains("." + subLanguageCodes[b, 2]) ||
-                                    subfilesList[i].Contains("_" + subLanguageCodes[b, 2]) ||
-                                    subfilesList[i].Contains(" " + subLanguageCodes[b, 2]) ||
-                                    subfilesList[i].Contains("-" + subLanguageCodes[b, 2]) ||
-                                    subfilesList[i].Contains("(" + subLanguageCodes[b, 2] + ")"))
-                                {
-                                    try //if a match is found move the file to the new folder named movietitle.languagecode.ext
-                                    {
-                                        notificationLabel.Text = "Match Discovered: " + subfilesList[i].ToString();
-
-                                        //check to see if subfile contains forced and a language code
-                                        if (subfilesList[i].Contains("forced") ||
-                                            subfilesList[i].Contains("Forced") ||
-                                            subfilesList[i].Contains("FORCED"))
-                                        {
-                                            //Check to see if file exists using 3 character sub code before writing
-                                            if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".FORCED" + subExtensions[i]))
-                                            {
-                                                File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".FORCED" + subExtensions[i]); //move file to new folder
-                                            }
-                                            //Check to see if file exists using 2 character sub code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".FORCED" + subExtensions[i]))
-                                            {
-                                                File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".FORCED" + subExtensions[i]);
-                                            }
-                                            //Check to see if file exists using long language code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".FORCED" + subExtensions[i]))
-                                            {
-                                                File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".FORCED" + subExtensions[i]);
-                                            }
-                                        }
-
-                                        else if (subfilesList[i].Contains("SDH") || //SDH - Subtitles for the Deaf and Hard of Hearing
-                                                subfilesList[i].Contains("sdh") ||
-                                                subfilesList[i].Contains("Sdh"))
-                                        {
-                                            //Check to see if file exists using 3 character sub code before writing
-                                            if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".(SDH)" + subExtensions[i]))
-                                            {
-                                                File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".(SDH)" + subExtensions[i]); //move file to new folder
-                                            }
-                                            //Check to see if file exists using 2 character sub code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".(SDH)" + subExtensions[i]))
-                                            {
-                                                File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".(SDH)" + subExtensions[i]);
-                                            }
-                                            //Check to see if file exists using long language code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".(SDH)" + subExtensions[i]))
-                                            {
-                                                File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".(SDH)" + subExtensions[i]);
-                                            }
-                                        }
-
-                                        else if (subfilesList[i].Contains("CC") || //CC - Closed Captioning
-                                                subfilesList[i].Contains("cc"))
-                                        {
-                                            //Check to see if file exists using 3 character sub code before writing
-                                            if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".(CC)" + subExtensions[i]))
-                                            {
-                                                File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".(CC)" + subExtensions[i]); //move file to new folder
-                                            }
-                                            //Check to see if file exists using 2 character sub code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".(CC)" + subExtensions[i]))
-                                            {
-                                                File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".(CC)" + subExtensions[i]);
-                                            }
-                                            //Check to see if file exists using long language code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".(CC)" + subExtensions[i]))
-                                            {
-                                                File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".(CC)" + subExtensions[i]);
-                                            }
-                                        }
-
-                                        else
-                                        {
-                                            //Check to see if file exists using 3 character sub code before writing
-                                            if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + subExtensions[i]))
-                                            {
-                                                File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + subExtensions[i]); //move file to new folder
-                                            }
-                                            //Check to see if file exists using 2 character sub code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + subExtensions[i]))
-                                            {
-                                                File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + subExtensions[i]);
-                                            }
-                                            //Check to see if file exists using long language code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + subExtensions[i]))
-                                            {
-                                                File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + subExtensions[i]);
-                                            }
-                                        }
-                                    }
-                                    catch
-                                    {
-                                        CustomMessageBox.Show("Error moving file " + parentPath.ToString() + subfilesList[i].ToString(), 200, 380);
-                                    }
-                                }
-                            }
-                            if (File.Exists(parentPath + subfilesList[i])) //If language code wasn't found get file anyway and name it as a standard movietitle.srt
-                            {
-                                try
-                                {
-                                    if (subfilesList[i].Contains("forced") ||
-                                        subfilesList[i].Contains("Forced") ||
-                                        subfilesList[i].Contains("FORCED"))
-                                    {
-                                        //check to see if file exists before writing.
-                                        if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.FORCED" + subExtensions[i]))
-                                        {
-                                            File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.FORCED" + subExtensions[i]); //move file to new folder
-                                        }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.FORCED-2" + subExtensions[i]))
-                                        {
-                                            File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.FORCED-2" + subExtensions[i]); //move file to new folder
-                                        }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.FORCED-3" + subExtensions[i]))
-                                        {
-                                            File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.FORCED-3" + subExtensions[i]); //move file to new folder
-                                        }
-                                    }
-
-                                    else if (subfilesList[i].Contains("SDH") || //SDH - Subtitles for the Deaf and Hard of Hearing
-                                            subfilesList[i].Contains("sdh") ||
-                                            subfilesList[i].Contains("Sdh"))
-                                    {
-                                        //check to see if file exists before writing.
-                                        if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.SDH" + subExtensions[i]))
-                                        {
-                                            File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.SDH" + subExtensions[i]); //move file to new folder
-                                        }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.SDH-2" + subExtensions[i]))
-                                        {
-                                            File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.SDH-2" + subExtensions[i]); //move file to new folder
-                                        }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.SDH-3" + subExtensions[i]))
-                                        {
-                                            File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.SDH-3" + subExtensions[i]); //move file to new folder
-                                        }
-                                    }
-
-                                    else if (subfilesList[i].Contains("CC") || //CC-Closed Captioning
-                                            subfilesList[i].Contains("cc"))
-                                    {
-                                        //check to see if file exists before writing.
-                                        if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.CC" + subExtensions[i]))
-                                        {
-                                            File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.CC" + subExtensions[i]); //move file to new folder
-                                        }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.CC-2" + subExtensions[i]))
-                                        {
-                                            File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.CC-2" + subExtensions[i]); //move file to new folder
-                                        }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.CC-3" + subExtensions[i]))
-                                        {
-                                            File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.CC-3" + subExtensions[i]); //move file to new folder
-                                        }
-                                    }
-
-                                    else
-                                    {
-                                        //check to see if file exists before writing.
-                                        if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG" + subExtensions[i]))
-                                        {
-                                            File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG" + subExtensions[i]); //move file to new folder
-                                        }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.(2)" + subExtensions[i]))
-                                        {
-                                            File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.(2)" + subExtensions[i]); //move file to new folder
-                                        }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.(3)" + subExtensions[i]))
-                                        {
-                                            File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.(3)" + subExtensions[i]); //move file to new folder
-                                        }
-
-                                    }
-                                }
-                                catch
-                                {
-                                    CustomMessageBox.Show("Error moving file " + parentPath.ToString() + subfilesList[i].ToString(), 200, 380);
-                                }
-                            }
-                        }
-
-                    }
-                    break;
-
-                case 3: //kodi
-                    /*[MovieTitle].[LanguageCode].[ext} or 
-                        *[MovieTitle].[LanguageCode].[Forced or CC or SDH].[ext]
-                    */
-                    //check for subtitles for current movie
-                    for (int i = 0; i < subfilesList.Count(); i++)
-                    {
-
-                        notificationLabel.Text = "Searching for subtitle matches ";
-
-                        if (subfilesList[i].Contains(videoFileName)) //If the subtitle file contains the movie filename
-                        {
-                            //remove movie title from subtitle file
-                            subfilesList[i].Replace(videoFileName, "");
-
-                            for (int b = 0; b < (subLanguageCodes.Length / 3); b++) //Check for language codes in the filename
-                            {
-                                if (subfilesList[i].Contains("." + subLanguageCodes[b, 0]) ||
-                                    subfilesList[i].Contains("_" + subLanguageCodes[b, 0]) ||
-                                    subfilesList[i].Contains(" " + subLanguageCodes[b, 0]) ||
-                                    subfilesList[i].Contains("-" + subLanguageCodes[b, 0]) ||
-                                    subfilesList[i].Contains("(" + subLanguageCodes[b, 0] + ")") ||
-
-                                    subfilesList[i].Contains("." + subLanguageCodes[b, 1]) ||
-                                    subfilesList[i].Contains("_" + subLanguageCodes[b, 1]) ||
-                                    subfilesList[i].Contains(" " + subLanguageCodes[b, 1]) ||
-                                    subfilesList[i].Contains("-" + subLanguageCodes[b, 1]) ||
-                                    subfilesList[i].Contains("(" + subLanguageCodes[b, 1] + ")") ||
-
-                                    subfilesList[i].Contains("." + subLanguageCodes[b, 2]) ||
-                                    subfilesList[i].Contains("_" + subLanguageCodes[b, 2]) ||
-                                    subfilesList[i].Contains(" " + subLanguageCodes[b, 2]) ||
-                                    subfilesList[i].Contains("-" + subLanguageCodes[b, 2]) ||
-                                    subfilesList[i].Contains("(" + subLanguageCodes[b, 2] + ")"))
-                                {
-                                    try //if a match is found move the file to the new folder named movietitle.languagecode.ext
-                                    {
-                                        notificationLabel.Text = "Match Discovered: " + subfilesList[i].ToString();
-
-                                        //check to see if subfile contains forced and a language code
-                                        if (subfilesList[i].Contains("forced") ||
-                                            subfilesList[i].Contains("Forced") ||
-                                            subfilesList[i].Contains("FORCED"))
-                                        {
-                                            //Check to see if file exists using 3 character sub code before writing
-                                            if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".FORCED" + subExtensions[i]))
-                                            {
-                                                File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".FORCED" + subExtensions[i]); //move file to new folder
-                                            }
-                                            //Check to see if file exists using 2 character sub code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".FORCED" + subExtensions[i]))
-                                            {
-                                                File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".FORCED" + subExtensions[i]);
-                                            }
-                                            //Check to see if file exists using long language code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".FORCED" + subExtensions[i]))
-                                            {
-                                                File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".FORCED" + subExtensions[i]);
-                                            }
-                                        }
-
-                                        else if (subfilesList[i].Contains("SDH") || //SDH - Subtitles for the Deaf and Hard of Hearing
-                                                subfilesList[i].Contains("sdh") ||
-                                                subfilesList[i].Contains("Sdh"))
-                                        {
-                                            //Check to see if file exists using 3 character sub code before writing
-                                            if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".(SDH)" + subExtensions[i]))
-                                            {
-                                                File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".(SDH)" + subExtensions[i]); //move file to new folder
-                                            }
-                                            //Check to see if file exists using 2 character sub code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".(SDH)" + subExtensions[i]))
-                                            {
-                                                File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".(SDH)" + subExtensions[i]);
-                                            }
-                                            //Check to see if file exists using long language code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".(SDH)" + subExtensions[i]))
-                                            {
-                                                File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".(SDH)" + subExtensions[i]);
-                                            }
-                                        }
-
-                                        else if (subfilesList[i].Contains("CC") || //CC - Closed Captioning
-                                                subfilesList[i].Contains("cc"))
-                                        {
-                                            //Check to see if file exists using 3 character sub code before writing
-                                            if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".(CC)" + subExtensions[i]))
-                                            {
-                                                File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".(CC)" + subExtensions[i]); //move file to new folder
-                                            }
-                                            //Check to see if file exists using 2 character sub code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".(CC)" + subExtensions[i]))
-                                            {
-                                                File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".(CC)" + subExtensions[i]);
-                                            }
-                                            //Check to see if file exists using long language code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".(CC)" + subExtensions[i]))
-                                            {
-                                                File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".(CC)" + subExtensions[i]);
-                                            }
-                                        }
-
-                                        else
-                                        {
-                                            //Check to see if file exists using 3 character sub code before writing
-                                            if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + subExtensions[i]))
-                                            {
-                                                File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + subExtensions[i]); //move file to new folder
-                                            }
-                                            //Check to see if file exists using 2 character sub code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + subExtensions[i]))
-                                            {
-                                                File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + subExtensions[i]);
-                                            }
-                                            //Check to see if file exists using long language code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + subExtensions[i]))
-                                            {
-                                                File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + subExtensions[i]);
-                                            }
-                                        }
-                                    }
-                                    catch
-                                    {
-                                        CustomMessageBox.Show("Error moving file " + parentPath.ToString() + subfilesList[i].ToString(), 200, 380);
-                                    }
-                                }
-                            }
-                            if (File.Exists(parentPath + subfilesList[i])) //If language code wasn't found get file anyway and name it as a standard movietitle.srt
-                            {
-                                try
-                                {
-                                    if (subfilesList[i].Contains("forced") ||
-                                        subfilesList[i].Contains("Forced") ||
-                                        subfilesList[i].Contains("FORCED"))
-                                    {
-                                        //check to see if file exists before writing.
-                                        if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.FORCED" + subExtensions[i]))
-                                        {
-                                            File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.FORCED" + subExtensions[i]); //move file to new folder
-                                        }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.FORCED-2" + subExtensions[i]))
-                                        {
-                                            File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.FORCED-2" + subExtensions[i]); //move file to new folder
-                                        }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.FORCED-3" + subExtensions[i]))
-                                        {
-                                            File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.FORCED-3" + subExtensions[i]); //move file to new folder
-                                        }
-                                    }
-
-                                    else if (subfilesList[i].Contains("SDH") || //SDH - Subtitles for the Deaf and Hard of Hearing
-                                            subfilesList[i].Contains("sdh") ||
-                                            subfilesList[i].Contains("Sdh"))
-                                    {
-                                        //check to see if file exists before writing.
-                                        if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.SDH" + subExtensions[i]))
-                                        {
-                                            File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.SDH" + subExtensions[i]); //move file to new folder
-                                        }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.SDH-2" + subExtensions[i]))
-                                        {
-                                            File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.SDH-2" + subExtensions[i]); //move file to new folder
-                                        }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.SDH-3" + subExtensions[i]))
-                                        {
-                                            File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.SDH-3" + subExtensions[i]); //move file to new folder
-                                        }
-                                    }
-
-                                    else if (subfilesList[i].Contains("CC") || //CC-Closed Captioning
-                                            subfilesList[i].Contains("cc"))
-                                    {
-                                        //check to see if file exists before writing.
-                                        if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.CC" + subExtensions[i]))
-                                        {
-                                            File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.CC" + subExtensions[i]); //move file to new folder
-                                        }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.CC-2" + subExtensions[i]))
-                                        {
-                                            File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.CC-2" + subExtensions[i]); //move file to new folder
-                                        }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.CC-3" + subExtensions[i]))
-                                        {
-                                            File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.CC-3" + subExtensions[i]); //move file to new folder
-                                        }
-                                    }
-
-                                    else
-                                    {
-                                        //check to see if file exists before writing.
-                                        if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG" + subExtensions[i]))
-                                        {
-                                            File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG" + subExtensions[i]); //move file to new folder
-                                        }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.(2)" + subExtensions[i]))
-                                        {
-                                            File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.(2)" + subExtensions[i]); //move file to new folder
-                                        }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.(3)" + subExtensions[i]))
-                                        {
-                                            File.Move(parentPath + subfilesList[i], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".ENG.(3)" + subExtensions[i]); //move file to new folder
-                                        }
-
-                                    }
-                                }
-                                catch
-                                {
-                                    CustomMessageBox.Show("Error moving file " + parentPath.ToString() + subfilesList[i].ToString(), 200, 380);
-                                }
-                            }
-                        }
-
-                    }
-                    break;
             }
         }
         private void GetHTMLButton_Click(object sender, EventArgs e)
@@ -1256,13 +1058,14 @@ namespace MovieDataCollector
                     case 0: //Plex
                         Movie.staticProperties["FormattedTitle"] = validTitle(titleComboBox.Text + " (" + yearTextBox.Text + ")");
                         break;
-                    case 1: //Synology
+                    case 1: //KODI
+                        Movie.staticProperties["FormattedTitle"] = validTitle(titleComboBox.Text + " (" + yearTextBox.Text + ")");
+                        
+                        break;
+                    case 2: //Synology
                         Movie.staticProperties["FormattedTitle"] = validTitle(titleComboBox.Text + " (" + yearTextBox.Text + ")");
                         break;
-                    case 2: //Universal
-                        Movie.staticProperties["FormattedTitle"] = validTitle(titleComboBox.Text + " (" + yearTextBox.Text + ")");
-                        break;
-                    case 3: //kodi
+                    default: 
                         Movie.staticProperties["FormattedTitle"] = validTitle(titleComboBox.Text + " (" + yearTextBox.Text + ")");
                         break;
                 }
@@ -1369,15 +1172,14 @@ namespace MovieDataCollector
                                     case 0: //Plex
                                         wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".jpg");
                                         break;
-                                    case 1: //Synology
+                                    case 1: //KODI
+                                        wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + "poster.jpg");                                 
+                                        break;
+                                    case 2: // Synology
                                         wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + "Folder.jpg");
                                         break;
-                                    case 2: //Universal creates two identical poster files with different names to have max compatibility
-                                        wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + "poster.jpg");
-                                        File.Copy(newDirectoryName + "\\" + "poster.jpg", newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".jpg");
-                                        break;
-                                    case 3: //kodi
-                                        wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + "poster.jpg");
+                                    default:
+                                        wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + "Folder.jpg");
                                         break;
                                 }
 
@@ -1392,15 +1194,14 @@ namespace MovieDataCollector
                                         case 0: //Plex
                                             wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".jpg");
                                             break;
-                                        case 1: //Synology
+                                        case 1: //KODI
+                                            wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + "poster.jpg");
+                                            break;
+                                        case 2: //Synology
                                             wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + "Folder.jpg");
                                             break;
-                                        case 2: //Universal creates two identical poster files with different names to have max compatibility
-                                            wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + "poster.jpg");
-                                            File.Copy(newDirectoryName + "\\" + "poster.jpg", newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".jpg");
-                                            break;
-                                        case 3: //kodi
-                                            wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + "poster.jpg");
+                                        default:
+                                            wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + "Folder.jpg");
                                             break;
                                     }
                                 }
@@ -1411,18 +1212,17 @@ namespace MovieDataCollector
                                     {
                                         switch (formatComboBox.SelectedIndex) //Formats title to plex, kodi, or synology spec
                                         {
-                                            case 0: //Plex
+                                            case 0: //PLEX
                                                 wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".jpg");
                                                 break;
-                                            case 1: //Synology
+                                            case 1: //KODI
+                                                wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + "poster.jpg");
+                                                break;
+                                            case 2: //Synology
                                                 wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + "Folder.jpg");
                                                 break;
-                                            case 2: //Universal creates two identical poster files with different names to have max compatibility
-                                                wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + "poster.jpg");
-                                                File.Copy(newDirectoryName + "\\" + "poster.jpg", newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".jpg");
-                                                break;
-                                            case 3: //kodi
-                                                wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + "poster.jpg");
+                                            default: 
+                                                wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + "Folder.jpg");
                                                 break;
                                         }
                                     }
@@ -1433,18 +1233,17 @@ namespace MovieDataCollector
                                         {
                                             switch (formatComboBox.SelectedIndex) //Formats title to plex, kodi, or synology spec
                                             {
-                                                case 0: //Plex
+                                                case 0: //PLEX
                                                     wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".jpg");
                                                     break;
-                                                case 1: //Synology
+                                                case 1: //KODI
+                                                    wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + "poster.jpg");
+                                                    break;
+                                                case 2: //Synology
                                                     wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + "Folder.jpg");
                                                     break;
-                                                case 2: //Universal creates two identical poster files with different names to have max compatibility
-                                                    wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + "poster.jpg");
-                                                    File.Copy(newDirectoryName + "\\" + "poster.jpg", newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".jpg");
-                                                    break;
-                                                case 3: //kodi
-                                                    wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + "poster.jpg");
+                                                default:
+                                                    wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + "Folder.jpg");
                                                     break;
                                             }
                                         }
@@ -1472,16 +1271,15 @@ namespace MovieDataCollector
                                 wc.Encoding = System.Text.Encoding.UTF8; //Sets Encoding for text output
                                 switch (formatComboBox.SelectedIndex) //Formats title to plex, kodi, or synology spec
                                 {
-                                    case 0: //Plex
+                                    case 0: //PLEX
                                         wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "-fanart.jpg");
                                         break;
-                                    case 1: //Synology
-                                        break;
-                                    case 2: //Universal
+                                    case 1: //KODI
                                         wc.DownloadFile(Movie.staticProperties["BackDropPath"], newDirectoryName + "\\" + "fanart.jpg");
                                         break;
-                                    case 3: //kodi
-                                        wc.DownloadFile(Movie.staticProperties["BackDropPath"], newDirectoryName + "\\" + "fanart.jpg");
+                                    case 2: //Synology
+                                        break;
+                                    default:
                                         break;
                                 }
 
@@ -1494,16 +1292,15 @@ namespace MovieDataCollector
                                 {
                                     switch (formatComboBox.SelectedIndex) //Formats title to plex, kodi, or synology spec
                                     {
-                                        case 0: //Plex
+                                        case 0: //PLEX
                                             wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "-fanart.jpg");
                                             break;
-                                        case 1: //Synology
-                                            break;
-                                        case 2: //Universal
+                                        case 1: //KODI
                                             wc.DownloadFile(Movie.staticProperties["BackDropPath"], newDirectoryName + "\\" + "fanart.jpg");
                                             break;
-                                        case 3: //kodi
-                                            wc.DownloadFile(Movie.staticProperties["BackDropPath"], newDirectoryName + "\\" + "fanart.jpg");
+                                        case 2: //Synology
+                                            break;
+                                        default: 
                                             break;
                                     }
                                 }
@@ -1517,13 +1314,12 @@ namespace MovieDataCollector
                                             case 0: //Plex
                                                 wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "-fanart.jpg");
                                                 break;
-                                            case 1: //Synology
-                                                break;
-                                            case 2: //Universal
+                                            case 1: //KODI
                                                 wc.DownloadFile(Movie.staticProperties["BackDropPath"], newDirectoryName + "\\" + "fanart.jpg");
                                                 break;
-                                            case 3: //kodi
-                                                wc.DownloadFile(Movie.staticProperties["BackDropPath"], newDirectoryName + "\\" + "fanart.jpg");
+                                            case 2: //Synology
+                                                break;
+                                            default:
                                                 break;
                                         }
                                     }
@@ -1534,16 +1330,15 @@ namespace MovieDataCollector
                                         {
                                             switch (formatComboBox.SelectedIndex) //Formats title to plex, kodi, or synology spec
                                             {
-                                                case 0: //Plex
+                                                case 0: //PLEX
                                                     wc.DownloadFile(Movie.staticProperties["PosterPath"], newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + "-fanart.jpg");
                                                     break;
-                                                case 1: //Synology
-                                                    break;
-                                                case 2: //Universal
+                                                case 1: //KODI
                                                     wc.DownloadFile(Movie.staticProperties["BackDropPath"], newDirectoryName + "\\" + "fanart.jpg");
                                                     break;
-                                                case 3: //kodi
-                                                    wc.DownloadFile(Movie.staticProperties["BackDropPath"], newDirectoryName + "\\" + "fanart.jpg");
+                                                case 2: //Synology
+                                                    break;
+                                                default:
                                                     break;
                                             }
                                         }
@@ -1567,25 +1362,15 @@ namespace MovieDataCollector
                         {
                             case 0: //Plex
                                 break;
-                            case 1: //Synology
-                                break;
-                            case 2: //Universal
+                            case 1: //KODI
                                 using (StreamWriter sw = File.CreateText(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".nfo"))
                                 {
                                     sw.Write(CreateNFO());
                                 }
                                 break;
-                            case 3: //kodi
-                                using (StreamWriter sw = File.CreateText(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".nfo"))
-                                {
-                                    sw.Write(CreateNFO());
-                                }
+                            case 2: //Synology
                                 break;
                             default:
-                                using (StreamWriter sw = File.CreateText(newDirectoryName + "\\" + Movie.staticProperties["FormattedTitle"] + ".nfo"))
-                                {
-                                    sw.Write(CreateNFO());
-                                }
                                 break;
                         }
 
@@ -1822,20 +1607,17 @@ namespace MovieDataCollector
         {
             switch (formatComboBox.SelectedIndex)
             {
-                case 0:
+                case 0: //PLEX
                     formatPicturebox.Image = MovieDataCollector.Properties.Resources.PlexLogo;
                     break;
-                case 1:
-                    formatPicturebox.Image = MovieDataCollector.Properties.Resources.Synology;
-                    break;
-                case 2:
-                    formatPicturebox.Image = MovieDataCollector.Properties.Resources.Universal;
-                    break;
-                case 3:
+                case 1: //KODI
                     formatPicturebox.Image = MovieDataCollector.Properties.Resources.kodi;
                     break;
+                case 2: //Synology
+                    formatPicturebox.Image = MovieDataCollector.Properties.Resources.Synology;
+                    break;
                 default:
-                    formatPicturebox.Image = Properties.Resources.kodi;
+                    formatPicturebox.Image = Properties.Resources.Synology;
                     break;
             }
         }

@@ -49,11 +49,6 @@
             this.formatComboBox = new System.Windows.Forms.ComboBox();
             this.createFilesButton = new System.Windows.Forms.Button();
             this.clearButton = new System.Windows.Forms.Button();
-            this.moviePosterPictureBox = new System.Windows.Forms.PictureBox();
-            this.formatPicturebox = new System.Windows.Forms.PictureBox();
-            this.imdbPictureBox = new System.Windows.Forms.PictureBox();
-            this.tmdbPictureBox = new System.Windows.Forms.PictureBox();
-            this.backDropPictureBox = new System.Windows.Forms.PictureBox();
             this.posterNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.panel2 = new System.Windows.Forms.Panel();
             this.posterNumberLabel = new System.Windows.Forms.Label();
@@ -71,16 +66,22 @@
             this.runTimeLabel = new System.Windows.Forms.Label();
             this.mpaaLabel = new System.Windows.Forms.Label();
             this.genresLabel = new System.Windows.Forms.Label();
+            this.moviePosterPictureBox = new System.Windows.Forms.PictureBox();
+            this.formatPicturebox = new System.Windows.Forms.PictureBox();
+            this.imdbPictureBox = new System.Windows.Forms.PictureBox();
+            this.tmdbPictureBox = new System.Windows.Forms.PictureBox();
+            this.backDropPictureBox = new System.Windows.Forms.PictureBox();
+            this.InvisibleCloseButton = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.backdropNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.posterNumericUpDown)).BeginInit();
+            this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.moviePosterPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.formatPicturebox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imdbPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tmdbPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.backDropPictureBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.posterNumericUpDown)).BeginInit();
-            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -302,64 +303,6 @@
             this.clearButton.UseVisualStyleBackColor = false;
             this.clearButton.Click += new System.EventHandler(this.clearButton_Click);
             // 
-            // moviePosterPictureBox
-            // 
-            this.moviePosterPictureBox.BackColor = System.Drawing.Color.Transparent;
-            this.moviePosterPictureBox.Image = global::MovieDataCollector.Properties.Resources.film_reel__Small_;
-            this.moviePosterPictureBox.InitialImage = null;
-            this.moviePosterPictureBox.Location = new System.Drawing.Point(442, 365);
-            this.moviePosterPictureBox.Name = "moviePosterPictureBox";
-            this.moviePosterPictureBox.Size = new System.Drawing.Size(236, 317);
-            this.moviePosterPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.moviePosterPictureBox.TabIndex = 16;
-            this.moviePosterPictureBox.TabStop = false;
-            // 
-            // formatPicturebox
-            // 
-            this.formatPicturebox.BackColor = System.Drawing.Color.Transparent;
-            this.formatPicturebox.Image = global::MovieDataCollector.Properties.Resources.Synology;
-            this.formatPicturebox.InitialImage = global::MovieDataCollector.Properties.Resources.Universal;
-            this.formatPicturebox.Location = new System.Drawing.Point(600, 280);
-            this.formatPicturebox.Name = "formatPicturebox";
-            this.formatPicturebox.Size = new System.Drawing.Size(78, 46);
-            this.formatPicturebox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.formatPicturebox.TabIndex = 13;
-            this.formatPicturebox.TabStop = false;
-            // 
-            // imdbPictureBox
-            // 
-            this.imdbPictureBox.BackColor = System.Drawing.Color.Transparent;
-            this.imdbPictureBox.Image = global::MovieDataCollector.Properties.Resources.IMDB_Logo;
-            this.imdbPictureBox.Location = new System.Drawing.Point(98, 289);
-            this.imdbPictureBox.Name = "imdbPictureBox";
-            this.imdbPictureBox.Size = new System.Drawing.Size(62, 32);
-            this.imdbPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.imdbPictureBox.TabIndex = 8;
-            this.imdbPictureBox.TabStop = false;
-            // 
-            // tmdbPictureBox
-            // 
-            this.tmdbPictureBox.BackColor = System.Drawing.Color.Transparent;
-            this.tmdbPictureBox.Image = global::MovieDataCollector.Properties.Resources.MovieDBLogo;
-            this.tmdbPictureBox.Location = new System.Drawing.Point(453, 43);
-            this.tmdbPictureBox.Name = "tmdbPictureBox";
-            this.tmdbPictureBox.Size = new System.Drawing.Size(197, 191);
-            this.tmdbPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.tmdbPictureBox.TabIndex = 3;
-            this.tmdbPictureBox.TabStop = false;
-            // 
-            // backDropPictureBox
-            // 
-            this.backDropPictureBox.BackColor = System.Drawing.Color.Transparent;
-            this.backDropPictureBox.Image = global::MovieDataCollector.Properties.Resources.highlight_reel;
-            this.backDropPictureBox.InitialImage = null;
-            this.backDropPictureBox.Location = new System.Drawing.Point(0, 25);
-            this.backDropPictureBox.Name = "backDropPictureBox";
-            this.backDropPictureBox.Size = new System.Drawing.Size(408, 224);
-            this.backDropPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.backDropPictureBox.TabIndex = 1;
-            this.backDropPictureBox.TabStop = false;
-            // 
             // posterNumericUpDown
             // 
             this.posterNumericUpDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
@@ -536,11 +479,83 @@
             this.genresLabel.TabIndex = 32;
             this.genresLabel.Text = "Genres:";
             // 
+            // moviePosterPictureBox
+            // 
+            this.moviePosterPictureBox.BackColor = System.Drawing.Color.Transparent;
+            this.moviePosterPictureBox.Image = global::MovieDataCollector.Properties.Resources.film_reel__Small_;
+            this.moviePosterPictureBox.InitialImage = null;
+            this.moviePosterPictureBox.Location = new System.Drawing.Point(442, 365);
+            this.moviePosterPictureBox.Name = "moviePosterPictureBox";
+            this.moviePosterPictureBox.Size = new System.Drawing.Size(236, 317);
+            this.moviePosterPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.moviePosterPictureBox.TabIndex = 16;
+            this.moviePosterPictureBox.TabStop = false;
+            // 
+            // formatPicturebox
+            // 
+            this.formatPicturebox.BackColor = System.Drawing.Color.Transparent;
+            this.formatPicturebox.Image = global::MovieDataCollector.Properties.Resources.Synology;
+            this.formatPicturebox.InitialImage = global::MovieDataCollector.Properties.Resources.Universal;
+            this.formatPicturebox.Location = new System.Drawing.Point(600, 280);
+            this.formatPicturebox.Name = "formatPicturebox";
+            this.formatPicturebox.Size = new System.Drawing.Size(78, 46);
+            this.formatPicturebox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.formatPicturebox.TabIndex = 13;
+            this.formatPicturebox.TabStop = false;
+            // 
+            // imdbPictureBox
+            // 
+            this.imdbPictureBox.BackColor = System.Drawing.Color.Transparent;
+            this.imdbPictureBox.Image = global::MovieDataCollector.Properties.Resources.IMDB_Logo;
+            this.imdbPictureBox.Location = new System.Drawing.Point(98, 289);
+            this.imdbPictureBox.Name = "imdbPictureBox";
+            this.imdbPictureBox.Size = new System.Drawing.Size(62, 32);
+            this.imdbPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.imdbPictureBox.TabIndex = 8;
+            this.imdbPictureBox.TabStop = false;
+            // 
+            // tmdbPictureBox
+            // 
+            this.tmdbPictureBox.BackColor = System.Drawing.Color.Transparent;
+            this.tmdbPictureBox.Image = global::MovieDataCollector.Properties.Resources.MovieDBLogo;
+            this.tmdbPictureBox.Location = new System.Drawing.Point(453, 43);
+            this.tmdbPictureBox.Name = "tmdbPictureBox";
+            this.tmdbPictureBox.Size = new System.Drawing.Size(197, 191);
+            this.tmdbPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.tmdbPictureBox.TabIndex = 3;
+            this.tmdbPictureBox.TabStop = false;
+            // 
+            // backDropPictureBox
+            // 
+            this.backDropPictureBox.BackColor = System.Drawing.Color.Transparent;
+            this.backDropPictureBox.Image = global::MovieDataCollector.Properties.Resources.highlight_reel;
+            this.backDropPictureBox.InitialImage = null;
+            this.backDropPictureBox.Location = new System.Drawing.Point(0, 25);
+            this.backDropPictureBox.Name = "backDropPictureBox";
+            this.backDropPictureBox.Size = new System.Drawing.Size(408, 224);
+            this.backDropPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.backDropPictureBox.TabIndex = 1;
+            this.backDropPictureBox.TabStop = false;
+            // 
+            // InvisibleCloseButton
+            // 
+            this.InvisibleCloseButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.InvisibleCloseButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.InvisibleCloseButton.Location = new System.Drawing.Point(378, 647);
+            this.InvisibleCloseButton.Name = "InvisibleCloseButton";
+            this.InvisibleCloseButton.Size = new System.Drawing.Size(10, 10);
+            this.InvisibleCloseButton.TabIndex = 33;
+            this.InvisibleCloseButton.Text = "button1";
+            this.InvisibleCloseButton.UseVisualStyleBackColor = true;
+            this.InvisibleCloseButton.Click += new System.EventHandler(this.InvisibleCloseButton_Click);
+            // 
             // MovieForm
             // 
+            this.AcceptButton = this.getHTMLButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.CancelButton = this.InvisibleCloseButton;
             this.ClientSize = new System.Drawing.Size(690, 688);
             this.Controls.Add(this.genresLabel);
             this.Controls.Add(this.mpaaLabel);
@@ -549,7 +564,6 @@
             this.Controls.Add(this.setLabel);
             this.Controls.Add(this.titleLabel);
             this.Controls.Add(this.notificationLabel);
-            this.Controls.Add(this.plotTextBox);
             this.Controls.Add(this.genresTextBox);
             this.Controls.Add(this.mpaaTextBox);
             this.Controls.Add(this.runTimeTextBox);
@@ -574,6 +588,8 @@
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.backDropPictureBox);
             this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.plotTextBox);
+            this.Controls.Add(this.InvisibleCloseButton);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ForeColor = System.Drawing.Color.GreenYellow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -586,14 +602,14 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.backdropNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.posterNumericUpDown)).EndInit();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.moviePosterPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.formatPicturebox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imdbPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tmdbPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.backDropPictureBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.posterNumericUpDown)).EndInit();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -643,5 +659,6 @@
         private System.Windows.Forms.Label runTimeLabel;
         private System.Windows.Forms.Label mpaaLabel;
         private System.Windows.Forms.Label genresLabel;
+        private System.Windows.Forms.Button InvisibleCloseButton;
     }
 }
