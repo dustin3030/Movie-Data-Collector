@@ -50,6 +50,9 @@
             this.outPutTextBox = new System.Windows.Forms.RichTextBox();
             this.exportInfoButton = new System.Windows.Forms.Button();
             this.conversionSettingsPage = new System.Windows.Forms.TabPage();
+            this.sendToBox = new System.Windows.Forms.TextBox();
+            this.passwordBox = new System.Windows.Forms.TextBox();
+            this.usernameBox = new System.Windows.Forms.TextBox();
             this.sendToLabel = new System.Windows.Forms.Label();
             this.passwordLabel = new System.Windows.Forms.Label();
             this.userNameLabel = new System.Windows.Forms.Label();
@@ -90,9 +93,6 @@
             this.audioCodecComboBox = new System.Windows.Forms.ComboBox();
             this.conversionSettingsLabel = new System.Windows.Forms.Label();
             this.compatibilitySelectionLabel = new System.Windows.Forms.Label();
-            this.usernameBox = new System.Windows.Forms.TextBox();
-            this.passwordBox = new System.Windows.Forms.TextBox();
-            this.sendToBox = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.selectionPicturebox)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -209,7 +209,7 @@
             this.listIncompatibleButton.Name = "listIncompatibleButton";
             this.listIncompatibleButton.Size = new System.Drawing.Size(121, 32);
             this.listIncompatibleButton.TabIndex = 6;
-            this.listIncompatibleButton.Text = "List & Incompatible";
+            this.listIncompatibleButton.Text = "List &Incompatible";
             this.listIncompatibleButton.UseVisualStyleBackColor = false;
             // 
             // exportButton
@@ -350,6 +350,33 @@
             this.conversionSettingsPage.Size = new System.Drawing.Size(508, 521);
             this.conversionSettingsPage.TabIndex = 1;
             this.conversionSettingsPage.Text = "Conversion Settings";
+            // 
+            // sendToBox
+            // 
+            this.sendToBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.sendToBox.ForeColor = System.Drawing.Color.GreenYellow;
+            this.sendToBox.Location = new System.Drawing.Point(144, 437);
+            this.sendToBox.Name = "sendToBox";
+            this.sendToBox.Size = new System.Drawing.Size(158, 20);
+            this.sendToBox.TabIndex = 16;
+            // 
+            // passwordBox
+            // 
+            this.passwordBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.passwordBox.ForeColor = System.Drawing.Color.GreenYellow;
+            this.passwordBox.Location = new System.Drawing.Point(310, 395);
+            this.passwordBox.Name = "passwordBox";
+            this.passwordBox.Size = new System.Drawing.Size(158, 20);
+            this.passwordBox.TabIndex = 15;
+            // 
+            // usernameBox
+            // 
+            this.usernameBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.usernameBox.ForeColor = System.Drawing.Color.GreenYellow;
+            this.usernameBox.Location = new System.Drawing.Point(143, 395);
+            this.usernameBox.Name = "usernameBox";
+            this.usernameBox.Size = new System.Drawing.Size(158, 20);
+            this.usernameBox.TabIndex = 14;
             // 
             // sendToLabel
             // 
@@ -850,33 +877,6 @@
             this.compatibilitySelectionLabel.Size = new System.Drawing.Size(135, 13);
             this.compatibilitySelectionLabel.TabIndex = 15;
             this.compatibilitySelectionLabel.Text = "Compatibility Selection";
-            // 
-            // usernameBox
-            // 
-            this.usernameBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.usernameBox.ForeColor = System.Drawing.Color.GreenYellow;
-            this.usernameBox.Location = new System.Drawing.Point(143, 395);
-            this.usernameBox.Name = "usernameBox";
-            this.usernameBox.Size = new System.Drawing.Size(158, 20);
-            this.usernameBox.TabIndex = 14;
-            // 
-            // passwordBox
-            // 
-            this.passwordBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.passwordBox.ForeColor = System.Drawing.Color.GreenYellow;
-            this.passwordBox.Location = new System.Drawing.Point(310, 395);
-            this.passwordBox.Name = "passwordBox";
-            this.passwordBox.Size = new System.Drawing.Size(158, 20);
-            this.passwordBox.TabIndex = 15;
-            // 
-            // sendToBox
-            // 
-            this.sendToBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.sendToBox.ForeColor = System.Drawing.Color.GreenYellow;
-            this.sendToBox.Location = new System.Drawing.Point(144, 437);
-            this.sendToBox.Name = "sendToBox";
-            this.sendToBox.Size = new System.Drawing.Size(158, 20);
-            this.sendToBox.TabIndex = 16;
             // 
             // ConversionForm
             // 
