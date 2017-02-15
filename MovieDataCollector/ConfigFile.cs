@@ -40,6 +40,8 @@ namespace MovieDataCollector
                 "EncoderLevel", //High
                 "VideoBitrateCap", //3.5
                 "Framerate", //Roku Compliant
+                "AudioSampleRate", //48
+                "ConversionPreset"
             };
         List<string> ValueList = new List<string>()
             {
@@ -64,7 +66,9 @@ namespace MovieDataCollector
                 "High", //EncoderProfile
                 "4.0", //EncoderLevel
                 "3.5", //VideoBitrateCap
-                "Roku Compliant" //Framerate
+                "Roku Compliant", //Framerate
+                "48", //AudioSampleRate
+                "RokuCompliant" //ConversionPreset
             };
 
         public ConfigFile()

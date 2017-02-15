@@ -470,8 +470,6 @@ namespace MovieDataCollector
         }
         private void setDefaults() //Sets encode options to values from file
         {
-
-
             audioCodecComboBox.Text = CF.DefaultSettings["AudioCodec"];
             if (CF.DefaultSettings["AudioCodec"] == "Filtered Passthru")
             {
@@ -490,42 +488,19 @@ namespace MovieDataCollector
             mixdownComboBox.Text = CF.DefaultSettings["Mixdown"];
             audioBitrateCombo.Text = CF.DefaultSettings["AudioBitrateCap"];
             encoderSpeedCombo.Text = CF.DefaultSettings["EncoderSpeed"];
-            mixdownComboBox.Text = CF.DefaultSettings["Mixdown"];
-            mixdownComboBox.Text = CF.DefaultSettings["Mixdown"];
-            mixdownComboBox.Text = CF.DefaultSettings["Mixdown"];
-            mixdownComboBox.Text = CF.DefaultSettings["Mixdown"];
-            mixdownComboBox.Text = CF.DefaultSettings["Mixdown"];
-
-
-            encoderTuneComboBox.Text = GeneralParser(formatCheckDefaultValues, "<EncoderTuneStart>", "<EncoderTuneEnd>");
-            encoderProfileComboBox.Text = GeneralParser(formatCheckDefaultValues, "<EncoderProfileStart>", "<EncoderProfileEnd>");
-            encoderLevelComboBox.Text = GeneralParser(formatCheckDefaultValues, "<EncoderLevelStart>", "<EncoderLevelEnd>");
-            avgBitrateCombo.Text = GeneralParser(formatCheckDefaultValues, "<VideoBitrateCapStart>", "<VideoBitrateCapEnd>");
-            framerateCombo.Text = GeneralParser(formatCheckDefaultValues, "<FramerateStart>", "<FramerateEnd>");
+            encoderTuneComboBox.Text = CF.DefaultSettings["EncoderTune"];
+            encoderProfileComboBox.Text = CF.DefaultSettings["EncoderProfile"];
+            encoderLevelComboBox.Text = CF.DefaultSettings["EncoderLevel"];
+            avgBitrateCombo.Text = CF.DefaultSettings["VideoBitrateCap"];
+            framerateCombo.Text = CF.DefaultSettings["Framerate"];
+            sampleRateCombo.Text = CF.DefaultSettings["AudioSampleRate"];
+            presetComboBox.Text = CF.DefaultSettings["ConversionPreset"];
 
         }
         
         private void WriteDefaultFilePath()
         {
-            string oldText = "";
-            string newText = "";
-
-            using (StreamReader SR = new StreamReader(configPath))
-            {
-                //Read configFileText to string
-                configFileText = SR.ReadToEnd();
-                defaultPathText = GeneralParser(configFileText, "<FormatCheckDefaultPathStart>", "<FormatCheckDefaultPathEnd>");
-                oldText = "<FormatCheckDefaultPathStart>" + defaultPathText + "<FormatCheckDefaultPathEnd>";
-                newText = "<FormatCheckDefaultPathStart>" + folderPath + "<FormatCheckDefaultPathEnd>";
-                configFileText = configFileText.Replace(oldText, newText);
-                SR.Close();
-            }
-
-            using (StreamWriter sw = System.IO.File.CreateText(configPath))
-            {
-                sw.WriteLine(configFileText);
-                sw.Close();
-            }
+            CF.updateDefaults();
         }
         private void selectDirectory()
         {
