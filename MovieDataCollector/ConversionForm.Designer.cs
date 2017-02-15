@@ -85,7 +85,7 @@
             this.audioSettinsPanel = new System.Windows.Forms.Panel();
             this.filteredDTSCheck = new System.Windows.Forms.CheckBox();
             this.filteredAC3Check = new System.Windows.Forms.CheckBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.filteredAACCheck = new System.Windows.Forms.CheckBox();
             this.kbpsLabel = new System.Windows.Forms.Label();
             this.audioBitrateCombo = new System.Windows.Forms.ComboBox();
             this.passthruFilterLabel = new System.Windows.Forms.Label();
@@ -93,6 +93,10 @@
             this.audioCodecComboBox = new System.Windows.Forms.ComboBox();
             this.conversionSettingsLabel = new System.Windows.Forms.Label();
             this.compatibilitySelectionLabel = new System.Windows.Forms.Label();
+            this.presetLabel = new System.Windows.Forms.Label();
+            this.presetComboBox = new System.Windows.Forms.ComboBox();
+            this.sampleRateLabel = new System.Windows.Forms.Label();
+            this.sampleRateCombo = new System.Windows.Forms.ComboBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.selectionPicturebox)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -266,14 +270,14 @@
             this.filesListBox.FormattingEnabled = true;
             this.filesListBox.Location = new System.Drawing.Point(12, 204);
             this.filesListBox.Name = "filesListBox";
-            this.filesListBox.Size = new System.Drawing.Size(548, 407);
+            this.filesListBox.Size = new System.Drawing.Size(548, 368);
             this.filesListBox.TabIndex = 11;
             // 
             // notificationLabel
             // 
             this.notificationLabel.AutoSize = true;
             this.notificationLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.notificationLabel.Location = new System.Drawing.Point(9, 616);
+            this.notificationLabel.Location = new System.Drawing.Point(9, 575);
             this.notificationLabel.Name = "notificationLabel";
             this.notificationLabel.Size = new System.Drawing.Size(105, 13);
             this.notificationLabel.TabIndex = 12;
@@ -288,7 +292,7 @@
             this.tabControl1.Location = new System.Drawing.Point(576, 64);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(516, 547);
+            this.tabControl1.Size = new System.Drawing.Size(516, 508);
             this.tabControl1.TabIndex = 13;
             // 
             // mediaInfoPage
@@ -299,7 +303,7 @@
             this.mediaInfoPage.Location = new System.Drawing.Point(4, 22);
             this.mediaInfoPage.Name = "mediaInfoPage";
             this.mediaInfoPage.Padding = new System.Windows.Forms.Padding(3);
-            this.mediaInfoPage.Size = new System.Drawing.Size(508, 521);
+            this.mediaInfoPage.Size = new System.Drawing.Size(508, 482);
             this.mediaInfoPage.TabIndex = 0;
             this.mediaInfoPage.Text = "Media Info";
             // 
@@ -327,6 +331,8 @@
             // conversionSettingsPage
             // 
             this.conversionSettingsPage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.conversionSettingsPage.Controls.Add(this.presetComboBox);
+            this.conversionSettingsPage.Controls.Add(this.presetLabel);
             this.conversionSettingsPage.Controls.Add(this.sendToBox);
             this.conversionSettingsPage.Controls.Add(this.passwordBox);
             this.conversionSettingsPage.Controls.Add(this.usernameBox);
@@ -339,15 +345,12 @@
             this.conversionSettingsPage.Controls.Add(this.convertSelectedButton);
             this.conversionSettingsPage.Controls.Add(this.videoSettingsPanel);
             this.conversionSettingsPage.Controls.Add(this.videoSettingsLabel);
-            this.conversionSettingsPage.Controls.Add(this.ABitrateLabel);
-            this.conversionSettingsPage.Controls.Add(this.mixdownLabel);
-            this.conversionSettingsPage.Controls.Add(this.codecLabel);
             this.conversionSettingsPage.Controls.Add(this.audioSettingsLabel);
             this.conversionSettingsPage.Controls.Add(this.audioSettinsPanel);
             this.conversionSettingsPage.Location = new System.Drawing.Point(4, 22);
             this.conversionSettingsPage.Name = "conversionSettingsPage";
             this.conversionSettingsPage.Padding = new System.Windows.Forms.Padding(3);
-            this.conversionSettingsPage.Size = new System.Drawing.Size(508, 521);
+            this.conversionSettingsPage.Size = new System.Drawing.Size(508, 482);
             this.conversionSettingsPage.TabIndex = 1;
             this.conversionSettingsPage.Text = "Conversion Settings";
             // 
@@ -355,7 +358,7 @@
             // 
             this.sendToBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.sendToBox.ForeColor = System.Drawing.Color.GreenYellow;
-            this.sendToBox.Location = new System.Drawing.Point(144, 437);
+            this.sendToBox.Location = new System.Drawing.Point(144, 389);
             this.sendToBox.Name = "sendToBox";
             this.sendToBox.Size = new System.Drawing.Size(158, 20);
             this.sendToBox.TabIndex = 16;
@@ -364,7 +367,7 @@
             // 
             this.passwordBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.passwordBox.ForeColor = System.Drawing.Color.GreenYellow;
-            this.passwordBox.Location = new System.Drawing.Point(310, 395);
+            this.passwordBox.Location = new System.Drawing.Point(310, 347);
             this.passwordBox.Name = "passwordBox";
             this.passwordBox.Size = new System.Drawing.Size(158, 20);
             this.passwordBox.TabIndex = 15;
@@ -373,7 +376,7 @@
             // 
             this.usernameBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.usernameBox.ForeColor = System.Drawing.Color.GreenYellow;
-            this.usernameBox.Location = new System.Drawing.Point(143, 395);
+            this.usernameBox.Location = new System.Drawing.Point(143, 347);
             this.usernameBox.Name = "usernameBox";
             this.usernameBox.Size = new System.Drawing.Size(158, 20);
             this.usernameBox.TabIndex = 14;
@@ -381,7 +384,7 @@
             // sendToLabel
             // 
             this.sendToLabel.AutoSize = true;
-            this.sendToLabel.Location = new System.Drawing.Point(141, 421);
+            this.sendToLabel.Location = new System.Drawing.Point(141, 373);
             this.sendToLabel.Name = "sendToLabel";
             this.sendToLabel.Size = new System.Drawing.Size(59, 13);
             this.sendToLabel.TabIndex = 13;
@@ -390,7 +393,7 @@
             // passwordLabel
             // 
             this.passwordLabel.AutoSize = true;
-            this.passwordLabel.Location = new System.Drawing.Point(307, 379);
+            this.passwordLabel.Location = new System.Drawing.Point(307, 331);
             this.passwordLabel.Name = "passwordLabel";
             this.passwordLabel.Size = new System.Drawing.Size(96, 13);
             this.passwordLabel.TabIndex = 12;
@@ -399,7 +402,7 @@
             // userNameLabel
             // 
             this.userNameLabel.AutoSize = true;
-            this.userNameLabel.Location = new System.Drawing.Point(141, 379);
+            this.userNameLabel.Location = new System.Drawing.Point(141, 331);
             this.userNameLabel.Name = "userNameLabel";
             this.userNameLabel.Size = new System.Drawing.Size(98, 13);
             this.userNameLabel.TabIndex = 11;
@@ -410,7 +413,7 @@
             this.notificationCheck.Appearance = System.Windows.Forms.Appearance.Button;
             this.notificationCheck.BackColor = System.Drawing.Color.GreenYellow;
             this.notificationCheck.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.notificationCheck.Location = new System.Drawing.Point(6, 396);
+            this.notificationCheck.Location = new System.Drawing.Point(6, 348);
             this.notificationCheck.Name = "notificationCheck";
             this.notificationCheck.Size = new System.Drawing.Size(125, 62);
             this.notificationCheck.TabIndex = 10;
@@ -421,7 +424,7 @@
             // 
             this.button1.BackColor = System.Drawing.Color.GreenYellow;
             this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.button1.Location = new System.Drawing.Point(329, 435);
+            this.button1.Location = new System.Drawing.Point(329, 387);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(121, 23);
             this.button1.TabIndex = 9;
@@ -432,7 +435,7 @@
             // 
             this.convertAllButton.BackColor = System.Drawing.Color.GreenYellow;
             this.convertAllButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.convertAllButton.Location = new System.Drawing.Point(133, 479);
+            this.convertAllButton.Location = new System.Drawing.Point(133, 431);
             this.convertAllButton.Name = "convertAllButton";
             this.convertAllButton.Size = new System.Drawing.Size(121, 32);
             this.convertAllButton.TabIndex = 8;
@@ -443,7 +446,7 @@
             // 
             this.convertSelectedButton.BackColor = System.Drawing.Color.GreenYellow;
             this.convertSelectedButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.convertSelectedButton.Location = new System.Drawing.Point(6, 479);
+            this.convertSelectedButton.Location = new System.Drawing.Point(6, 431);
             this.convertSelectedButton.Name = "convertSelectedButton";
             this.convertSelectedButton.Size = new System.Drawing.Size(121, 32);
             this.convertSelectedButton.TabIndex = 7;
@@ -469,9 +472,9 @@
             this.videoSettingsPanel.Controls.Add(this.encoderProfileLabel);
             this.videoSettingsPanel.Controls.Add(this.encoderTuneLabel);
             this.videoSettingsPanel.Controls.Add(this.encoderSpeedLabel);
-            this.videoSettingsPanel.Location = new System.Drawing.Point(6, 168);
+            this.videoSettingsPanel.Location = new System.Drawing.Point(6, 176);
             this.videoSettingsPanel.Name = "videoSettingsPanel";
-            this.videoSettingsPanel.Size = new System.Drawing.Size(488, 205);
+            this.videoSettingsPanel.Size = new System.Drawing.Size(488, 146);
             this.videoSettingsPanel.TabIndex = 6;
             // 
             // framerateCombo
@@ -479,7 +482,7 @@
             this.framerateCombo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.framerateCombo.ForeColor = System.Drawing.Color.GreenYellow;
             this.framerateCombo.FormattingEnabled = true;
-            this.framerateCombo.Location = new System.Drawing.Point(112, 147);
+            this.framerateCombo.Location = new System.Drawing.Point(296, 20);
             this.framerateCombo.Name = "framerateCombo";
             this.framerateCombo.Size = new System.Drawing.Size(120, 21);
             this.framerateCombo.TabIndex = 14;
@@ -505,7 +508,7 @@
             "6",
             "6.5",
             "7"});
-            this.avgBitrateCombo.Location = new System.Drawing.Point(112, 117);
+            this.avgBitrateCombo.Location = new System.Drawing.Point(321, 51);
             this.avgBitrateCombo.Name = "avgBitrateCombo";
             this.avgBitrateCombo.Size = new System.Drawing.Size(51, 21);
             this.avgBitrateCombo.TabIndex = 13;
@@ -599,7 +602,7 @@
             this.turboCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.turboCheckBox.Checked = true;
             this.turboCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.turboCheckBox.Location = new System.Drawing.Point(339, 119);
+            this.turboCheckBox.Location = new System.Drawing.Point(294, 119);
             this.turboCheckBox.Name = "turboCheckBox";
             this.turboCheckBox.Size = new System.Drawing.Size(118, 17);
             this.turboCheckBox.TabIndex = 8;
@@ -612,7 +615,7 @@
             this.twoPassCheckbox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.twoPassCheckbox.Checked = true;
             this.twoPassCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.twoPassCheckbox.Location = new System.Drawing.Point(212, 119);
+            this.twoPassCheckbox.Location = new System.Drawing.Point(177, 119);
             this.twoPassCheckbox.Name = "twoPassCheckbox";
             this.twoPassCheckbox.Size = new System.Drawing.Size(111, 17);
             this.twoPassCheckbox.TabIndex = 8;
@@ -625,7 +628,7 @@
             this.optimizeStreamingCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.optimizeStreamingCheckBox.Checked = true;
             this.optimizeStreamingCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.optimizeStreamingCheckBox.Location = new System.Drawing.Point(15, 174);
+            this.optimizeStreamingCheckBox.Location = new System.Drawing.Point(15, 119);
             this.optimizeStreamingCheckBox.Name = "optimizeStreamingCheckBox";
             this.optimizeStreamingCheckBox.Size = new System.Drawing.Size(156, 17);
             this.optimizeStreamingCheckBox.TabIndex = 7;
@@ -635,7 +638,7 @@
             // mbpsLabel
             // 
             this.mbpsLabel.AutoSize = true;
-            this.mbpsLabel.Location = new System.Drawing.Point(169, 120);
+            this.mbpsLabel.Location = new System.Drawing.Point(378, 54);
             this.mbpsLabel.Name = "mbpsLabel";
             this.mbpsLabel.Size = new System.Drawing.Size(37, 13);
             this.mbpsLabel.TabIndex = 6;
@@ -653,7 +656,7 @@
             // framerateLabel
             // 
             this.framerateLabel.AutoSize = true;
-            this.framerateLabel.Location = new System.Drawing.Point(43, 150);
+            this.framerateLabel.Location = new System.Drawing.Point(227, 23);
             this.framerateLabel.Name = "framerateLabel";
             this.framerateLabel.Size = new System.Drawing.Size(63, 13);
             this.framerateLabel.TabIndex = 4;
@@ -662,7 +665,7 @@
             // avgBitrateLabel
             // 
             this.avgBitrateLabel.AutoSize = true;
-            this.avgBitrateLabel.Location = new System.Drawing.Point(18, 120);
+            this.avgBitrateLabel.Location = new System.Drawing.Point(227, 54);
             this.avgBitrateLabel.Name = "avgBitrateLabel";
             this.avgBitrateLabel.Size = new System.Drawing.Size(88, 13);
             this.avgBitrateLabel.TabIndex = 3;
@@ -698,7 +701,7 @@
             // videoSettingsLabel
             // 
             this.videoSettingsLabel.AutoSize = true;
-            this.videoSettingsLabel.Location = new System.Drawing.Point(3, 152);
+            this.videoSettingsLabel.Location = new System.Drawing.Point(3, 160);
             this.videoSettingsLabel.Name = "videoSettingsLabel";
             this.videoSettingsLabel.Size = new System.Drawing.Size(156, 13);
             this.videoSettingsLabel.TabIndex = 5;
@@ -707,7 +710,7 @@
             // ABitrateLabel
             // 
             this.ABitrateLabel.AutoSize = true;
-            this.ABitrateLabel.Location = new System.Drawing.Point(11, 113);
+            this.ABitrateLabel.Location = new System.Drawing.Point(243, 62);
             this.ABitrateLabel.Name = "ABitrateLabel";
             this.ABitrateLabel.Size = new System.Drawing.Size(143, 13);
             this.ABitrateLabel.TabIndex = 4;
@@ -716,7 +719,7 @@
             // mixdownLabel
             // 
             this.mixdownLabel.AutoSize = true;
-            this.mixdownLabel.Location = new System.Drawing.Point(11, 82);
+            this.mixdownLabel.Location = new System.Drawing.Point(27, 59);
             this.mixdownLabel.Name = "mixdownLabel";
             this.mixdownLabel.Size = new System.Drawing.Size(56, 13);
             this.mixdownLabel.TabIndex = 3;
@@ -725,7 +728,7 @@
             // codecLabel
             // 
             this.codecLabel.AutoSize = true;
-            this.codecLabel.Location = new System.Drawing.Point(24, 51);
+            this.codecLabel.Location = new System.Drawing.Point(40, 31);
             this.codecLabel.Name = "codecLabel";
             this.codecLabel.Size = new System.Drawing.Size(43, 13);
             this.codecLabel.TabIndex = 2;
@@ -734,7 +737,7 @@
             // audioSettingsLabel
             // 
             this.audioSettingsLabel.AutoSize = true;
-            this.audioSettingsLabel.Location = new System.Drawing.Point(3, 3);
+            this.audioSettingsLabel.Location = new System.Drawing.Point(3, 19);
             this.audioSettingsLabel.Name = "audioSettingsLabel";
             this.audioSettingsLabel.Size = new System.Drawing.Size(156, 13);
             this.audioSettingsLabel.TabIndex = 1;
@@ -745,21 +748,26 @@
             this.audioSettinsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.audioSettinsPanel.Controls.Add(this.filteredDTSCheck);
             this.audioSettinsPanel.Controls.Add(this.filteredAC3Check);
-            this.audioSettinsPanel.Controls.Add(this.checkBox1);
+            this.audioSettinsPanel.Controls.Add(this.filteredAACCheck);
             this.audioSettinsPanel.Controls.Add(this.kbpsLabel);
             this.audioSettinsPanel.Controls.Add(this.audioBitrateCombo);
             this.audioSettinsPanel.Controls.Add(this.passthruFilterLabel);
+            this.audioSettinsPanel.Controls.Add(this.sampleRateCombo);
             this.audioSettinsPanel.Controls.Add(this.mixdownComboBox);
+            this.audioSettinsPanel.Controls.Add(this.sampleRateLabel);
             this.audioSettinsPanel.Controls.Add(this.audioCodecComboBox);
-            this.audioSettinsPanel.Location = new System.Drawing.Point(6, 19);
+            this.audioSettinsPanel.Controls.Add(this.ABitrateLabel);
+            this.audioSettinsPanel.Controls.Add(this.mixdownLabel);
+            this.audioSettinsPanel.Controls.Add(this.codecLabel);
+            this.audioSettinsPanel.Location = new System.Drawing.Point(6, 36);
             this.audioSettinsPanel.Name = "audioSettinsPanel";
-            this.audioSettinsPanel.Size = new System.Drawing.Size(488, 123);
+            this.audioSettinsPanel.Size = new System.Drawing.Size(488, 121);
             this.audioSettinsPanel.TabIndex = 0;
             // 
             // filteredDTSCheck
             // 
             this.filteredDTSCheck.AutoSize = true;
-            this.filteredDTSCheck.Location = new System.Drawing.Point(330, 29);
+            this.filteredDTSCheck.Location = new System.Drawing.Point(358, 29);
             this.filteredDTSCheck.Name = "filteredDTSCheck";
             this.filteredDTSCheck.Size = new System.Drawing.Size(87, 17);
             this.filteredDTSCheck.TabIndex = 7;
@@ -769,27 +777,27 @@
             // filteredAC3Check
             // 
             this.filteredAC3Check.AutoSize = true;
-            this.filteredAC3Check.Location = new System.Drawing.Point(274, 29);
+            this.filteredAC3Check.Location = new System.Drawing.Point(302, 29);
             this.filteredAC3Check.Name = "filteredAC3Check";
             this.filteredAC3Check.Size = new System.Drawing.Size(49, 17);
             this.filteredAC3Check.TabIndex = 7;
             this.filteredAC3Check.Text = "AC3";
             this.filteredAC3Check.UseVisualStyleBackColor = true;
             // 
-            // checkBox1
+            // filteredAACCheck
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(218, 29);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(50, 17);
-            this.checkBox1.TabIndex = 7;
-            this.checkBox1.Text = "AAC";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.filteredAACCheck.AutoSize = true;
+            this.filteredAACCheck.Location = new System.Drawing.Point(246, 29);
+            this.filteredAACCheck.Name = "filteredAACCheck";
+            this.filteredAACCheck.Size = new System.Drawing.Size(50, 17);
+            this.filteredAACCheck.TabIndex = 7;
+            this.filteredAACCheck.Text = "AAC";
+            this.filteredAACCheck.UseVisualStyleBackColor = true;
             // 
             // kbpsLabel
             // 
             this.kbpsLabel.AutoSize = true;
-            this.kbpsLabel.Location = new System.Drawing.Point(205, 93);
+            this.kbpsLabel.Location = new System.Drawing.Point(446, 62);
             this.kbpsLabel.Name = "kbpsLabel";
             this.kbpsLabel.Size = new System.Drawing.Size(35, 13);
             this.kbpsLabel.TabIndex = 5;
@@ -814,7 +822,7 @@
             "192",
             "224",
             "256"});
-            this.audioBitrateCombo.Location = new System.Drawing.Point(152, 90);
+            this.audioBitrateCombo.Location = new System.Drawing.Point(393, 58);
             this.audioBitrateCombo.Name = "audioBitrateCombo";
             this.audioBitrateCombo.Size = new System.Drawing.Size(47, 21);
             this.audioBitrateCombo.TabIndex = 6;
@@ -823,7 +831,7 @@
             // passthruFilterLabel
             // 
             this.passthruFilterLabel.AutoSize = true;
-            this.passthruFilterLabel.Location = new System.Drawing.Point(259, 6);
+            this.passthruFilterLabel.Location = new System.Drawing.Point(287, 6);
             this.passthruFilterLabel.Name = "passthruFilterLabel";
             this.passthruFilterLabel.Size = new System.Drawing.Size(94, 13);
             this.passthruFilterLabel.TabIndex = 6;
@@ -837,7 +845,7 @@
             this.mixdownComboBox.Items.AddRange(new object[] {
             "Dolby ProLogic 2",
             "5.1 Audio"});
-            this.mixdownComboBox.Location = new System.Drawing.Point(66, 59);
+            this.mixdownComboBox.Location = new System.Drawing.Point(89, 54);
             this.mixdownComboBox.Name = "mixdownComboBox";
             this.mixdownComboBox.Size = new System.Drawing.Size(133, 21);
             this.mixdownComboBox.TabIndex = 0;
@@ -852,7 +860,7 @@
             "AAC (AVC)",
             "AC3",
             "Filtered Passthru"});
-            this.audioCodecComboBox.Location = new System.Drawing.Point(66, 28);
+            this.audioCodecComboBox.Location = new System.Drawing.Point(89, 28);
             this.audioCodecComboBox.Name = "audioCodecComboBox";
             this.audioCodecComboBox.Size = new System.Drawing.Size(133, 21);
             this.audioCodecComboBox.TabIndex = 0;
@@ -878,12 +886,54 @@
             this.compatibilitySelectionLabel.TabIndex = 15;
             this.compatibilitySelectionLabel.Text = "Compatibility Selection";
             // 
+            // presetLabel
+            // 
+            this.presetLabel.AutoSize = true;
+            this.presetLabel.Location = new System.Drawing.Point(325, 9);
+            this.presetLabel.Name = "presetLabel";
+            this.presetLabel.Size = new System.Drawing.Size(43, 13);
+            this.presetLabel.TabIndex = 16;
+            this.presetLabel.Text = "Preset";
+            // 
+            // presetComboBox
+            // 
+            this.presetComboBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.presetComboBox.ForeColor = System.Drawing.Color.GreenYellow;
+            this.presetComboBox.FormattingEnabled = true;
+            this.presetComboBox.Location = new System.Drawing.Point(373, 6);
+            this.presetComboBox.Name = "presetComboBox";
+            this.presetComboBox.Size = new System.Drawing.Size(121, 21);
+            this.presetComboBox.TabIndex = 17;
+            // 
+            // sampleRateLabel
+            // 
+            this.sampleRateLabel.AutoSize = true;
+            this.sampleRateLabel.Location = new System.Drawing.Point(4, 84);
+            this.sampleRateLabel.Name = "sampleRateLabel";
+            this.sampleRateLabel.Size = new System.Drawing.Size(79, 13);
+            this.sampleRateLabel.TabIndex = 4;
+            this.sampleRateLabel.Text = "Sample Rate";
+            // 
+            // sampleRateCombo
+            // 
+            this.sampleRateCombo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.sampleRateCombo.ForeColor = System.Drawing.Color.GreenYellow;
+            this.sampleRateCombo.FormattingEnabled = true;
+            this.sampleRateCombo.Items.AddRange(new object[] {
+            "44.1",
+            "48"});
+            this.sampleRateCombo.Location = new System.Drawing.Point(89, 81);
+            this.sampleRateCombo.Name = "sampleRateCombo";
+            this.sampleRateCombo.Size = new System.Drawing.Size(54, 21);
+            this.sampleRateCombo.TabIndex = 0;
+            this.sampleRateCombo.Text = "48";
+            // 
             // ConversionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(1104, 638);
+            this.ClientSize = new System.Drawing.Size(1104, 598);
             this.Controls.Add(this.compatibilitySelectionLabel);
             this.Controls.Add(this.conversionSettingsLabel);
             this.Controls.Add(this.tabControl1);
@@ -951,7 +1001,7 @@
         private System.Windows.Forms.Panel audioSettinsPanel;
         private System.Windows.Forms.CheckBox filteredDTSCheck;
         private System.Windows.Forms.CheckBox filteredAC3Check;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox filteredAACCheck;
         private System.Windows.Forms.Label kbpsLabel;
         private System.Windows.Forms.ComboBox audioBitrateCombo;
         private System.Windows.Forms.Label passthruFilterLabel;
@@ -987,5 +1037,9 @@
         private System.Windows.Forms.TextBox usernameBox;
         private System.Windows.Forms.TextBox passwordBox;
         private System.Windows.Forms.TextBox sendToBox;
+        private System.Windows.Forms.ComboBox presetComboBox;
+        private System.Windows.Forms.Label presetLabel;
+        private System.Windows.Forms.ComboBox sampleRateCombo;
+        private System.Windows.Forms.Label sampleRateLabel;
     }
 }

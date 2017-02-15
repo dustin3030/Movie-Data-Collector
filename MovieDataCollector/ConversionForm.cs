@@ -55,7 +55,7 @@ namespace MovieDataCollector
             "56",
             "64",
             "80",
-            "96",
+            "96", //Highest bitrate supported by Roku
             "112",
             "128",
             "160",
@@ -70,7 +70,7 @@ namespace MovieDataCollector
             "Super Fast",
             "Faster",
             "Fast",
-            "Medium",
+            "Medium", 
             "Slow",
             "Slower",
             "Very Slow",
@@ -149,10 +149,10 @@ namespace MovieDataCollector
             "10",
             "12",
             "15",
-            "23.976",
+            "23.976", //Roku Compatible
             "24",
             "25",
-            "29.97",
+            "29.97", //Roku Compatible
             "30",
             "50",
             "59.94",
@@ -162,7 +162,6 @@ namespace MovieDataCollector
         public ConversionForm()
         {
             InitializeComponent(); //Initializes components.
-            getInitialDirectory();
             checkForDefaults(configFileText);
             setDefaults();
             
@@ -471,34 +470,33 @@ namespace MovieDataCollector
         }
         private void setDefaults() //Sets encode options to values from file
         {
-            getInitialDirectory();
-            string formatCheckDefaultValues = "";
 
-            //Check that configFileText contains default information, if not write it.
 
-            checkForDefaults(configFileText);
-
-            //Parse out defaults
-            formatCheckDefaultValues = GeneralParser(configFileText, "--FormatCheckDefaultsStart--", "--FormatCheckDefaultsEnd--");
-
-            AudioCodecComboBox.Text = GeneralParser(formatCheckDefaultValues, "<CodecStart>", "<CodecEnd>");
-            if (AudioCodecComboBox.Text == "Filtered Passthru")
+            audioCodecComboBox.Text = CF.DefaultSettings["AudioCodec"];
+            if (CF.DefaultSettings["AudioCodec"] == "Filtered Passthru")
             {
                 filteredAACCheck.Visible = true;
                 filteredAC3Check.Visible = true;
                 filteredDTSCheck.Visible = true;
                 passthruFilterLabel.Visible = true;
             }
-            if (GeneralParser(formatCheckDefaultValues, "<AACPassthruStart>", "<AACPassthruEnd>") == "True") { filteredAACCheck.Checked = true; } else { filteredAACCheck.Checked = false; }
-            if (GeneralParser(formatCheckDefaultValues, "<AC3PassthruStart>", "<AC3PassthruEnd>") == "True") { filteredAC3Check.Checked = true; } else { filteredAC3Check.Checked = false; }
-            if (GeneralParser(formatCheckDefaultValues, "<DTSPassthruStart>", "<DTSPassthruEnd>") == "True") { filteredDTSCheck.Checked = true; } else { filteredDTSCheck.Checked = false; }
-            if (GeneralParser(formatCheckDefaultValues, "<TwoPassStart>", "<TwoPassEnd>") == "True") { TwoPassCheckbox.Checked = true; } else { filteredDTSCheck.Checked = false; }
-            if (GeneralParser(formatCheckDefaultValues, "<TurboStart>", "<TurboEnd>") == "True") { turboCheckBox.Checked = true; } else { filteredDTSCheck.Checked = false; }
-            if (GeneralParser(formatCheckDefaultValues, "<OptimizeStart>", "<OptimizeEnd>") == "True") { optimizeStreamingCheckBox.Checked = true; } else { filteredDTSCheck.Checked = false; }
+            if (CF.DefaultSettings["AAC_Passthru"] == "True") { filteredAACCheck.Checked = true; } else { filteredAACCheck.Checked = false; }
+            if (CF.DefaultSettings["AC3_Passthru"] == "True") { filteredAC3Check.Checked = true; } else { filteredAC3Check.Checked = false; }
+            if (CF.DefaultSettings["DTS_Passthru"] == "True") { filteredDTSCheck.Checked = true; } else { filteredDTSCheck.Checked = false; }
+            if (CF.DefaultSettings["TwoPass"] == "True") { twoPassCheckbox.Checked = true; } else { twoPassCheckbox.Checked = false; }
+            if (CF.DefaultSettings["TurboFirstPass"] == "True") { turboCheckBox.Checked = true; } else { turboCheckBox.Checked = false; }
+            if (CF.DefaultSettings["Optimize"] == "True") { optimizeStreamingCheckBox.Checked = true; } else { optimizeStreamingCheckBox.Checked = false; }
 
-            MixdownComboBox.Text = GeneralParser(formatCheckDefaultValues, "<MixdownStart>", "<MixdownEnd>");
-            AudioBitrateCombo.Text = GeneralParser(formatCheckDefaultValues, "<AudioBitrateCapStart>", "<AudioBitrateCapEnd>");
-            encoderSpeedCombo.Text = GeneralParser(formatCheckDefaultValues, "<EncoderSpeedStart>", "<EncoderSpeedEnd>");
+            mixdownComboBox.Text = CF.DefaultSettings["Mixdown"];
+            audioBitrateCombo.Text = CF.DefaultSettings["AudioBitrateCap"];
+            encoderSpeedCombo.Text = CF.DefaultSettings["EncoderSpeed"];
+            mixdownComboBox.Text = CF.DefaultSettings["Mixdown"];
+            mixdownComboBox.Text = CF.DefaultSettings["Mixdown"];
+            mixdownComboBox.Text = CF.DefaultSettings["Mixdown"];
+            mixdownComboBox.Text = CF.DefaultSettings["Mixdown"];
+            mixdownComboBox.Text = CF.DefaultSettings["Mixdown"];
+
+
             encoderTuneComboBox.Text = GeneralParser(formatCheckDefaultValues, "<EncoderTuneStart>", "<EncoderTuneEnd>");
             encoderProfileComboBox.Text = GeneralParser(formatCheckDefaultValues, "<EncoderProfileStart>", "<EncoderProfileEnd>");
             encoderLevelComboBox.Text = GeneralParser(formatCheckDefaultValues, "<EncoderLevelStart>", "<EncoderLevelEnd>");
@@ -506,96 +504,7 @@ namespace MovieDataCollector
             framerateCombo.Text = GeneralParser(formatCheckDefaultValues, "<FramerateStart>", "<FramerateEnd>");
 
         }
-        private void writeDefaults()//Writes values in boxes to file
-        {
-
-            string formatText = "--FormatCheckDefaultsStart--" + GeneralParser(configFileText, "--FormatCheckDefaultsStart--", "--FormatCheckDefaultsEnd--") + "--FormatCheckDefaultsEnd--";
-            string otherText = "--DefaultPathsStart--" + GeneralParser(configFileText, "--DefaultPathsStart--", "--FavoritesListEnd--") + "--FavoritesListEnd--\r\n";
-            //Write defaults to file
-
-            //Can't use this form of replace because it's looking for strings not in the text file. Like AC3 that doesn't exist in the default.
-            formatText = formatText.Replace("<CodecStart>" + GeneralParser(formatText, "<CodecStart>", "<CodecEnd>") + "<CodecEnd>", "<CodecStart>" + AudioCodecComboBox.Text + "<CodecEnd>");
-
-            //AACPassthruStart
-            if (filteredAACCheck.Checked) { formatText = formatText.Replace("<AACPassthruStart>" + GeneralParser(formatText, "<AACPassthruStart>", "<AACPassthruEnd>") + "<AACPassthruEnd>", "<AACPassthruStart>True<AACPassthruEnd>"); }
-            else { formatText = formatText.Replace("<AACPassthruStart>" + GeneralParser(formatText, "<AACPassthruStart>", "<AACPassthruEnd>") + "<AACPassthruEnd>", "<AACPassthruStart>False<AACPassthruEnd>"); }
-
-            //AC3PassthruStart
-            if (filteredAACCheck.Checked) { formatText = formatText.Replace("<AC3PassthruStart>" + GeneralParser(formatText, "<AC3PassthruStart>", "<AC3PassthruEnd>") + "<AC3PassthruEnd>", "<AC3PassthruStart>True<AC3PassthruEnd>"); }
-            else { formatText = formatText.Replace("<AC3PassthruStart>" + GeneralParser(formatText, "<AC3PassthruStart>", "<AC3PassthruEnd>") + "<AC3PassthruEnd>", "<AC3PassthruStart>False<AC3PassthruEnd>"); }
-
-            //DTSPassthruEnd
-            if (filteredAACCheck.Checked) { formatText = formatText.Replace("<DTSPassthruStart>" + GeneralParser(formatText, "<DTSPassthruStart>", "<DTSPassthruEnd>") + "<DTSPassthruEnd>", "<DTSPassthruStart>True<DTSPassthruEnd>"); }
-            else { formatText = formatText.Replace("<DTSPassthruStart>" + GeneralParser(formatText, "<DTSPassthruStart>", "<DTSPassthruEnd>") + "<DTSPassthruEnd>", "<DTSPassthruStart>False<DTSPassthruEnd>"); }
-
-            //TwoPassEnd
-            if (filteredAACCheck.Checked) { formatText = formatText.Replace("<TwoPassStart>" + GeneralParser(formatText, "<TwoPassStart>", "<TwoPassEnd>") + "<TwoPassEnd>", "<TwoPassStart>True<TwoPassEnd>"); }
-            else { formatText = formatText.Replace("<TwoPassStart>" + GeneralParser(formatText, "<TwoPassStart>", "<TwoPassEnd>") + "<TwoPassEnd>", "<TwoPassStart>False<TwoPassEnd>"); }
-
-            //TurboEnd
-            if (filteredAACCheck.Checked) { formatText = formatText.Replace("<TurboStart>" + GeneralParser(formatText, "<TurboStart>", "<TurboEnd>") + "<TurboEnd>", "<TurboStart>True<TurboEnd>"); }
-            else { formatText = formatText.Replace("<TurboStart>" + GeneralParser(formatText, "<TurboStart>", "<TurboEnd>") + "<TurboEnd>", "<TurboStart>False<TurboEnd>"); }
-
-            //OptimizeEnd
-            if (filteredAACCheck.Checked) { formatText = formatText.Replace("<OptimizeStart>" + GeneralParser(formatText, "<OptimizeStart>", "<OptimizeEnd>") + "<OptimizeEnd>", "<OptimizeStart>True<OptimizeEnd>"); }
-            else { formatText = formatText.Replace("<OptimizeStart>" + GeneralParser(formatText, "<OptimizeStart>", "<OptimizeEnd>") + "<OptimizeEnd>", "<OptimizeStart>False<OptimizeEnd>"); }
-
-            formatText = formatText.Replace("<MixdownStart>" + GeneralParser(formatText, "<MixdownStart>", "<MixdownEnd>") + "<MixdownEnd>", "<MixdownStart>" + MixdownComboBox.Text + "<MixdownEnd>");
-            formatText = formatText.Replace("<AudioBitrateCapStart>" + GeneralParser(formatText, "<AudioBitrateCapStart>", "<AudioBitrateCapEnd>") + "<AudioBitrateCapEnd>", "<AudioBitrateCapStart>" + AudioBitrateCombo.Text + "<AudioBitrateCapEnd>");
-            formatText = formatText.Replace("<EncoderSpeedStart>" + GeneralParser(formatText, "<EncoderSpeedStart>", "<EncoderSpeedEnd>") + "<EncoderSpeedStart>", "<EncoderSpeedStart>" + encoderSpeedCombo.Text + "<EncoderSpeedStart>");
-            formatText = formatText.Replace("<EncoderTuneStart>" + GeneralParser(formatText, "<EncoderTuneStart>", "<EncoderTuneEnd>") + "<EncoderTuneEnd>", "<EncoderTuneStart>" + encoderTuneComboBox.Text + "<EncoderTuneEnd>");
-            formatText = formatText.Replace("<EncoderProfileStart>" + GeneralParser(formatText, "<EncoderProfileStart>", "<EncoderProfileEnd>") + "<EncoderProfileEnd>", "<EncoderProfileStart>" + encoderProfileComboBox.Text + "<EncoderProfileEnd>");
-            formatText = formatText.Replace("<EncoderLevelStart>" + GeneralParser(formatText, "<EncoderLevelStart>", "<EncoderLevelEnd>") + "<EncoderLevelEnd>", "<EncoderLevelStart>" + encoderLevelComboBox.Text + "<EncoderLevelEnd>");
-            formatText = formatText.Replace("<VideoBitrateCapStart>" + GeneralParser(formatText, "<VideoBitrateCapStart>", "<VideoBitrateCapEnd>") + "<VideoBitrateCapEnd>", "<VideoBitrateCapStart>" + avgBitrateCombo.Text + "<VideoBitrateCapEnd>");
-            formatText = formatText.Replace("<FramerateStart>" + GeneralParser(formatText, "<FramerateStart>", "<FramerateEnd>") + "<FramerateEnd>", "<FramerateStart>" + framerateCombo.Text + "<FramerateEnd>");
-
-
-            using (StreamWriter sw = System.IO.File.CreateText(configPath))
-            {
-                sw.WriteLine(otherText);
-                sw.WriteLine(formatText);
-                sw.Close();
-                sw.Dispose();
-            }
-
-        }
-        private void getInitialDirectory()
-        {
-            if (System.IO.File.Exists(configPath))
-            {
-                //parse default path from config file and set it to folder path
-                using (StreamReader SR = new StreamReader(configPath))
-                {
-                    //Read configFileText to string
-                    configFileText = SR.ReadToEnd();
-                    defaultPathText = GeneralParser(configFileText, "<FormatCheckDefaultPathStart>", "<FormatCheckDefaultPathEnd>");
-                    defaultOutputPath = GeneralParser(configFileText, "<FormatCheckOutputStart>", "<FormatCheckOutputEnd>");
-                    SR.Close();
-                }
-            }
-        }
-        private void WriteDefaultOutputFilePath()
-        {
-            string oldText = "";
-            string newText = "";
-
-            using (StreamReader SR = new StreamReader(configPath))
-            {
-                //Read configFileText to string
-                configFileText = SR.ReadToEnd();
-                defaultOutputPath = GeneralParser(configFileText, "<FormatCheckOutputStart>", "<FormatCheckOutputEnd>");
-                oldText = "<FormatCheckOutputStart>" + defaultOutputPath + "<FormatCheckOutputEnd>";
-                newText = "<FormatCheckOutputStart>" + folderPath + "<FormatCheckOutputEnd>";
-                configFileText = configFileText.Replace(oldText, newText);
-                SR.Close();
-            }
-
-            using (StreamWriter sw = System.IO.File.CreateText(configPath))
-            {
-                sw.WriteLine(configFileText);
-                sw.Close();
-            }
-        }
+        
         private void WriteDefaultFilePath()
         {
             string oldText = "";
