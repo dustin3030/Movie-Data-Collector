@@ -50,6 +50,8 @@
             this.outPutTextBox = new System.Windows.Forms.RichTextBox();
             this.exportInfoButton = new System.Windows.Forms.Button();
             this.conversionSettingsPage = new System.Windows.Forms.TabPage();
+            this.presetComboBox = new System.Windows.Forms.ComboBox();
+            this.presetLabel = new System.Windows.Forms.Label();
             this.sendToBox = new System.Windows.Forms.TextBox();
             this.passwordBox = new System.Windows.Forms.TextBox();
             this.usernameBox = new System.Windows.Forms.TextBox();
@@ -57,7 +59,7 @@
             this.passwordLabel = new System.Windows.Forms.Label();
             this.userNameLabel = new System.Windows.Forms.Label();
             this.notificationCheck = new System.Windows.Forms.CheckBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.testNotificationButton = new System.Windows.Forms.Button();
             this.convertAllButton = new System.Windows.Forms.Button();
             this.convertSelectedButton = new System.Windows.Forms.Button();
             this.videoSettingsPanel = new System.Windows.Forms.Panel();
@@ -78,9 +80,6 @@
             this.encoderTuneLabel = new System.Windows.Forms.Label();
             this.encoderSpeedLabel = new System.Windows.Forms.Label();
             this.videoSettingsLabel = new System.Windows.Forms.Label();
-            this.ABitrateLabel = new System.Windows.Forms.Label();
-            this.mixdownLabel = new System.Windows.Forms.Label();
-            this.codecLabel = new System.Windows.Forms.Label();
             this.audioSettingsLabel = new System.Windows.Forms.Label();
             this.audioSettinsPanel = new System.Windows.Forms.Panel();
             this.filteredDTSCheck = new System.Windows.Forms.CheckBox();
@@ -89,14 +88,15 @@
             this.kbpsLabel = new System.Windows.Forms.Label();
             this.audioBitrateCombo = new System.Windows.Forms.ComboBox();
             this.passthruFilterLabel = new System.Windows.Forms.Label();
+            this.sampleRateCombo = new System.Windows.Forms.ComboBox();
             this.mixdownComboBox = new System.Windows.Forms.ComboBox();
+            this.sampleRateLabel = new System.Windows.Forms.Label();
             this.audioCodecComboBox = new System.Windows.Forms.ComboBox();
+            this.ABitrateLabel = new System.Windows.Forms.Label();
+            this.mixdownLabel = new System.Windows.Forms.Label();
+            this.codecLabel = new System.Windows.Forms.Label();
             this.conversionSettingsLabel = new System.Windows.Forms.Label();
             this.compatibilitySelectionLabel = new System.Windows.Forms.Label();
-            this.presetLabel = new System.Windows.Forms.Label();
-            this.presetComboBox = new System.Windows.Forms.ComboBox();
-            this.sampleRateLabel = new System.Windows.Forms.Label();
-            this.sampleRateCombo = new System.Windows.Forms.ComboBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.selectionPicturebox)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -156,6 +156,7 @@
             this.selectDirectoryButton.TabIndex = 1;
             this.selectDirectoryButton.Text = "&Select Directory";
             this.selectDirectoryButton.UseVisualStyleBackColor = false;
+            this.selectDirectoryButton.Click += new System.EventHandler(this.selectDirectoryButton_Click);
             // 
             // filenameTextBox
             // 
@@ -203,6 +204,7 @@
             this.listAllVideosButton.TabIndex = 5;
             this.listAllVideosButton.Text = "&List All Videos";
             this.listAllVideosButton.UseVisualStyleBackColor = false;
+            this.listAllVideosButton.Click += new System.EventHandler(this.listAllVideosButton_Click);
             // 
             // listIncompatibleButton
             // 
@@ -215,6 +217,7 @@
             this.listIncompatibleButton.TabIndex = 6;
             this.listIncompatibleButton.Text = "List &Incompatible";
             this.listIncompatibleButton.UseVisualStyleBackColor = false;
+            this.listIncompatibleButton.Click += new System.EventHandler(this.listIncompatibleButton_Click);
             // 
             // exportButton
             // 
@@ -227,6 +230,7 @@
             this.exportButton.TabIndex = 7;
             this.exportButton.Text = "&Export File List";
             this.exportButton.UseVisualStyleBackColor = false;
+            this.exportButton.Click += new System.EventHandler(this.ExportButton_Click);
             // 
             // quickInfoButton
             // 
@@ -239,6 +243,7 @@
             this.quickInfoButton.TabIndex = 8;
             this.quickInfoButton.Text = "&Quick Info";
             this.quickInfoButton.UseVisualStyleBackColor = false;
+            this.quickInfoButton.Click += new System.EventHandler(this.QuickInfobutton_Click);
             // 
             // detailInfoButton
             // 
@@ -251,6 +256,7 @@
             this.detailInfoButton.TabIndex = 9;
             this.detailInfoButton.Text = "&Detailed Info";
             this.detailInfoButton.UseVisualStyleBackColor = false;
+            this.detailInfoButton.Click += new System.EventHandler(this.detailInfoButton_Click);
             // 
             // listboxLabel
             // 
@@ -272,6 +278,7 @@
             this.filesListBox.Name = "filesListBox";
             this.filesListBox.Size = new System.Drawing.Size(548, 368);
             this.filesListBox.TabIndex = 11;
+            this.filesListBox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.filesListBox_MouseDoubleClick);
             // 
             // notificationLabel
             // 
@@ -327,6 +334,7 @@
             this.exportInfoButton.TabIndex = 1;
             this.exportInfoButton.Text = "Export Media Info";
             this.exportInfoButton.UseVisualStyleBackColor = false;
+            this.exportInfoButton.Click += new System.EventHandler(this.ExportButton_Click);
             // 
             // conversionSettingsPage
             // 
@@ -340,7 +348,7 @@
             this.conversionSettingsPage.Controls.Add(this.passwordLabel);
             this.conversionSettingsPage.Controls.Add(this.userNameLabel);
             this.conversionSettingsPage.Controls.Add(this.notificationCheck);
-            this.conversionSettingsPage.Controls.Add(this.button1);
+            this.conversionSettingsPage.Controls.Add(this.testNotificationButton);
             this.conversionSettingsPage.Controls.Add(this.convertAllButton);
             this.conversionSettingsPage.Controls.Add(this.convertSelectedButton);
             this.conversionSettingsPage.Controls.Add(this.videoSettingsPanel);
@@ -353,6 +361,25 @@
             this.conversionSettingsPage.Size = new System.Drawing.Size(508, 482);
             this.conversionSettingsPage.TabIndex = 1;
             this.conversionSettingsPage.Text = "Conversion Settings";
+            // 
+            // presetComboBox
+            // 
+            this.presetComboBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.presetComboBox.ForeColor = System.Drawing.Color.GreenYellow;
+            this.presetComboBox.FormattingEnabled = true;
+            this.presetComboBox.Location = new System.Drawing.Point(373, 6);
+            this.presetComboBox.Name = "presetComboBox";
+            this.presetComboBox.Size = new System.Drawing.Size(121, 21);
+            this.presetComboBox.TabIndex = 17;
+            // 
+            // presetLabel
+            // 
+            this.presetLabel.AutoSize = true;
+            this.presetLabel.Location = new System.Drawing.Point(325, 9);
+            this.presetLabel.Name = "presetLabel";
+            this.presetLabel.Size = new System.Drawing.Size(43, 13);
+            this.presetLabel.TabIndex = 16;
+            this.presetLabel.Text = "Preset";
             // 
             // sendToBox
             // 
@@ -371,6 +398,7 @@
             this.passwordBox.Name = "passwordBox";
             this.passwordBox.Size = new System.Drawing.Size(158, 20);
             this.passwordBox.TabIndex = 15;
+            this.passwordBox.UseSystemPasswordChar = true;
             // 
             // usernameBox
             // 
@@ -419,17 +447,19 @@
             this.notificationCheck.TabIndex = 10;
             this.notificationCheck.Text = "Notification Toggle";
             this.notificationCheck.UseVisualStyleBackColor = false;
+            this.notificationCheck.CheckedChanged += new System.EventHandler(this.notificationCheck_CheckedChanged_1);
             // 
-            // button1
+            // testNotificationButton
             // 
-            this.button1.BackColor = System.Drawing.Color.GreenYellow;
-            this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.button1.Location = new System.Drawing.Point(329, 387);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(121, 23);
-            this.button1.TabIndex = 9;
-            this.button1.Text = "Test Notification";
-            this.button1.UseVisualStyleBackColor = false;
+            this.testNotificationButton.BackColor = System.Drawing.Color.GreenYellow;
+            this.testNotificationButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.testNotificationButton.Location = new System.Drawing.Point(329, 387);
+            this.testNotificationButton.Name = "testNotificationButton";
+            this.testNotificationButton.Size = new System.Drawing.Size(121, 23);
+            this.testNotificationButton.TabIndex = 9;
+            this.testNotificationButton.Text = "Test Notification";
+            this.testNotificationButton.UseVisualStyleBackColor = false;
+            this.testNotificationButton.Click += new System.EventHandler(this.testNotificationButton_Click);
             // 
             // convertAllButton
             // 
@@ -441,6 +471,7 @@
             this.convertAllButton.TabIndex = 8;
             this.convertAllButton.Text = "Convert &All";
             this.convertAllButton.UseVisualStyleBackColor = false;
+            this.convertAllButton.Click += new System.EventHandler(this.ConvertAllButton_Click);
             // 
             // convertSelectedButton
             // 
@@ -452,6 +483,7 @@
             this.convertSelectedButton.TabIndex = 7;
             this.convertSelectedButton.Text = "Convert &Selected";
             this.convertSelectedButton.UseVisualStyleBackColor = false;
+            this.convertSelectedButton.Click += new System.EventHandler(this.ConvertSelectedButton_Click);
             // 
             // videoSettingsPanel
             // 
@@ -707,33 +739,6 @@
             this.videoSettingsLabel.TabIndex = 5;
             this.videoSettingsLabel.Text = "Video Conversion Settings";
             // 
-            // ABitrateLabel
-            // 
-            this.ABitrateLabel.AutoSize = true;
-            this.ABitrateLabel.Location = new System.Drawing.Point(243, 62);
-            this.ABitrateLabel.Name = "ABitrateLabel";
-            this.ABitrateLabel.Size = new System.Drawing.Size(143, 13);
-            this.ABitrateLabel.TabIndex = 4;
-            this.ABitrateLabel.Text = "Bitrate Per Channel Cap";
-            // 
-            // mixdownLabel
-            // 
-            this.mixdownLabel.AutoSize = true;
-            this.mixdownLabel.Location = new System.Drawing.Point(27, 59);
-            this.mixdownLabel.Name = "mixdownLabel";
-            this.mixdownLabel.Size = new System.Drawing.Size(56, 13);
-            this.mixdownLabel.TabIndex = 3;
-            this.mixdownLabel.Text = "Mixdown";
-            // 
-            // codecLabel
-            // 
-            this.codecLabel.AutoSize = true;
-            this.codecLabel.Location = new System.Drawing.Point(40, 31);
-            this.codecLabel.Name = "codecLabel";
-            this.codecLabel.Size = new System.Drawing.Size(43, 13);
-            this.codecLabel.TabIndex = 2;
-            this.codecLabel.Text = "Codec";
-            // 
             // audioSettingsLabel
             // 
             this.audioSettingsLabel.AutoSize = true;
@@ -837,6 +842,20 @@
             this.passthruFilterLabel.TabIndex = 6;
             this.passthruFilterLabel.Text = "Passthru Filters";
             // 
+            // sampleRateCombo
+            // 
+            this.sampleRateCombo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.sampleRateCombo.ForeColor = System.Drawing.Color.GreenYellow;
+            this.sampleRateCombo.FormattingEnabled = true;
+            this.sampleRateCombo.Items.AddRange(new object[] {
+            "44.1",
+            "48"});
+            this.sampleRateCombo.Location = new System.Drawing.Point(89, 81);
+            this.sampleRateCombo.Name = "sampleRateCombo";
+            this.sampleRateCombo.Size = new System.Drawing.Size(54, 21);
+            this.sampleRateCombo.TabIndex = 0;
+            this.sampleRateCombo.Text = "48";
+            // 
             // mixdownComboBox
             // 
             this.mixdownComboBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
@@ -850,6 +869,15 @@
             this.mixdownComboBox.Size = new System.Drawing.Size(133, 21);
             this.mixdownComboBox.TabIndex = 0;
             this.mixdownComboBox.Text = "Dolby ProLogic 2";
+            // 
+            // sampleRateLabel
+            // 
+            this.sampleRateLabel.AutoSize = true;
+            this.sampleRateLabel.Location = new System.Drawing.Point(4, 84);
+            this.sampleRateLabel.Name = "sampleRateLabel";
+            this.sampleRateLabel.Size = new System.Drawing.Size(79, 13);
+            this.sampleRateLabel.TabIndex = 4;
+            this.sampleRateLabel.Text = "Sample Rate";
             // 
             // audioCodecComboBox
             // 
@@ -865,6 +893,33 @@
             this.audioCodecComboBox.Size = new System.Drawing.Size(133, 21);
             this.audioCodecComboBox.TabIndex = 0;
             this.audioCodecComboBox.Text = "AAC (AVC)";
+            // 
+            // ABitrateLabel
+            // 
+            this.ABitrateLabel.AutoSize = true;
+            this.ABitrateLabel.Location = new System.Drawing.Point(243, 62);
+            this.ABitrateLabel.Name = "ABitrateLabel";
+            this.ABitrateLabel.Size = new System.Drawing.Size(143, 13);
+            this.ABitrateLabel.TabIndex = 4;
+            this.ABitrateLabel.Text = "Bitrate Per Channel Cap";
+            // 
+            // mixdownLabel
+            // 
+            this.mixdownLabel.AutoSize = true;
+            this.mixdownLabel.Location = new System.Drawing.Point(27, 59);
+            this.mixdownLabel.Name = "mixdownLabel";
+            this.mixdownLabel.Size = new System.Drawing.Size(56, 13);
+            this.mixdownLabel.TabIndex = 3;
+            this.mixdownLabel.Text = "Mixdown";
+            // 
+            // codecLabel
+            // 
+            this.codecLabel.AutoSize = true;
+            this.codecLabel.Location = new System.Drawing.Point(40, 31);
+            this.codecLabel.Name = "codecLabel";
+            this.codecLabel.Size = new System.Drawing.Size(43, 13);
+            this.codecLabel.TabIndex = 2;
+            this.codecLabel.Text = "Codec";
             // 
             // conversionSettingsLabel
             // 
@@ -885,48 +940,6 @@
             this.compatibilitySelectionLabel.Size = new System.Drawing.Size(135, 13);
             this.compatibilitySelectionLabel.TabIndex = 15;
             this.compatibilitySelectionLabel.Text = "Compatibility Selection";
-            // 
-            // presetLabel
-            // 
-            this.presetLabel.AutoSize = true;
-            this.presetLabel.Location = new System.Drawing.Point(325, 9);
-            this.presetLabel.Name = "presetLabel";
-            this.presetLabel.Size = new System.Drawing.Size(43, 13);
-            this.presetLabel.TabIndex = 16;
-            this.presetLabel.Text = "Preset";
-            // 
-            // presetComboBox
-            // 
-            this.presetComboBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.presetComboBox.ForeColor = System.Drawing.Color.GreenYellow;
-            this.presetComboBox.FormattingEnabled = true;
-            this.presetComboBox.Location = new System.Drawing.Point(373, 6);
-            this.presetComboBox.Name = "presetComboBox";
-            this.presetComboBox.Size = new System.Drawing.Size(121, 21);
-            this.presetComboBox.TabIndex = 17;
-            // 
-            // sampleRateLabel
-            // 
-            this.sampleRateLabel.AutoSize = true;
-            this.sampleRateLabel.Location = new System.Drawing.Point(4, 84);
-            this.sampleRateLabel.Name = "sampleRateLabel";
-            this.sampleRateLabel.Size = new System.Drawing.Size(79, 13);
-            this.sampleRateLabel.TabIndex = 4;
-            this.sampleRateLabel.Text = "Sample Rate";
-            // 
-            // sampleRateCombo
-            // 
-            this.sampleRateCombo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.sampleRateCombo.ForeColor = System.Drawing.Color.GreenYellow;
-            this.sampleRateCombo.FormattingEnabled = true;
-            this.sampleRateCombo.Items.AddRange(new object[] {
-            "44.1",
-            "48"});
-            this.sampleRateCombo.Location = new System.Drawing.Point(89, 81);
-            this.sampleRateCombo.Name = "sampleRateCombo";
-            this.sampleRateCombo.Size = new System.Drawing.Size(54, 21);
-            this.sampleRateCombo.TabIndex = 0;
-            this.sampleRateCombo.Text = "48";
             // 
             // ConversionForm
             // 
@@ -1028,7 +1041,7 @@
         private System.Windows.Forms.ComboBox encoderSpeedCombo;
         private System.Windows.Forms.Label compatibilitySelectionLabel;
         private System.Windows.Forms.CheckBox notificationCheck;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button testNotificationButton;
         private System.Windows.Forms.Button convertAllButton;
         private System.Windows.Forms.Button convertSelectedButton;
         private System.Windows.Forms.Label passwordLabel;

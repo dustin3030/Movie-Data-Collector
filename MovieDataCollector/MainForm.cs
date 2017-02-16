@@ -34,7 +34,12 @@ namespace MovieDataCollector
         }
         private void CompatibilityCheckerButton_Click(object sender, EventArgs e)
         {
-            
+            // calls the form’s constructor
+            ConversionForm CForm = new ConversionForm();
+            //  shows the form as a dialog
+            this.Hide();
+            CForm.ShowDialog();
+            this.Show();
         }
 
         private void movieButton_Click(object sender, EventArgs e)

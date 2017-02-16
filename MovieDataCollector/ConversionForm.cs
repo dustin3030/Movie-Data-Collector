@@ -28,7 +28,6 @@ namespace MovieDataCollector
         Inteded to prevent having to re-drill down to the same location each time the program is opened*/
         string defaultOutputPath = "";
 
-        string configFileText = ""; //contains string information gathered from the configuration file. Default file path is located in this text file.
         string configDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector"; //Writable folder location for config file.
         string configPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector\\Config.txt"; //Writable file location for config file.
 
@@ -162,7 +161,6 @@ namespace MovieDataCollector
         public ConversionForm()
         {
             InitializeComponent(); //Initializes components.
-            checkForDefaults(configFileText);
             setDefaults();
             
         }
@@ -173,15 +171,14 @@ namespace MovieDataCollector
             int loopcount = 0; //for progress bar value
             int fileCount = 0;
 
-            if ((xboxCheckBox.Checked == true) || (rokuCheckBox.Checked == true))
+            if (compatibilityCombo.SelectedIndex > -1) // Selection rather than a typed input
             {
-                if (Directory.Exists(folderPath))
+                if (Directory.Exists(CF.DefaultSettings["InputFilePath"]))
                 {
                     notificationLabel.Text = "Checking and filtering directory for video files ";
                     notificationLabel.Invalidate();
                     notificationLabel.Update();
 
-                    string parentPath = "";
                     string fileName = "";
                     filesListBox.Items.Clear();
                     VideoFilesList.Clear();
@@ -192,7 +189,7 @@ namespace MovieDataCollector
                     try
                     {
                         string[] fileNames = Directory
-                                .GetFiles(folderPath, "*", SearchOption.AllDirectories)
+                                .GetFiles(CF.DefaultSettings["InputFilePath"], "*", SearchOption.AllDirectories)
                                 .Where(file => file.ToLower().EndsWith(".mpg") || file.ToLower().EndsWith(".mpeg") || file.ToLower().EndsWith(".vob") || file.ToLower().EndsWith(".mod") || file.ToLower().EndsWith(".ts") || file.ToLower().EndsWith(".m2ts")
                                 || file.ToLower().EndsWith(".mp4") || file.ToLower().EndsWith(".m4v") || file.ToLower().EndsWith(".mov") || file.ToLower().EndsWith("avi") || file.ToLower().EndsWith(".divx")
                                 || file.ToLower().EndsWith(".wmv") || file.ToLower().EndsWith(".asf") || file.ToLower().EndsWith(".mkv") || file.ToLower().EndsWith(".flv") || file.ToLower().EndsWith(".f4v")
@@ -214,7 +211,7 @@ namespace MovieDataCollector
                             notificationLabel.Invalidate();
                             notificationLabel.Update();
 
-                            if (xboxCheckBox.Checked)
+                            if (compatibilityCombo.SelectedIndex == 1)
                             {
                                 if (!string.IsNullOrEmpty(XboxCompatibilityCheck(file)))
                                 {
@@ -223,8 +220,8 @@ namespace MovieDataCollector
                                     {
                                         fileName = fileName.Remove(0, 1);
                                     }
-                                    parentPath = file;
-                                    parentPath = file.Replace(fileName, "");
+                                    CF.DefaultSettings["InputFilePath"] = file;
+                                    CF.DefaultSettings["InputFilePath"] = file.Replace(fileName, "");
 
                                     filesListBox.Items.Add(fileName);
                                     filesListBox.Update();
@@ -244,7 +241,7 @@ namespace MovieDataCollector
                                 }
                                 notificationLabel.Text = "Listing " + filesListBox.Items.Count.ToString() + " Files Incompatible with Xbox360";
                             }
-                            if (rokuCheckBox.Checked)
+                            if (compatibilityCombo.SelectedIndex == 0) //Roku is selected
                             {
                                 if (!string.IsNullOrEmpty(RokuCompatibilityCheck(file)))
                                 {
@@ -253,8 +250,8 @@ namespace MovieDataCollector
                                     {
                                         fileName = fileName.Remove(0, 1);
                                     }
-                                    parentPath = file;
-                                    parentPath = file.Replace(fileName, "");
+                                    CF.DefaultSettings["InputFilePath"] = file;
+                                    CF.DefaultSettings["InputFilePath"] = file.Replace(fileName, "");
 
                                     filesListBox.Items.Add(fileName);
                                     filesListBox.Update();
@@ -293,10 +290,8 @@ namespace MovieDataCollector
             int loopcount = 0;
             int fileCount = 0;
 
-            if (Directory.Exists(folderPath))
+            if (Directory.Exists(CF.DefaultSettings["InputFilePath"]))
             {
-
-                string parentPath = "";
                 string fileName = "";
                 filesListBox.Items.Clear();
                 outPutTextBox.Clear();
@@ -310,7 +305,7 @@ namespace MovieDataCollector
                 try
                 {
                     string[] fileNames = Directory
-                            .GetFiles(folderPath, "*", SearchOption.AllDirectories)
+                            .GetFiles(CF.DefaultSettings["InputFilePath"], "*", SearchOption.AllDirectories)
                             .Where(file => file.ToLower().EndsWith(".mpg") || file.ToLower().EndsWith(".mpeg") || file.ToLower().EndsWith(".vob") || file.ToLower().EndsWith(".mod") || file.ToLower().EndsWith(".ts") || file.ToLower().EndsWith(".m2ts")
                             || file.ToLower().EndsWith(".mp4") || file.ToLower().EndsWith(".m4v") || file.ToLower().EndsWith(".mov") || file.ToLower().EndsWith("avi") || file.ToLower().EndsWith(".divx")
                             || file.ToLower().EndsWith(".wmv") || file.ToLower().EndsWith(".asf") || file.ToLower().EndsWith(".mkv") || file.ToLower().EndsWith(".flv") || file.ToLower().EndsWith(".f4v")
@@ -337,8 +332,8 @@ namespace MovieDataCollector
                             fileName = fileName.Remove(0, 1);
                         }
 
-                        parentPath = file;
-                        parentPath = file.Replace(fileName, "");
+                        CF.DefaultSettings["InputFilePath"] = file;
+                        CF.DefaultSettings["InputFilePath"] = file.Replace(fileName, "");
 
                         filesListBox.Items.Add(fileName);
                         filesListBox.Update();
@@ -360,114 +355,7 @@ namespace MovieDataCollector
             returnAllVideoFiles();
             notificationLabel.ForeColor = Color.GreenYellow;
         }
-        private void checkForDefaults(string ConfigFile)//Checks that all values in the configuration file are valid, if not sets them to default values
-        {
-            string formatCheckDefaultValues = "";
 
-            //Read configFileText for defaults
-
-            if (ConfigFile.Contains("--FormatCheckDefaultsStart--") && configFileText.Contains("--FormatCheckDefaultsEnd--"))
-            {
-                //Parse out defaults
-                formatCheckDefaultValues = GeneralParser(configFileText, "--FormatCheckDefaultsStart--", "--FormatCheckDefaultsEnd--");
-
-                //Codec
-                if (!codecList.Contains(GeneralParser(formatCheckDefaultValues, "<CodecStart>", "<CodecEnd>")))
-                {
-                    //Replace with Default
-                    formatCheckDefaultValues.Replace("<CodecStart>" + GeneralParser(formatCheckDefaultValues, "<CodecStart>", "<CodecEnd>") + "<CodecEnd>", "<CodecStart>AAC(AVC)<CodecEnd>");
-                }
-
-                //Passhru Filters
-                if (GeneralParser(formatCheckDefaultValues, "<AACPassthruStart>", "<AACPassthruEnd>") != "True" &&
-                   GeneralParser(formatCheckDefaultValues, "<AACPassthruStart>", "<AACPassthruEnd>") != "False")
-                {
-                    formatCheckDefaultValues.Replace("<AACPassthruStart>" + GeneralParser(formatCheckDefaultValues, "<AACPassthruStart>", "<AACPassthruEnd>") + "<AACPassthruEnd>", "<AACPassthruStart>False<AACPassthruEnd>");
-                }
-
-                if (GeneralParser(formatCheckDefaultValues, "<AC3PassthruStart>", "<AC3PassthruEnd>") != "True" &&
-                   GeneralParser(formatCheckDefaultValues, "<AC3PassthruStart>", "<AC3PassthruEnd>") != "False")
-                {
-                    formatCheckDefaultValues.Replace("<AC3PassthruStart>" + GeneralParser(formatCheckDefaultValues, "<AC3PassthruStart>", "<AC3PassthruEnd>") + "<AC3PassthruEnd>", "<AC3PassthruStart>False<AC3PassthruEnd>");
-                }
-
-                if (GeneralParser(formatCheckDefaultValues, "<DTSPassthruStart>", "<DTSPassthruEnd>") != "True" &&
-                   GeneralParser(formatCheckDefaultValues, "<DTSPassthruStart>", "<DTSPassthruEnd>") != "False")
-                {
-                    formatCheckDefaultValues.Replace("<DTSPassthruStart>" + GeneralParser(formatCheckDefaultValues, "<DTSPassthruStart>", "<DTSPassthruEnd>") + "<DTSPassthruEnd>", "<DTSPassthruStart>False<DTSPassthruEnd>");
-                }
-
-                //Turbo
-                if (GeneralParser(formatCheckDefaultValues, "<TurboStart>", "<TurboEnd>") != "True" &&
-                   GeneralParser(formatCheckDefaultValues, "<TurboStart>", "<TurboEnd>") != "False")
-                {
-                    formatCheckDefaultValues.Replace("<TurboStart>" + GeneralParser(formatCheckDefaultValues, "<TurboStart>", "<TurboEnd>") + "<TurboEnd>", "<TurboStart>True<TurboEnd>");
-                }
-
-                //Two Pass
-                if (GeneralParser(formatCheckDefaultValues, "<TwoPassStart>", "<TwoPassEnd>") != "True" &&
-                   GeneralParser(formatCheckDefaultValues, "<TwoPassStart>", "<TwoPassEnd>") != "False")
-                {
-                    formatCheckDefaultValues.Replace("<TwoPassStart>" + GeneralParser(formatCheckDefaultValues, "<TwoPassStart>", "<CodecEnd>") + "<CodecEnd>", "<TwoPassStart>True<CodecEnd>");
-                }
-
-                //Optimized for Streaming
-                if (GeneralParser(formatCheckDefaultValues, "<OptimizeStart>", "<OptimizeEnd>") != "True" &&
-                   GeneralParser(formatCheckDefaultValues, "<OptimizeStart>", "<OptimizeEnd>") != "False")
-                {
-                    formatCheckDefaultValues.Replace("<OptimizeStart>" + GeneralParser(formatCheckDefaultValues, "<OptimizeStart>", "<OptimizeEnd>") + "<OptimizeEnd>", "<OptimizeStart>True<OptimizeEnd>");
-                }
-
-                //Mixdown
-                if (!mixdownList.Contains(GeneralParser(formatCheckDefaultValues, "<MixdownStart>", "<MixdownEnd>")))
-                {
-                    formatCheckDefaultValues.Replace("<MixdownStart>" + GeneralParser(formatCheckDefaultValues, "<MixdownStart>", "<MixdownEnd>") + "<MixdownEnd>", "<MixdownStart>Dolby Prologic 2<MixdownEnd>");
-                }
-
-                //Audio Bitrate Cap
-                if (!audioBitrateCapList.Contains(GeneralParser(formatCheckDefaultValues, "<AudioBitrateCapStart>", "<AudioBitrateCapEnd>")))
-                {
-                    formatCheckDefaultValues.Replace("<AudioBitrateCapStart>" + GeneralParser(formatCheckDefaultValues, "<AudioBitrateCapStart>", "<AudioBitrateCapEnd>") + "<AudioBitrateCapEnd>", "<AudioBitrateCapStart>96<AudioBitrateCapEnd>");
-                }
-
-                //Encoder Speed
-                if (!encoderSpeedList.Contains(GeneralParser(formatCheckDefaultValues, "<EncoderSpeedStart>", "<EncoderSpeedEnd>")))
-                {
-                    formatCheckDefaultValues.Replace("<EncoderSpeedStart>" + GeneralParser(formatCheckDefaultValues, "<EncoderSpeedStart>", "<EncoderSpeedEnd>") + "<EncoderSpeedEnd>", "<EncoderSpeedStart>Very Fast<EncoderSpeedEnd>");
-                }
-
-                //Encoder Tune
-                if (!encoderTuneList.Contains(GeneralParser(formatCheckDefaultValues, "<EncoderTuneStart>", "<EncoderTuneEnd>")))
-                {
-                    formatCheckDefaultValues.Replace("<EncoderTuneStart>" + GeneralParser(formatCheckDefaultValues, "<EncoderTuneStart>", "<EncoderTuneEnd>") + "<EncoderTuneEnd>", "<EncoderTuneStart>Fast Decode<EncoderTuneEnd>");
-                }
-
-                //Encoder Profile
-                if (!encoderProfileList.Contains(GeneralParser(formatCheckDefaultValues, "<EncoderProfileStart>", "<EncoderProfileEnd>")))
-                {
-                    formatCheckDefaultValues.Replace("<EncoderProfileStart>" + GeneralParser(formatCheckDefaultValues, "<EncoderProfileStart>", "<EncoderProfileEnd>") + "<EncoderProfileEnd>", "<EncoderProfileStart>High<EncoderProfileEnd>");
-                }
-
-                //Encoder Level
-                if (!encoderLevelList.Contains(GeneralParser(formatCheckDefaultValues, "<EncoderLevelStart>", "<EncoderLevelEnd>")))
-                {
-                    formatCheckDefaultValues.Replace("<EncoderLevelStart>" + GeneralParser(formatCheckDefaultValues, "<EncoderLevelStart>", "<EncoderLevelEnd>") + "<EncoderLevelEnd>", "<EncoderLevelStart>4.1<EncoderLevelEnd>");
-                }
-
-                //Average Bitrate
-                if (!videoBitrateCapList.Contains(GeneralParser(formatCheckDefaultValues, "<VideoBitrateCapStart>", "<VideoBitrateCapEnd>")))
-                {
-                    formatCheckDefaultValues.Replace("<VideoBitrateCapStart>" + GeneralParser(formatCheckDefaultValues, "<VideoBitrateCapStart>", "<VideoBitrateCapEnd>") + "<VideoBitrateCapEnd>", "<VideoBitrateCapStart>3.5<VideoBitrateCapEnd>");
-                }
-
-                //Framerate
-                if (!framerateList.Contains(GeneralParser(formatCheckDefaultValues, "<FramerateStart>", "<FramerateEnd>")))
-                {
-                    formatCheckDefaultValues.Replace("<FramerateStart>" + GeneralParser(formatCheckDefaultValues, "<FramerateStart>", "<FramerateEnd>") + "<FramerateEnd>", "<FramerateStart>Roku Compliant<FramerateEnd>");
-                }
-            }
-
-        }
         private void setDefaults() //Sets encode options to values from file
         {
             audioCodecComboBox.Text = CF.DefaultSettings["AudioCodec"];
@@ -504,24 +392,23 @@ namespace MovieDataCollector
         }
         private void selectDirectory()
         {
-            getInitialDirectory();
 
             FolderBrowserDialog FBD = new FolderBrowserDialog(); //creates new instance of the FolderBrowserDialog
 
             if (Directory.Exists(defaultPathText))
             {
-                folderPath = defaultPathText;
+                CF.DefaultSettings["InputFilePath"] = defaultPathText;
             }
-            if (!string.IsNullOrEmpty(folderPath)) //if folderpath contains a path, sets folderBrowserDialog to default to this path
+            if (!string.IsNullOrEmpty(CF.DefaultSettings["InputFilePath"])) //if CF.DefaultSettings["InputFilePath"] contains a path, sets folderBrowserDialog to default to this path
             {
-                FBD.SelectedPath = folderPath;
+                FBD.SelectedPath = CF.DefaultSettings["InputFilePath"];
             }
 
             if (FBD.ShowDialog() == DialogResult.OK) //shows folderbrowserdialog, runs addtional code if not cancelled out
             {
-                folderPath = FBD.SelectedPath;
+                CF.DefaultSettings["InputFilePath"] = FBD.SelectedPath;
                 WriteDefaultFilePath();
-                filenameTextBox.Text = folderPath;
+                filenameTextBox.Text = CF.DefaultSettings["InputFilePath"];
                 returnAllVideoFiles();
             }
 
@@ -998,7 +885,7 @@ namespace MovieDataCollector
                 {
                     string videoFileName = VideoFilesList[filesListBox.SelectedIndex]; //returns currently selected items file path
 
-                    if (!string.IsNullOrEmpty(folderPath)) //As long as the file path isn't empty or null, get info about file
+                    if (!string.IsNullOrEmpty(CF.DefaultSettings["InputFilePath"])) //As long as the file path isn't empty or null, get info about file
                     {
                         MediaFile videoFile = new MediaFile(videoFileName); //return info about selected file
                         outPutTextBox.Text = videoFile.Info_Text; //output info about selected file to the output box
@@ -1035,20 +922,6 @@ namespace MovieDataCollector
                 }
             }
 
-        }
-        private void rokuCheckBox_MouseClick(object sender, MouseEventArgs e)
-        {
-            /*Checkboxes determine which set of parameters to check video files against
-             either for xbox or roku*/
-            xboxCheckBox.Checked = false; //removes tick mark from xboxCheckBox
-            rokuCheckBox.Checked = true; //adds tick mark to rokucheckBox
-        }
-        private void xboxCheckBox_MouseClick(object sender, MouseEventArgs e)
-        {
-            /*Checkboxes determine which set of parameters to check video files against
-             either for xbox or roku*/
-            xboxCheckBox.Checked = true; //adds tick mark to xboxCheckBox
-            rokuCheckBox.Checked = false; //removes tick mark to rokuCheckBox
         }
         private void ExportButton_Click(object sender, EventArgs e)
         {
@@ -1311,11 +1184,6 @@ namespace MovieDataCollector
                 notificationLabel.Text = "";
             }
         }
-        private void instructionsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            FormatCheckInstructions FCI = new FormatCheckInstructions();
-            FCI.Show();
-        }
         private string GenerateConversionString(string filepath, string filename, string outputPath)
         {
             double audioConversionBitrate = 0;
@@ -1412,7 +1280,7 @@ namespace MovieDataCollector
 
                 /*Bitrate***********************************************************************************************************************************************************************************************/
                 //Determine per channel Bitrate selected by user
-                try { userSelectedBitrate = int.Parse(AudioBitrateCombo.Text); } catch { userSelectedBitrate = 96; }//default value is 96
+                try { userSelectedBitrate = int.Parse(audioBitrateCombo.Text); } catch { userSelectedBitrate = 96; }//default value is 96
 
                 if (videoFile.Audio[audioTrackNumber].Bitrate != 0)
                 {
@@ -1435,7 +1303,7 @@ namespace MovieDataCollector
 
                 /*88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888*/
                 /*Fallback***********************************************************************************************************************************************************************************************/
-                switch (AudioCodecComboBox.Text)
+                switch (audioCodecComboBox.Text)
                 {
 
                     case "Filtered Passthru":
@@ -1468,7 +1336,7 @@ namespace MovieDataCollector
                 /*Mixdown***********************************************************************************************************************************************************************************************/
 
                 //The options are auto, mono, stereo, dpl1 (Dolby Surround), dpl2 (Dolby ProLogic? 2), or 6ch (5.1).
-                switch (AudioCodecComboBox.Text)
+                switch (audioCodecComboBox.Text)
                 {
                     case "Filtered Passthru":
                         switch (videoFile.Audio[audioTrackNumber].Channels)
@@ -1517,7 +1385,7 @@ namespace MovieDataCollector
                         }
                         break;
                     default:
-                        switch (MixdownComboBox.Text)
+                        switch (mixdownComboBox.Text)
                         {
                             case "Dolby ProLogic 2":
                                 outputMixdown = "--mixdown dpl2 ";
@@ -1573,7 +1441,7 @@ namespace MovieDataCollector
             {
                 //bitrateOfFile, audioTrackNumber, maxBitrate
                 outputAudioTrack = "--audio 1 ";
-                try { userSelectedBitrate = int.Parse(AudioBitrateCombo.Text); } catch { userSelectedBitrate = 96; }//default value is 96
+                try { userSelectedBitrate = int.Parse(audioBitrateCombo.Text); } catch { userSelectedBitrate = 96; }//default value is 96
                 maxBitrate = userSelectedBitrate;
 
                 /*Fallback***********************************************************************************************************************************************************************************************/
@@ -1584,7 +1452,7 @@ namespace MovieDataCollector
             /*Mixdown***********************************************************************************************************************************************************************************************/
 
             //The options are auto, mono, stereo, dpl1 (Dolby Surround), dpl2 (Dolby ProLogic? 2), or 6ch (5.1).
-            switch (AudioCodecComboBox.Text)
+            switch (audioCodecComboBox.Text)
             {
                 case "Filtered Passthru":
                     outputMixdown = "";
@@ -1595,7 +1463,7 @@ namespace MovieDataCollector
                     outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
                     break;
                 default:
-                    switch (MixdownComboBox.Text)
+                    switch (mixdownComboBox.Text)
                     {
                         case "Dolby ProLogic 2":
                             outputMixdown = "--mixdown dpl2 ";
@@ -1610,7 +1478,7 @@ namespace MovieDataCollector
             }
             /*Passthru Mask***********************************************************************************************************************************************************************************************/
 
-            if (AudioCodecComboBox.Text == "Filtered Passthru")
+            if (audioCodecComboBox.Text == "Filtered Passthru")
             {
                 outputAudioPassthruMask = "--audio-copy-mask ";
                 if (filteredAACCheck.Checked) { outputAudioPassthruMask += "aac"; }
@@ -1632,7 +1500,7 @@ namespace MovieDataCollector
 
 
             /*Encoder***********************************************************************************************************************************************************************************************/
-            switch (AudioCodecComboBox.Text)
+            switch (audioCodecComboBox.Text)
             {
                 case "AAC (AVC)":
                     outputEncoder = "--aencoder av_aac ";
@@ -1833,7 +1701,7 @@ namespace MovieDataCollector
                 double.TryParse(avgBitrateCombo.Text, out avgBitrateCap);
                 avgBitrateCap = avgBitrateCap * 1000; //This changes the value in the dropdown from Mbps to Kbps
                 videoBitrate = avgBitrateCap;
-                double.TryParse(AudioBitrateCombo.Text, out audioBitrate);
+                double.TryParse(audioBitrateCombo.Text, out audioBitrate);
 
                 outputVideoBitrate = "--vb " + videoBitrate.ToString() + " ";
 
@@ -1905,7 +1773,7 @@ namespace MovieDataCollector
                 }
             }
             /*TwoPass & Turbo First***********************************************************************************************************************************************************************************************/
-            if (TwoPassCheckbox.Checked) { outputTwoPass = "--two-pass "; }
+            if (twoPassCheckbox.Checked) { outputTwoPass = "--two-pass "; }
             if (turboCheckBox.Checked) { outputTurbo = "--turbo "; }
 
             /*Encoder * **********************************************************************************************************************************************************************************************/
@@ -2098,7 +1966,7 @@ namespace MovieDataCollector
             if (string.IsNullOrEmpty(handBrakeCLILocation)) { checksPassed = false; }
 
             //If Filtered Passthru is selected ensure a filter is also choseen
-            switch (AudioCodecComboBox.Text)
+            switch (audioCodecComboBox.Text)
             {
                 case "Filtered Passthru":
                     if (!filteredAACCheck.Checked && !filteredAC3Check.Checked && !filteredDTSCheck.Checked)
@@ -2128,9 +1996,6 @@ namespace MovieDataCollector
             Errors.Clear();
             int exitCode = 0; //Exit code for HandbrakeCLI
 
-            getInitialDirectory();
-            writeDefaults();
-
             if (preConversionChecks()) //Several Checks take place prior to conversion
             {
                 string handBrakeCLIString;
@@ -2140,25 +2005,22 @@ namespace MovieDataCollector
                     FolderBrowserDialog FBD = new FolderBrowserDialog(); //creates new instance of the FolderBrowserDialog
                     FBD.Description = "Select Output Folder for Converted Video Files";
 
-                    if (Directory.Exists(defaultOutputPath))
-                    {
-                        folderPath = defaultOutputPath;
-                    }
                     if (!string.IsNullOrEmpty(folderPath)) //if folderpath contains a path, sets folderBrowserDialog to default to this path
                     {
-                        FBD.SelectedPath = folderPath;
+                        FBD.SelectedPath = CF.DefaultSettings["OutputFilePath"];
                     }
 
                     if (FBD.ShowDialog() == DialogResult.OK) //shows folderbrowserdialog, runs addtional code if not cancelled out
                     {
                         folderPath = FBD.SelectedPath;
-                        WriteDefaultOutputFilePath();
 
                         notificationLabel.Text = "Converting File ( " + filesListBox.SelectedItem.ToString() + " )";
                         notificationLabel.Invalidate();
                         notificationLabel.Update();
 
-                        folderPath = FBD.SelectedPath;
+                        CF.DefaultSettings["OutputFilePath"] = FBD.SelectedPath;
+                        CF.updateDefaults();
+
                         DialogResult = DialogResult.None; //Prevents form from closing...
 
                         try
@@ -2283,9 +2145,6 @@ namespace MovieDataCollector
             Errors.Clear();
             int exitCode = 0; //HandbrakeCLI Exit Code 0=Exited Normally, 1=Cancelled, 2=Invalid Input, 3=Initalization Error, 4=Unknown Error
 
-            getInitialDirectory();
-            writeDefaults();
-
             if (preConversionChecks()) //If handbrake is found continue
             {
                 string handBrakeCLIString;
@@ -2306,7 +2165,6 @@ namespace MovieDataCollector
                     if (FBD.ShowDialog() == DialogResult.OK) //shows folderbrowserdialog, runs addtional code if not cancelled out
                     {
                         folderPath = FBD.SelectedPath;
-                        WriteDefaultOutputFilePath();
 
                         for (int i = 0; i < VideoFilesList.Count; i++)
                         {
@@ -2545,7 +2403,7 @@ namespace MovieDataCollector
         private void AudioCodecComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Only show filter options if Filtered Passthru is selected.
-            switch (AudioCodecComboBox.Text)
+            switch (audioCodecComboBox.Text)
             {
                 case "Filtered Passthru":
                     filteredAACCheck.Visible = true;
@@ -2558,7 +2416,7 @@ namespace MovieDataCollector
                     filteredAC3Check.Visible = false;
                     filteredDTSCheck.Visible = false;
                     passthruFilterLabel.Visible = false;
-                    MixdownComboBox.Text = "Dolby ProLogic 2"; //AAC can only mix down to Prologic or Mono
+                    mixdownComboBox.Text = "Dolby ProLogic 2"; //AAC can only mix down to Prologic or Mono
                     break;
                 case "AC3":
                     filteredAACCheck.Visible = false;
@@ -2576,10 +2434,10 @@ namespace MovieDataCollector
         }
         private void MixdownComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            switch (AudioCodecComboBox.Text)
+            switch (audioCodecComboBox.Text)
             {
                 case "AAC (AVC)":
-                    MixdownComboBox.Text = "Dolby ProLogic 2";
+                    mixdownComboBox.Text = "Dolby ProLogic 2";
 
                     notificationLabel.ForeColor = Color.Red;
                     notificationLabel.Text = "The AAC codec can only mixdown to Dolby Prologic 2";
@@ -2756,11 +2614,11 @@ namespace MovieDataCollector
         }
         private void AudioCodecComboBox_Leave(object sender, EventArgs e)
         {
-            if (!codecList.Contains(AudioCodecComboBox.Text)) { AudioCodecComboBox.Text = codecList[0]; }
+            if (!codecList.Contains(audioCodecComboBox.Text)) { audioCodecComboBox.Text = codecList[0]; }
         }
         private void MixdownComboBox_Leave(object sender, EventArgs e)
         {
-            if (!mixdownList.Contains(MixdownComboBox.Text)) { MixdownComboBox.Text = mixdownList[0]; }
+            if (!mixdownList.Contains(mixdownComboBox.Text)) { mixdownComboBox.Text = mixdownList[0]; }
         }
         private void encoderTuneComboBox_Leave(object sender, EventArgs e)
         {
@@ -2791,13 +2649,13 @@ namespace MovieDataCollector
         {
             double ABitrate;
 
-            try { double.TryParse(AudioBitrateCombo.Text, out ABitrate); }
+            try { double.TryParse(audioBitrateCombo.Text, out ABitrate); }
             catch { ABitrate = 192; }
 
             if (ABitrate > 256) { ABitrate = 256; }
             if (ABitrate < 64) { ABitrate = 64; }
 
-            AudioBitrateCombo.Text = ABitrate.ToString();
+            audioBitrateCombo.Text = ABitrate.ToString();
         }
         private void testNotificationButton_Click(object sender, EventArgs e)
         {
@@ -2809,26 +2667,7 @@ namespace MovieDataCollector
         }
         private void notificationCheck_CheckedChanged_1(object sender, EventArgs e)
         {
-            if (notificationCheck.Checked)
-            {
-                userNameLabel.Visible = true;
-                passwordLabel.Visible = true;
-                sendToLabel.Visible = true;
-                sendToBox.Visible = true;
-                usernameBox.Visible = true;
-                passwordBox.Visible = true;
-                testNotificationButton.Visible = true;
-            }
-            else
-            {
-                userNameLabel.Visible = false;
-                passwordLabel.Visible = false;
-                sendToLabel.Visible = false;
-                sendToBox.Visible = false;
-                usernameBox.Visible = false;
-                passwordBox.Visible = false;
-                testNotificationButton.Visible = false;
-            }
+
         }
     }
 }
