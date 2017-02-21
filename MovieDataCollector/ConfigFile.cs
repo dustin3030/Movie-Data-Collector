@@ -22,6 +22,7 @@ namespace MovieDataCollector
                 "TFPath",//C:\\
                 "InputFilePath", //C:\\
                 "OutputFilePath", //C:\\
+                "ExportFilePath", //C:\\
                 "TVAbsoluteNumbersCheck", //False
                 "TVTitleInFilenameCheck", //False
                 "DefaultFormat", //Synology
@@ -49,6 +50,7 @@ namespace MovieDataCollector
                 "C:\\", //TFPath"
                 "C:\\", //InputFilePath
                 "C:\\", //OutputFilePath
+                "C:\\", //ExportFilePath
                 "False", //TVAbsoluteNumbersCheck
                 "False", //TVTitleInFilenameCheck
                 "Synology", //DefaultFormat

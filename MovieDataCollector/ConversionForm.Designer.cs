@@ -135,16 +135,18 @@
             this.openToolStripMenuItem.BackColor = System.Drawing.Color.GreenYellow;
             this.openToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(104, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.openToolStripMenuItem.Text = "&Open";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // closeToolStripMenuItem
             // 
             this.closeToolStripMenuItem.BackColor = System.Drawing.Color.GreenYellow;
             this.closeToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(104, 22);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.closeToolStripMenuItem.Text = "&Close";
+            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
             // selectDirectoryButton
             // 
@@ -300,7 +302,7 @@
             this.tabControl1.Location = new System.Drawing.Point(576, 64);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(516, 522);
+            this.tabControl1.Size = new System.Drawing.Size(516, 521);
             this.tabControl1.TabIndex = 13;
             // 
             // mediaInfoPage
@@ -311,7 +313,7 @@
             this.mediaInfoPage.Location = new System.Drawing.Point(4, 22);
             this.mediaInfoPage.Name = "mediaInfoPage";
             this.mediaInfoPage.Padding = new System.Windows.Forms.Padding(3);
-            this.mediaInfoPage.Size = new System.Drawing.Size(508, 496);
+            this.mediaInfoPage.Size = new System.Drawing.Size(508, 495);
             this.mediaInfoPage.TabIndex = 0;
             this.mediaInfoPage.Text = "Media Info";
             // 
@@ -331,7 +333,7 @@
             this.exportInfoButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.exportInfoButton.Location = new System.Drawing.Point(3, 453);
             this.exportInfoButton.Name = "exportInfoButton";
-            this.exportInfoButton.Size = new System.Drawing.Size(121, 32);
+            this.exportInfoButton.Size = new System.Drawing.Size(121, 36);
             this.exportInfoButton.TabIndex = 1;
             this.exportInfoButton.Text = "Export Media Info";
             this.exportInfoButton.UseVisualStyleBackColor = false;
@@ -359,7 +361,7 @@
             this.conversionSettingsPage.Location = new System.Drawing.Point(4, 22);
             this.conversionSettingsPage.Name = "conversionSettingsPage";
             this.conversionSettingsPage.Padding = new System.Windows.Forms.Padding(3);
-            this.conversionSettingsPage.Size = new System.Drawing.Size(508, 482);
+            this.conversionSettingsPage.Size = new System.Drawing.Size(508, 495);
             this.conversionSettingsPage.TabIndex = 1;
             this.conversionSettingsPage.Text = "Conversion Settings";
             // 

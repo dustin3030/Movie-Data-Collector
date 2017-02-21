@@ -18,14 +18,11 @@ namespace MovieDataCollector
 {
     public partial class ConversionForm : Form
     {
-        string folderPath = ""; //Contains path for parent directory
+        //string folderPath = ""; //Contains path for parent directory
         List<string> VideoFilesList = new List<string>(); //Contains File Paths for video files 
         StringBuilder incompatible = new StringBuilder();
 
         List<string> IncompatibilityInfo = new List<string>(); //Contains Incompatibility info for each file listed in VideoFilesList
-
-        Inteded to prevent having to re-drill down to the same location each time the program is opened*/
-        string defaultOutputPath = "";
 
         string configDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector"; //Writable folder location for config file.
         string configPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector\\Config.txt"; //Writable file location for config file.
@@ -424,7 +421,7 @@ namespace MovieDataCollector
             double audioBitrate = 0;
             double audioMaxBitrate = 0;
             //Incompatibility Info
-            StringBuilder incompatible = new StringBuilder();
+            StringBuilder incompatible = new StringBuilder(); //Stores string of why file is incompatile with Roku
 
 
             FileInfo fInfo = new FileInfo(fileName);
@@ -896,7 +893,7 @@ namespace MovieDataCollector
                     {
                         string videoFileName = VideoFilesList[filesListBox.SelectedIndex]; //pulls filepath (videoFileName) from listbox
 
-                        if (!string.IsNullOrEmpty(folderPath)) //check that folderpath isn't empty
+                        if (!string.IsNullOrEmpty(CF.DefaultSettings["InputFilePath"])) //check that folderpath isn't empty
                         {
                             MediaFile videoFile = new MediaFile(videoFileName); //list incompatible file attributes.
                             outPutTextBox.Text = "INCOMPATIBLE FILE FOUND - " +
@@ -919,7 +916,6 @@ namespace MovieDataCollector
             notificationLabel.ForeColor = Color.GreenYellow;
 
             string fileLocation = "";
-
             //Check to see if data exist in fileslistbox
             if (VideoFilesList.Count > 0)
             {
@@ -931,10 +927,23 @@ namespace MovieDataCollector
                     SFD.DefaultExt = "txt";
                     SFD.FileName = "Incompatible Video Files.txt";
                     SFD.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+                    SFD.InitialDirectory = CF.DefaultSettings["ExportFilePath"];
 
                     if (SFD.ShowDialog() == DialogResult.OK)
                     {
                         fileLocation = SFD.FileName;
+
+                        char delim = '\\';
+                        string[] Tokens = SFD.FileName.Split(delim);
+                        CF.DefaultSettings["ExportFilePath"] = ""; //Clear Path
+
+                        for (int i = 0; i < Tokens.Count() -1; i++)
+                        {
+                            CF.DefaultSettings["ExportFilePath"] += Tokens[i].ToString() + "\\"; //Sets the default directory for exporting text file.
+                        }
+
+                        CF.updateDefaults();
+
                         //Create text file
                         using (StreamWriter sw = System.IO.File.CreateText(fileLocation))
                         {
@@ -962,10 +971,23 @@ namespace MovieDataCollector
                     SFD.FileName = "Video Files.txt";
                     SFD.DefaultExt = "txt";
                     SFD.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+                    SFD.InitialDirectory = CF.DefaultSettings["ExportFilePath"];
 
                     if (SFD.ShowDialog() == DialogResult.OK)
                     {
                         fileLocation = SFD.FileName;
+
+                        char delim = '\\';
+                        string[] Tokens = SFD.FileName.Split(delim);
+                        CF.DefaultSettings["ExportFilePath"] = ""; //Clear Path
+
+                        for (int i = 0; i < Tokens.Count() - 1; i++)
+                        {
+                            CF.DefaultSettings["ExportFilePath"] += Tokens[i].ToString() + "\\"; //Sets the default directory for exporting text file.
+                        }
+
+                        CF.updateDefaults();
+
                         //Create text file
                         using (StreamWriter sw = System.IO.File.CreateText(fileLocation))
                         {
@@ -1996,14 +2018,9 @@ namespace MovieDataCollector
                     FolderBrowserDialog FBD = new FolderBrowserDialog(); //creates new instance of the FolderBrowserDialog
                     FBD.Description = "Select Output Folder for Converted Video Files";
 
-                    if (!string.IsNullOrEmpty(folderPath)) //if folderpath contains a path, sets folderBrowserDialog to default to this path
-                    {
-                        FBD.SelectedPath = CF.DefaultSettings["OutputFilePath"];
-                    }
-
                     if (FBD.ShowDialog() == DialogResult.OK) //shows folderbrowserdialog, runs addtional code if not cancelled out
                     {
-                        folderPath = FBD.SelectedPath;
+                        CF.DefaultSettings["OutputFilePath"] = FBD.SelectedPath;
 
                         notificationLabel.Text = "Converting File ( " + filesListBox.SelectedItem.ToString() + " )";
                         notificationLabel.Invalidate();
@@ -2144,18 +2161,14 @@ namespace MovieDataCollector
                     FolderBrowserDialog FBD = new FolderBrowserDialog(); //creates new instance of the FolderBrowserDialog
                     FBD.Description = "Select Output Folder for Converted Video Files";
 
-                    if (Directory.Exists(defaultOutputPath))
+                    if (!string.IsNullOrEmpty(CF.DefaultSettings["OutputFilePath"])) //if folderpath contains a path, sets folderBrowserDialog to default to this path
                     {
-                        folderPath = defaultOutputPath;
-                    }
-                    if (!string.IsNullOrEmpty(folderPath)) //if folderpath contains a path, sets folderBrowserDialog to default to this path
-                    {
-                        FBD.SelectedPath = folderPath;
+                        FBD.SelectedPath = CF.DefaultSettings["OutputFilePath"];
                     }
 
                     if (FBD.ShowDialog() == DialogResult.OK) //shows folderbrowserdialog, runs addtional code if not cancelled out
                     {
-                        folderPath = FBD.SelectedPath;
+                        CF.DefaultSettings["OutputFilePath"] = FBD.SelectedPath;
 
                         for (int i = 0; i < VideoFilesList.Count; i++)
                         {
@@ -2527,7 +2540,7 @@ namespace MovieDataCollector
                 {
                     string videoFileName = VideoFilesList[filesListBox.SelectedIndex]; //returns currently selected items file path
 
-                    if (!string.IsNullOrEmpty(folderPath)) //As long as the file path isn't empty or null, get info about file
+                    if (!string.IsNullOrEmpty(CF.DefaultSettings["InputFilePath"])) //As long as the file path isn't empty or null, get info about file
                     {
                         MediaFile videoFile = new MediaFile(videoFileName); //return info about selected file
                         outPutTextBox.Text = videoFile.Info_Text; //output info about selected file to the output box
@@ -2547,7 +2560,7 @@ namespace MovieDataCollector
                     {
                         string videoFileName = VideoFilesList[filesListBox.SelectedIndex]; //pulls filepath (videoFileName) from listbox
 
-                        if (!string.IsNullOrEmpty(folderPath)) //check that folderpath isn't empty
+                        if (!string.IsNullOrEmpty(CF.DefaultSettings["InputFilePath"])) //check that folderpath isn't empty
                         {
                             MediaFile videoFile = new MediaFile(videoFileName); //list incompatible file attributes.
                             outPutTextBox.Text = "INCOMPATIBLE FILE FOUND - " +
