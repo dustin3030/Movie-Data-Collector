@@ -97,6 +97,7 @@
             this.codecLabel = new System.Windows.Forms.Label();
             this.conversionSettingsLabel = new System.Windows.Forms.Label();
             this.compatibilitySelectionLabel = new System.Windows.Forms.Label();
+            this.invisibleCloseButton = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.selectionPicturebox)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -276,7 +277,7 @@
             this.filesListBox.FormattingEnabled = true;
             this.filesListBox.Location = new System.Drawing.Point(12, 204);
             this.filesListBox.Name = "filesListBox";
-            this.filesListBox.Size = new System.Drawing.Size(548, 368);
+            this.filesListBox.Size = new System.Drawing.Size(548, 381);
             this.filesListBox.TabIndex = 11;
             this.filesListBox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.filesListBox_MouseDoubleClick);
             // 
@@ -284,7 +285,7 @@
             // 
             this.notificationLabel.AutoSize = true;
             this.notificationLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.notificationLabel.Location = new System.Drawing.Point(9, 575);
+            this.notificationLabel.Location = new System.Drawing.Point(9, 589);
             this.notificationLabel.Name = "notificationLabel";
             this.notificationLabel.Size = new System.Drawing.Size(105, 13);
             this.notificationLabel.TabIndex = 12;
@@ -299,7 +300,7 @@
             this.tabControl1.Location = new System.Drawing.Point(576, 64);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(516, 508);
+            this.tabControl1.Size = new System.Drawing.Size(516, 522);
             this.tabControl1.TabIndex = 13;
             // 
             // mediaInfoPage
@@ -310,7 +311,7 @@
             this.mediaInfoPage.Location = new System.Drawing.Point(4, 22);
             this.mediaInfoPage.Name = "mediaInfoPage";
             this.mediaInfoPage.Padding = new System.Windows.Forms.Padding(3);
-            this.mediaInfoPage.Size = new System.Drawing.Size(508, 482);
+            this.mediaInfoPage.Size = new System.Drawing.Size(508, 496);
             this.mediaInfoPage.TabIndex = 0;
             this.mediaInfoPage.Text = "Media Info";
             // 
@@ -941,12 +942,24 @@
             this.compatibilitySelectionLabel.TabIndex = 15;
             this.compatibilitySelectionLabel.Text = "Compatibility Selection";
             // 
+            // invisibleCloseButton
+            // 
+            this.invisibleCloseButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.invisibleCloseButton.Location = new System.Drawing.Point(1079, 558);
+            this.invisibleCloseButton.Name = "invisibleCloseButton";
+            this.invisibleCloseButton.Size = new System.Drawing.Size(10, 10);
+            this.invisibleCloseButton.TabIndex = 16;
+            this.invisibleCloseButton.Text = "button1";
+            this.invisibleCloseButton.UseVisualStyleBackColor = true;
+            this.invisibleCloseButton.Click += new System.EventHandler(this.invisibleCloseButton_Click);
+            // 
             // ConversionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(1104, 598);
+            this.CancelButton = this.invisibleCloseButton;
+            this.ClientSize = new System.Drawing.Size(1104, 607);
             this.Controls.Add(this.compatibilitySelectionLabel);
             this.Controls.Add(this.conversionSettingsLabel);
             this.Controls.Add(this.tabControl1);
@@ -963,6 +976,7 @@
             this.Controls.Add(this.filenameTextBox);
             this.Controls.Add(this.selectDirectoryButton);
             this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.invisibleCloseButton);
             this.ForeColor = System.Drawing.Color.GreenYellow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
@@ -1054,5 +1068,6 @@
         private System.Windows.Forms.Label presetLabel;
         private System.Windows.Forms.ComboBox sampleRateCombo;
         private System.Windows.Forms.Label sampleRateLabel;
+        private System.Windows.Forms.Button invisibleCloseButton;
     }
 }

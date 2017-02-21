@@ -24,7 +24,6 @@ namespace MovieDataCollector
 
         List<string> IncompatibilityInfo = new List<string>(); //Contains Incompatibility info for each file listed in VideoFilesList
 
-        string defaultPathText = ""; /*contains the default file path used to retrieve files.
         Inteded to prevent having to re-drill down to the same location each time the program is opened*/
         string defaultOutputPath = "";
 
@@ -386,19 +385,11 @@ namespace MovieDataCollector
 
         }
         
-        private void WriteDefaultFilePath()
-        {
-            CF.updateDefaults();
-        }
         private void selectDirectory()
         {
 
             FolderBrowserDialog FBD = new FolderBrowserDialog(); //creates new instance of the FolderBrowserDialog
 
-            if (Directory.Exists(defaultPathText))
-            {
-                CF.DefaultSettings["InputFilePath"] = defaultPathText;
-            }
             if (!string.IsNullOrEmpty(CF.DefaultSettings["InputFilePath"])) //if CF.DefaultSettings["InputFilePath"] contains a path, sets folderBrowserDialog to default to this path
             {
                 FBD.SelectedPath = CF.DefaultSettings["InputFilePath"];
@@ -407,7 +398,7 @@ namespace MovieDataCollector
             if (FBD.ShowDialog() == DialogResult.OK) //shows folderbrowserdialog, runs addtional code if not cancelled out
             {
                 CF.DefaultSettings["InputFilePath"] = FBD.SelectedPath;
-                WriteDefaultFilePath();
+                CF.updateDefaults();
                 filenameTextBox.Text = CF.DefaultSettings["InputFilePath"];
                 returnAllVideoFiles();
             }
