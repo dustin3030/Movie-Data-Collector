@@ -41,6 +41,8 @@ namespace MovieDataCollector
             "5.1 Audio"
         };
 
+        
+
         List<string> audioBitrateCapList = new List<string>()
         {
             "192", //Default
@@ -136,6 +138,13 @@ namespace MovieDataCollector
             "10"
         };
 
+        List<string> frameRateMode = new List<string>()
+        {
+            "Constant",
+            "Peak",
+            "Variable"
+        };
+
         List<string> framerateList = new List<string>()
         {
             "Roku Compliant", //Default
@@ -171,9 +180,7 @@ namespace MovieDataCollector
             {
                 if (Directory.Exists(CF.DefaultSettings["InputFilePath"]))
                 {
-                    notificationLabel.Text = "Checking and filtering directory for video files ";
-                    notificationLabel.Invalidate();
-                    notificationLabel.Update();
+                    nLabelUpdate("Checking and filtering directory for video files ");
 
                     string fileName = "";
                     filesListBox.Items.Clear();
@@ -203,9 +210,8 @@ namespace MovieDataCollector
                             StringBuilder outPutText = new StringBuilder();
 
                             loopcount = loopcount + 1;
-                            notificationLabel.Text = "Analyzing file " + loopcount.ToString() + " of " + fileCount.ToString() + " - " + file;
-                            notificationLabel.Invalidate();
-                            notificationLabel.Update();
+
+                            nLabelUpdate("Analyzing file " + loopcount.ToString() + " of " + fileCount.ToString() + " - " + file);
 
                             if (compatibilityCombo.SelectedIndex == 1)
                             {
@@ -235,7 +241,8 @@ namespace MovieDataCollector
 
                                     outPutTextBox.Text = "\t\t\t\tINVALID ATTRIBUTES:\n\n" + outPutText.ToString();
                                 }
-                                notificationLabel.Text = "Listing " + filesListBox.Items.Count.ToString() + " Files Incompatible with Xbox360";
+
+                                nLabelUpdate("Listing " + filesListBox.Items.Count.ToString() + " Files Incompatible with Xbox360");
                             }
                             if (compatibilityCombo.SelectedIndex == 0) //Roku is selected
                             {
@@ -262,7 +269,7 @@ namespace MovieDataCollector
                                     }
                                     outPutTextBox.Text = "\t\t\t\tINVALID ATTRIBUTES:\n\n" + outPutText.ToString();
                                 }
-                                notificationLabel.Text = "Listing " + filesListBox.Items.Count.ToString() + " Files Incompatible with Roku";
+                                nLabelUpdate("Listing " + filesListBox.Items.Count.ToString() + " Files Incompatible with Roku");
                             }
 
                         }
@@ -294,9 +301,7 @@ namespace MovieDataCollector
                 VideoFilesList.Clear();
                 IncompatibilityInfo.Clear();
 
-                notificationLabel.Text = "Checking and filtering directory for video files ";
-                notificationLabel.Invalidate();
-                notificationLabel.Update();
+                nLabelUpdate("Checking and filtering directory for video files ");
 
                 try
                 {
@@ -317,9 +322,9 @@ namespace MovieDataCollector
                         loopcount = loopcount + 1;
 
 
-                        notificationLabel.Text = "Processing file " + loopcount.ToString() + " of " + fileCount.ToString() + " - " + file;
-                        notificationLabel.Invalidate();
-                        notificationLabel.Update();
+                        nLabelUpdate("Processing file " + loopcount.ToString() + " of " + fileCount.ToString() + " - " + file);
+                        
+                        
 
 
                         fileName = file;
@@ -337,7 +342,7 @@ namespace MovieDataCollector
                         VideoFilesList.Add(file);
 
                     }
-                    notificationLabel.Text = "Listing " + filesListBox.Items.Count.ToString() + " Video Files";
+                    nLabelUpdate("Listing " + filesListBox.Items.Count.ToString() + " Video Files");
                 }
 
                 catch (Exception e)
@@ -351,7 +356,6 @@ namespace MovieDataCollector
             returnAllVideoFiles();
             notificationLabel.ForeColor = Color.GreenYellow;
         }
-
         private void setDefaults() //Sets encode options to values from file
         {
             audioCodecComboBox.Text = CF.DefaultSettings["AudioCodec"];
@@ -380,8 +384,7 @@ namespace MovieDataCollector
             sampleRateCombo.Text = CF.DefaultSettings["AudioSampleRate"];
             presetComboBox.Text = CF.DefaultSettings["ConversionPreset"];
 
-        }
-        
+        }       
         private void selectDirectory()
         {
 
@@ -1052,8 +1055,6 @@ namespace MovieDataCollector
                         videoBitrate = videoFile.General.Properties["Overall bit rate"].ToUpper().Replace(" ", "").Replace("MBPS", "");
                         videoBitrate = ", Overall Bitrate: " + (double.Parse(videoBitrate) * 1000).ToString() + " kbps";
                     }
-
-
                 }
                 else
                 {
@@ -1142,40 +1143,6 @@ namespace MovieDataCollector
             VideoInfo.Clear();
             AudioInfo.Clear();
         }
-        private string GeneralParser(string InputString, string start, string end)
-        {
-            if (string.IsNullOrEmpty(InputString)) { return ""; }
-            int startPosition = 0;
-            int endPosition = 0;
-            try
-            {
-                if (InputString.Contains(start) & InputString.Length > start.Length)
-                {
-                    startPosition = InputString.IndexOf(start) + start.Length;
-                }
-                else { return ""; }
-
-                if (InputString.Contains(end) & InputString.Length > end.Length)
-                {
-                    endPosition = InputString.IndexOf(end, startPosition);
-                }
-                else { return ""; }
-
-                if (startPosition == -1 || endPosition == -1) { return ""; }
-
-                if (startPosition >= endPosition) { return ""; }
-
-                if (InputString.Length - startPosition > endPosition - startPosition)
-                {
-                    return InputString.Substring(startPosition, endPosition - startPosition);
-                }
-                else { return ""; }
-            }
-            catch
-            {
-                return "";
-            }
-        }
         private void QuickInfobutton_Click(object sender, EventArgs e)
         {
             notificationLabel.ForeColor = Color.GreenYellow;
@@ -1187,14 +1154,14 @@ namespace MovieDataCollector
                 notificationLabel.Visible = true;
                 for (int i = 0; i < VideoFilesList.Count(); i++)
                 {
-                    notificationLabel.Text = "Processing file " + (i + 1).ToString() + " of " + VideoFilesList.Count().ToString();
-                    notificationLabel.Invalidate();
-                    notificationLabel.Update();
+                    nLabelUpdate("Processing file " + (i + 1).ToString() + " of " + VideoFilesList.Count().ToString());
+                    
+                    
 
                     getQuickInfo(VideoFilesList[i], filesListBox.Items[i].ToString());
                 }
 
-                notificationLabel.Text = "";
+                nLabelUpdate("");
             }
         }
         private string GenerateConversionString(string filepath, string filename, string outputPath)
@@ -1212,15 +1179,15 @@ namespace MovieDataCollector
 
             MediaFile videoFile = new MediaFile(filepath);
             AudioString = AudioConversionString(videoFile);
-            audioTrack = int.Parse(GeneralParser(AudioString, "--audio ", " "));
+            audioTrack = int.Parse(Program.GeneralParser(AudioString, "--audio ", " "));
 
             VideoString = VideoConversionString(videoFile, audioTrack);
 
             if (videoFile.Audio.Count > 0 && videoFile.Video.Count > 0) //Only use if both video and auto streams are visible
             {
                 //Estimate final file size
-                audioConversionBitrate = double.Parse(GeneralParser(AudioString, "--ab ", " "));
-                videoConversionBitrate = double.Parse(GeneralParser(VideoString, "--vb ", " "));
+                audioConversionBitrate = double.Parse(Program.GeneralParser(AudioString, "--ab ", " "));
+                videoConversionBitrate = double.Parse(Program.GeneralParser(VideoString, "--vb ", " "));
                 totalBitrate = audioConversionBitrate + videoConversionBitrate;
                 videoTotalTime = videoFile.General.DurationMillis; //
                 videoTotalTime = videoTotalTime / 1000;
@@ -1257,6 +1224,9 @@ namespace MovieDataCollector
             string outputMixdown = "";
             string outputSampleRate = "--arate Auto ";
             string outputDynamicRange = "--drc 0 --gain 0 ";
+            /*****************************************************************************************************************************************************************************************************************************/
+            
+
 
             if (videoFile.Audio.Count > 0) //Source Readable
             {
@@ -1291,7 +1261,29 @@ namespace MovieDataCollector
                 }
                 outputAudioTrack = "--audio " + (audioTrackNumber + 1).ToString() + " ";
 
+                /*Samplerate***********************************************************************************************************************************************************************************************/
+                if (!string.IsNullOrEmpty(sampleRateCombo.Text))
+                {
+                    if (videoFile.Audio[audioTrackNumber].SamplingRate / 1000 >= 48)
+                    {
+                        outputSampleRate = "--arate 48 ";
+                    }
+                    else if(videoFile.Audio[audioTrackNumber].SamplingRate / 1000 == 44.1)
+                    {
+                        outputSampleRate = "--arate 44.1 ";
+                    }
+                    else
+                    {
+                        outputSampleRate = "--arate 48";
+                    }
+                }
+                else
+                {
+                    outputSampleRate = "--arate 48";
+                }
+
                 /*Bitrate***********************************************************************************************************************************************************************************************/
+
                 //Determine per channel Bitrate selected by user
                 try { userSelectedBitrate = int.Parse(audioBitrateCombo.Text); } catch { userSelectedBitrate = 96; }//default value is 96
 
@@ -1457,6 +1449,9 @@ namespace MovieDataCollector
                 try { userSelectedBitrate = int.Parse(audioBitrateCombo.Text); } catch { userSelectedBitrate = 96; }//default value is 96
                 maxBitrate = userSelectedBitrate;
 
+                /*Samplerate***********************************************************************************************************************************************************************************************/
+                outputSampleRate = "--arate 48";
+
                 /*Fallback***********************************************************************************************************************************************************************************************/
 
                 outputFallBack = "--audio-fallback av_aac ";
@@ -1528,7 +1523,7 @@ namespace MovieDataCollector
                     outputEncoder = "--aencoder av_aac ";
                     break;
             }
-            return outputAudioTrack + outputEncoder + outputAudioPassthruMask + outputFallBack + outputBitrate + outputMixdown + outputSampleRate + outputDynamicRange;
+            return outputAudioTrack + outputEncoder + outputAudioPassthruMask + outputFallBack + outputBitrate + outputSampleRate + outputMixdown + outputDynamicRange;
         }
         private string VideoConversionString(MediaFile videoFile, int audioTrack)
         {
@@ -1557,62 +1552,288 @@ namespace MovieDataCollector
             {
 
                 /*Framerate***********************************************************************************************************************************************************************************************/
+                /*Roku Compliant
+                    Same As Source
+                    5
+                    10
+                    12
+                    15
+                    23.976
+                    24,
+                    25
+                    29.97
+                    30
+                    50
+                    59.94
+                    60*/
                 switch (framerateCombo.Text)
                 {
-                    case "Same As Source":
-                        outputFrameRate = ""; //auto
-                        break;
-                    case "Roku Compliant": //Force Framerates of < 30
+                    case "Roku Compliant": //Roku Compliant Force Framerates of 23.976 fps or 29.97 fps and CFR or PFR only
                         if (videoFile.Video[0].FrameRate > 0)
                         {
-                            if (videoFile.Video[0].FrameRate <= 30)
+                            if (videoFile.Video[0].FrameRate == 23.976 || videoFile.Video[0].FrameRate == 29.97)
                             {
-                                outputFrameRate = "--rate " + videoFile.Video[0].FrameRate.ToString() + " " + "--cfr "; //Constant Framerate
+                                switch (frameRateModeCombo.Text)
+                                {
+                                    case "Constant": //Constant
+                                        outputFrameRate = "--rate  " + videoFile.Video[0].FrameRate.ToString() + " --cfr "; //Constant Framerate
+                                        break;
+                                    case "Peak": //Peak
+                                        outputFrameRate = "--rate  " + videoFile.Video[0].FrameRate.ToString() + " --pfr "; //Peak Framerate
+                                        break;
+                                    case "Variable": //Variable
+                                        nLabelUpdate("Variable Framerate Mode is not compatible with Roku players. Changed to Peak Framerate Mode.");
+                                        outputFrameRate = "--rate  " + videoFile.Video[0].FrameRate.ToString() + " --pfr "; //Peak Framerate
+                                        break;
+                                    default: //Peak
+                                        outputFrameRate = "--rate  " + videoFile.Video[0].FrameRate.ToString() + " --pfr "; //Peak Framerate
+                                        break;
+                                }
                             }
-                            else
+                            else //Force framerate of 29.97
                             {
-                                outputFrameRate = "--rate  30 --cfr "; //Constant Framerate
+                                switch (frameRateModeCombo.Text)
+                                {
+                                    case "Constant": //Constant
+                                        outputFrameRate = "--rate 29.97 --cfr "; //Constant Framerate
+                                        break;
+                                    case "Peak": //Peak
+                                        outputFrameRate = "--rate 29.97 --pfr "; //Peak Framerate
+                                        break;
+                                    case "Variable": //Variable
+                                        nLabelUpdate("Variable Framerate Mode is not compatible with Roku players. Changed to Peak Framerate Mode.");
+                                        outputFrameRate = "--rate 29.97 --pfr "; //Peak Framerate
+                                        break;
+                                    default: //Peak
+                                        outputFrameRate = "--rate 29.97 --pfr "; //Peak Framerate
+                                        break;
+                                }
                             }
+                            
+                        }                        
+                        break;
+                    case "Same As Source": //Same As Source 
+                        outputFrameRate = "--vfr"; //preserves the source timing.
+                        break;
+                    case "5": //5
+                        switch (frameRateModeCombo.Text)
+                        {
+                            case "Constant": //Constant
+                                outputFrameRate = "--rate 5 --cfr "; //Constant Framerate
+                                break;
+                            case "Peak": //Peak
+                                outputFrameRate = "--rate 5 --pfr "; //Peak Framerate
+                                break;
+                            case "Variable": //Variable
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                outputFrameRate = " --vfr";
+                                break;
+                            default: //Peak
+                                outputFrameRate = "--rate 5 --pfr "; //Peak Framerate
+                                break;
                         }
                         break;
-                    case "5":
-                        outputFrameRate = "--rate 5 --cfr ";
+                    case "10": //10
+                        switch (frameRateModeCombo.Text)
+                        {
+                            case "Constant": //Constant
+                                outputFrameRate = "--rate 10 --cfr "; //Constant Framerate
+                                break;
+                            case "Peak": //Peak
+                                outputFrameRate = "--rate 10 --pfr "; //Peak Framerate
+                                break;
+                            case "Variable": //Variable
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                outputFrameRate = " --vfr";
+                                break;
+                            default: //Peak
+                                outputFrameRate = "--rate 10 --pfr "; //Peak Framerate
+                                break;
+                        }
                         break;
-                    case "10":
-                        outputFrameRate = "--rate 10 --cfr ";
+                    case "12": //12
+                        switch (frameRateModeCombo.Text)
+                        {
+                            case "Constant": //Constant
+                                outputFrameRate = "--rate 12 --cfr "; //Constant Framerate
+                                break;
+                            case "Peak": //Peak
+                                outputFrameRate = "--rate 12 --pfr "; //Peak Framerate
+                                break;
+                            case "Variable": //Variable
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                outputFrameRate = " --vfr";
+                                break;
+                            default: //Peak
+                                outputFrameRate = "--rate 12 --pfr "; //Peak Framerate
+                                break;
+                        }
                         break;
-                    case "12":
-                        outputFrameRate = "--rate 12 --cfr ";
+                    case "15": //15
+                        switch (frameRateModeCombo.Text)
+                        {
+                            case "Constant": //Constant
+                                outputFrameRate = "--rate 15 --cfr "; //Constant Framerate
+                                break;
+                            case "Peak": //Peak
+                                outputFrameRate = "--rate 15 --pfr "; //Peak Framerate
+                                break;
+                            case "Variable": //Variable
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                outputFrameRate = " --vfr";
+                                break;
+                            default: //Peak
+                                outputFrameRate = "--rate 15 --pfr "; //Peak Framerate
+                                break;
+                        }
                         break;
-                    case "15":
-                        outputFrameRate = "--rate 15 --cfr ";
+                    case "23.976": //23.976
+                        switch (frameRateModeCombo.Text)
+                        {
+                            case "Constant": //Constant
+                                outputFrameRate = "--rate 23.976 --cfr "; //Constant Framerate
+                                break;
+                            case "Peak": //Peak
+                                outputFrameRate = "--rate 23.976 --pfr "; //Peak Framerate
+                                break;
+                            case "Variable": //Variable
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                outputFrameRate = " --vfr";
+                                break;
+                            default: //Peak
+                                outputFrameRate = "--rate 23.976 --pfr "; //Peak Framerate
+                                break;
+                        }
                         break;
-                    case "23.976":
-                        outputFrameRate = "--rate 23.976 --cfr ";
+                    case "24": //24
+                        switch (frameRateModeCombo.Text)
+                        {
+                            case "Constant": //Constant
+                                outputFrameRate = "--rate 24 --cfr "; //Constant Framerate
+                                break;
+                            case "Peak": //Peak
+                                outputFrameRate = "--rate 24 --pfr "; //Peak Framerate
+                                break;
+                            case "Variable": //Variable
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                outputFrameRate = " --vfr";
+                                break;
+                            default: //Peak
+                                outputFrameRate = "--rate 24 --pfr "; //Peak Framerate
+                                break;
+                        }
                         break;
-                    case "24":
-                        outputFrameRate = "--rate 24 --cfr ";
+                    case "25": //25
+                        switch (frameRateModeCombo.Text)
+                        {
+                            case "Constant": //Constant
+                                outputFrameRate = "--rate 25 --cfr "; //Constant Framerate
+                                break;
+                            case "Peak": //Peak
+                                outputFrameRate = "--rate 25 --pfr "; //Peak Framerate
+                                break;
+                            case "Variable": //Variable
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                outputFrameRate = " --vfr";
+                                break;
+                            default: //Peak
+                                outputFrameRate = "--rate 25 --pfr "; //Peak Framerate
+                                break;
+                        }
                         break;
-                    case "25":
-                        outputFrameRate = "--rate 25 --cfr ";
+                    case "29.97": //29.97
+                        switch (frameRateModeCombo.Text)
+                        {
+                            case "Constant": //Constant
+                                outputFrameRate = "--rate 29.97 --cfr "; //Constant Framerate
+                                break;
+                            case "Peak": //Peak
+                                outputFrameRate = "--rate 29.97 --pfr "; //Peak Framerate
+                                break;
+                            case "Variable": //Variable
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                outputFrameRate = " --vfr";
+                                break;
+                            default: //Peak
+                                outputFrameRate = "--rate 29.97 --pfr "; //Peak Framerate
+                                break;
+                        }
                         break;
-                    case "29.97":
-                        outputFrameRate = "--rate 29.97 --cfr ";
+                    case "30": //30
+                        switch (frameRateModeCombo.Text)
+                        {
+                            case "Constant": //Constant
+                                outputFrameRate = "--rate 30 --cfr "; //Constant Framerate
+                                break;
+                            case "Peak": //Peak
+                                outputFrameRate = "--rate 30 --pfr "; //Peak Framerate
+                                break;
+                            case "Variable": //Variable
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                outputFrameRate = " --vfr";
+                                break;
+                            default: //Peak
+                                outputFrameRate = "--rate 30 --pfr "; //Peak Framerate
+                                break;
+                        }
                         break;
-                    case "30":
-                        outputFrameRate = "--rate 30 --cfr ";
+                    case "50": //50
+                        switch (frameRateModeCombo.Text)
+                        {
+                            case "Constant": //Constant
+                                outputFrameRate = "--rate 50 --cfr "; //Constant Framerate
+                                break;
+                            case "Peak": //Peak
+                                outputFrameRate = "--rate 50 --pfr "; //Peak Framerate
+                                break;
+                            case "Variable": //Variable
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                outputFrameRate = " --vfr";
+                                break;
+                            default: //Peak
+                                outputFrameRate = "--rate 50 --pfr "; //Peak Framerate
+                                break;
+                        }
                         break;
-                    case "50":
-                        outputFrameRate = "--rate 50 --cfr "; //Not Roku Compliant
+                    case "59.94": //59.94
+                        switch (frameRateModeCombo.Text)
+                        {
+                            case "Constant": //Constant
+                                outputFrameRate = "--rate 59.94 --cfr "; //Constant Framerate
+                                break;
+                            case "Peak": //Peak
+                                outputFrameRate = "--rate 59.94 --pfr "; //Peak Framerate
+                                break;
+                            case "Variable": //Variable
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                outputFrameRate = " --vfr";
+                                break;
+                            default: //Peak
+                                outputFrameRate = "--rate 59.94 --pfr "; //Peak Framerate
+                                break;
+                        }
                         break;
-                    case "59.94":
-                        outputFrameRate = "--rate 59.94 --cfr "; //Not Roku Compliant
-                        break;
-                    case "60":
-                        outputFrameRate = "--rate 60 --cfr "; //Not Roku Compliant
+                    case "60": //60
+                        switch (frameRateModeCombo.Text)
+                        {
+                            case "Constant": //Constant
+                                outputFrameRate = "--rate 60 --cfr "; //Constant Framerate
+                                break;
+                            case "Peak": //Peak
+                                outputFrameRate = "--rate 60 --pfr "; //Peak Framerate
+                                break;
+                            case "Variable": //Variable
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                outputFrameRate = " --vfr";
+                                break;
+                            default: //Peak
+                                outputFrameRate = "--rate 60 --pfr "; //Peak Framerate
+                                break;
+                        }
                         break;
                     default:
-                        outputFrameRate = ""; //Auto
+                        nLabelUpdate("Framerate ignored, preserving source rate.");
+                        outputFrameRate = "--vfr"; ////preserves the source timing.
                         break;
                 }
 
@@ -1675,10 +1896,10 @@ namespace MovieDataCollector
                 if (videoBitrate > avgBitrateCap)
                 {
                     outputVideoBitrate = "--vb " + avgBitrateCap + " ";
-                    if (Math.Floor((avgBitrateCap + videoFile.Audio[audioTrack - 1].Bitrate) * 1.25) < 10000)
+                    if (Math.Floor((avgBitrateCap + videoFile.Audio[audioTrack - 1].Bitrate) * 1.5) < 10000)
                     {
-                        MaxBitrate = Math.Floor((avgBitrateCap + videoFile.Audio[audioTrack - 1].Bitrate) * 1.25).ToString();
-                        BufferSize = Math.Floor(((avgBitrateCap + videoFile.Audio[audioTrack - 1].Bitrate) * 1.25) * 2).ToString(); //Buffer of 2 seconds
+                        MaxBitrate = Math.Floor((avgBitrateCap + videoFile.Audio[audioTrack - 1].Bitrate) * 1.5).ToString();
+                        BufferSize = Math.Floor(((avgBitrateCap + videoFile.Audio[audioTrack - 1].Bitrate) * 1.5) * 2).ToString(); //Buffer of 2 seconds
                     }
                     else
                     {
@@ -1690,10 +1911,10 @@ namespace MovieDataCollector
                 {
                     outputVideoBitrate = "--vb " + videoBitrate.ToString() + " ";
 
-                    if (Math.Floor((videoBitrate + videoFile.Audio[audioTrack - 1].Bitrate) * 1.25) < 10000)
+                    if (Math.Floor((videoBitrate + videoFile.Audio[audioTrack - 1].Bitrate) * 1.5) < 10000)
                     {
-                        MaxBitrate = Math.Floor((videoBitrate + videoFile.Audio[audioTrack - 1].Bitrate) * 1.25).ToString();
-                        BufferSize = Math.Floor(((videoBitrate + videoFile.Audio[audioTrack - 1].Bitrate) * 1.25) * 2).ToString();
+                        MaxBitrate = Math.Floor((videoBitrate + videoFile.Audio[audioTrack - 1].Bitrate) * 1.5).ToString();
+                        BufferSize = Math.Floor(((videoBitrate + videoFile.Audio[audioTrack - 1].Bitrate) * 1.5) * 2).ToString();
                     }
                     else
                     {
@@ -1703,8 +1924,8 @@ namespace MovieDataCollector
 
                 }
 
-                //These settings set the buffer size and maximum video bitrate, also setting the encoder level to High 4.1
-                outputEncopts = "--encopts level=4.1:vbv-bufsize=" + BufferSize + ":vbv-maxrate=" + MaxBitrate + " --verbose=1 --encoder-level=\"4.1\" --encoder-profile=high --verbose=1 ";
+                //These settings set the buffer size and maximum video bitrate, also setting the encoder level
+                outputEncopts = "--encopts level=" + encoderLevelComboBox.Text + ":vbv-bufsize=" + BufferSize + ":vbv-maxrate=" + MaxBitrate + " --verbose=1 --encoder-level=\"" + encoderLevelComboBox.Text + "\" --encoder-profile=" + encoderProfileComboBox.Text.ToLower() + "--verbose=1 ";
             }
             else //Video stream is unreadable - set user selected values or defaults
             {
@@ -1718,10 +1939,10 @@ namespace MovieDataCollector
 
                 outputVideoBitrate = "--vb " + videoBitrate.ToString() + " ";
 
-                if (Math.Floor((videoBitrate + audioBitrate) * 1.25) < 10000) //Ensures max bitrate doesn't go over 10 which is the limit for Roku compatibility
+                if (Math.Floor((videoBitrate + audioBitrate) * 1.5) < 10000) //Ensures max bitrate doesn't go over 10 which is the limit for Roku compatibility
                 {
-                    MaxBitrate = Math.Floor((videoBitrate + audioBitrate) * 1.25).ToString();
-                    BufferSize = Math.Floor(((videoBitrate + audioBitrate) * 1.25) * 2).ToString();
+                    MaxBitrate = Math.Floor((videoBitrate + audioBitrate) * 1.5).ToString();
+                    BufferSize = Math.Floor(((videoBitrate + audioBitrate) * 1.5) * 2).ToString();
                 }
                 else
                 {
@@ -1732,56 +1953,293 @@ namespace MovieDataCollector
 
 
 
-                //These settings set the buffer size and maximum video bitrate, also setting the encoder level to High 4.1
-                outputEncopts = "--encopts level=4.1:vbv-bufsize=" + BufferSize + ":vbv-maxrate=" + MaxBitrate + " --verbose=1 --encoder-level=\"4.1\" --encoder-profile=high --verbose=1 ";
+                //These settings set the buffer size and maximum video bitrate, also setting the encoder level
+                outputEncopts = "--encopts level=" + encoderLevelComboBox.Text + ":vbv-bufsize=" + BufferSize + ":vbv-maxrate=" + MaxBitrate + " --verbose=1 --encoder-level=\"" + encoderLevelComboBox.Text + "\" --encoder-profile=" + encoderProfileComboBox.Text.ToLower() + "--verbose=1 ";
 
                 /*Framerate***********************************************************************************************************************************************************************************************/
+                /*Framerate***********************************************************************************************************************************************************************************************/
+                /*Roku Compliant
+                    Same As Source
+                    5
+                    10
+                    12
+                    15
+                    23.976
+                    24,
+                    25
+                    29.97
+                    30
+                    50
+                    59.94
+                    60*/
                 switch (framerateCombo.Text)
                 {
-                    case "Same As Source":
-                        outputFrameRate = ""; //auto
+                    case "Roku Compliant": //Roku Compliant Force Framerates of 23.976 fps or 29.97 fps and CFR or PFR only
+                        if (videoFile.Video[0].FrameRate > 0)
+                        {
+                            if (videoFile.Video[0].FrameRate == 23.976 || videoFile.Video[0].FrameRate == 29.97)
+                            {
+                                switch (frameRateModeCombo.Text)
+                                {
+                                    case "Constant": //Constant
+                                        outputFrameRate = "--rate  " + videoFile.Video[0].FrameRate.ToString() + " --cfr "; //Constant Framerate
+                                        break;
+                                    case "Peak": //Peak
+                                        outputFrameRate = "--rate  " + videoFile.Video[0].FrameRate.ToString() + " --pfr "; //Peak Framerate
+                                        break;
+                                    case "Variable": //Variable
+                                        nLabelUpdate("Variable Framerate Mode is not compatible with Roku players. Changed to Peak Framerate Mode.");
+                                        outputFrameRate = "--rate  " + videoFile.Video[0].FrameRate.ToString() + " --pfr "; //Peak Framerate
+                                        break;
+                                    default: //Peak
+                                        outputFrameRate = "--rate  " + videoFile.Video[0].FrameRate.ToString() + " --pfr "; //Peak Framerate
+                                        break;
+                                }
+                            }
+                            else //Force framerate of 29.97
+                            {
+                                switch (frameRateModeCombo.Text)
+                                {
+                                    case "Constant": //Constant
+                                        outputFrameRate = "--rate 29.97 --cfr "; //Constant Framerate
+                                        break;
+                                    case "Peak": //Peak
+                                        outputFrameRate = "--rate 29.97 --pfr "; //Peak Framerate
+                                        break;
+                                    case "Variable": //Variable
+                                        nLabelUpdate("Variable Framerate Mode is not compatible with Roku players. Changed to Peak Framerate Mode.");
+                                        outputFrameRate = "--rate 29.97 --pfr "; //Peak Framerate
+                                        break;
+                                    default: //Peak
+                                        outputFrameRate = "--rate 29.97 --pfr "; //Peak Framerate
+                                        break;
+                                }
+                            }
+
+                        }
                         break;
-                    case "Roku Compliant": //Force Framerates of < 30
-                        outputFrameRate = "--rate  30 --cfr "; //Constant Framerate
+                    case "Same As Source": //Same As Source 
+                        outputFrameRate = "--vfr"; //preserves the source timing.
                         break;
-                    case "5":
-                        outputFrameRate = "--rate 5 --cfr ";
+                    case "5": //5
+                        switch (frameRateModeCombo.Text)
+                        {
+                            case "Constant": //Constant
+                                outputFrameRate = "--rate 5 --cfr "; //Constant Framerate
+                                break;
+                            case "Peak": //Peak
+                                outputFrameRate = "--rate 5 --pfr "; //Peak Framerate
+                                break;
+                            case "Variable": //Variable
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                outputFrameRate = " --vfr";
+                                break;
+                            default: //Peak
+                                outputFrameRate = "--rate 5 --pfr "; //Peak Framerate
+                                break;
+                        }
                         break;
-                    case "10":
-                        outputFrameRate = "--rate 10 --cfr ";
+                    case "10": //10
+                        switch (frameRateModeCombo.Text)
+                        {
+                            case "Constant": //Constant
+                                outputFrameRate = "--rate 10 --cfr "; //Constant Framerate
+                                break;
+                            case "Peak": //Peak
+                                outputFrameRate = "--rate 10 --pfr "; //Peak Framerate
+                                break;
+                            case "Variable": //Variable
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                outputFrameRate = " --vfr";
+                                break;
+                            default: //Peak
+                                outputFrameRate = "--rate 10 --pfr "; //Peak Framerate
+                                break;
+                        }
                         break;
-                    case "12":
-                        outputFrameRate = "--rate 12 --cfr ";
+                    case "12": //12
+                        switch (frameRateModeCombo.Text)
+                        {
+                            case "Constant": //Constant
+                                outputFrameRate = "--rate 12 --cfr "; //Constant Framerate
+                                break;
+                            case "Peak": //Peak
+                                outputFrameRate = "--rate 12 --pfr "; //Peak Framerate
+                                break;
+                            case "Variable": //Variable
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                outputFrameRate = " --vfr";
+                                break;
+                            default: //Peak
+                                outputFrameRate = "--rate 12 --pfr "; //Peak Framerate
+                                break;
+                        }
                         break;
-                    case "15":
-                        outputFrameRate = "--rate 15 --cfr ";
+                    case "15": //15
+                        switch (frameRateModeCombo.Text)
+                        {
+                            case "Constant": //Constant
+                                outputFrameRate = "--rate 15 --cfr "; //Constant Framerate
+                                break;
+                            case "Peak": //Peak
+                                outputFrameRate = "--rate 15 --pfr "; //Peak Framerate
+                                break;
+                            case "Variable": //Variable
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                outputFrameRate = " --vfr";
+                                break;
+                            default: //Peak
+                                outputFrameRate = "--rate 15 --pfr "; //Peak Framerate
+                                break;
+                        }
                         break;
-                    case "23.976":
-                        outputFrameRate = "--rate 23.976 --cfr ";
+                    case "23.976": //23.976
+                        switch (frameRateModeCombo.Text)
+                        {
+                            case "Constant": //Constant
+                                outputFrameRate = "--rate 23.976 --cfr "; //Constant Framerate
+                                break;
+                            case "Peak": //Peak
+                                outputFrameRate = "--rate 23.976 --pfr "; //Peak Framerate
+                                break;
+                            case "Variable": //Variable
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                outputFrameRate = " --vfr";
+                                break;
+                            default: //Peak
+                                outputFrameRate = "--rate 23.976 --pfr "; //Peak Framerate
+                                break;
+                        }
                         break;
-                    case "24":
-                        outputFrameRate = "--rate 24 --cfr ";
+                    case "24": //24
+                        switch (frameRateModeCombo.Text)
+                        {
+                            case "Constant": //Constant
+                                outputFrameRate = "--rate 24 --cfr "; //Constant Framerate
+                                break;
+                            case "Peak": //Peak
+                                outputFrameRate = "--rate 24 --pfr "; //Peak Framerate
+                                break;
+                            case "Variable": //Variable
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                outputFrameRate = " --vfr";
+                                break;
+                            default: //Peak
+                                outputFrameRate = "--rate 24 --pfr "; //Peak Framerate
+                                break;
+                        }
                         break;
-                    case "25":
-                        outputFrameRate = "--rate 25 --cfr ";
+                    case "25": //25
+                        switch (frameRateModeCombo.Text)
+                        {
+                            case "Constant": //Constant
+                                outputFrameRate = "--rate 25 --cfr "; //Constant Framerate
+                                break;
+                            case "Peak": //Peak
+                                outputFrameRate = "--rate 25 --pfr "; //Peak Framerate
+                                break;
+                            case "Variable": //Variable
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                outputFrameRate = " --vfr";
+                                break;
+                            default: //Peak
+                                outputFrameRate = "--rate 25 --pfr "; //Peak Framerate
+                                break;
+                        }
                         break;
-                    case "29.97":
-                        outputFrameRate = "--rate 29.97 --cfr ";
+                    case "29.97": //29.97
+                        switch (frameRateModeCombo.Text)
+                        {
+                            case "Constant": //Constant
+                                outputFrameRate = "--rate 29.97 --cfr "; //Constant Framerate
+                                break;
+                            case "Peak": //Peak
+                                outputFrameRate = "--rate 29.97 --pfr "; //Peak Framerate
+                                break;
+                            case "Variable": //Variable
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                outputFrameRate = " --vfr";
+                                break;
+                            default: //Peak
+                                outputFrameRate = "--rate 29.97 --pfr "; //Peak Framerate
+                                break;
+                        }
                         break;
-                    case "30":
-                        outputFrameRate = "--rate 30 --cfr ";
+                    case "30": //30
+                        switch (frameRateModeCombo.Text)
+                        {
+                            case "Constant": //Constant
+                                outputFrameRate = "--rate 30 --cfr "; //Constant Framerate
+                                break;
+                            case "Peak": //Peak
+                                outputFrameRate = "--rate 30 --pfr "; //Peak Framerate
+                                break;
+                            case "Variable": //Variable
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                outputFrameRate = " --vfr";
+                                break;
+                            default: //Peak
+                                outputFrameRate = "--rate 30 --pfr "; //Peak Framerate
+                                break;
+                        }
                         break;
-                    case "50":
-                        outputFrameRate = "--rate 50 --cfr "; //Not Roku Compliant
+                    case "50": //50
+                        switch (frameRateModeCombo.Text)
+                        {
+                            case "Constant": //Constant
+                                outputFrameRate = "--rate 50 --cfr "; //Constant Framerate
+                                break;
+                            case "Peak": //Peak
+                                outputFrameRate = "--rate 50 --pfr "; //Peak Framerate
+                                break;
+                            case "Variable": //Variable
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                outputFrameRate = " --vfr";
+                                break;
+                            default: //Peak
+                                outputFrameRate = "--rate 50 --pfr "; //Peak Framerate
+                                break;
+                        }
                         break;
-                    case "59.94":
-                        outputFrameRate = "--rate 59.94 --cfr "; //Not Roku Compliant
+                    case "59.94": //59.94
+                        switch (frameRateModeCombo.Text)
+                        {
+                            case "Constant": //Constant
+                                outputFrameRate = "--rate 59.94 --cfr "; //Constant Framerate
+                                break;
+                            case "Peak": //Peak
+                                outputFrameRate = "--rate 59.94 --pfr "; //Peak Framerate
+                                break;
+                            case "Variable": //Variable
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                outputFrameRate = " --vfr";
+                                break;
+                            default: //Peak
+                                outputFrameRate = "--rate 59.94 --pfr "; //Peak Framerate
+                                break;
+                        }
                         break;
-                    case "60":
-                        outputFrameRate = "--rate 60 --cfr "; //Not Roku Compliant
+                    case "60": //60
+                        switch (frameRateModeCombo.Text)
+                        {
+                            case "Constant": //Constant
+                                outputFrameRate = "--rate 60 --cfr "; //Constant Framerate
+                                break;
+                            case "Peak": //Peak
+                                outputFrameRate = "--rate 60 --pfr "; //Peak Framerate
+                                break;
+                            case "Variable": //Variable
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                outputFrameRate = " --vfr";
+                                break;
+                            default: //Peak
+                                outputFrameRate = "--rate 60 --pfr "; //Peak Framerate
+                                break;
+                        }
                         break;
                     default:
-                        outputFrameRate = ""; //Auto
+                        nLabelUpdate("Framerate ignored, preserving source rate.");
+                        outputFrameRate = "--vfr"; ////preserves the source timing.
                         break;
                 }
             }
@@ -1825,7 +2283,7 @@ namespace MovieDataCollector
                     outputEncoderSpeed = "--x264-preset placebo ";
                     break;
                 default:
-                    outputEncoderSpeed = "--x264-preset veryfast ";
+                    outputEncoderSpeed = "--x264-preset medium ";
                     break;
             }
             /*Encoder Tune***********************************************************************************************************************************************************************************************/
@@ -1918,7 +2376,7 @@ namespace MovieDataCollector
                     outputEncoderLevel = "--encoder-level 4.1 ";
                     break;
                 default:
-                    outputEncoderLevel = "--encoder-level 4.1 ";
+                    outputEncoderLevel = "--encoder-level 4.0 ";
                     break;
             }
 
@@ -1973,7 +2431,7 @@ namespace MovieDataCollector
         {
             bool checksPassed = true;
             string handBrakeCLILocation = CheckForHandbrakeCLI();
-            notificationLabel.Text = "";
+            nLabelUpdate("");
 
             //Ensure HandbrakeCLI is found
             if (string.IsNullOrEmpty(handBrakeCLILocation)) { checksPassed = false; }
@@ -1992,8 +2450,6 @@ namespace MovieDataCollector
                 default:
                     break;
             }
-            notificationLabel.Invalidate();
-            notificationLabel.Update();
             notificationLabel.Visible = true;
             return checksPassed;
         }
@@ -2021,13 +2477,9 @@ namespace MovieDataCollector
                     if (FBD.ShowDialog() == DialogResult.OK) //shows folderbrowserdialog, runs addtional code if not cancelled out
                     {
                         CF.DefaultSettings["OutputFilePath"] = FBD.SelectedPath;
-
-                        notificationLabel.Text = "Converting File ( " + filesListBox.SelectedItem.ToString() + " )";
-                        notificationLabel.Invalidate();
-                        notificationLabel.Update();
-
-                        CF.DefaultSettings["OutputFilePath"] = FBD.SelectedPath;
                         CF.updateDefaults();
+
+                        nLabelUpdate("Converting File ( " + filesListBox.SelectedItem.ToString() + " )");
 
                         DialogResult = DialogResult.None; //Prevents form from closing...
 
@@ -2085,9 +2537,9 @@ namespace MovieDataCollector
                                 }
                                 outPutTextBox.Text = "File skipped due to error:\r\n" + errorString;
 
-                                notificationLabel.Text = "Transcoding of \"" + filesListBox.SelectedItem.ToString() + "\" Failed.";
-                                notificationLabel.Invalidate();
-                                notificationLabel.Update();
+                                nLabelUpdate("Transcoding of \"" + filesListBox.SelectedItem.ToString() + "\" Failed.");
+                                
+                                
 
                                 if (notificationCheck.Checked)
                                 {
@@ -2102,9 +2554,9 @@ namespace MovieDataCollector
                             else
                             {
                                 outPutTextBox.Text = ""; //Clears Output Box on successful Encode
-                                notificationLabel.Text = "Transcoding of \"" + filesListBox.SelectedItem.ToString() + "\" completed in " + totalProcessingTime;
-                                notificationLabel.Invalidate();
-                                notificationLabel.Update();
+                                nLabelUpdate("Transcoding of \"" + filesListBox.SelectedItem.ToString() + "\" completed in " + totalProcessingTime);
+                                
+                                
 
                                 if (notificationCheck.Checked)
                                 {
@@ -2119,9 +2571,9 @@ namespace MovieDataCollector
                         }
                         catch
                         {
-                            notificationLabel.Text = "Error Gathering File Info for " + filesListBox.SelectedItem.ToString() + " File May Be Corrupt.";
-                            notificationLabel.Invalidate();
-                            notificationLabel.Update();
+                            nLabelUpdate("Error Gathering File Info for " + filesListBox.SelectedItem.ToString() + " File May Be Corrupt.");
+                            
+                            
 
                             if (notificationCheck.Checked)
                             {
@@ -2135,9 +2587,9 @@ namespace MovieDataCollector
                 }
                 else
                 {
-                    notificationLabel.Text = "";
-                    notificationLabel.Invalidate();
-                    notificationLabel.Update();
+                    nLabelUpdate("");
+                    
+                    
                 }
             }
         }
@@ -2172,9 +2624,9 @@ namespace MovieDataCollector
 
                         for (int i = 0; i < VideoFilesList.Count; i++)
                         {
-                            notificationLabel.Text = "Converting File " + (i + 1).ToString() + " of " + VideoFilesList.Count.ToString() + " ( " + filesListBox.Items[i].ToString() + " )";
-                            notificationLabel.Invalidate();
-                            notificationLabel.Update();
+                            nLabelUpdate("Converting File " + (i + 1).ToString() + " of " + VideoFilesList.Count.ToString() + " ( " + filesListBox.Items[i].ToString() + " )");
+                            
+                            
 
                             DialogResult = DialogResult.None; //Prevents form from closing...
 
@@ -2247,11 +2699,11 @@ namespace MovieDataCollector
                             }
                             outPutTextBox.Text = "Files skipped due to error:\r\n" + errorString;
 
-                            if (VideoFilesList.Count == 1) { notificationLabel.Text = "The transcoding que initiated " + startTime.ToString() + " failed. HandbrakeCLI exited with code " + exitCode.ToString(); }
-                            if (VideoFilesList.Count > 1) { notificationLabel.Text = "The transcoding que initiated " + startTime.ToString() + " is now complete. " + (VideoFilesList.Count() - Errors.Count()).ToString() + " of " + VideoFilesList.Count().ToString() + " files processed successfully in " + totalProcessingTime; }
+                            if (VideoFilesList.Count == 1) { nLabelUpdate("The transcoding que initiated " + startTime.ToString() + " failed. HandbrakeCLI exited with code " + exitCode.ToString()); }
+                            if (VideoFilesList.Count > 1) { nLabelUpdate("The transcoding que initiated " + startTime.ToString() + " is now complete. " + (VideoFilesList.Count() - Errors.Count()).ToString() + " of " + VideoFilesList.Count().ToString() + " files processed successfully in " + totalProcessingTime); }
 
-                            notificationLabel.Invalidate();
-                            notificationLabel.Update();
+                            
+                            
 
                             if (notificationCheck.Checked)
                             {
@@ -2267,11 +2719,11 @@ namespace MovieDataCollector
                         {
                             outPutTextBox.Text = ""; //Clears Output Box on successful Encode
 
-                            if (VideoFilesList.Count == 1) { notificationLabel.Text = "The transcoding que initiated " + startTime.ToString() + " is now complete. The file was processed in " + totalProcessingTime; }
-                            if (VideoFilesList.Count > 1) { notificationLabel.Text = "The transcoding que initiated " + startTime.ToString() + " is now complete. " + VideoFilesList.Count().ToString() + " files were processed in " + totalProcessingTime; }
+                            if (VideoFilesList.Count == 1) { nLabelUpdate("The transcoding que initiated " + startTime.ToString() + " is now complete. The file was processed in " + totalProcessingTime); }
+                            if (VideoFilesList.Count > 1) { nLabelUpdate("The transcoding que initiated " + startTime.ToString() + " is now complete. " + VideoFilesList.Count().ToString() + " files were processed in " + totalProcessingTime); }
 
-                            notificationLabel.Invalidate();
-                            notificationLabel.Update();
+                            
+                            
 
                             if (notificationCheck.Checked)
                             {
@@ -2287,9 +2739,9 @@ namespace MovieDataCollector
                 }
                 else
                 {
-                    notificationLabel.Text = "";
-                    notificationLabel.Invalidate();
-                    notificationLabel.Update();
+                    nLabelUpdate("");
+                    
+                    
                 }
             }
         }
@@ -2378,9 +2830,9 @@ namespace MovieDataCollector
 
                     SmtpServer.Send(mail);
                     //CustomMessageBox.Show("Notification Sent!", 120, 230, "Notification Message");
-                    notificationLabel.Text = "Notification sent to :" + sendTo;
-                    notificationLabel.Invalidate();
-                    notificationLabel.Update();
+                    nLabelUpdate("Notification sent to :" + sendTo);
+                    
+                    
                 }
                 catch (Exception ex)
                 {
@@ -2444,10 +2896,10 @@ namespace MovieDataCollector
                     mixdownComboBox.Text = "Dolby ProLogic 2";
 
                     notificationLabel.ForeColor = Color.Red;
-                    notificationLabel.Text = "The AAC codec can only mixdown to Dolby Prologic 2";
+                    nLabelUpdate("The AAC codec can only mixdown to Dolby Prologic 2");
                     notificationLabel.Visible = true;
-                    notificationLabel.Invalidate();
-                    notificationLabel.Update();
+                    
+                    
                     break;
                 default:
                     break;
@@ -2459,10 +2911,10 @@ namespace MovieDataCollector
             {
                 case "Same As Source":
                     notificationLabel.ForeColor = Color.Red;
-                    notificationLabel.Text = "Framerates > 30 are not ROKU Compliant!";
+                    nLabelUpdate("Framerates > 30 are not ROKU Compliant!");
                     notificationLabel.Visible = true;
-                    notificationLabel.Invalidate();
-                    notificationLabel.Update();
+                    
+                    
                     break;
                 case "5":
                     notificationLabel.ForeColor = Color.GreenYellow;
@@ -2502,31 +2954,31 @@ namespace MovieDataCollector
                     break;
                 case "50":
                     notificationLabel.ForeColor = Color.Red;
-                    notificationLabel.Text = "Framerates > 30 are not ROKU Compliant!";
+                    nLabelUpdate("Framerates > 30 are not ROKU Compliant!");
                     notificationLabel.Visible = true;
-                    notificationLabel.Invalidate();
-                    notificationLabel.Update();
+                    
+                    
                     break;
                 case "59.94":
                     notificationLabel.ForeColor = Color.Red;
-                    notificationLabel.Text = "Framerates > 30 are not ROKU Compliant!";
+                    nLabelUpdate("Framerates > 30 are not ROKU Compliant!");
                     notificationLabel.Visible = true;
-                    notificationLabel.Invalidate();
-                    notificationLabel.Update();
+                    
+                    
                     break;
                 case "60":
                     notificationLabel.ForeColor = Color.Red;
-                    notificationLabel.Text = "Framerates > 30 are not ROKU Compliant!";
+                    nLabelUpdate("Framerates > 30 are not ROKU Compliant!");
                     notificationLabel.Visible = true;
-                    notificationLabel.Invalidate();
-                    notificationLabel.Update();
+                    
+                    
                     break;
                 default:
                     notificationLabel.ForeColor = Color.Red;
-                    notificationLabel.Text = "Framerates > 30 are not ROKU Compliant!";
+                    nLabelUpdate("Framerates > 30 are not ROKU Compliant!");
                     notificationLabel.Visible = true;
-                    notificationLabel.Invalidate();
-                    notificationLabel.Update();
+                    
+                    
                     break;
             }
         }
@@ -2672,6 +3124,12 @@ namespace MovieDataCollector
         private void notificationCheck_CheckedChanged_1(object sender, EventArgs e)
         {
 
+        }
+        private void nLabelUpdate(string notificationText)
+        {
+            notificationLabel.Text = notificationText;
+            notificationLabel.Invalidate();
+            notificationLabel.Update();
         }
     }
 }

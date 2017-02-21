@@ -98,6 +98,7 @@
             this.conversionSettingsLabel = new System.Windows.Forms.Label();
             this.compatibilitySelectionLabel = new System.Windows.Forms.Label();
             this.invisibleCloseButton = new System.Windows.Forms.Button();
+            this.frameRateModeCombo = new System.Windows.Forms.ComboBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.selectionPicturebox)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -114,7 +115,7 @@
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1104, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1239, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -135,7 +136,7 @@
             this.openToolStripMenuItem.BackColor = System.Drawing.Color.GreenYellow;
             this.openToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(104, 22);
             this.openToolStripMenuItem.Text = "&Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
@@ -144,7 +145,7 @@
             this.closeToolStripMenuItem.BackColor = System.Drawing.Color.GreenYellow;
             this.closeToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(104, 22);
             this.closeToolStripMenuItem.Text = "&Close";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
@@ -302,7 +303,7 @@
             this.tabControl1.Location = new System.Drawing.Point(576, 64);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(516, 521);
+            this.tabControl1.Size = new System.Drawing.Size(591, 521);
             this.tabControl1.TabIndex = 13;
             // 
             // mediaInfoPage
@@ -361,7 +362,7 @@
             this.conversionSettingsPage.Location = new System.Drawing.Point(4, 22);
             this.conversionSettingsPage.Name = "conversionSettingsPage";
             this.conversionSettingsPage.Padding = new System.Windows.Forms.Padding(3);
-            this.conversionSettingsPage.Size = new System.Drawing.Size(508, 495);
+            this.conversionSettingsPage.Size = new System.Drawing.Size(583, 495);
             this.conversionSettingsPage.TabIndex = 1;
             this.conversionSettingsPage.Text = "Conversion Settings";
             // 
@@ -491,6 +492,7 @@
             // videoSettingsPanel
             // 
             this.videoSettingsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.videoSettingsPanel.Controls.Add(this.frameRateModeCombo);
             this.videoSettingsPanel.Controls.Add(this.framerateCombo);
             this.videoSettingsPanel.Controls.Add(this.avgBitrateCombo);
             this.videoSettingsPanel.Controls.Add(this.encoderLevelComboBox);
@@ -509,7 +511,7 @@
             this.videoSettingsPanel.Controls.Add(this.encoderSpeedLabel);
             this.videoSettingsPanel.Location = new System.Drawing.Point(6, 176);
             this.videoSettingsPanel.Name = "videoSettingsPanel";
-            this.videoSettingsPanel.Size = new System.Drawing.Size(488, 146);
+            this.videoSettingsPanel.Size = new System.Drawing.Size(553, 146);
             this.videoSettingsPanel.TabIndex = 6;
             // 
             // framerateCombo
@@ -517,7 +519,22 @@
             this.framerateCombo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.framerateCombo.ForeColor = System.Drawing.Color.GreenYellow;
             this.framerateCombo.FormattingEnabled = true;
-            this.framerateCombo.Location = new System.Drawing.Point(296, 20);
+            this.framerateCombo.Items.AddRange(new object[] {
+            "Roku Compliant",
+            "Same As Source",
+            "5",
+            "10",
+            "12",
+            "15",
+            "23.976",
+            "24,",
+            "25",
+            "29.97",
+            "30",
+            "50",
+            "59.94",
+            "60"});
+            this.framerateCombo.Location = new System.Drawing.Point(393, 20);
             this.framerateCombo.Name = "framerateCombo";
             this.framerateCombo.Size = new System.Drawing.Size(120, 21);
             this.framerateCombo.TabIndex = 14;
@@ -578,7 +595,7 @@
             // encoderProfileComboBox
             // 
             this.encoderProfileComboBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.encoderProfileComboBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.encoderProfileComboBox.ForeColor = System.Drawing.Color.GreenYellow;
             this.encoderProfileComboBox.FormattingEnabled = true;
             this.encoderProfileComboBox.Items.AddRange(new object[] {
             "Baseline",
@@ -781,6 +798,7 @@
             this.filteredDTSCheck.TabIndex = 7;
             this.filteredDTSCheck.Text = "Dolby DTS";
             this.filteredDTSCheck.UseVisualStyleBackColor = true;
+            this.filteredDTSCheck.Visible = false;
             // 
             // filteredAC3Check
             // 
@@ -791,6 +809,7 @@
             this.filteredAC3Check.TabIndex = 7;
             this.filteredAC3Check.Text = "AC3";
             this.filteredAC3Check.UseVisualStyleBackColor = true;
+            this.filteredAC3Check.Visible = false;
             // 
             // filteredAACCheck
             // 
@@ -801,6 +820,7 @@
             this.filteredAACCheck.TabIndex = 7;
             this.filteredAACCheck.Text = "AAC";
             this.filteredAACCheck.UseVisualStyleBackColor = true;
+            this.filteredAACCheck.Visible = false;
             // 
             // kbpsLabel
             // 
@@ -844,6 +864,7 @@
             this.passthruFilterLabel.Size = new System.Drawing.Size(94, 13);
             this.passthruFilterLabel.TabIndex = 6;
             this.passthruFilterLabel.Text = "Passthru Filters";
+            this.passthruFilterLabel.Visible = false;
             // 
             // sampleRateCombo
             // 
@@ -955,13 +976,28 @@
             this.invisibleCloseButton.UseVisualStyleBackColor = true;
             this.invisibleCloseButton.Click += new System.EventHandler(this.invisibleCloseButton_Click);
             // 
+            // frameRateModeCombo
+            // 
+            this.frameRateModeCombo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.frameRateModeCombo.ForeColor = System.Drawing.Color.GreenYellow;
+            this.frameRateModeCombo.FormattingEnabled = true;
+            this.frameRateModeCombo.Items.AddRange(new object[] {
+            "Constant",
+            "Peak",
+            "Variable"});
+            this.frameRateModeCombo.Location = new System.Drawing.Point(296, 20);
+            this.frameRateModeCombo.Name = "frameRateModeCombo";
+            this.frameRateModeCombo.Size = new System.Drawing.Size(85, 21);
+            this.frameRateModeCombo.TabIndex = 15;
+            this.frameRateModeCombo.Text = "Constant";
+            // 
             // ConversionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.CancelButton = this.invisibleCloseButton;
-            this.ClientSize = new System.Drawing.Size(1104, 607);
+            this.ClientSize = new System.Drawing.Size(1239, 607);
             this.Controls.Add(this.compatibilitySelectionLabel);
             this.Controls.Add(this.conversionSettingsLabel);
             this.Controls.Add(this.tabControl1);
@@ -1071,5 +1107,6 @@
         private System.Windows.Forms.ComboBox sampleRateCombo;
         private System.Windows.Forms.Label sampleRateLabel;
         private System.Windows.Forms.Button invisibleCloseButton;
+        private System.Windows.Forms.ComboBox frameRateModeCombo;
     }
 }
