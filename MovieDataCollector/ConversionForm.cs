@@ -24,8 +24,11 @@ namespace MovieDataCollector
 
         List<string> IncompatibilityInfo = new List<string>(); //Contains Incompatibility info for each file listed in VideoFilesList
 
-        string configDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector"; //Writable folder location for config file.
-        string configPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector\\Config.txt"; //Writable file location for config file.
+        //string configDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector"; //Writable folder location for config file.
+        //string configPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector\\Config.txt"; //Writable file location for config file.
+
+        //Ending audio bitrate string used in encoder and setting video bitrate buffer and maxrate size.
+        int Abitrate = 0;
 
         /*Values available for conversion*/
         List<string> codecList = new List<string>()
@@ -1207,7 +1210,7 @@ namespace MovieDataCollector
         }
         private string AudioConversionString(MediaFile videoFile)
         {
-            //Variables from User
+            //Users selected variables
             double userSelectedBitrate = 0;
 
             //Variables derived from file
@@ -1220,12 +1223,12 @@ namespace MovieDataCollector
             string outputAudioTrack = "";
             string outputEncoder = "";
             string outputFallBack = "";
-            string outputBitrate = "";
             string outputMixdown = "";
             string outputSampleRate = "--arate Auto ";
             string outputDynamicRange = "--drc 0 --gain 0 ";
+            string outputBitrate = "";
             /*****************************************************************************************************************************************************************************************************************************/
-            
+
 
 
             if (videoFile.Audio.Count > 0) //Source Readable
@@ -1523,6 +1526,10 @@ namespace MovieDataCollector
                     outputEncoder = "--aencoder av_aac ";
                     break;
             }
+
+            //Sets value of audio bitrate
+            int.TryParse(outputBitrate.Replace("--ab ", ""), out Abitrate);
+
             return outputAudioTrack + outputEncoder + outputAudioPassthruMask + outputFallBack + outputBitrate + outputSampleRate + outputMixdown + outputDynamicRange;
         }
         private string VideoConversionString(MediaFile videoFile, int audioTrack)
@@ -1896,10 +1903,10 @@ namespace MovieDataCollector
                 if (videoBitrate > avgBitrateCap)
                 {
                     outputVideoBitrate = "--vb " + avgBitrateCap + " ";
-                    if (Math.Floor((avgBitrateCap + videoFile.Audio[audioTrack - 1].Bitrate) * 1.5) < 10000)
+                    if (Math.Floor((avgBitrateCap + Abitrate) * 1.5) < 10000)
                     {
-                        MaxBitrate = Math.Floor((avgBitrateCap + videoFile.Audio[audioTrack - 1].Bitrate) * 1.5).ToString();
-                        BufferSize = Math.Floor(((avgBitrateCap + videoFile.Audio[audioTrack - 1].Bitrate) * 1.5) * 2).ToString(); //Buffer of 2 seconds
+                        MaxBitrate = Math.Floor((avgBitrateCap + Abitrate) * 1.5).ToString();
+                        BufferSize = Math.Floor(((avgBitrateCap + Abitrate) * 1.5) * 2).ToString(); //Buffer of 2 seconds
                     }
                     else
                     {
@@ -1911,10 +1918,10 @@ namespace MovieDataCollector
                 {
                     outputVideoBitrate = "--vb " + videoBitrate.ToString() + " ";
 
-                    if (Math.Floor((videoBitrate + videoFile.Audio[audioTrack - 1].Bitrate) * 1.5) < 10000)
+                    if (Math.Floor((videoBitrate + Abitrate) * 1.5) < 10000)
                     {
-                        MaxBitrate = Math.Floor((videoBitrate + videoFile.Audio[audioTrack - 1].Bitrate) * 1.5).ToString();
-                        BufferSize = Math.Floor(((videoBitrate + videoFile.Audio[audioTrack - 1].Bitrate) * 1.5) * 2).ToString();
+                        MaxBitrate = Math.Floor((videoBitrate + Abitrate) * 1.5).ToString();
+                        BufferSize = Math.Floor(((videoBitrate + Abitrate) * 1.5) * 2).ToString();
                     }
                     else
                     {
@@ -1932,6 +1939,8 @@ namespace MovieDataCollector
                 double audioBitrate = 0;
 
                 /*Encopts***********************************************************************************************************************************************************************************************/
+                //Need to adjust for number of channels of audio, currently it is the value for mono not stereo which is typical.
+
                 double.TryParse(avgBitrateCombo.Text, out avgBitrateCap);
                 avgBitrateCap = avgBitrateCap * 1000; //This changes the value in the dropdown from Mbps to Kbps
                 videoBitrate = avgBitrateCap;
@@ -1941,8 +1950,8 @@ namespace MovieDataCollector
 
                 if (Math.Floor((videoBitrate + audioBitrate) * 1.5) < 10000) //Ensures max bitrate doesn't go over 10 which is the limit for Roku compatibility
                 {
-                    MaxBitrate = Math.Floor((videoBitrate + audioBitrate) * 1.5).ToString();
-                    BufferSize = Math.Floor(((videoBitrate + audioBitrate) * 1.5) * 2).ToString();
+                    MaxBitrate = Math.Floor((videoBitrate + (Abitrate * 2)) * 1.5).ToString(); //(Abitrate * 2) Default for user selected audio in stereo
+                    BufferSize = Math.Floor(((videoBitrate + (Abitrate * 2)) * 1.5) * 2).ToString();
                 }
                 else
                 {
