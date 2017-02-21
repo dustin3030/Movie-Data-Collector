@@ -539,6 +539,8 @@
             this.framerateCombo.Size = new System.Drawing.Size(120, 21);
             this.framerateCombo.TabIndex = 14;
             this.framerateCombo.Text = "Roku Compliant";
+            this.framerateCombo.SelectedIndexChanged += new System.EventHandler(this.framerateCombo_SelectedIndexChanged);
+            this.framerateCombo.Leave += new System.EventHandler(this.framerateCombo_Leave);
             // 
             // avgBitrateCombo
             // 
@@ -565,6 +567,7 @@
             this.avgBitrateCombo.Size = new System.Drawing.Size(51, 21);
             this.avgBitrateCombo.TabIndex = 13;
             this.avgBitrateCombo.Text = "3.5";
+            this.avgBitrateCombo.Leave += new System.EventHandler(this.avgBitrateCombo_Leave);
             // 
             // encoderLevelComboBox
             // 
@@ -591,6 +594,7 @@
             this.encoderLevelComboBox.Size = new System.Drawing.Size(52, 21);
             this.encoderLevelComboBox.TabIndex = 12;
             this.encoderLevelComboBox.Text = "4.1";
+            this.encoderLevelComboBox.Leave += new System.EventHandler(this.encoderLevelComboBox_Leave);
             // 
             // encoderProfileComboBox
             // 
@@ -606,6 +610,7 @@
             this.encoderProfileComboBox.Size = new System.Drawing.Size(76, 21);
             this.encoderProfileComboBox.TabIndex = 11;
             this.encoderProfileComboBox.Text = "High";
+            this.encoderProfileComboBox.Leave += new System.EventHandler(this.encoderProfileComboBox_Leave);
             // 
             // encoderTuneComboBox
             // 
@@ -625,6 +630,7 @@
             this.encoderTuneComboBox.Size = new System.Drawing.Size(105, 21);
             this.encoderTuneComboBox.TabIndex = 10;
             this.encoderTuneComboBox.Text = "Fast Decode";
+            this.encoderTuneComboBox.Leave += new System.EventHandler(this.encoderTuneComboBox_Leave);
             // 
             // encoderSpeedCombo
             // 
@@ -647,6 +653,7 @@
             this.encoderSpeedCombo.Size = new System.Drawing.Size(105, 21);
             this.encoderSpeedCombo.TabIndex = 9;
             this.encoderSpeedCombo.Text = "Medium";
+            this.encoderSpeedCombo.Leave += new System.EventHandler(this.encoderSpeedCombo_Leave);
             // 
             // turboCheckBox
             // 
@@ -855,6 +862,7 @@
             this.audioBitrateCombo.Size = new System.Drawing.Size(47, 21);
             this.audioBitrateCombo.TabIndex = 6;
             this.audioBitrateCombo.Text = "96";
+            this.audioBitrateCombo.Leave += new System.EventHandler(this.AudioCodecComboBox_Leave);
             // 
             // passthruFilterLabel
             // 
@@ -893,6 +901,7 @@
             this.mixdownComboBox.Size = new System.Drawing.Size(133, 21);
             this.mixdownComboBox.TabIndex = 0;
             this.mixdownComboBox.Text = "Dolby ProLogic 2";
+            this.mixdownComboBox.SelectedIndexChanged += new System.EventHandler(this.MixdownComboBox_SelectedIndexChanged);
             // 
             // sampleRateLabel
             // 
@@ -917,6 +926,7 @@
             this.audioCodecComboBox.Size = new System.Drawing.Size(133, 21);
             this.audioCodecComboBox.TabIndex = 0;
             this.audioCodecComboBox.Text = "AAC (AVC)";
+            this.audioCodecComboBox.SelectedIndexChanged += new System.EventHandler(this.AudioCodecComboBox_SelectedIndexChanged);
             // 
             // ABitrateLabel
             // 
