@@ -23,6 +23,7 @@ namespace MovieDataCollector
                 "InputFilePath", //C:\\
                 "OutputFilePath", //C:\\
                 "ExportFilePath", //C:\\
+                "CompatibilitySelector", //Roku
                 "TVAbsoluteNumbersCheck", //False
                 "TVTitleInFilenameCheck", //False
                 "DefaultFormat", //Synology
@@ -41,8 +42,11 @@ namespace MovieDataCollector
                 "EncoderLevel", //High
                 "VideoBitrateCap", //3.5
                 "Framerate", //Roku Compliant
+                "FramerateMode", //Constant, Peak, Variable
                 "AudioSampleRate", //48
-                "ConversionPreset"
+                "ConversionPreset", //RokuCompliant
+                "GmailAccount", //Left blank as default
+                "NotifyAddress" //Left blank as default
             };
         List<string> ValueList = new List<string>()
             {
@@ -51,6 +55,7 @@ namespace MovieDataCollector
                 "C:\\", //InputFilePath
                 "C:\\", //OutputFilePath
                 "C:\\", //ExportFilePath
+                "Roku", //Compatibility Selector
                 "False", //TVAbsoluteNumbersCheck
                 "False", //TVTitleInFilenameCheck
                 "Synology", //DefaultFormat
@@ -69,8 +74,11 @@ namespace MovieDataCollector
                 "4.0", //EncoderLevel
                 "3.5", //VideoBitrateCap
                 "Roku Compliant", //Framerate
+                "Peak", //FramerateMode
                 "48", //AudioSampleRate
-                "RokuCompliant" //ConversionPreset
+                "RokuCompliant", //ConversionPreset
+                "", //GmailAccount
+                "", //NotifyAddress
             };
 
         public ConfigFile()
