@@ -63,6 +63,7 @@
             this.convertAllButton = new System.Windows.Forms.Button();
             this.convertSelectedButton = new System.Windows.Forms.Button();
             this.videoSettingsPanel = new System.Windows.Forms.Panel();
+            this.frameRateModeCombo = new System.Windows.Forms.ComboBox();
             this.framerateCombo = new System.Windows.Forms.ComboBox();
             this.avgBitrateCombo = new System.Windows.Forms.ComboBox();
             this.encoderLevelComboBox = new System.Windows.Forms.ComboBox();
@@ -98,7 +99,6 @@
             this.conversionSettingsLabel = new System.Windows.Forms.Label();
             this.compatibilitySelectionLabel = new System.Windows.Forms.Label();
             this.invisibleCloseButton = new System.Windows.Forms.Button();
-            this.frameRateModeCombo = new System.Windows.Forms.ComboBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.selectionPicturebox)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -314,7 +314,7 @@
             this.mediaInfoPage.Location = new System.Drawing.Point(4, 22);
             this.mediaInfoPage.Name = "mediaInfoPage";
             this.mediaInfoPage.Padding = new System.Windows.Forms.Padding(3);
-            this.mediaInfoPage.Size = new System.Drawing.Size(508, 495);
+            this.mediaInfoPage.Size = new System.Drawing.Size(534, 495);
             this.mediaInfoPage.TabIndex = 0;
             this.mediaInfoPage.Text = "Media Info";
             // 
@@ -338,7 +338,7 @@
             this.exportInfoButton.TabIndex = 1;
             this.exportInfoButton.Text = "Export Media Info";
             this.exportInfoButton.UseVisualStyleBackColor = false;
-            this.exportInfoButton.Click += new System.EventHandler(this.ExportButton_Click);
+            this.exportInfoButton.Click += new System.EventHandler(this.saveInfoButton_Click);
             // 
             // conversionSettingsPage
             // 
@@ -513,6 +513,21 @@
             this.videoSettingsPanel.Name = "videoSettingsPanel";
             this.videoSettingsPanel.Size = new System.Drawing.Size(522, 146);
             this.videoSettingsPanel.TabIndex = 6;
+            // 
+            // frameRateModeCombo
+            // 
+            this.frameRateModeCombo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.frameRateModeCombo.ForeColor = System.Drawing.Color.GreenYellow;
+            this.frameRateModeCombo.FormattingEnabled = true;
+            this.frameRateModeCombo.Items.AddRange(new object[] {
+            "Constant",
+            "Peak",
+            "Variable"});
+            this.frameRateModeCombo.Location = new System.Drawing.Point(296, 20);
+            this.frameRateModeCombo.Name = "frameRateModeCombo";
+            this.frameRateModeCombo.Size = new System.Drawing.Size(85, 21);
+            this.frameRateModeCombo.TabIndex = 15;
+            this.frameRateModeCombo.Text = "Constant";
             // 
             // framerateCombo
             // 
@@ -985,21 +1000,6 @@
             this.invisibleCloseButton.Text = "button1";
             this.invisibleCloseButton.UseVisualStyleBackColor = true;
             this.invisibleCloseButton.Click += new System.EventHandler(this.invisibleCloseButton_Click);
-            // 
-            // frameRateModeCombo
-            // 
-            this.frameRateModeCombo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.frameRateModeCombo.ForeColor = System.Drawing.Color.GreenYellow;
-            this.frameRateModeCombo.FormattingEnabled = true;
-            this.frameRateModeCombo.Items.AddRange(new object[] {
-            "Constant",
-            "Peak",
-            "Variable"});
-            this.frameRateModeCombo.Location = new System.Drawing.Point(296, 20);
-            this.frameRateModeCombo.Name = "frameRateModeCombo";
-            this.frameRateModeCombo.Size = new System.Drawing.Size(85, 21);
-            this.frameRateModeCombo.TabIndex = 15;
-            this.frameRateModeCombo.Text = "Constant";
             // 
             // ConversionForm
             // 

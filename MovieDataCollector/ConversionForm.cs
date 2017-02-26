@@ -172,123 +172,6 @@ namespace MovieDataCollector
             setDefaults();
             
         }
-        private void listIncompatibleButton_Click(object sender, EventArgs e)
-        {
-            notificationLabel.ForeColor = Color.GreenYellow;
-
-            int loopcount = 0; //for progress bar value
-            int fileCount = 0;
-
-            if (compatibilityCombo.SelectedIndex > -1) // Selection rather than a typed input
-            {
-                if (Directory.Exists(CF.DefaultSettings["InputFilePath"]))
-                {
-                    nLabelUpdate("Checking and filtering directory for video files ");
-
-                    string fileName = "";
-                    filesListBox.Items.Clear();
-                    VideoFilesList.Clear();
-                    IncompatibilityInfo.Clear();
-                    outPutTextBox.Clear();
-
-
-                    try
-                    {
-                        string[] fileNames = Directory
-                                .GetFiles(CF.DefaultSettings["InputFilePath"], "*", SearchOption.AllDirectories)
-                                .Where(file => file.ToLower().EndsWith(".mpg") || file.ToLower().EndsWith(".mpeg") || file.ToLower().EndsWith(".vob") || file.ToLower().EndsWith(".mod") || file.ToLower().EndsWith(".ts") || file.ToLower().EndsWith(".m2ts")
-                                || file.ToLower().EndsWith(".mp4") || file.ToLower().EndsWith(".m4v") || file.ToLower().EndsWith(".mov") || file.ToLower().EndsWith("avi") || file.ToLower().EndsWith(".divx")
-                                || file.ToLower().EndsWith(".wmv") || file.ToLower().EndsWith(".asf") || file.ToLower().EndsWith(".mkv") || file.ToLower().EndsWith(".flv") || file.ToLower().EndsWith(".f4v")
-                                || file.ToLower().EndsWith(".dvr") || file.ToLower().EndsWith(".dvr-ms") || file.ToLower().EndsWith(".wtv") || file.ToLower().EndsWith(".ogv") || file.ToLower().EndsWith(".ogm")
-                                || file.ToLower().EndsWith(".3gp") || file.ToLower().EndsWith(".rm") || file.ToLower().EndsWith(".rmvb"))
-                                .ToArray();
-
-                        Array.Sort(fileNames);
-
-                        fileCount = fileNames.Count();
-
-
-                        foreach (string file in fileNames) //loops through files, pulls out file names and adds them to filenameslistbox
-                        {
-                            StringBuilder outPutText = new StringBuilder();
-
-                            loopcount = loopcount + 1;
-
-                            nLabelUpdate("Analyzing file " + loopcount.ToString() + " of " + fileCount.ToString() + " - " + file);
-
-                            if (compatibilityCombo.SelectedIndex == 1)
-                            {
-                                if (!string.IsNullOrEmpty(XboxCompatibilityCheck(file)))
-                                {
-                                    fileName = file;
-                                    while (fileName.Contains(@"\"))
-                                    {
-                                        fileName = fileName.Remove(0, 1);
-                                    }
-                                    CF.DefaultSettings["InputFilePath"] = file;
-                                    CF.DefaultSettings["InputFilePath"] = file.Replace(fileName, "");
-
-                                    filesListBox.Items.Add(fileName);
-                                    filesListBox.Update();
-
-                                    VideoFilesList.Add(file);
-                                    IncompatibilityInfo.Add(XboxCompatibilityCheck(file));
-
-                                    //Add filename, bitrate, framerate to the Media Info Box
-                                    //getQuickInfo(file, fileName);
-
-                                    for (int i = 0; i < IncompatibilityInfo.Count; i++)
-                                    {
-                                        outPutText.Append("\n" + filesListBox.Items[i] + "\n" + IncompatibilityInfo[i] + "=====================================================================");
-                                    }
-
-                                    outPutTextBox.Text = "\t\t\t\tINVALID ATTRIBUTES:\n\n" + outPutText.ToString();
-                                }
-
-                                nLabelUpdate("Listing " + filesListBox.Items.Count.ToString() + " Files Incompatible with Xbox360");
-                            }
-                            if (compatibilityCombo.SelectedIndex == 0) //Roku is selected
-                            {
-                                if (!string.IsNullOrEmpty(RokuCompatibilityCheck(file)))
-                                {
-                                    fileName = file;
-                                    while (fileName.Contains(@"\"))
-                                    {
-                                        fileName = fileName.Remove(0, 1);
-                                    }
-                                    CF.DefaultSettings["InputFilePath"] = file;
-                                    CF.DefaultSettings["InputFilePath"] = file.Replace(fileName, "");
-
-                                    filesListBox.Items.Add(fileName);
-                                    filesListBox.Update();
-
-                                    VideoFilesList.Add(file);
-                                    IncompatibilityInfo.Add(RokuCompatibilityCheck(file));
-
-                                    //Add filename, bitrate, framerate to the Media Info Box
-                                    for (int i = 0; i < IncompatibilityInfo.Count; i++)
-                                    {
-                                        outPutText.Append("\n" + filesListBox.Items[i] + "\n" + IncompatibilityInfo[i] + "=====================================================================");
-                                    }
-                                    outPutTextBox.Text = "\t\t\t\tINVALID ATTRIBUTES:\n\n" + outPutText.ToString();
-                                }
-                                nLabelUpdate("Listing " + filesListBox.Items.Count.ToString() + " Files Incompatible with Roku");
-                            }
-
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        CustomMessageBox.Show(ex.ToString(), 131, 280);
-                    }
-
-                }
-            }
-            else
-            {
-                CustomMessageBox.Show("Please select a compatibility option", 138, 269, "Compatibility");
-            }
-        }
         private void returnAllVideoFiles()
         {
             notificationLabel.ForeColor = Color.GreenYellow;
@@ -415,452 +298,7 @@ namespace MovieDataCollector
         private void invisibleCloseButton_Click(object sender, EventArgs e)
         {
             this.Close(); //Located behind the MediaInfo text box, lower right hand corner
-        }
-        private string RokuCompatibilityCheck(string fileName)
-        {
-
-            //File Info
-            decimal fileSize = 0;
-            double maxBitrate = 0;
-            double bitrate = 0;
-            double audioChannels = 0;
-            double audioBitrate = 0;
-            double audioMaxBitrate = 0;
-            //Incompatibility Info
-            StringBuilder incompatible = new StringBuilder(); //Stores string of why file is incompatile with Roku
-
-
-            FileInfo fInfo = new FileInfo(fileName);
-            fileSize = Convert.ToDecimal(fInfo.Length);
-            fileSize = decimal.Round(((fileSize / 1024) / 1024), 2); //Bytes Converted to Megabytes
-
-            MediaFile videoFile = new MediaFile(fileName);
-
-            /*Video — MKV (H.264), MP4 (H.264), MOV (H.264), WMV (VC-1, firmware 3.1 only)
-            * Audio: AAC, MP3
-            * Must be Deinterlaced video
-            * Max 2channel audio except for passthrough
-            * Framerate must be <= 30 fps
-            * Audio Bitrate 32-256Kbps per channel
-            * AAC LC (CBR), AC3 Passthrough
-            * Max video bitrate 1.5x average
-            * Average video bitrate 1.0Mbps – 10Mbps
-            * h.264 Main or High profile up to 4.1
-            * Video Codec H.264/AVC
-            * Extensions - .mp4, .mov, .m4v
-            * Up to 1920 X 1080 pixel size
-            */
-            for (int i = 0; i < videoFile.Video.Count; i++)
-            {
-                if (videoFile.Video[i].FormatID != "H264" && videoFile.Video[i].FormatID != "x264" && videoFile.Video[i].FormatID != "h.264")
-                {
-                    incompatible.Append("\tVideo" + ((i + 1).ToString()).Replace("0", "") + ": Format " + videoFile.Video[i].FormatID + ", must be H264 or X264\n");
-                }
-
-                if (videoFile.Video[i].FrameRate > 30)
-                {
-                    incompatible.Append("\tVideo" + ((i + 1).ToString()).Replace("0", "") + ": Framerate " + videoFile.Video[i].FrameRate.ToString() + ", must be <= 30 using h264 codec\n");
-                }
-
-                if (videoFile.Video[i].Properties.ContainsKey("Maximum bit rate") && videoFile.Video[i].Properties.ContainsKey("Bit rate"))
-                {
-                    if (double.TryParse(videoFile.Video[i].Properties["Maximum bit rate"].Replace(" ", "").Replace("Kbps", ""), out maxBitrate)) { } else { maxBitrate = 0; }
-
-                    if (videoFile.Video[i].Properties["Bit rate"].Contains("Mbps")) //If file bitrate is in Mbps
-                    {
-                        double.TryParse(videoFile.Video[0].Properties["Bit rate"].Replace(" ", "").Replace("Mbps", ""), out bitrate);
-                        bitrate = bitrate * 1000; //accounts for reading in Mbps rather than Kbps
-                    }
-                    else if (videoFile.Video[i].Properties["Bit rate"].Contains("Kbps")) //If file bitrate is in Mbps
-                    {
-                        double.TryParse(videoFile.Video[0].Properties["Bit rate"].Replace(" ", "").Replace("Kbps", ""), out bitrate);
-                    }
-                    else
-                    {
-                        bitrate = 0;
-                    }
-
-                    if (bitrate > 10000) { incompatible.Append("\tVideo" + ((i + 1).ToString()).Replace("0", "") + ": bitrate " + bitrate + ", Must be < 10000 kbps\n"); }
-                    if (maxBitrate > (bitrate * 1.5)) { incompatible.Append("\tVideo" + ((i + 1).ToString()).Replace("0", "") + ": Max bitrate (" + maxBitrate + ") > 1.5 * Average bitrate (" + bitrate + ")\n"); }
-                }
-
-                if (videoFile.Video[i].Properties.ContainsKey("Bit rate") && !videoFile.Video[i].Properties.ContainsKey("Maximum bit rate"))
-                {
-                    if (videoFile.Video[i].Properties["Bit rate"].Contains("Mbps")) //If file bitrate is in Mbps
-                    {
-                        double.TryParse(videoFile.Video[0].Properties["Bit rate"].Replace(" ", "").Replace("Mbps", ""), out bitrate);
-                        bitrate = bitrate * 1000; //accounts for reading in Mbps rather than Kbps
-                    }
-                    else if (videoFile.Video[i].Properties["Bit rate"].Contains("Kbps")) //If file bitrate is in Mbps
-                    {
-                        double.TryParse(videoFile.Video[0].Properties["Bit rate"].Replace(" ", "").Replace("Kbps", ""), out bitrate);
-                    }
-                    else
-                    {
-                        bitrate = 0;
-                    }
-
-                    if (bitrate > 10000) { incompatible.Append("\tVideo" + ((i + 1).ToString()).Replace("0", "") + ": bitrate " + bitrate + ", Must be < 10000 kbps\n"); }
-                }
-
-                if (videoFile.Video[i].Properties.ContainsKey("Format profile"))
-                {
-                    if (!videoFile.Video[i].Properties["Format profile"].Contains("High")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("Main")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("Baseline")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("L1")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("L1.0")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("L1.B")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("L1")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("L1.1")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("L1.2")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("L1.3")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("L2")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("L2.0")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("L2.1")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("L2.2")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("L3")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("L3.0")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("L3.1")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("L3.2")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("L4")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("L4.0")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("L4.1"))
-                    {
-                        incompatible.Append("\tVideo" + (((i + 1).ToString())).Replace("0", "") + ":  Profile " + videoFile.Video[i].Properties["Format profile"] + ", Must be High, Main, or Baseline L1-4.1\n");
-                    }
-                }
-
-                if (videoFile.Video[i].IsInterlaced) { incompatible.Append("\tVideo" + ((i + 1).ToString()).Replace("0", "") + ": File must be Deinterlaced\n"); }
-
-                if (videoFile.Video[i].Width > 1920 | videoFile.Video[i].Height > 1080) { incompatible.Append("\tVideo" + ((i + 1).ToString()).Replace("0", "") + ": Frame size (" + videoFile.Video[i].Width.ToString() + " x " + videoFile.Video[i].Height.ToString() + "), Must be < 1920 x 1080\n"); }
-            }
-
-            for (int i = 0; i < videoFile.Audio.Count; i++)
-            {
-                if (videoFile.Audio[i].Properties.ContainsKey("Format"))
-                {
-                    if (!videoFile.Audio[i].Properties["Format"].Contains("AAC")
-                        & !videoFile.Audio[i].Properties["Format"].Contains("MP3")
-                        & !videoFile.Audio[i].Properties["Format"].Contains("MPEG"))
-                    {
-                        incompatible.Append("\tAudio" + ((i + 1).ToString()).Replace("0", "") + ": format - " + videoFile.Audio[i].Properties["Format"] + ", must be AAC or MP3\n");
-                    }
-                }
-
-                if (videoFile.Audio[i].Properties.ContainsKey("Channel(s)"))
-                {
-                    if (double.TryParse(videoFile.Audio[i].Properties["Channel(s)"].Replace(" ", "").Replace("channels", "").Replace("channel", ""), out audioChannels) && audioChannels > 2)
-                    {
-                        incompatible.Append("\tAudio" + ((i + 1).ToString()).Replace("0", "") + ": has " + videoFile.Audio[i].Properties["Channel(s)"] + " must be <= 2\n");
-                    }
-                }
-
-                if (videoFile.Audio[i].Properties.ContainsKey("Bit rate"))
-                {
-                    if (videoFile.Audio[i].Properties["Bit rate"].Contains("Mbps")) //If file bitrate is in Mbps
-                    {
-                        double.TryParse(videoFile.Audio[i].Properties["Bit rate"].Replace(" ", "").Replace("Mbps", ""), out audioBitrate);
-                        audioBitrate = audioBitrate * 1000; //accounts for reading in Mbps rather than Kbps
-                    }
-                    else if (videoFile.Audio[i].Properties["Bit rate"].Contains("Kbps")) //If file bitrate is in Kbps
-                    {
-                        double.TryParse(videoFile.Audio[i].Properties["Bit rate"].Replace(" ", "").Replace("Kbps", ""), out audioBitrate);
-                    }
-
-                    if (videoFile.Audio[i].Properties.ContainsKey("Maximum bit rate"))
-                    {
-                        if (videoFile.Audio[i].Properties["Maximum bit rate"].Contains("Mbps")) //If file bitrate is in Mbps
-                        {
-                            double.TryParse(videoFile.Audio[i].Properties["Maximum bit rate"].Replace(" ", "").Replace("Mbps", ""), out audioMaxBitrate);
-                            audioMaxBitrate = audioMaxBitrate * 1000; //accounts for reading in Mbps rather than Kbps
-                        }
-                        else if (videoFile.Audio[i].Properties["Maximum bit rate"].Contains("Kbps")) //If file bitrate is in Kbps
-                        {
-                            double.TryParse(videoFile.Audio[i].Properties["Maximum bit rate"].Replace(" ", "").Replace("Kbps", ""), out audioMaxBitrate);
-                        }
-
-                    }
-
-                    audioBitrate = audioBitrate / videoFile.Audio[i].Channels; //Converts to bitrate per channel of audio
-                    if (audioBitrate != 0 & audioBitrate < 32 | audioBitrate > 256)
-                    {
-                        incompatible.Append("\tAudio" + ((i + 1).ToString()).Replace("0", "") + ": bitrate " + audioBitrate.ToString() + ", must be between 32 & 256 kbps\n");
-                    }
-                }
-            }
-
-            if (!videoFile.Extension.Contains("mp4")
-                & !videoFile.Extension.Contains("m4v")
-                & !videoFile.Extension.Contains("mov"))
-            {
-                incompatible.Append("\tContainer " + videoFile.Extension + ", conatiner must be mp4, m4v, or mov\n");
-            }
-
-
-            return incompatible.ToString();
-
-        }
-        private string XboxCompatibilityCheck(string fileName)
-        {
-
-            /*Xbox 360 Supported Video Formats
-             * Except for WMV extension, files cannot exceed 4GB in size.
-             * 
-             * MPEG-4 Part 2 video, up to 5Mbps, 1280 x 720 pixels, 30 frames per second, 
-             * Simple/Advanced Simple Profile in AVI containers with Dolby Digital 2 channel and 5.1 channel,
-             * MP3 in .avi and .divx file formats;
-             * 
-             * H.264 video, up to 10 Mbps, 1920 x 1080 pixels, 30 frames per second,
-             * Baseline/Main/High (up to level 4.1) Profiles in MPEG-4/QuickTime containers
-             * with two-channel AAC low complexity (LC) in .mp4, .m4v, mp4v, .mov file formats;
-             * 
-             * MPEG-4 Part 2 video, up to 5Mbps, 1280 x 720 pixels, 30 frames per second,
-             * Simple/Advanced Simple Profile in MPEG-4/QuickTime containers with two-channel
-             * AAC low complexity (LC) in .avi and .divx file formats;
-             * 
-             * WMV (VC-1) video, up to 15Mbps, 1920 x 1080 pixels, 30 frames per second,
-             * WMV7 (WMV1), WMV8 (WMV2), WMV9 (WMV3), VC-1 (WVC1 or WMVA) in Simple/Main/Advanced
-             * up to level 3 in asf containers with WMA7/8, WMA 9 Pro (stereo and 5.1),
-             * WMA lossless in .wmv file formats;
-             */
-
-            //File Info
-            decimal fileSize = 0;
-
-            //Incompatibility Info
-            StringBuilder incompatible = new StringBuilder();
-
-            FileInfo fInfo = new FileInfo(fileName);
-            fileSize = Convert.ToDecimal(fInfo.Length);
-            fileSize = decimal.Round(((fileSize / 1024) / 1024), 2); //Bytes Converted to Megabytes
-
-            MediaFile videoFile = new MediaFile(fileName);
-
-            switch (videoFile.Extension)
-            {
-                case ".avi":
-                    return xboxCompatibilityforAVIDIVX(videoFile, fileSize);
-                case ".divx":
-                    return xboxCompatibilityforAVIDIVX(videoFile, fileSize);
-                case ".mov":
-                    return xboxCompatibilityforMP4MOV(videoFile, fileSize);
-                case ".mp4":
-                    return xboxCompatibilityforMP4MOV(videoFile, fileSize);
-                case ".m4v":
-                    return xboxCompatibilityforMP4MOV(videoFile, fileSize);
-                case ".mp4v":
-                    return xboxCompatibilityforMP4MOV(videoFile, fileSize);
-                case ".wmv":
-                    return xboxCompatibilityforWMV(videoFile, fileSize);
-                default:
-                    incompatible.Append("\tExtension " + videoFile.Extension + " must be AVI, DIVX, M4V, MP4, MP4V, MOV or WMV\n");
-                    return incompatible.ToString();
-            }
-        }
-        private string xboxCompatibilityforMP4MOV(MediaFile videoFile, decimal fileSize)
-        {
-            /* H.264 video, up to 10 Mbps, 1920 x 1080 pixels, 30 frames per second,
-            *  Baseline/Main/High (up to level 4.1) Profiles in MPEG-4/QuickTime containers
-            *  with two-channel AAC low complexity (LC) in .mp4, .m4v, mp4v, .mov file formats;*/
-            StringBuilder incompatible = new StringBuilder();
-
-            if (videoFile.General.Bitrate > 10000)
-            {
-                incompatible.Append("\tOverall bitrate (" + videoFile.General.Bitrate + ") cannot be > 10000 kbps for " + videoFile.Extension + " files\n");
-            }
-            if (fileSize > 4096)
-            {
-                incompatible.Append("\tFile Size (" + fileSize + " MB) " + " must be <= 4096 MB (4GB) for " + videoFile.Extension + "\n");
-            }
-
-            for (int i = 0; i < videoFile.Video.Count; i++)
-            {
-                if (videoFile.Video[i].Width > 1920)
-                {
-                    incompatible.Append("\tVideo" + (i + 1).ToString() + ": frame width " + videoFile.Video[i].Width.ToString() + ", must be <=1920 for " + videoFile.Extension + "\n");
-                }
-                if (videoFile.Video[i].Height > 1080)
-                {
-                    incompatible.Append("\tVideo" + (i + 1).ToString() + ": frame height " + videoFile.Video[i].Height.ToString() + ", must be <=1080 for DIVX\n");
-                }
-                if (videoFile.Video[i].FrameRate > 30)
-                {
-                    incompatible.Append("\tVideo" + (i + 1).ToString() + ": FPS " + videoFile.Video[i].FrameRate.ToString().Replace(" ", "").Replace("Fps", "") + ", must be <=30 for " + videoFile.Extension + "\n");
-                }
-
-                if (videoFile.Video[i].Properties.ContainsKey("Format profile"))
-                {
-                    if (!videoFile.Video[i].Properties["Format profile"].Contains("Simple")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("Baseline")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("Main")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("High"))
-                    {
-                        if (!videoFile.Video[i].Properties["Format profile"].Contains("L1") &
-                            !videoFile.Video[i].Properties["Format profile"].Contains("L1.0") &
-                            !videoFile.Video[i].Properties["Format profile"].Contains("L1.B") &
-                            !videoFile.Video[i].Properties["Format profile"].Contains("L1.1") &
-                            !videoFile.Video[i].Properties["Format profile"].Contains("L1.2") &
-                            !videoFile.Video[i].Properties["Format profile"].Contains("L1.3") &
-                            !videoFile.Video[i].Properties["Format profile"].Contains("L2") &
-                            !videoFile.Video[i].Properties["Format profile"].Contains("L2.0") &
-                            !videoFile.Video[i].Properties["Format profile"].Contains("L2.1") &
-                            !videoFile.Video[i].Properties["Format profile"].Contains("L2.2") &
-                            !videoFile.Video[i].Properties["Format profile"].Contains("L3") &
-                            !videoFile.Video[i].Properties["Format profile"].Contains("L3.0") &
-                            !videoFile.Video[i].Properties["Format profile"].Contains("L3.1") &
-                            !videoFile.Video[i].Properties["Format profile"].Contains("L3.2") &
-                            !videoFile.Video[i].Properties["Format profile"].Contains("L4") &
-                            !videoFile.Video[i].Properties["Format profile"].Contains("L4.0") &
-                            !videoFile.Video[i].Properties["Format profile"].Contains("L4.1"))
-                        {
-                            incompatible.Append("\tVideo" + (i + 1).ToString() + ": Format " + videoFile.Video[i].Properties["Format profile"] + ", must be Simple, Baseline, Main, or High 1-4.1\n");
-                        }
-                    }
-                }
-            }
-            for (int i = 0; i < videoFile.Audio.Count; i++)
-            {
-                if (videoFile.Audio[i].Properties.ContainsKey("Channel(s)"))
-                {
-                    if ((videoFile.Audio[i].Properties["Channel(s)"].Replace(" ", "").Replace("channels", "")) != "1"
-                        & videoFile.Audio[i].Properties["Channel(s)"].Replace(" ", "").Replace("channels", "") != "2")
-                    {
-                        incompatible.Append("\tAudio " + (i + 1).ToString() + ": channel amount " + (videoFile.Audio[i].Properties["Channel(s)"].Replace(" ", "").Replace("channels", "")) + ", Must be <= 2 for " + videoFile.Extension + " containers\n");
-                    }
-                }
-
-                if (!videoFile.Audio[i].Format.Contains("AAC"))
-                {
-                    incompatible.Append("\tAudio " + (i + 1).ToString() + ": format " + videoFile.Audio[i].Format + ", must be AAC for " + videoFile.Extension + " containers\n");
-                }
-
-                if (videoFile.Audio[i].Properties.ContainsKey("Format profile")
-                    && !videoFile.Audio[i].Properties["Format profile"].Contains("LC")
-                    && videoFile.Audio[i].Format.Contains("AAC"))
-                {
-                    incompatible.Append("\tAudio " + (i + 1).ToString() + ": profile " + videoFile.Audio[i].Properties["Format profile"] + ", must be LC for AAC audio in " + videoFile.Extension + " Containers\n");
-                }
-            }
-
-            return incompatible.ToString();
-        }
-        private string xboxCompatibilityforAVIDIVX(MediaFile videoFile, decimal fileSize)
-        {
-            /*MPEG - 4 Part 2 video, up to 5Mbps, 1280 x 720 pixels, 30 frames per second, 
-            Simple / Advanced Simple Profile in AVI containers with Dolby Digital 2 channel and 5.1 channel,
-            MP3 in .avi and .divx file formats*/
-            StringBuilder incompatible = new StringBuilder();
-
-            if (videoFile.General.Bitrate > 5000)
-            {
-                incompatible.Append("\tOverall bitrate (" + videoFile.General.Bitrate + ") must be > 5000 kbps for " + videoFile.Extension + " files\n");
-            }
-            if (fileSize > 4096)
-            {
-                incompatible.Append("\tFile Size (" + fileSize + " MB) " + " must be <= 4096 MB (4GB) for " + videoFile.Extension + "\n");
-            }
-
-            for (int i = 0; i < videoFile.Video.Count; i++)
-            {
-                if (videoFile.Video[i].Width > 1280)
-                {
-                    incompatible.Append("\tVideo" + (i + 1).ToString() + ": frame width " + videoFile.Video[i].Width.ToString() + ", must be <=1280 for " + videoFile.Extension + "\n");
-                }
-                if (videoFile.Video[i].Height > 720)
-                {
-                    incompatible.Append("\tVideo" + (i + 1).ToString() + ": frame height " + videoFile.Video[i].Height.ToString() + ", must be <=720 for " + videoFile.Extension + "\n");
-                }
-                if (videoFile.Video[i].FrameRate > 30)
-                {
-                    incompatible.Append("\tVideo" + (i + 1).ToString() + ": FPS " + videoFile.Video[i].FrameRate + ", must be <=30 for " + videoFile.Extension + "\n");
-                }
-
-                if (videoFile.Video[i].Properties.ContainsKey("Format profile"))
-                {
-                    if (!videoFile.Video[i].Properties["Format profile"].Contains("Simple")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("Baseline"))
-                    {
-                        incompatible.Append("\tVideo" + (i + 1).ToString() + ": format " + videoFile.Video[i].Properties["Format profile"] + ", must be Simple or Baseline\n");
-                    }
-                }
-                if (!videoFile.Video[i].FormatID.Contains("MPEG"))
-                {
-                    incompatible.Append("\tVideo" + (i + 1).ToString() + ": format " + videoFile.Video[i].FormatID + " invalid for use with " + videoFile.Extension + " containers. Must be MPEG-4");
-                }
-            }
-            for (int i = 0; i < videoFile.Audio.Count; i++)
-            {
-                if (videoFile.Audio[i].Properties.ContainsKey("Channel(s)"))
-                {
-                    if ((videoFile.Audio[i].Properties["Channel(s)"].Replace(" ", "").Replace("channels", "")) != "1"
-                        & videoFile.Audio[i].Properties["Channel(s)"].Replace(" ", "").Replace("channels", "") != "2"
-                        & videoFile.Audio[i].Properties["Channel(s)"].Replace(" ", "").Replace("channels", "") != "5.1")
-                    {
-                        incompatible.Append("\tAudio " + (i + 1).ToString() + ": channel amount " + (videoFile.Audio[i].Properties["Channel(s)"].Replace(" ", "").Replace("channels", "")) + ", must be <= 5.1\n");
-                    }
-                }
-                if (!videoFile.Audio[i].Format.Contains("MP3")
-                    & !videoFile.Audio[i].Format.Contains("AAC")
-                    & !videoFile.Audio[i].Format.Contains("MPEG"))
-                {
-                    incompatible.Append("\tAudio " + (i + 1).ToString() + ": format " + videoFile.Audio[i].Format + ", must be MP3 or AAC\n");
-                }
-
-                if (videoFile.Audio[i].Properties.ContainsKey("Format profile")
-                    && !videoFile.Audio[i].Properties["Format profile"].Contains("LC")
-                    && videoFile.Audio[i].Format.Contains("AAC"))
-                {
-                    incompatible.Append("\tAudio " + (i + 1).ToString() + ": profile " + videoFile.Audio[i].Properties["Format profile"] + ", must be LC for AAC audio\n");
-                }
-            }
-            return incompatible.ToString();
-        }
-        private string xboxCompatibilityforWMV(MediaFile videoFile, decimal fileSize)
-        {
-            /* WMV (VC-1) video, up to 15Mbps, 1920 x 1080 pixels, 30 frames per second,
-             * WMV7 (WMV1), WMV8 (WMV2), WMV9 (WMV3), VC-1 (WVC1 or WMVA) in Simple/Main/Advanced
-             * up to level 3 in asf containers with WMA7/8, WMA 9 Pro (stereo and 5.1),
-             * WMA lossless in .wmv file formats;*/
-            StringBuilder incompatible = new StringBuilder();
-
-            if (videoFile.General.Bitrate > 15000)
-            {
-                incompatible.Append("\tOverall bitrate (" + videoFile.General.Bitrate + ") cannot be > 15000 kbps for " + videoFile.Extension + " files\n");
-            }
-
-            for (int i = 0; i < videoFile.Video.Count; i++)
-            {
-                if (videoFile.Video[i].Width > 1920)
-                {
-                    incompatible.Append("\tVideo" + (i + 1).ToString() + ": frame width of " + videoFile.Video[i].Width.ToString() + ", must be <= 1920\n");
-                }
-
-                if (videoFile.Video[i].Height > 1080)
-                {
-                    incompatible.Append("\tVideo" + (i + 1).ToString() + ": frame height of " + videoFile.Video[i].Height.ToString() + ", must be <= 1080\n");
-                }
-
-                if (videoFile.Video[i].FrameRate > 30)
-                {
-                    incompatible.Append("\tVideo" + (i + 1).ToString() + ": FPS " + videoFile.Video[i].FrameRate.ToString().Replace(" ", "").Replace("Fps", "") + ", must be <=30 for " + videoFile.Extension + " video\n");
-                }
-                if (videoFile.Video[i].Properties.ContainsKey("Format profile"))
-                {
-                    if (!videoFile.Video[i].Properties["Format profile"].Contains("VC-1") &
-                    !videoFile.Video[i].Properties["Format profile"].Contains("WMV1") &
-                    !videoFile.Video[i].Properties["Format profile"].Contains("WMV2") &
-                    !videoFile.Video[i].Properties["Format profile"].Contains("WMV3") &
-                    !videoFile.Video[i].Properties["Format profile"].Contains("WVC1") &
-                    !videoFile.Video[i].Properties["Format profile"].Contains("WMVA"))
-                    {
-                        incompatible.Append("\tVideo" + (i + 1).ToString() + ": format " + videoFile.Video[i].Properties["Format profile"] + ", must be VC-1, WMV1-3, WVC1, OR WMVA\n");
-                    }
-                }
-            }
-
-            return incompatible.ToString();
-        }
+        }       
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //Select Directory
@@ -891,7 +329,7 @@ namespace MovieDataCollector
                     }
                 }
             }
-            else //List available for Incompatible files
+            else //Incompatibility information available, skip detail info give incompatible info.
             {
                 //checks that there is incompatibility info, and that the counts are correct.
                 //The IncompatibilityInfo count should be equal to the filesListBox count.
@@ -1019,6 +457,45 @@ namespace MovieDataCollector
             else
             {
                 CustomMessageBox.Show("There is no data to save.", 129, 235, "Save to file error");
+            }
+        }
+        private void saveInfoButton_Click(object sender, EventArgs e)
+        {
+            notificationLabel.ForeColor = Color.GreenYellow;
+            string fileLocation = "";
+            string outputBoxText = outPutTextBox.Text;
+            outputBoxText = outputBoxText.Replace("\n", "\r\n");
+            //SaveFileDialog
+            SaveFileDialog SFD = new SaveFileDialog();
+            SFD.DefaultExt = "txt";
+            if (outPutTextBox.Text.Contains("===================="))
+            {
+                SFD.FileName = "Quick_Media_Info.txt";
+            }
+            else
+            {
+                SFD.FileName = "Detail Info For " + filesListBox.SelectedItem.ToString() + ".txt";
+            }
+
+            SFD.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+
+            if (SFD.ShowDialog() == DialogResult.OK)
+            {
+                fileLocation = SFD.FileName;
+                //Create text file
+
+
+                using (StreamWriter sw = System.IO.File.CreateText(fileLocation))
+                {
+
+                    sw.WriteLine("File: " + filesListBox.SelectedItem.ToString());
+                    sw.WriteLine("");
+                    sw.WriteLine(outputBoxText);
+                    sw.Close();
+                }
+
+                //Open Text file
+                Process.Start(fileLocation);
             }
         }
         private void getQuickInfo(string file, string fileName)
@@ -1169,6 +646,57 @@ namespace MovieDataCollector
                 nLabelUpdate("");
             }
         }
+        private void detailInfoButton_Click(object sender, EventArgs e)
+        {
+            if (filesListBox.SelectedIndex == -1) { filesListBox.SelectedIndex = 0; } //Sets index selection to top of the list
+            tabControl1.SelectedIndex = 0; //Changes tab to media info tab.
+            if (IncompatibilityInfo.Count <= 0) //Incompatible List not available
+            {
+                if (filesListBox.Items.Count > 0) //ensures that the files listbox isn't emtpy
+                {
+                    string videoFileName = VideoFilesList[filesListBox.SelectedIndex]; //returns currently selected items file path
+
+                    if (!string.IsNullOrEmpty(CF.DefaultSettings["InputFilePath"])) //As long as the file path isn't empty or null, get info about file
+                    {
+                        MediaFile videoFile = new MediaFile(videoFileName); //return info about selected file
+                        outPutTextBox.Text = videoFile.Info_Text; //output info about selected file to the output box
+                        outPutTextBox.SelectionStart = 0;
+                        outPutTextBox.ScrollToCaret(); // force current position back to top
+                        outPutTextBox.Update();
+                    }
+                }
+            }
+            else //List available for Incompatible files
+            {
+                //checks that there is incompatibility info, and that the counts are correct.
+                //The IncompatibilityInfo count should be equal to the filesListBox count.
+                if (IncompatibilityInfo.Count > 0 & !(filesListBox.Items.Count > IncompatibilityInfo.Count))
+                {
+                    if (filesListBox.Items.Count > 0) //Ensure there is something in the listbox
+                    {
+                        string videoFileName = VideoFilesList[filesListBox.SelectedIndex]; //pulls filepath (videoFileName) from listbox
+
+                        if (!string.IsNullOrEmpty(CF.DefaultSettings["InputFilePath"])) //check that folderpath isn't empty
+                        {
+                            MediaFile videoFile = new MediaFile(videoFileName); //list incompatible file attributes.
+                            outPutTextBox.Text = "INCOMPATIBLE FILE FOUND - " +
+                                filesListBox.SelectedItem.ToString() + "\r\n\r\n" +
+                                "INCOMPATIBLE FILE ATTRIBUTES LISTED BELOW:\r\n\r\n" +
+                                IncompatibilityInfo[filesListBox.SelectedIndex] +
+                                "\n.....................................................................................................................\r\n \r\n" +
+                                videoFile.Info_Text;
+                            outPutTextBox.SelectionStart = 0;
+                            outPutTextBox.ScrollToCaret(); // force current position back to top
+                            outPutTextBox.Update();
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+        /*The following methods are for converting video files*/
         private string GenerateConversionString(string filepath, string filename, string outputPath)
         {
             double audioConversionBitrate = 0;
@@ -2758,105 +2286,6 @@ namespace MovieDataCollector
                 }
             }
         }
-        private string timeDifference(DateTime start, DateTime end)
-        {
-            int hours = 0;
-            int minutes = 0;
-            int seconds = 0;
-            int days = 0;
-
-            string totalTime = "";
-
-            hours = (end - start).Hours;
-            minutes = (end - start).Minutes;
-            seconds = (end - start).Seconds;
-            days = (end - start).Days;
-
-
-            if (days == 1) { totalTime = days.ToString() + " day"; }
-            if (days > 1) { totalTime = days.ToString() + " days"; }
-
-            if (!string.IsNullOrEmpty(totalTime) && hours == 1) { totalTime += ", " + hours.ToString() + " hour"; }
-            if (!string.IsNullOrEmpty(totalTime) && hours > 1) { totalTime += ", " + hours.ToString() + " hours"; }
-            if (string.IsNullOrEmpty(totalTime) && hours == 1) { totalTime += hours.ToString() + " hour"; }
-            if (string.IsNullOrEmpty(totalTime) && hours > 1) { totalTime += hours.ToString() + " hours"; }
-
-            if (!string.IsNullOrEmpty(totalTime) && minutes == 1) { totalTime += ", " + minutes.ToString() + " minute"; }
-            if (!string.IsNullOrEmpty(totalTime) && minutes > 1) { totalTime += ", " + minutes.ToString() + " minutes"; }
-            if (string.IsNullOrEmpty(totalTime) && minutes == 1) { totalTime += minutes.ToString() + " minute"; }
-            if (string.IsNullOrEmpty(totalTime) && minutes > 1) { totalTime += minutes.ToString() + " minutes"; }
-
-            if (!string.IsNullOrEmpty(totalTime) && seconds == 1) { totalTime += ", " + seconds.ToString() + " second"; }
-            if (!string.IsNullOrEmpty(totalTime) && seconds > 1) { totalTime += ", " + seconds.ToString() + " seconds"; }
-            if (string.IsNullOrEmpty(totalTime) && seconds == 1) { totalTime += seconds.ToString() + " second"; }
-            if (string.IsNullOrEmpty(totalTime) && seconds > 1) { totalTime += seconds.ToString() + " seconds"; }
-
-            return totalTime;
-
-        }
-        private void sendNotification(string userName, string password, string sendTo, string subject, string message)
-        {
-            //If this doesnt work it's because the gmail account needs to allow less secure apps access to send email
-            //https://support.google.com/accounts/answer/6010255?hl=en
-
-            if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(sendTo))
-            {
-                if (!userName.ToUpper().Contains("@GMAIL.COM")) { userName += "@gmail.com"; }
-
-                try
-                {
-                    MailMessage mail = new MailMessage();
-                    SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
-
-                    mail.From = new MailAddress(userName);
-                    mail.To.Add(sendTo);
-                    mail.Subject = subject;
-
-                    //Check if recipient is a cellphone, if so remove the subject
-                    if (sendTo.ToUpper().Contains("@VTEXT.COM") ||
-                        sendTo.ToUpper().Contains("@MMS.ATT.NET") ||
-                        sendTo.ToUpper().Contains("@TXT.ATT.NET") ||
-                        sendTo.ToUpper().Contains("@TMOMAIL.NET") ||
-                        sendTo.ToUpper().Contains("@SPRINTPCS.COM") ||
-                        sendTo.ToUpper().Contains("@PM.SPRINT.COM") ||
-                        sendTo.ToUpper().Contains("@VMOBL.COM") ||
-                        sendTo.ToUpper().Contains("@MMST5.TRACFONE.COM") ||
-                        sendTo.ToUpper().Contains("@MYMETROPCS.COM") ||
-                        sendTo.ToUpper().Contains("@MYBOOSTMOBILE.COM") ||
-                        sendTo.ToUpper().Contains("@SMS.MYCRICKET.COM") ||
-                        sendTo.ToUpper().Contains("@PTEL.COM") ||
-                        sendTo.ToUpper().Contains("@TEXT.REPUBLICWIRELESS.COM") ||
-                        sendTo.ToUpper().Contains("@TMS.SUNCOM.COM") ||
-                        sendTo.ToUpper().Contains("@MESSAGE.TING.COM") ||
-                        sendTo.ToUpper().Contains("@EMAIL.USCC.NET") ||
-                        sendTo.ToUpper().Contains("@CINGULARME.COM") ||
-                        sendTo.ToUpper().Contains("@CSPIRE1.COM"))
-                    {
-                        mail.Subject = "";
-                    }
-
-                    mail.Body = message;
-
-                    SmtpServer.Port = 587;
-                    SmtpServer.Credentials = new System.Net.NetworkCredential(userName, password);
-                    SmtpServer.EnableSsl = true;
-
-                    SmtpServer.Send(mail);
-                    //CustomMessageBox.Show("Notification Sent!", 120, 230, "Notification Message");
-                    nLabelUpdate("Notification sent to :" + sendTo);
-                    
-                    
-                }
-                catch (Exception ex)
-                {
-                    CustomMessageBox.Show("You may have to enable less secure apps access to gmail. See https://support.google.com/accounts/answer/6010255?hl=en" + "/r/n" + ex.ToString(), 600, 300);
-                }
-            }
-            else
-            {
-                CustomMessageBox.Show("Missing Notification Parameters", 300, 300);
-            }
-        }
         private string CheckForHandbrakeCLI()
         {
 
@@ -2869,6 +2298,11 @@ namespace MovieDataCollector
 
             return "";
         }
+
+
+
+        
+        /*The following methods are to ensure user input is valid*/
         private void AudioCodecComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Only show filter options if Filtered Passthru is selected.
@@ -2995,92 +2429,6 @@ namespace MovieDataCollector
                     break;
             }
         }
-        private void detailInfoButton_Click(object sender, EventArgs e)
-        {
-            if (filesListBox.SelectedIndex == -1) { filesListBox.SelectedIndex = 0; } //Sets index selection to top of the list
-            tabControl1.SelectedIndex = 0; //Changes tab to media info tab.
-            if (IncompatibilityInfo.Count <= 0) //Incompatible List not available
-            {
-                if (filesListBox.Items.Count > 0) //ensures that the files listbox isn't emtpy
-                {
-                    string videoFileName = VideoFilesList[filesListBox.SelectedIndex]; //returns currently selected items file path
-
-                    if (!string.IsNullOrEmpty(CF.DefaultSettings["InputFilePath"])) //As long as the file path isn't empty or null, get info about file
-                    {
-                        MediaFile videoFile = new MediaFile(videoFileName); //return info about selected file
-                        outPutTextBox.Text = videoFile.Info_Text; //output info about selected file to the output box
-                        outPutTextBox.SelectionStart = 0;
-                        outPutTextBox.ScrollToCaret(); // force current position back to top
-                        outPutTextBox.Update();
-                    }
-                }
-            }
-            else //List available for Incompatible files
-            {
-                //checks that there is incompatibility info, and that the counts are correct.
-                //The IncompatibilityInfo count should be equal to the filesListBox count.
-                if (IncompatibilityInfo.Count > 0 & !(filesListBox.Items.Count > IncompatibilityInfo.Count))
-                {
-                    if (filesListBox.Items.Count > 0) //Ensure there is something in the listbox
-                    {
-                        string videoFileName = VideoFilesList[filesListBox.SelectedIndex]; //pulls filepath (videoFileName) from listbox
-
-                        if (!string.IsNullOrEmpty(CF.DefaultSettings["InputFilePath"])) //check that folderpath isn't empty
-                        {
-                            MediaFile videoFile = new MediaFile(videoFileName); //list incompatible file attributes.
-                            outPutTextBox.Text = "INCOMPATIBLE FILE FOUND - " +
-                                filesListBox.SelectedItem.ToString() + "\r\n\r\n" +
-                                "INCOMPATIBLE FILE ATTRIBUTES LISTED BELOW:\r\n\r\n" +
-                                IncompatibilityInfo[filesListBox.SelectedIndex] +
-                                "\n.....................................................................................................................\r\n \r\n" +
-                                videoFile.Info_Text;
-                            outPutTextBox.SelectionStart = 0;
-                            outPutTextBox.ScrollToCaret(); // force current position back to top
-                            outPutTextBox.Update();
-                        }
-                    }
-                }
-            }
-        }
-        private void saveInfoButton_Click(object sender, EventArgs e)
-        {
-            notificationLabel.ForeColor = Color.GreenYellow;
-            string fileLocation = "";
-            string outputBoxText = outPutTextBox.Text;
-            outputBoxText = outputBoxText.Replace("\n", "\r\n");
-            //SaveFileDialog
-            SaveFileDialog SFD = new SaveFileDialog();
-            SFD.DefaultExt = "txt";
-            if (outPutTextBox.Text.Contains("===================="))
-            {
-                SFD.FileName = "Quick_Media_Info.txt";
-            }
-            else
-            {
-                SFD.FileName = "Detail Info For " + filesListBox.SelectedItem.ToString() + ".txt";
-            }
-
-            SFD.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
-
-            if (SFD.ShowDialog() == DialogResult.OK)
-            {
-                fileLocation = SFD.FileName;
-                //Create text file
-
-
-                using (StreamWriter sw = System.IO.File.CreateText(fileLocation))
-                {
-
-                    sw.WriteLine("File: " + filesListBox.SelectedItem.ToString());
-                    sw.WriteLine("");
-                    sw.WriteLine(outputBoxText);
-                    sw.Close();
-                }
-
-                //Open Text file
-                Process.Start(fileLocation);
-            }
-        }
         private void AudioCodecComboBox_Leave(object sender, EventArgs e)
         {
             if (!codecList.Contains(audioCodecComboBox.Text)) { audioCodecComboBox.Text = codecList[0]; }
@@ -3126,6 +2474,74 @@ namespace MovieDataCollector
 
             audioBitrateCombo.Text = ABitrate.ToString();
         }
+
+
+        
+
+        /*These methods are used to send notifications to the user*/
+        private void sendNotification(string userName, string password, string sendTo, string subject, string message)
+        {
+            //If this doesnt work it's because the gmail account needs to allow less secure apps access to send email
+            //https://support.google.com/accounts/answer/6010255?hl=en
+
+            if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(sendTo))
+            {
+                if (!userName.ToUpper().Contains("@GMAIL.COM")) { userName += "@gmail.com"; }
+
+                try
+                {
+                    MailMessage mail = new MailMessage();
+                    SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+
+                    mail.From = new MailAddress(userName);
+                    mail.To.Add(sendTo);
+                    mail.Subject = subject;
+
+                    //Check if recipient is a cellphone, if so remove the subject
+                    if (sendTo.ToUpper().Contains("@VTEXT.COM") ||
+                        sendTo.ToUpper().Contains("@MMS.ATT.NET") ||
+                        sendTo.ToUpper().Contains("@TXT.ATT.NET") ||
+                        sendTo.ToUpper().Contains("@TMOMAIL.NET") ||
+                        sendTo.ToUpper().Contains("@SPRINTPCS.COM") ||
+                        sendTo.ToUpper().Contains("@PM.SPRINT.COM") ||
+                        sendTo.ToUpper().Contains("@VMOBL.COM") ||
+                        sendTo.ToUpper().Contains("@MMST5.TRACFONE.COM") ||
+                        sendTo.ToUpper().Contains("@MYMETROPCS.COM") ||
+                        sendTo.ToUpper().Contains("@MYBOOSTMOBILE.COM") ||
+                        sendTo.ToUpper().Contains("@SMS.MYCRICKET.COM") ||
+                        sendTo.ToUpper().Contains("@PTEL.COM") ||
+                        sendTo.ToUpper().Contains("@TEXT.REPUBLICWIRELESS.COM") ||
+                        sendTo.ToUpper().Contains("@TMS.SUNCOM.COM") ||
+                        sendTo.ToUpper().Contains("@MESSAGE.TING.COM") ||
+                        sendTo.ToUpper().Contains("@EMAIL.USCC.NET") ||
+                        sendTo.ToUpper().Contains("@CINGULARME.COM") ||
+                        sendTo.ToUpper().Contains("@CSPIRE1.COM"))
+                    {
+                        mail.Subject = "";
+                    }
+
+                    mail.Body = message;
+
+                    SmtpServer.Port = 587;
+                    SmtpServer.Credentials = new System.Net.NetworkCredential(userName, password);
+                    SmtpServer.EnableSsl = true;
+
+                    SmtpServer.Send(mail);
+                    //CustomMessageBox.Show("Notification Sent!", 120, 230, "Notification Message");
+                    nLabelUpdate("Notification sent to :" + sendTo);
+
+
+                }
+                catch (Exception ex)
+                {
+                    CustomMessageBox.Show("You may have to enable less secure apps access to gmail. See https://support.google.com/accounts/answer/6010255?hl=en" + "/r/n" + ex.ToString(), 600, 300);
+                }
+            }
+            else
+            {
+                CustomMessageBox.Show("Missing Notification Parameters", 300, 300);
+            }
+        }
         private void testNotificationButton_Click(object sender, EventArgs e)
         {
             string username = usernameBox.Text;
@@ -3138,11 +2554,613 @@ namespace MovieDataCollector
         {
 
         }
+        private string timeDifference(DateTime start, DateTime end)
+        {
+            int hours = 0;
+            int minutes = 0;
+            int seconds = 0;
+            int days = 0;
+
+            string totalTime = "";
+
+            hours = (end - start).Hours;
+            minutes = (end - start).Minutes;
+            seconds = (end - start).Seconds;
+            days = (end - start).Days;
+
+
+            if (days == 1) { totalTime = days.ToString() + " day"; }
+            if (days > 1) { totalTime = days.ToString() + " days"; }
+
+            if (!string.IsNullOrEmpty(totalTime) && hours == 1) { totalTime += ", " + hours.ToString() + " hour"; }
+            if (!string.IsNullOrEmpty(totalTime) && hours > 1) { totalTime += ", " + hours.ToString() + " hours"; }
+            if (string.IsNullOrEmpty(totalTime) && hours == 1) { totalTime += hours.ToString() + " hour"; }
+            if (string.IsNullOrEmpty(totalTime) && hours > 1) { totalTime += hours.ToString() + " hours"; }
+
+            if (!string.IsNullOrEmpty(totalTime) && minutes == 1) { totalTime += ", " + minutes.ToString() + " minute"; }
+            if (!string.IsNullOrEmpty(totalTime) && minutes > 1) { totalTime += ", " + minutes.ToString() + " minutes"; }
+            if (string.IsNullOrEmpty(totalTime) && minutes == 1) { totalTime += minutes.ToString() + " minute"; }
+            if (string.IsNullOrEmpty(totalTime) && minutes > 1) { totalTime += minutes.ToString() + " minutes"; }
+
+            if (!string.IsNullOrEmpty(totalTime) && seconds == 1) { totalTime += ", " + seconds.ToString() + " second"; }
+            if (!string.IsNullOrEmpty(totalTime) && seconds > 1) { totalTime += ", " + seconds.ToString() + " seconds"; }
+            if (string.IsNullOrEmpty(totalTime) && seconds == 1) { totalTime += seconds.ToString() + " second"; }
+            if (string.IsNullOrEmpty(totalTime) && seconds > 1) { totalTime += seconds.ToString() + " seconds"; }
+
+            return totalTime;
+
+        }
         private void nLabelUpdate(string notificationText)
         {
             notificationLabel.Text = notificationText;
             notificationLabel.Invalidate();
             notificationLabel.Update();
+        }
+
+
+
+        /*The following methods are to check that video files are compatible with a certain device*/
+        private void listIncompatibleButton_Click(object sender, EventArgs e)
+        {
+            notificationLabel.ForeColor = Color.GreenYellow;
+
+            int loopcount = 0; //for progress bar value
+            int fileCount = 0;
+
+            if (compatibilityCombo.SelectedIndex > -1) // Selection rather than a typed input
+            {
+                if (Directory.Exists(CF.DefaultSettings["InputFilePath"]))
+                {
+                    nLabelUpdate("Checking and filtering directory for video files ");
+
+                    string fileName = "";
+                    filesListBox.Items.Clear();
+                    VideoFilesList.Clear();
+                    IncompatibilityInfo.Clear();
+                    outPutTextBox.Clear();
+
+
+                    try
+                    {
+                        string[] fileNames = Directory
+                                .GetFiles(CF.DefaultSettings["InputFilePath"], "*", SearchOption.AllDirectories)
+                                .Where(file => file.ToLower().EndsWith(".mpg") || file.ToLower().EndsWith(".mpeg") || file.ToLower().EndsWith(".vob") || file.ToLower().EndsWith(".mod") || file.ToLower().EndsWith(".ts") || file.ToLower().EndsWith(".m2ts")
+                                || file.ToLower().EndsWith(".mp4") || file.ToLower().EndsWith(".m4v") || file.ToLower().EndsWith(".mov") || file.ToLower().EndsWith("avi") || file.ToLower().EndsWith(".divx")
+                                || file.ToLower().EndsWith(".wmv") || file.ToLower().EndsWith(".asf") || file.ToLower().EndsWith(".mkv") || file.ToLower().EndsWith(".flv") || file.ToLower().EndsWith(".f4v")
+                                || file.ToLower().EndsWith(".dvr") || file.ToLower().EndsWith(".dvr-ms") || file.ToLower().EndsWith(".wtv") || file.ToLower().EndsWith(".ogv") || file.ToLower().EndsWith(".ogm")
+                                || file.ToLower().EndsWith(".3gp") || file.ToLower().EndsWith(".rm") || file.ToLower().EndsWith(".rmvb"))
+                                .ToArray();
+
+                        Array.Sort(fileNames);
+
+                        fileCount = fileNames.Count();
+
+
+                        foreach (string file in fileNames) //loops through files, pulls out file names and adds them to filenameslistbox
+                        {
+                            StringBuilder outPutText = new StringBuilder();
+
+                            loopcount = loopcount + 1;
+
+                            nLabelUpdate("Analyzing file " + loopcount.ToString() + " of " + fileCount.ToString() + " - " + file);
+
+                            if (compatibilityCombo.SelectedIndex == 1)
+                            {
+                                if (!string.IsNullOrEmpty(XboxCompatibilityCheck(file)))
+                                {
+                                    fileName = file;
+                                    while (fileName.Contains(@"\"))
+                                    {
+                                        fileName = fileName.Remove(0, 1);
+                                    }
+                                    CF.DefaultSettings["InputFilePath"] = file;
+                                    CF.DefaultSettings["InputFilePath"] = file.Replace(fileName, "");
+
+                                    filesListBox.Items.Add(fileName);
+                                    filesListBox.Update();
+
+                                    VideoFilesList.Add(file);
+                                    IncompatibilityInfo.Add(XboxCompatibilityCheck(file));
+
+                                    //Add filename, bitrate, framerate to the Media Info Box
+                                    //getQuickInfo(file, fileName);
+
+                                    for (int i = 0; i < IncompatibilityInfo.Count; i++)
+                                    {
+                                        outPutText.Append("\n" + filesListBox.Items[i] + "\n" + IncompatibilityInfo[i] + "=====================================================================");
+                                    }
+
+                                    outPutTextBox.Text = "\t\t\t\tINVALID ATTRIBUTES:\n\n" + outPutText.ToString();
+                                }
+
+                                nLabelUpdate("Listing " + filesListBox.Items.Count.ToString() + " Files Incompatible with Xbox360");
+                            }
+                            if (compatibilityCombo.SelectedIndex == 0) //Roku is selected
+                            {
+                                if (!string.IsNullOrEmpty(RokuCompatibilityCheck(file)))
+                                {
+                                    fileName = file;
+                                    while (fileName.Contains(@"\"))
+                                    {
+                                        fileName = fileName.Remove(0, 1);
+                                    }
+                                    CF.DefaultSettings["InputFilePath"] = file;
+                                    CF.DefaultSettings["InputFilePath"] = file.Replace(fileName, "");
+
+                                    filesListBox.Items.Add(fileName);
+                                    filesListBox.Update();
+
+                                    VideoFilesList.Add(file);
+                                    IncompatibilityInfo.Add(RokuCompatibilityCheck(file));
+
+                                    //Add filename, bitrate, framerate to the Media Info Box
+                                    for (int i = 0; i < IncompatibilityInfo.Count; i++)
+                                    {
+                                        outPutText.Append("\n" + filesListBox.Items[i] + "\n" + IncompatibilityInfo[i] + "=====================================================================");
+                                    }
+                                    outPutTextBox.Text = "\t\t\t\tINVALID ATTRIBUTES:\n\n" + outPutText.ToString();
+                                }
+                                nLabelUpdate("Listing " + filesListBox.Items.Count.ToString() + " Files Incompatible with Roku");
+                            }
+
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        CustomMessageBox.Show(ex.ToString(), 131, 280);
+                    }
+
+                }
+            }
+            else
+            {
+                CustomMessageBox.Show("Please select a compatibility option", 138, 269, "Compatibility");
+            }
+        }
+        private string RokuCompatibilityCheck(string fileName)
+        {
+
+            //File Info
+            decimal fileSize = 0;
+            double maxBitrate = 0;
+            double bitrate = 0;
+            double audioChannels = 0;
+            double audioBitrate = 0;
+            double audioMaxBitrate = 0;
+            //Incompatibility Info
+            StringBuilder incompatible = new StringBuilder(); //Stores string of why file is incompatile with Roku
+
+
+            FileInfo fInfo = new FileInfo(fileName);
+            fileSize = Convert.ToDecimal(fInfo.Length);
+            fileSize = decimal.Round(((fileSize / 1024) / 1024), 2); //Bytes Converted to Megabytes
+
+            MediaFile videoFile = new MediaFile(fileName);
+
+            /*Video — MKV (H.264), MP4 (H.264), MOV (H.264), WMV (VC-1, firmware 3.1 only)
+            * Audio: AAC, MP3
+            * Must be Deinterlaced video
+            * Max 2channel audio except for passthrough
+            * Framerate must be <= 30 fps
+            * Audio Bitrate 32-256Kbps per channel
+            * AAC LC (CBR), AC3 Passthrough
+            * Max video bitrate 1.5x average
+            * Average video bitrate 1.0Mbps – 10Mbps
+            * h.264 Main or High profile up to 4.1
+            * Video Codec H.264/AVC
+            * Extensions - .mp4, .mov, .m4v
+            * Up to 1920 X 1080 pixel size
+            */
+            for (int i = 0; i < videoFile.Video.Count; i++)
+            {
+                if (videoFile.Video[i].FormatID != "H264" && videoFile.Video[i].FormatID != "x264" && videoFile.Video[i].FormatID != "h.264")
+                {
+                    incompatible.Append("\tVideo" + ((i + 1).ToString()).Replace("0", "") + ": Format " + videoFile.Video[i].FormatID + ", must be H264 or X264\n");
+                }
+
+                if (videoFile.Video[i].FrameRate > 30)
+                {
+                    incompatible.Append("\tVideo" + ((i + 1).ToString()).Replace("0", "") + ": Framerate " + videoFile.Video[i].FrameRate.ToString() + ", must be <= 30 using h264 codec\n");
+                }
+
+                if (videoFile.Video[i].Properties.ContainsKey("Maximum bit rate") && videoFile.Video[i].Properties.ContainsKey("Bit rate"))
+                {
+                    if (double.TryParse(videoFile.Video[i].Properties["Maximum bit rate"].Replace(" ", "").Replace("Kbps", ""), out maxBitrate)) { } else { maxBitrate = 0; }
+
+                    if (videoFile.Video[i].Properties["Bit rate"].Contains("Mbps")) //If file bitrate is in Mbps
+                    {
+                        double.TryParse(videoFile.Video[0].Properties["Bit rate"].Replace(" ", "").Replace("Mbps", ""), out bitrate);
+                        bitrate = bitrate * 1000; //accounts for reading in Mbps rather than Kbps
+                    }
+                    else if (videoFile.Video[i].Properties["Bit rate"].Contains("Kbps")) //If file bitrate is in Mbps
+                    {
+                        double.TryParse(videoFile.Video[0].Properties["Bit rate"].Replace(" ", "").Replace("Kbps", ""), out bitrate);
+                    }
+                    else
+                    {
+                        bitrate = 0;
+                    }
+
+                    if (bitrate > 10000) { incompatible.Append("\tVideo" + ((i + 1).ToString()).Replace("0", "") + ": bitrate " + bitrate + ", Must be < 10000 kbps\n"); }
+                    if (maxBitrate > (bitrate * 1.5)) { incompatible.Append("\tVideo" + ((i + 1).ToString()).Replace("0", "") + ": Max bitrate (" + maxBitrate + ") > 1.5 * Average bitrate (" + bitrate + ")\n"); }
+                }
+
+                if (videoFile.Video[i].Properties.ContainsKey("Bit rate") && !videoFile.Video[i].Properties.ContainsKey("Maximum bit rate"))
+                {
+                    if (videoFile.Video[i].Properties["Bit rate"].Contains("Mbps")) //If file bitrate is in Mbps
+                    {
+                        double.TryParse(videoFile.Video[0].Properties["Bit rate"].Replace(" ", "").Replace("Mbps", ""), out bitrate);
+                        bitrate = bitrate * 1000; //accounts for reading in Mbps rather than Kbps
+                    }
+                    else if (videoFile.Video[i].Properties["Bit rate"].Contains("Kbps")) //If file bitrate is in Mbps
+                    {
+                        double.TryParse(videoFile.Video[0].Properties["Bit rate"].Replace(" ", "").Replace("Kbps", ""), out bitrate);
+                    }
+                    else
+                    {
+                        bitrate = 0;
+                    }
+
+                    if (bitrate > 10000) { incompatible.Append("\tVideo" + ((i + 1).ToString()).Replace("0", "") + ": bitrate " + bitrate + ", Must be < 10000 kbps\n"); }
+                }
+
+                if (videoFile.Video[i].Properties.ContainsKey("Format profile"))
+                {
+                    if (!videoFile.Video[i].Properties["Format profile"].Contains("High")
+                        & !videoFile.Video[i].Properties["Format profile"].Contains("Main")
+                        & !videoFile.Video[i].Properties["Format profile"].Contains("Baseline")
+                        & !videoFile.Video[i].Properties["Format profile"].Contains("L1")
+                        & !videoFile.Video[i].Properties["Format profile"].Contains("L1.0")
+                        & !videoFile.Video[i].Properties["Format profile"].Contains("L1.B")
+                        & !videoFile.Video[i].Properties["Format profile"].Contains("L1")
+                        & !videoFile.Video[i].Properties["Format profile"].Contains("L1.1")
+                        & !videoFile.Video[i].Properties["Format profile"].Contains("L1.2")
+                        & !videoFile.Video[i].Properties["Format profile"].Contains("L1.3")
+                        & !videoFile.Video[i].Properties["Format profile"].Contains("L2")
+                        & !videoFile.Video[i].Properties["Format profile"].Contains("L2.0")
+                        & !videoFile.Video[i].Properties["Format profile"].Contains("L2.1")
+                        & !videoFile.Video[i].Properties["Format profile"].Contains("L2.2")
+                        & !videoFile.Video[i].Properties["Format profile"].Contains("L3")
+                        & !videoFile.Video[i].Properties["Format profile"].Contains("L3.0")
+                        & !videoFile.Video[i].Properties["Format profile"].Contains("L3.1")
+                        & !videoFile.Video[i].Properties["Format profile"].Contains("L3.2")
+                        & !videoFile.Video[i].Properties["Format profile"].Contains("L4")
+                        & !videoFile.Video[i].Properties["Format profile"].Contains("L4.0")
+                        & !videoFile.Video[i].Properties["Format profile"].Contains("L4.1"))
+                    {
+                        incompatible.Append("\tVideo" + (((i + 1).ToString())).Replace("0", "") + ":  Profile " + videoFile.Video[i].Properties["Format profile"] + ", Must be High, Main, or Baseline L1-4.1\n");
+                    }
+                }
+
+                if (videoFile.Video[i].IsInterlaced) { incompatible.Append("\tVideo" + ((i + 1).ToString()).Replace("0", "") + ": File must be Deinterlaced\n"); }
+
+                if (videoFile.Video[i].Width > 1920 | videoFile.Video[i].Height > 1080) { incompatible.Append("\tVideo" + ((i + 1).ToString()).Replace("0", "") + ": Frame size (" + videoFile.Video[i].Width.ToString() + " x " + videoFile.Video[i].Height.ToString() + "), Must be < 1920 x 1080\n"); }
+            }
+
+            for (int i = 0; i < videoFile.Audio.Count; i++)
+            {
+                if (videoFile.Audio[i].Properties.ContainsKey("Format"))
+                {
+                    if (!videoFile.Audio[i].Properties["Format"].Contains("AAC")
+                        & !videoFile.Audio[i].Properties["Format"].Contains("MP3")
+                        & !videoFile.Audio[i].Properties["Format"].Contains("MPEG"))
+                    {
+                        incompatible.Append("\tAudio" + ((i + 1).ToString()).Replace("0", "") + ": format - " + videoFile.Audio[i].Properties["Format"] + ", must be AAC or MP3\n");
+                    }
+                }
+
+                if (videoFile.Audio[i].Properties.ContainsKey("Channel(s)"))
+                {
+                    if (double.TryParse(videoFile.Audio[i].Properties["Channel(s)"].Replace(" ", "").Replace("channels", "").Replace("channel", ""), out audioChannels) && audioChannels > 2)
+                    {
+                        incompatible.Append("\tAudio" + ((i + 1).ToString()).Replace("0", "") + ": has " + videoFile.Audio[i].Properties["Channel(s)"] + " must be <= 2\n");
+                    }
+                }
+
+                if (videoFile.Audio[i].Properties.ContainsKey("Bit rate"))
+                {
+                    if (videoFile.Audio[i].Properties["Bit rate"].Contains("Mbps")) //If file bitrate is in Mbps
+                    {
+                        double.TryParse(videoFile.Audio[i].Properties["Bit rate"].Replace(" ", "").Replace("Mbps", ""), out audioBitrate);
+                        audioBitrate = audioBitrate * 1000; //accounts for reading in Mbps rather than Kbps
+                    }
+                    else if (videoFile.Audio[i].Properties["Bit rate"].Contains("Kbps")) //If file bitrate is in Kbps
+                    {
+                        double.TryParse(videoFile.Audio[i].Properties["Bit rate"].Replace(" ", "").Replace("Kbps", ""), out audioBitrate);
+                    }
+
+                    if (videoFile.Audio[i].Properties.ContainsKey("Maximum bit rate"))
+                    {
+                        if (videoFile.Audio[i].Properties["Maximum bit rate"].Contains("Mbps")) //If file bitrate is in Mbps
+                        {
+                            double.TryParse(videoFile.Audio[i].Properties["Maximum bit rate"].Replace(" ", "").Replace("Mbps", ""), out audioMaxBitrate);
+                            audioMaxBitrate = audioMaxBitrate * 1000; //accounts for reading in Mbps rather than Kbps
+                        }
+                        else if (videoFile.Audio[i].Properties["Maximum bit rate"].Contains("Kbps")) //If file bitrate is in Kbps
+                        {
+                            double.TryParse(videoFile.Audio[i].Properties["Maximum bit rate"].Replace(" ", "").Replace("Kbps", ""), out audioMaxBitrate);
+                        }
+
+                    }
+
+                    audioBitrate = audioBitrate / videoFile.Audio[i].Channels; //Converts to bitrate per channel of audio
+                    if (audioBitrate != 0 & audioBitrate < 32 | audioBitrate > 256)
+                    {
+                        incompatible.Append("\tAudio" + ((i + 1).ToString()).Replace("0", "") + ": bitrate " + audioBitrate.ToString() + ", must be between 32 & 256 kbps\n");
+                    }
+                }
+            }
+
+            if (!videoFile.Extension.Contains("mp4")
+                & !videoFile.Extension.Contains("m4v")
+                & !videoFile.Extension.Contains("mov"))
+            {
+                incompatible.Append("\tContainer " + videoFile.Extension + ", conatiner must be mp4, m4v, or mov\n");
+            }
+
+
+            return incompatible.ToString();
+
+        }
+        private string XboxCompatibilityCheck(string fileName)
+        {
+
+            /*Xbox 360 Supported Video Formats
+             * Except for WMV extension, files cannot exceed 4GB in size.
+             * 
+             * MPEG-4 Part 2 video, up to 5Mbps, 1280 x 720 pixels, 30 frames per second, 
+             * Simple/Advanced Simple Profile in AVI containers with Dolby Digital 2 channel and 5.1 channel,
+             * MP3 in .avi and .divx file formats;
+             * 
+             * H.264 video, up to 10 Mbps, 1920 x 1080 pixels, 30 frames per second,
+             * Baseline/Main/High (up to level 4.1) Profiles in MPEG-4/QuickTime containers
+             * with two-channel AAC low complexity (LC) in .mp4, .m4v, mp4v, .mov file formats;
+             * 
+             * MPEG-4 Part 2 video, up to 5Mbps, 1280 x 720 pixels, 30 frames per second,
+             * Simple/Advanced Simple Profile in MPEG-4/QuickTime containers with two-channel
+             * AAC low complexity (LC) in .avi and .divx file formats;
+             * 
+             * WMV (VC-1) video, up to 15Mbps, 1920 x 1080 pixels, 30 frames per second,
+             * WMV7 (WMV1), WMV8 (WMV2), WMV9 (WMV3), VC-1 (WVC1 or WMVA) in Simple/Main/Advanced
+             * up to level 3 in asf containers with WMA7/8, WMA 9 Pro (stereo and 5.1),
+             * WMA lossless in .wmv file formats;
+             */
+
+            //File Info
+            decimal fileSize = 0;
+
+            //Incompatibility Info
+            StringBuilder incompatible = new StringBuilder();
+
+            FileInfo fInfo = new FileInfo(fileName);
+            fileSize = Convert.ToDecimal(fInfo.Length);
+            fileSize = decimal.Round(((fileSize / 1024) / 1024), 2); //Bytes Converted to Megabytes
+
+            MediaFile videoFile = new MediaFile(fileName);
+
+            switch (videoFile.Extension)
+            {
+                case ".avi":
+                    return xboxCompatibilityforAVIDIVX(videoFile, fileSize);
+                case ".divx":
+                    return xboxCompatibilityforAVIDIVX(videoFile, fileSize);
+                case ".mov":
+                    return xboxCompatibilityforMP4MOV(videoFile, fileSize);
+                case ".mp4":
+                    return xboxCompatibilityforMP4MOV(videoFile, fileSize);
+                case ".m4v":
+                    return xboxCompatibilityforMP4MOV(videoFile, fileSize);
+                case ".mp4v":
+                    return xboxCompatibilityforMP4MOV(videoFile, fileSize);
+                case ".wmv":
+                    return xboxCompatibilityforWMV(videoFile, fileSize);
+                default:
+                    incompatible.Append("\tExtension " + videoFile.Extension + " must be AVI, DIVX, M4V, MP4, MP4V, MOV or WMV\n");
+                    return incompatible.ToString();
+            }
+        }
+        private string xboxCompatibilityforMP4MOV(MediaFile videoFile, decimal fileSize)
+        {
+            /* H.264 video, up to 10 Mbps, 1920 x 1080 pixels, 30 frames per second,
+            *  Baseline/Main/High (up to level 4.1) Profiles in MPEG-4/QuickTime containers
+            *  with two-channel AAC low complexity (LC) in .mp4, .m4v, mp4v, .mov file formats;*/
+            StringBuilder incompatible = new StringBuilder();
+
+            if (videoFile.General.Bitrate > 10000)
+            {
+                incompatible.Append("\tOverall bitrate (" + videoFile.General.Bitrate + ") cannot be > 10000 kbps for " + videoFile.Extension + " files\n");
+            }
+            if (fileSize > 4096)
+            {
+                incompatible.Append("\tFile Size (" + fileSize + " MB) " + " must be <= 4096 MB (4GB) for " + videoFile.Extension + "\n");
+            }
+
+            for (int i = 0; i < videoFile.Video.Count; i++)
+            {
+                if (videoFile.Video[i].Width > 1920)
+                {
+                    incompatible.Append("\tVideo" + (i + 1).ToString() + ": frame width " + videoFile.Video[i].Width.ToString() + ", must be <=1920 for " + videoFile.Extension + "\n");
+                }
+                if (videoFile.Video[i].Height > 1080)
+                {
+                    incompatible.Append("\tVideo" + (i + 1).ToString() + ": frame height " + videoFile.Video[i].Height.ToString() + ", must be <=1080 for DIVX\n");
+                }
+                if (videoFile.Video[i].FrameRate > 30)
+                {
+                    incompatible.Append("\tVideo" + (i + 1).ToString() + ": FPS " + videoFile.Video[i].FrameRate.ToString().Replace(" ", "").Replace("Fps", "") + ", must be <=30 for " + videoFile.Extension + "\n");
+                }
+
+                if (videoFile.Video[i].Properties.ContainsKey("Format profile"))
+                {
+                    if (!videoFile.Video[i].Properties["Format profile"].Contains("Simple")
+                        & !videoFile.Video[i].Properties["Format profile"].Contains("Baseline")
+                        & !videoFile.Video[i].Properties["Format profile"].Contains("Main")
+                        & !videoFile.Video[i].Properties["Format profile"].Contains("High"))
+                    {
+                        if (!videoFile.Video[i].Properties["Format profile"].Contains("L1") &
+                            !videoFile.Video[i].Properties["Format profile"].Contains("L1.0") &
+                            !videoFile.Video[i].Properties["Format profile"].Contains("L1.B") &
+                            !videoFile.Video[i].Properties["Format profile"].Contains("L1.1") &
+                            !videoFile.Video[i].Properties["Format profile"].Contains("L1.2") &
+                            !videoFile.Video[i].Properties["Format profile"].Contains("L1.3") &
+                            !videoFile.Video[i].Properties["Format profile"].Contains("L2") &
+                            !videoFile.Video[i].Properties["Format profile"].Contains("L2.0") &
+                            !videoFile.Video[i].Properties["Format profile"].Contains("L2.1") &
+                            !videoFile.Video[i].Properties["Format profile"].Contains("L2.2") &
+                            !videoFile.Video[i].Properties["Format profile"].Contains("L3") &
+                            !videoFile.Video[i].Properties["Format profile"].Contains("L3.0") &
+                            !videoFile.Video[i].Properties["Format profile"].Contains("L3.1") &
+                            !videoFile.Video[i].Properties["Format profile"].Contains("L3.2") &
+                            !videoFile.Video[i].Properties["Format profile"].Contains("L4") &
+                            !videoFile.Video[i].Properties["Format profile"].Contains("L4.0") &
+                            !videoFile.Video[i].Properties["Format profile"].Contains("L4.1"))
+                        {
+                            incompatible.Append("\tVideo" + (i + 1).ToString() + ": Format " + videoFile.Video[i].Properties["Format profile"] + ", must be Simple, Baseline, Main, or High 1-4.1\n");
+                        }
+                    }
+                }
+            }
+            for (int i = 0; i < videoFile.Audio.Count; i++)
+            {
+                if (videoFile.Audio[i].Properties.ContainsKey("Channel(s)"))
+                {
+                    if ((videoFile.Audio[i].Properties["Channel(s)"].Replace(" ", "").Replace("channels", "")) != "1"
+                        & videoFile.Audio[i].Properties["Channel(s)"].Replace(" ", "").Replace("channels", "") != "2")
+                    {
+                        incompatible.Append("\tAudio " + (i + 1).ToString() + ": channel amount " + (videoFile.Audio[i].Properties["Channel(s)"].Replace(" ", "").Replace("channels", "")) + ", Must be <= 2 for " + videoFile.Extension + " containers\n");
+                    }
+                }
+
+                if (!videoFile.Audio[i].Format.Contains("AAC"))
+                {
+                    incompatible.Append("\tAudio " + (i + 1).ToString() + ": format " + videoFile.Audio[i].Format + ", must be AAC for " + videoFile.Extension + " containers\n");
+                }
+
+                if (videoFile.Audio[i].Properties.ContainsKey("Format profile")
+                    && !videoFile.Audio[i].Properties["Format profile"].Contains("LC")
+                    && videoFile.Audio[i].Format.Contains("AAC"))
+                {
+                    incompatible.Append("\tAudio " + (i + 1).ToString() + ": profile " + videoFile.Audio[i].Properties["Format profile"] + ", must be LC for AAC audio in " + videoFile.Extension + " Containers\n");
+                }
+            }
+
+            return incompatible.ToString();
+        }
+        private string xboxCompatibilityforAVIDIVX(MediaFile videoFile, decimal fileSize)
+        {
+            /*MPEG - 4 Part 2 video, up to 5Mbps, 1280 x 720 pixels, 30 frames per second, 
+            Simple / Advanced Simple Profile in AVI containers with Dolby Digital 2 channel and 5.1 channel,
+            MP3 in .avi and .divx file formats*/
+            StringBuilder incompatible = new StringBuilder();
+
+            if (videoFile.General.Bitrate > 5000)
+            {
+                incompatible.Append("\tOverall bitrate (" + videoFile.General.Bitrate + ") must be > 5000 kbps for " + videoFile.Extension + " files\n");
+            }
+            if (fileSize > 4096)
+            {
+                incompatible.Append("\tFile Size (" + fileSize + " MB) " + " must be <= 4096 MB (4GB) for " + videoFile.Extension + "\n");
+            }
+
+            for (int i = 0; i < videoFile.Video.Count; i++)
+            {
+                if (videoFile.Video[i].Width > 1280)
+                {
+                    incompatible.Append("\tVideo" + (i + 1).ToString() + ": frame width " + videoFile.Video[i].Width.ToString() + ", must be <=1280 for " + videoFile.Extension + "\n");
+                }
+                if (videoFile.Video[i].Height > 720)
+                {
+                    incompatible.Append("\tVideo" + (i + 1).ToString() + ": frame height " + videoFile.Video[i].Height.ToString() + ", must be <=720 for " + videoFile.Extension + "\n");
+                }
+                if (videoFile.Video[i].FrameRate > 30)
+                {
+                    incompatible.Append("\tVideo" + (i + 1).ToString() + ": FPS " + videoFile.Video[i].FrameRate + ", must be <=30 for " + videoFile.Extension + "\n");
+                }
+
+                if (videoFile.Video[i].Properties.ContainsKey("Format profile"))
+                {
+                    if (!videoFile.Video[i].Properties["Format profile"].Contains("Simple")
+                        & !videoFile.Video[i].Properties["Format profile"].Contains("Baseline"))
+                    {
+                        incompatible.Append("\tVideo" + (i + 1).ToString() + ": format " + videoFile.Video[i].Properties["Format profile"] + ", must be Simple or Baseline\n");
+                    }
+                }
+                if (!videoFile.Video[i].FormatID.Contains("MPEG"))
+                {
+                    incompatible.Append("\tVideo" + (i + 1).ToString() + ": format " + videoFile.Video[i].FormatID + " invalid for use with " + videoFile.Extension + " containers. Must be MPEG-4");
+                }
+            }
+            for (int i = 0; i < videoFile.Audio.Count; i++)
+            {
+                if (videoFile.Audio[i].Properties.ContainsKey("Channel(s)"))
+                {
+                    if ((videoFile.Audio[i].Properties["Channel(s)"].Replace(" ", "").Replace("channels", "")) != "1"
+                        & videoFile.Audio[i].Properties["Channel(s)"].Replace(" ", "").Replace("channels", "") != "2"
+                        & videoFile.Audio[i].Properties["Channel(s)"].Replace(" ", "").Replace("channels", "") != "5.1")
+                    {
+                        incompatible.Append("\tAudio " + (i + 1).ToString() + ": channel amount " + (videoFile.Audio[i].Properties["Channel(s)"].Replace(" ", "").Replace("channels", "")) + ", must be <= 5.1\n");
+                    }
+                }
+                if (!videoFile.Audio[i].Format.Contains("MP3")
+                    & !videoFile.Audio[i].Format.Contains("AAC")
+                    & !videoFile.Audio[i].Format.Contains("MPEG"))
+                {
+                    incompatible.Append("\tAudio " + (i + 1).ToString() + ": format " + videoFile.Audio[i].Format + ", must be MP3 or AAC\n");
+                }
+
+                if (videoFile.Audio[i].Properties.ContainsKey("Format profile")
+                    && !videoFile.Audio[i].Properties["Format profile"].Contains("LC")
+                    && videoFile.Audio[i].Format.Contains("AAC"))
+                {
+                    incompatible.Append("\tAudio " + (i + 1).ToString() + ": profile " + videoFile.Audio[i].Properties["Format profile"] + ", must be LC for AAC audio\n");
+                }
+            }
+            return incompatible.ToString();
+        }
+        private string xboxCompatibilityforWMV(MediaFile videoFile, decimal fileSize)
+        {
+            /* WMV (VC-1) video, up to 15Mbps, 1920 x 1080 pixels, 30 frames per second,
+             * WMV7 (WMV1), WMV8 (WMV2), WMV9 (WMV3), VC-1 (WVC1 or WMVA) in Simple/Main/Advanced
+             * up to level 3 in asf containers with WMA7/8, WMA 9 Pro (stereo and 5.1),
+             * WMA lossless in .wmv file formats;*/
+            StringBuilder incompatible = new StringBuilder();
+
+            if (videoFile.General.Bitrate > 15000)
+            {
+                incompatible.Append("\tOverall bitrate (" + videoFile.General.Bitrate + ") cannot be > 15000 kbps for " + videoFile.Extension + " files\n");
+            }
+
+            for (int i = 0; i < videoFile.Video.Count; i++)
+            {
+                if (videoFile.Video[i].Width > 1920)
+                {
+                    incompatible.Append("\tVideo" + (i + 1).ToString() + ": frame width of " + videoFile.Video[i].Width.ToString() + ", must be <= 1920\n");
+                }
+
+                if (videoFile.Video[i].Height > 1080)
+                {
+                    incompatible.Append("\tVideo" + (i + 1).ToString() + ": frame height of " + videoFile.Video[i].Height.ToString() + ", must be <= 1080\n");
+                }
+
+                if (videoFile.Video[i].FrameRate > 30)
+                {
+                    incompatible.Append("\tVideo" + (i + 1).ToString() + ": FPS " + videoFile.Video[i].FrameRate.ToString().Replace(" ", "").Replace("Fps", "") + ", must be <=30 for " + videoFile.Extension + " video\n");
+                }
+                if (videoFile.Video[i].Properties.ContainsKey("Format profile"))
+                {
+                    if (!videoFile.Video[i].Properties["Format profile"].Contains("VC-1") &
+                    !videoFile.Video[i].Properties["Format profile"].Contains("WMV1") &
+                    !videoFile.Video[i].Properties["Format profile"].Contains("WMV2") &
+                    !videoFile.Video[i].Properties["Format profile"].Contains("WMV3") &
+                    !videoFile.Video[i].Properties["Format profile"].Contains("WVC1") &
+                    !videoFile.Video[i].Properties["Format profile"].Contains("WMVA"))
+                    {
+                        incompatible.Append("\tVideo" + (i + 1).ToString() + ": format " + videoFile.Video[i].Properties["Format profile"] + ", must be VC-1, WMV1-3, WVC1, OR WMVA\n");
+                    }
+                }
+            }
+
+            return incompatible.ToString();
         }
     }
 }
