@@ -271,7 +271,6 @@ namespace MovieDataCollector
                 catch (Exception e){CustomMessageBox.Show(e.ToString(), 131, 280);}
             }
         }
-
         private void listAllVideosButton_Click(object sender, EventArgs e)
         {
             returnAllVideoFiles();
@@ -317,7 +316,6 @@ namespace MovieDataCollector
         private void filesListBox_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             //Double click to get media information about the file.
-
             tabControl1.SelectedIndex = 0; //Changes tab to media info tab.
             if (IncompatibilityInfo.Count <= 0) //Incompatible List not available
             {
@@ -643,13 +641,8 @@ namespace MovieDataCollector
                 for (int i = 0; i < VideoFilesList.Count(); i++)
                 {
                     nLabelUpdate("Processing file " + (i + 1).ToString() + " of " + VideoFilesList.Count().ToString());
-                    
-                    
-
                     getQuickInfo(VideoFilesList[i], filesListBox.Items[i].ToString());
                 }
-
-                nLabelUpdate("");
             }
         }
         private void detailInfoButton_Click(object sender, EventArgs e)
@@ -710,7 +703,7 @@ namespace MovieDataCollector
             string totalProcessingTime = "";
             DateTime startTime = DateTime.Now;
             DateTime endTime;
-            List<string> Errors = new List<string>();
+            List<string> Errors = new List<string>(); //Stores error information as files process or fail to.
             string errorString = "";
             Errors.Clear();
             int exitCode = 0; //Exit code for HandbrakeCLI
@@ -747,11 +740,11 @@ namespace MovieDataCollector
 
                                 Process conversionProcess = new Process();
                                 conversionProcess.StartInfo.FileName = handBrakeCLILocation + @"\HandBrakeCLI.exe";
-                                conversionProcess.StartInfo.Arguments = "/c " + handBrakeCLIString;
-                                conversionProcess.EnableRaisingEvents = true;
+                                conversionProcess.StartInfo.Arguments = "/c " + handBrakeCLIString; //Sets commandline arguments
+                                conversionProcess.EnableRaisingEvents = true; //Raises process exited event on close
                                 conversionProcess.Start();
                                 conversionProcess.WaitForExit();
-                                exitCode = conversionProcess.ExitCode;
+                                exitCode = conversionProcess.ExitCode; //gathers exit code of process (Error, or exited normally with no error)
 
                             }
 
@@ -780,10 +773,10 @@ namespace MovieDataCollector
 
                             if (Errors.Count > 0)
                             {
-                                tabControl1.SelectedIndex = 0;
+                                tabControl1.SelectedIndex = 0; //select output text box
                                 foreach (var ErrorLine in Errors)
                                 {
-                                    errorString += ErrorLine + "\r\n";
+                                    errorString += ErrorLine + "\r\n"; //write out errors for user to see
                                 }
                                 outPutTextBox.Text = "File skipped due to error:\r\n" + errorString;
 
@@ -801,12 +794,10 @@ namespace MovieDataCollector
                                 }
 
                             }
-                            else
+                            else //No errors were thrown by handbrake cli
                             {
                                 outPutTextBox.Text = ""; //Clears Output Box on successful Encode
                                 nLabelUpdate("Transcoding of \"" + filesListBox.SelectedItem.ToString() + "\" completed in " + totalProcessingTime);
-
-
 
                                 if (notificationCheck.Checked)
                                 {
@@ -814,6 +805,7 @@ namespace MovieDataCollector
                                     string password = passwordBox.Text;
                                     string sendTo = sendToBox.Text;
 
+                                    //Send notification that transcoding is complete
                                     sendNotification(username, password, sendTo, "Movie Data Collector Notification", "The transcoding que initiated " + startTime.ToString() + " is now complete. \r\n The file was processed in " + totalProcessingTime);
                                 }
                             }
@@ -830,6 +822,8 @@ namespace MovieDataCollector
                                 string username = usernameBox.Text;
                                 string password = passwordBox.Text;
                                 string sendTo = sendToBox.Text;
+
+                                //Send notification that the transcoding is complete
                                 sendNotification(username, password, sendTo, "Movie Data Collector Notification", "The transcoding que initiated " + startTime.ToString() + " failed. \r\n The file may be corrupt");
                             }
                         }
@@ -837,12 +831,12 @@ namespace MovieDataCollector
                 }
                 else
                 {
+                    //Clear notification label
                     nLabelUpdate("");
-
-
                 }
             }
         }
+
         private void ConvertAllButton_Click(object sender, EventArgs e)
         {
             //Check for location of HandbrakeCLI
