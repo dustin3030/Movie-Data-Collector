@@ -1057,20 +1057,20 @@ namespace MovieDataCollector
         private string AudioConversionString(MediaFile videoFile)
         {
             //Users selected variables
-            double userSelectedBitrate = 0;
+            double userSelectedBitrate = 0; //Bitrate for audio is per channel so stereo audio of 96 bitrate would actually be 96 * 2 = 192
 
             //Variables derived from file
             double bitrateOfFile = 0; //used to determine the bitrate of the actual audio.
             int audioTrackNumber = 0; //Highest bitrate audio track in English
             double maxBitrate = 0;
 
-            //Variable for output string
+            //Variables for output string
             string outputAudioPassthruMask = "";
             string outputAudioTrack = "";
             string outputEncoder = "";
             string outputFallBack = "";
             string outputMixdown = "";
-            string outputSampleRate = "--arate Auto ";
+            string outputSampleRate = "--arate 48 "; //Auto is no longer listd as an option in handbrake cli documentation.
             string outputDynamicRange = "--drc 0 --gain 0 ";
             string outputBitrate = "";
             /*****************************************************************************************************************************************************************************************************************************/
@@ -1378,6 +1378,7 @@ namespace MovieDataCollector
 
             return outputAudioTrack + outputEncoder + outputAudioPassthruMask + outputFallBack + outputBitrate + outputSampleRate + outputMixdown + outputDynamicRange;
         }
+
         private string VideoConversionString(MediaFile videoFile, int audioTrack)
         {
             //Calculation Variables

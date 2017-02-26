@@ -814,7 +814,7 @@
             // filteredDTSCheck
             // 
             this.filteredDTSCheck.AutoSize = true;
-            this.filteredDTSCheck.Location = new System.Drawing.Point(390, 29);
+            this.filteredDTSCheck.Location = new System.Drawing.Point(406, 29);
             this.filteredDTSCheck.Name = "filteredDTSCheck";
             this.filteredDTSCheck.Size = new System.Drawing.Size(87, 17);
             this.filteredDTSCheck.TabIndex = 7;
@@ -825,7 +825,7 @@
             // filteredAC3Check
             // 
             this.filteredAC3Check.AutoSize = true;
-            this.filteredAC3Check.Location = new System.Drawing.Point(334, 29);
+            this.filteredAC3Check.Location = new System.Drawing.Point(350, 29);
             this.filteredAC3Check.Name = "filteredAC3Check";
             this.filteredAC3Check.Size = new System.Drawing.Size(49, 17);
             this.filteredAC3Check.TabIndex = 7;
@@ -836,7 +836,7 @@
             // filteredAACCheck
             // 
             this.filteredAACCheck.AutoSize = true;
-            this.filteredAACCheck.Location = new System.Drawing.Point(278, 29);
+            this.filteredAACCheck.Location = new System.Drawing.Point(294, 29);
             this.filteredAACCheck.Name = "filteredAACCheck";
             this.filteredAACCheck.Size = new System.Drawing.Size(50, 17);
             this.filteredAACCheck.TabIndex = 7;
@@ -882,7 +882,7 @@
             // passthruFilterLabel
             // 
             this.passthruFilterLabel.AutoSize = true;
-            this.passthruFilterLabel.Location = new System.Drawing.Point(319, 6);
+            this.passthruFilterLabel.Location = new System.Drawing.Point(335, 6);
             this.passthruFilterLabel.Name = "passthruFilterLabel";
             this.passthruFilterLabel.Size = new System.Drawing.Size(94, 13);
             this.passthruFilterLabel.TabIndex = 6;
