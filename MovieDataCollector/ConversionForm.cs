@@ -836,7 +836,6 @@ namespace MovieDataCollector
                 }
             }
         }
-
         private void ConvertAllButton_Click(object sender, EventArgs e)
         {
             //Check for location of HandbrakeCLI
@@ -852,7 +851,7 @@ namespace MovieDataCollector
             if (preConversionChecks()) //If handbrake is found continue
             {
                 string handBrakeCLIString;
-                if (filesListBox.Items.Count > 0)
+                if (filesListBox.Items.Count > 0) //FilesListBox contains files
                 {
                     FolderBrowserDialog FBD = new FolderBrowserDialog(); //creates new instance of the FolderBrowserDialog
                     FBD.Description = "Select Output Folder for Converted Video Files";
@@ -868,9 +867,8 @@ namespace MovieDataCollector
 
                         for (int i = 0; i < VideoFilesList.Count; i++)
                         {
+                            //Display which file is being converted
                             nLabelUpdate("Converting File " + (i + 1).ToString() + " of " + VideoFilesList.Count.ToString() + " ( " + filesListBox.Items[i].ToString() + " )");
-
-
 
                             DialogResult = DialogResult.None; //Prevents form from closing...
 
@@ -893,13 +891,6 @@ namespace MovieDataCollector
                                     conversionProcess.Start();
                                     conversionProcess.WaitForExit();
                                     exitCode = conversionProcess.ExitCode;
-
-                                    //System.Diagnostics.ProcessStartInfo proc = new System.Diagnostics.ProcessStartInfo();
-                                    //proc.FileName = handBrakeCLILocation + @"\HandBrakeCLI.exe";
-                                    //proc.Arguments = "/c " + handBrakeCLIString;
-                                    //System.Diagnostics.Process
-                                    //.Start(proc)
-                                    //.WaitForExit();
                                 }
 
                                 switch (exitCode)
@@ -931,8 +922,6 @@ namespace MovieDataCollector
 
                         endTime = DateTime.Now;
                         totalProcessingTime = timeDifference(startTime, endTime);
-
-
 
                         if (Errors.Count > 0)
                         {
@@ -966,9 +955,6 @@ namespace MovieDataCollector
                             if (VideoFilesList.Count == 1) { nLabelUpdate("The transcoding que initiated " + startTime.ToString() + " is now complete. The file was processed in " + totalProcessingTime); }
                             if (VideoFilesList.Count > 1) { nLabelUpdate("The transcoding que initiated " + startTime.ToString() + " is now complete. " + VideoFilesList.Count().ToString() + " files were processed in " + totalProcessingTime); }
 
-
-
-
                             if (notificationCheck.Checked)
                             {
                                 string username = usernameBox.Text;
@@ -984,21 +970,19 @@ namespace MovieDataCollector
                 else
                 {
                     nLabelUpdate("");
-
-
                 }
             }
         }
         private bool preConversionChecks()
         {
             bool checksPassed = true;
+            nLabelUpdate("Checking for existence of Handbrake CLI");
             string handBrakeCLILocation = CheckForHandbrakeCLI();
-            nLabelUpdate("");
 
             //Ensure HandbrakeCLI is found
             if (string.IsNullOrEmpty(handBrakeCLILocation)) { checksPassed = false; }
 
-            //If Filtered Passthru is selected ensure a filter is also choseen
+            //If Filtered Passthru is selected ensure a filter is also chosen
             switch (audioCodecComboBox.Text)
             {
                 case "Filtered Passthru":
@@ -1017,14 +1001,14 @@ namespace MovieDataCollector
         }
         private string CheckForHandbrakeCLI()
         {
-
-            if (System.IO.File.Exists((Directory.GetCurrentDirectory() + "\\HandBrakeCLI\\HandBrakeCLI.exe")))
+            if (System.IO.File.Exists((Directory.GetCurrentDirectory() + "\\HandBrakeCLI\\HandBrakeCLI.exe"))) //Check Hancbrake CLI is in current directory
             {
                 return Directory.GetCurrentDirectory() + "\\HandBrakeCLI";
             }
-
-            CustomMessageBox.Show("HandBrakeCLI Not Found in " + Directory.GetCurrentDirectory() + "\\HandBrakeCLI", 200, 400, "File Not Found \"HandBrakeCLI.exe\"");
-
+            else
+            { 
+                CustomMessageBox.Show("HandBrakeCLI Not Found in " + Directory.GetCurrentDirectory() + "\\HandBrakeCLI", 200, 400, "File Not Found \"HandBrakeCLI.exe\"");
+            }
             return "";
         }
         private string GenerateConversionString(string filepath, string filename, string outputPath)
@@ -1063,11 +1047,13 @@ namespace MovieDataCollector
 
 
             sourceOptions = SourceDestinationOptionsString(filepath, filename, outputPath, outputLargerThan4GB);
-            crop = "--crop 0:0:0:0 --auto-anamorphic --modulus 8 "; //Forces 0 crop, Changed from loose-anamorphic to --auto-anamorphic
+            //Stick with source dimensions - no crop, auto anamorphic, modulus 2 (used to be an issue but the code has been fixed so 2 is the best option for preserving source)
+            crop = "--crop 0:0:0:0 --auto-anamorphic --modulus 2 "; //Forces 0 crop, Changed from loose-anamorphic to --auto-anamorphic
 
             return "--verbose 1 " + sourceOptions + VideoString + AudioString + crop;
 
         }
+
         private string AudioConversionString(MediaFile videoFile)
         {
             //Users selected variables
