@@ -872,6 +872,8 @@ namespace MovieDataCollector
         }
         private void filesListBox_MouseDoubleClick(object sender, MouseEventArgs e)
         {
+            //Double click to get media information about the file.
+
             tabControl1.SelectedIndex = 0; //Changes tab to media info tab.
             if (IncompatibilityInfo.Count <= 0) //Incompatible List not available
             {
@@ -1538,6 +1540,8 @@ namespace MovieDataCollector
             double videoBitrate = 0.0;
             string MaxBitrate = "";
             string BufferSize = "";
+            double BitrateMultiplier = 1.5; //Size of the Maximum bitrate for the video portion of the file
+            double BufferMultiplier = 2; //Size of the buffer
 
             //Variables from Form
             double avgBitrateCap = 0.0;
@@ -1903,10 +1907,10 @@ namespace MovieDataCollector
                 if (videoBitrate > avgBitrateCap)
                 {
                     outputVideoBitrate = "--vb " + avgBitrateCap + " ";
-                    if (Math.Floor((avgBitrateCap + Abitrate) * 1.5) < 10000)
+                    if (Math.Floor(avgBitrateCap * BitrateMultiplier) < 10000)
                     {
-                        MaxBitrate = Math.Floor((avgBitrateCap + Abitrate) * 1.5).ToString();
-                        BufferSize = Math.Floor(((avgBitrateCap + Abitrate) * 1.5) * 2).ToString(); //Buffer of 2 seconds
+                        MaxBitrate = Math.Floor(avgBitrateCap * BitrateMultiplier).ToString();
+                        BufferSize = Math.Floor((avgBitrateCap * BitrateMultiplier) * BufferMultiplier).ToString(); //Buffer of 2 seconds
                     }
                     else
                     {
@@ -1918,10 +1922,10 @@ namespace MovieDataCollector
                 {
                     outputVideoBitrate = "--vb " + videoBitrate.ToString() + " ";
 
-                    if (Math.Floor((videoBitrate + Abitrate) * 1.5) < 10000)
+                    if (Math.Floor(videoBitrate * BitrateMultiplier) < 10000)
                     {
-                        MaxBitrate = Math.Floor((videoBitrate + Abitrate) * 1.5).ToString();
-                        BufferSize = Math.Floor(((videoBitrate + Abitrate) * 1.5) * 2).ToString();
+                        MaxBitrate = Math.Floor(videoBitrate * BitrateMultiplier).ToString();
+                        BufferSize = Math.Floor((videoBitrate * BitrateMultiplier) * BufferMultiplier).ToString();
                     }
                     else
                     {
@@ -1948,10 +1952,10 @@ namespace MovieDataCollector
 
                 outputVideoBitrate = "--vb " + videoBitrate.ToString() + " ";
 
-                if (Math.Floor((videoBitrate + audioBitrate) * 1.5) < 10000) //Ensures max bitrate doesn't go over 10 which is the limit for Roku compatibility
+                if (Math.Floor(videoBitrate * BitrateMultiplier) < 10000) //Ensures max bitrate doesn't go over 10 which is the limit for Roku compatibility
                 {
-                    MaxBitrate = Math.Floor((videoBitrate + (Abitrate * 2)) * 1.5).ToString(); //(Abitrate * 2) Default for user selected audio in stereo
-                    BufferSize = Math.Floor(((videoBitrate + (Abitrate * 2)) * 1.5) * 2).ToString();
+                    MaxBitrate = Math.Floor(videoBitrate * BitrateMultiplier).ToString();
+                    BufferSize = Math.Floor((videoBitrate * BitrateMultiplier) * BufferMultiplier).ToString();
                 }
                 else
                 {
