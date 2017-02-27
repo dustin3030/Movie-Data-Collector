@@ -28,7 +28,6 @@ namespace MovieDataCollector
         //string configPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector\\Config.txt"; //Writable file location for config file.
 
         //Ending audio bitrate string used in encoder and setting video bitrate buffer and maxrate size.
-        int Abitrate = 0;
 
         /*Values available for conversion*/
         List<string> codecList = new List<string>()
@@ -1949,7 +1948,6 @@ namespace MovieDataCollector
 
             return outputEncoder + outputEncoderSpeed + outputEncoderTune + outputEncopts + outputEncoderProfile + outputEncoderLevel + outputVideoBitrate + outputTwoPass + outputTurbo + outputFrameRate;
         }
-
         private string AudioConversionString(MediaFile videoFile)
         {
             //Users selected variables
@@ -1966,12 +1964,10 @@ namespace MovieDataCollector
             string outputEncoder = "";
             string outputFallBack = "";
             string outputMixdown = "";
-            string outputSampleRate = "--arate 48 "; //Auto is no longer listd as an option in handbrake cli documentation.
+            string outputSampleRate = "--arate 48 "; //Auto is no longer listd as an option in handbrake cli documentation 2/2017.
             string outputDynamicRange = "--drc 0 --gain 0 ";
             string outputBitrate = "";
             /*****************************************************************************************************************************************************************************************************************************/
-
-
 
             if (videoFile.Audio.Count > 0) //Source Readable
             {
@@ -1986,10 +1982,10 @@ namespace MovieDataCollector
                             videoFile.Audio[i].Properties["Language"].ToUpper() == "ENG" ||
                             videoFile.Audio[i].Properties["Language"].ToUpper() == "EN")
                         {
-                            //Check for Max Bitrate English Track
-                            if (videoFile.Audio[i].Bitrate > maxBitrate)
+                            //Check for Max per channel Bitrate English Track
+                            if ((videoFile.Audio[i].Bitrate / videoFile.Audio[i].Channels) > maxBitrate)
                             {
-                                maxBitrate = videoFile.Audio[i].Bitrate;
+                                maxBitrate = videoFile.Audio[i].Bitrate / videoFile.Audio[i].Channels; //Get the per channel bitrate
                                 audioTrackNumber = i; //Mark the audio track that has the highest bitrate
                             }
                         }
@@ -1997,9 +1993,9 @@ namespace MovieDataCollector
                     else //No Language code
                     {
                         //Check for Max Bitrate Track
-                        if (videoFile.Audio[i].Bitrate > maxBitrate)
+                        if ((videoFile.Audio[i].Bitrate / videoFile.Audio[i].Channels) > maxBitrate)
                         {
-                            maxBitrate = videoFile.Audio[i].Bitrate;
+                            maxBitrate = videoFile.Audio[i].Bitrate / videoFile.Audio[i].Channels;
                             audioTrackNumber = i; //Mark the audio track that has the highest bitrate
                         }
                     }
@@ -2007,24 +2003,24 @@ namespace MovieDataCollector
                 outputAudioTrack = "--audio " + (audioTrackNumber + 1).ToString() + " ";
 
                 /*Samplerate***********************************************************************************************************************************************************************************************/
-                if (!string.IsNullOrEmpty(sampleRateCombo.Text))
+                if (string.IsNullOrEmpty(sampleRateCombo.Text))
                 {
                     if (videoFile.Audio[audioTrackNumber].SamplingRate / 1000 >= 48)
                     {
-                        outputSampleRate = "--arate 48 ";
+                        outputSampleRate = "--arate 48 "; //Roku Compatible high rate
                     }
                     else if(videoFile.Audio[audioTrackNumber].SamplingRate / 1000 == 44.1)
                     {
-                        outputSampleRate = "--arate 44.1 ";
+                        outputSampleRate = "--arate 44.1 "; //Roku compatible low rate
                     }
                     else
                     {
-                        outputSampleRate = "--arate 48";
+                        outputSampleRate = "--arate 48"; //Default to 48
                     }
                 }
-                else
+                else //Use user selected samplerate
                 {
-                    outputSampleRate = "--arate 48";
+                    outputSampleRate = "--arate " + sampleRateCombo.Text;
                 }
 
                 /*Bitrate***********************************************************************************************************************************************************************************************/
@@ -2047,11 +2043,8 @@ namespace MovieDataCollector
 
 
                 //If per channel Bitrate of file is < Selected Bitrate use the file's bitrate.
+                if ((bitrateOfFile < userSelectedBitrate) && (bitrateOfFile > 0)) { userSelectedBitrate = bitrateOfFile; }
 
-                if (bitrateOfFile < userSelectedBitrate) { userSelectedBitrate = bitrateOfFile; }
-                if (bitrateOfFile == 0) { userSelectedBitrate = 96; } //Set to default if bitrate = 0
-
-                /*88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888*/
                 /*Fallback***********************************************************************************************************************************************************************************************/
                 switch (audioCodecComboBox.Text)
                 {
@@ -2190,12 +2183,12 @@ namespace MovieDataCollector
             else //Source Unreadable - Set variables derived from file to user selected values
             {
                 //bitrateOfFile, audioTrackNumber, maxBitrate
-                outputAudioTrack = "--audio 1 ";
+                outputAudioTrack = "--audio 1 "; //Since no track can be read in, select the first audio track.
                 try { userSelectedBitrate = int.Parse(audioBitrateCombo.Text); } catch { userSelectedBitrate = 96; }//default value is 96
                 maxBitrate = userSelectedBitrate;
 
                 /*Samplerate***********************************************************************************************************************************************************************************************/
-                outputSampleRate = "--arate 48";
+                outputSampleRate = "--arate " + sampleRateCombo.Text;
 
                 /*Fallback***********************************************************************************************************************************************************************************************/
 
@@ -2269,12 +2262,8 @@ namespace MovieDataCollector
                     break;
             }
 
-            //Sets value of audio bitrate
-            int.TryParse(outputBitrate.Replace("--ab ", ""), out Abitrate);
-
             return outputAudioTrack + outputEncoder + outputAudioPassthruMask + outputFallBack + outputBitrate + outputSampleRate + outputMixdown + outputDynamicRange;
         } //Researching 2 track audio playability on Roku and Xbox.
-
         private string SourceDestinationOptionsString(string filepath, string filename, string outputPath, bool outputLargerThan4Gb)
         {
             string inputFileExt = "";
@@ -2321,8 +2310,6 @@ namespace MovieDataCollector
             return inputFile + outputFile;
         }
         
-
-
 
         
         /*The following methods are to ensure user input is valid*/
