@@ -2564,9 +2564,118 @@ namespace MovieDataCollector
                 CF.DefaultSettings["EncoderSpeed"] = encoderSpeedCombo.Text;
             }
         }
-        
+
+
+        //Video ComboBoxes Text Changed
+        private void avgBitrateCombo_TextChanged(object sender, EventArgs e)
+        {
+            if (!videoBitrateCapList.Contains(avgBitrateCombo.Text))
+            {
+                avgBitrateCombo.Text = videoBitrateCapList[0];
+
+                //Update default in dictionary
+                CF.DefaultSettings["VideoBitrateCap"] = videoBitrateCapList[0];
+            }
+            else
+            {
+                //Update default in dictionary
+                CF.DefaultSettings["VideoBitrateCap"] = avgBitrateCombo.Text;
+            }
+        }
+        private void framerateCombo_TextChanged(object sender, EventArgs e)
+        {
+            if (!framerateList.Contains(framerateCombo.Text))
+            {
+                framerateCombo.Text = framerateList[0];
+
+                //Update Default in Dictionary
+                CF.DefaultSettings["Framerate"] = framerateList[0];
+            }
+            else
+            {
+                CF.DefaultSettings["Framerate"] = framerateCombo.Text;
+            }
+        }
+        private void frameRateModeCombo_TextChanged(object sender, EventArgs e)
+        {
+            if (!frameRateModeList.Contains(frameRateModeCombo.Text))
+            {
+                frameRateModeCombo.Text = frameRateModeList[0];
+
+                //Update default in dictionary
+                CF.DefaultSettings["FramerateMode"] = frameRateModeList[0];
+            }
+            else
+            {
+                //Update default in dictionary
+                CF.DefaultSettings["FramerateMode"] = frameRateModeCombo.Text;
+            }
+        }
+        private void encoderLevelComboBox_TextChanged(object sender, EventArgs e)
+        {
+            if (!encoderLevelList.Contains(encoderLevelComboBox.Text))
+            {
+                encoderLevelComboBox.Text = encoderLevelList[0];
+
+                //Update Dictionary default
+                CF.DefaultSettings["EncoderLevel"] = encoderLevelList[0];
+            }
+            else
+            {
+                //Update Dictionary default
+                CF.DefaultSettings["EncoderLevel"] = encoderLevelComboBox.Text;
+            }
+        }
+        private void encoderProfileComboBox_TextChanged(object sender, EventArgs e)
+        {
+            if (!encoderProfileList.Contains(encoderProfileComboBox.Text))
+            {
+                encoderProfileComboBox.Text = encoderProfileList[0];
+
+                //Update Default in Dictionary
+                CF.DefaultSettings["EncoderProfile"] = encoderProfileList[0];
+            }
+            else
+            {
+                //Update Default in Dictionary
+                CF.DefaultSettings["EncoderProfile"] = encoderProfileComboBox.Text;
+            }
+        }
+        private void encoderTuneComboBox_TextChanged(object sender, EventArgs e)
+        {
+            if (!encoderTuneList.Contains(encoderTuneComboBox.Text))
+            {
+                encoderTuneComboBox.Text = encoderTuneList[0];
+
+                //Update default in dictionary
+                CF.DefaultSettings["EncoderTune"] = encoderTuneList[0];
+            }
+            else
+            {
+                //Update default in dictionary
+                CF.DefaultSettings["EncoderTune"] = encoderTuneComboBox.Text;
+            }
+        }
+        private void encoderSpeedCombo_TextUpdate(object sender, EventArgs e)
+        {
+            //Verify text is in list
+            if (!encoderSpeedList.Contains(encoderSpeedCombo.Text))
+            {
+                encoderSpeedCombo.Text = encoderSpeedList[0];
+
+                //Update default in Dictionary
+                CF.DefaultSettings["EncoderSpeed"] = encoderSpeedList[0];
+            }
+            else
+            {
+                CF.DefaultSettings["EncoderSpeed"] = encoderSpeedCombo.Text;
+            }
+        }
+
+
 
         //Audio
+        //Audio combobox index change
         private void AudioCodecComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             //set default value in dictionary.
@@ -2586,18 +2695,27 @@ namespace MovieDataCollector
                     filteredAC3Check.Visible = false;
                     filteredDTSCheck.Visible = false;
                     passthruFilterLabel.Visible = false;
+                    filteredAACCheck.Checked = false;
+                    filteredAC3Check.Checked = false;
+                    filteredDTSCheck.Checked = false;
                     mixdownComboBox.Text = "Dolby ProLogic 2"; //AAC can only mix down to Prologic or Mono
                     break;
                 case "AC3":
                     filteredAACCheck.Visible = false;
                     filteredAC3Check.Visible = false;
                     filteredDTSCheck.Visible = false;
+                    filteredAACCheck.Checked = false;
+                    filteredAC3Check.Checked = false;
+                    filteredDTSCheck.Checked = false;
                     passthruFilterLabel.Visible = false;
                     break;
                 default:
                     filteredAACCheck.Visible = false;
                     filteredAC3Check.Visible = false;
                     filteredDTSCheck.Visible = false;
+                    filteredAACCheck.Checked = false;
+                    filteredAC3Check.Checked = false;
+                    filteredDTSCheck.Checked = false;
                     passthruFilterLabel.Visible = false;
                     break;
             }
@@ -2619,8 +2737,80 @@ namespace MovieDataCollector
                     break;
             }
         }
+        private void sampleRateCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Update default in dictionary
+            CF.DefaultSettings["AudioSampleRate"] = sampleRateCombo.Text;
+        }
+        private void audioBitrateCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Update default in dictionary
+            CF.DefaultSettings["AudioBitrateCap"] = audioBitrateCombo.Text;
+        }
 
+        //Audio Combobox Text Changed
+        private void audioCodecComboBox_TextChanged(object sender, EventArgs e)
+        {
+            if (!codecList.Contains(audioCodecComboBox.Text))
+            {
+                audioCodecComboBox.Text = codecList[0];
 
+                //Update default in dictionary
+                CF.DefaultSettings["AudioCodec"] = codecList[0];
+            }
+            else
+            {
+                CF.DefaultSettings["AudioCodec"] = audioCodecComboBox.Text;
+            }
+        }
+        private void mixdownComboBox_TextChanged(object sender, EventArgs e)
+        {
+            if (!mixdownList.Contains(mixdownComboBox.Text))
+            {
+                mixdownComboBox.Text = mixdownList[0];
+
+                //Update default in dictionary
+                CF.DefaultSettings[""] = mixdownList[0];
+            }
+            else
+            {
+                //Update default in dictionary
+                CF.DefaultSettings[""] = mixdownComboBox.Text;
+            }
+        }
+        private void audioBitrateCombo_TextChanged(object sender, EventArgs e)
+        {
+            double ABitrate;
+
+            try { double.TryParse(audioBitrateCombo.Text, out ABitrate); }
+            catch { ABitrate = 192; }
+
+            if (ABitrate > 256) { ABitrate = 256; }
+            if (ABitrate < 64) { ABitrate = 64; }
+
+            audioBitrateCombo.Text = ABitrate.ToString();
+
+            CF.DefaultSettings["AudioBitrateCap"] = ABitrate.ToString();
+        }
+        private void sampleRateCombo_TextChanged(object sender, EventArgs e)
+        {
+            double SRate;
+            try { double.TryParse(sampleRateCombo.Text, out SRate); }
+            catch { SRate = 48; } //Default to 48
+
+            if (SRate > 48) { sampleRateCombo.Text = "48"; }
+            else if (SRate < 48 && SRate > 44.1)
+            {
+                sampleRateCombo.Text = "48";
+            }
+            else if (SRate <= 44.1)
+            {
+                sampleRateCombo.Text = "44.1";
+            }
+            CF.DefaultSettings["AudioSampleRate"] = sampleRateCombo.Text;
+        }
+
+        //Audio combobox leave
         private void AudioCodecComboBox_Leave(object sender, EventArgs e)
         {
             if (!codecList.Contains(audioCodecComboBox.Text))
@@ -2664,9 +2854,60 @@ namespace MovieDataCollector
 
             CF.DefaultSettings["AudioBitrateCap"] = ABitrate.ToString();
         }
+        private void sampleRateCombo_Leave(object sender, EventArgs e)
+        {
+            double SRate;
+            try { double.TryParse(sampleRateCombo.Text, out SRate); }
+            catch { SRate = 48; } //Default to 48
 
+            if (SRate > 48) { sampleRateCombo.Text = "48"; }
+            else if(SRate < 48 && SRate > 44.1)
+            {
+                sampleRateCombo.Text = "48";
+            }
+            else if (SRate <= 44.1)
+            {
+                sampleRateCombo.Text = "44.1";
+            }
+            CF.DefaultSettings["AudioSampleRate"] = sampleRateCombo.Text;
+        }
 
-        
+        //Audio Checkboxes
+        private void filteredAACCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            if(filteredAACCheck.Checked)
+            {
+                CF.DefaultSettings["AAC_Passthru"] = "True";
+            }
+            else
+            {
+                CF.DefaultSettings["AAC_Passthru"] = "False";
+            }
+            
+        }
+        private void filteredAC3Check_CheckedChanged(object sender, EventArgs e)
+        {
+            if (filteredAC3Check.Checked)
+            {
+                CF.DefaultSettings["AC3_Passthru"] = "True";
+            }
+            else
+            {
+                CF.DefaultSettings["AC3_Passthru"] = "False";
+            }
+        }
+        private void filteredDTSCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            if (filteredDTSCheck.Checked)
+            {
+                CF.DefaultSettings["DTS_Passthru"] = "True";
+            }
+            else
+            {
+                CF.DefaultSettings["DTS_Passthru"] = "False";
+            }
+        }
+
 
         /*These methods are used to send notifications to the user*/
         private void sendNotification(string userName, string password, string sendTo, string subject, string message)
@@ -3353,6 +3594,6 @@ namespace MovieDataCollector
             return incompatible.ToString();
         }
 
-       
+        
     }
 }

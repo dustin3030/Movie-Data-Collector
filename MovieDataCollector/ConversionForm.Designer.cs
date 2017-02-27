@@ -529,6 +529,7 @@
             this.frameRateModeCombo.TabIndex = 15;
             this.frameRateModeCombo.Text = "Constant";
             this.frameRateModeCombo.SelectedIndexChanged += new System.EventHandler(this.frameRateModeCombo_SelectedIndexChanged);
+            this.frameRateModeCombo.TextChanged += new System.EventHandler(this.frameRateModeCombo_TextChanged);
             this.frameRateModeCombo.Leave += new System.EventHandler(this.frameRateModeCombo_Leave);
             // 
             // framerateCombo
@@ -557,6 +558,7 @@
             this.framerateCombo.TabIndex = 14;
             this.framerateCombo.Text = "Roku Compliant";
             this.framerateCombo.SelectedIndexChanged += new System.EventHandler(this.framerateCombo_SelectedIndexChanged);
+            this.framerateCombo.TextChanged += new System.EventHandler(this.framerateCombo_TextChanged);
             this.framerateCombo.Leave += new System.EventHandler(this.framerateCombo_Leave);
             // 
             // avgBitrateCombo
@@ -585,6 +587,7 @@
             this.avgBitrateCombo.TabIndex = 13;
             this.avgBitrateCombo.Text = "3.5";
             this.avgBitrateCombo.SelectedIndexChanged += new System.EventHandler(this.avgBitrateCombo_SelectedIndexChanged);
+            this.avgBitrateCombo.TextChanged += new System.EventHandler(this.avgBitrateCombo_TextChanged);
             this.avgBitrateCombo.Leave += new System.EventHandler(this.avgBitrateCombo_Leave);
             // 
             // encoderLevelComboBox
@@ -613,6 +616,7 @@
             this.encoderLevelComboBox.TabIndex = 12;
             this.encoderLevelComboBox.Text = "4.1";
             this.encoderLevelComboBox.SelectedIndexChanged += new System.EventHandler(this.encoderLevelComboBox_SelectedIndexChanged);
+            this.encoderLevelComboBox.TextChanged += new System.EventHandler(this.encoderLevelComboBox_TextChanged);
             this.encoderLevelComboBox.Leave += new System.EventHandler(this.encoderLevelComboBox_Leave);
             // 
             // encoderProfileComboBox
@@ -630,6 +634,7 @@
             this.encoderProfileComboBox.TabIndex = 11;
             this.encoderProfileComboBox.Text = "High";
             this.encoderProfileComboBox.SelectedIndexChanged += new System.EventHandler(this.encoderProfileComboBox_SelectedIndexChanged);
+            this.encoderProfileComboBox.TextChanged += new System.EventHandler(this.encoderProfileComboBox_TextChanged);
             this.encoderProfileComboBox.Leave += new System.EventHandler(this.encoderProfileComboBox_Leave);
             // 
             // encoderTuneComboBox
@@ -651,6 +656,7 @@
             this.encoderTuneComboBox.TabIndex = 10;
             this.encoderTuneComboBox.Text = "Fast Decode";
             this.encoderTuneComboBox.SelectedIndexChanged += new System.EventHandler(this.encoderTuneComboBox_SelectedIndexChanged);
+            this.encoderTuneComboBox.TextChanged += new System.EventHandler(this.encoderTuneComboBox_TextChanged);
             this.encoderTuneComboBox.Leave += new System.EventHandler(this.encoderTuneComboBox_Leave);
             // 
             // encoderSpeedCombo
@@ -675,6 +681,7 @@
             this.encoderSpeedCombo.TabIndex = 9;
             this.encoderSpeedCombo.Text = "Medium";
             this.encoderSpeedCombo.SelectedIndexChanged += new System.EventHandler(this.encoderSpeedCombo_SelectedIndexChanged);
+            this.encoderSpeedCombo.TextUpdate += new System.EventHandler(this.encoderSpeedCombo_TextUpdate);
             this.encoderSpeedCombo.Leave += new System.EventHandler(this.encoderSpeedCombo_Leave);
             // 
             // turboCheckBox
@@ -831,6 +838,7 @@
             this.filteredDTSCheck.Text = "Dolby DTS";
             this.filteredDTSCheck.UseVisualStyleBackColor = true;
             this.filteredDTSCheck.Visible = false;
+            this.filteredDTSCheck.CheckedChanged += new System.EventHandler(this.filteredDTSCheck_CheckedChanged);
             // 
             // filteredAC3Check
             // 
@@ -842,6 +850,7 @@
             this.filteredAC3Check.Text = "AC3";
             this.filteredAC3Check.UseVisualStyleBackColor = true;
             this.filteredAC3Check.Visible = false;
+            this.filteredAC3Check.CheckedChanged += new System.EventHandler(this.filteredAC3Check_CheckedChanged);
             // 
             // filteredAACCheck
             // 
@@ -853,6 +862,7 @@
             this.filteredAACCheck.Text = "AAC";
             this.filteredAACCheck.UseVisualStyleBackColor = true;
             this.filteredAACCheck.Visible = false;
+            this.filteredAACCheck.CheckedChanged += new System.EventHandler(this.filteredAACCheck_CheckedChanged);
             // 
             // kbpsLabel
             // 
@@ -887,6 +897,8 @@
             this.audioBitrateCombo.Size = new System.Drawing.Size(47, 21);
             this.audioBitrateCombo.TabIndex = 6;
             this.audioBitrateCombo.Text = "96";
+            this.audioBitrateCombo.SelectedIndexChanged += new System.EventHandler(this.audioBitrateCombo_SelectedIndexChanged);
+            this.audioBitrateCombo.TextChanged += new System.EventHandler(this.audioBitrateCombo_TextChanged);
             this.audioBitrateCombo.Leave += new System.EventHandler(this.AudioCodecComboBox_Leave);
             // 
             // passthruFilterLabel
@@ -912,6 +924,9 @@
             this.sampleRateCombo.Size = new System.Drawing.Size(54, 21);
             this.sampleRateCombo.TabIndex = 0;
             this.sampleRateCombo.Text = "48";
+            this.sampleRateCombo.SelectedIndexChanged += new System.EventHandler(this.sampleRateCombo_SelectedIndexChanged);
+            this.sampleRateCombo.TextChanged += new System.EventHandler(this.sampleRateCombo_TextChanged);
+            this.sampleRateCombo.Leave += new System.EventHandler(this.sampleRateCombo_Leave);
             // 
             // mixdownComboBox
             // 
@@ -927,6 +942,7 @@
             this.mixdownComboBox.TabIndex = 0;
             this.mixdownComboBox.Text = "Dolby ProLogic 2";
             this.mixdownComboBox.SelectedIndexChanged += new System.EventHandler(this.MixdownComboBox_SelectedIndexChanged);
+            this.mixdownComboBox.TextChanged += new System.EventHandler(this.mixdownComboBox_TextChanged);
             // 
             // sampleRateLabel
             // 
@@ -952,6 +968,7 @@
             this.audioCodecComboBox.TabIndex = 0;
             this.audioCodecComboBox.Text = "AAC (AVC)";
             this.audioCodecComboBox.SelectedIndexChanged += new System.EventHandler(this.AudioCodecComboBox_SelectedIndexChanged);
+            this.audioCodecComboBox.TextChanged += new System.EventHandler(this.audioCodecComboBox_TextChanged);
             // 
             // ABitrateLabel
             // 
