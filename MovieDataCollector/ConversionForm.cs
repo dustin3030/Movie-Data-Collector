@@ -1053,332 +1053,6 @@ namespace MovieDataCollector
             return "--verbose 1 " + sourceOptions + VideoString + AudioString + crop;
 
         }
-
-        private string AudioConversionString(MediaFile videoFile)
-        {
-            //Users selected variables
-            double userSelectedBitrate = 0; //Bitrate for audio is per channel so stereo audio of 96 bitrate would actually be 96 * 2 = 192
-
-            //Variables derived from file
-            double bitrateOfFile = 0; //used to determine the bitrate of the actual audio.
-            int audioTrackNumber = 0; //Highest bitrate audio track in English
-            double maxBitrate = 0;
-
-            //Variables for output string
-            string outputAudioPassthruMask = "";
-            string outputAudioTrack = "";
-            string outputEncoder = "";
-            string outputFallBack = "";
-            string outputMixdown = "";
-            string outputSampleRate = "--arate 48 "; //Auto is no longer listd as an option in handbrake cli documentation.
-            string outputDynamicRange = "--drc 0 --gain 0 ";
-            string outputBitrate = "";
-            /*****************************************************************************************************************************************************************************************************************************/
-
-
-
-            if (videoFile.Audio.Count > 0) //Source Readable
-            {
-                /*Select Audio Track to Use***********************************************************************************************************************************************************************************************/
-                //Select Audio Track to Use - Highest Bitrate Audio in English
-                for (int i = 0; i < videoFile.Audio.Count; i++)
-                {
-                    //Check for English Language Track
-                    if (videoFile.Audio[i].Properties.ContainsKey("Language"))
-                    {
-                        if (videoFile.Audio[i].Properties["Language"].ToUpper() == "ENGLISH" ||
-                            videoFile.Audio[i].Properties["Language"].ToUpper() == "ENG" ||
-                            videoFile.Audio[i].Properties["Language"].ToUpper() == "EN")
-                        {
-                            //Check for Max Bitrate English Track
-                            if (videoFile.Audio[i].Bitrate > maxBitrate)
-                            {
-                                maxBitrate = videoFile.Audio[i].Bitrate;
-                                audioTrackNumber = i; //Mark the audio track that has the highest bitrate
-                            }
-                        }
-                    }
-                    else //No Language code
-                    {
-                        //Check for Max Bitrate Track
-                        if (videoFile.Audio[i].Bitrate > maxBitrate)
-                        {
-                            maxBitrate = videoFile.Audio[i].Bitrate;
-                            audioTrackNumber = i; //Mark the audio track that has the highest bitrate
-                        }
-                    }
-                }
-                outputAudioTrack = "--audio " + (audioTrackNumber + 1).ToString() + " ";
-
-                /*Samplerate***********************************************************************************************************************************************************************************************/
-                if (!string.IsNullOrEmpty(sampleRateCombo.Text))
-                {
-                    if (videoFile.Audio[audioTrackNumber].SamplingRate / 1000 >= 48)
-                    {
-                        outputSampleRate = "--arate 48 ";
-                    }
-                    else if(videoFile.Audio[audioTrackNumber].SamplingRate / 1000 == 44.1)
-                    {
-                        outputSampleRate = "--arate 44.1 ";
-                    }
-                    else
-                    {
-                        outputSampleRate = "--arate 48";
-                    }
-                }
-                else
-                {
-                    outputSampleRate = "--arate 48";
-                }
-
-                /*Bitrate***********************************************************************************************************************************************************************************************/
-
-                //Determine per channel Bitrate selected by user
-                try { userSelectedBitrate = int.Parse(audioBitrateCombo.Text); } catch { userSelectedBitrate = 96; }//default value is 96
-
-                if (videoFile.Audio[audioTrackNumber].Bitrate != 0)
-                {
-                    //Determine per channel Bitrate of file
-                    bitrateOfFile = videoFile.Audio[audioTrackNumber].Bitrate / videoFile.Audio[audioTrackNumber].Channels;
-                }
-                else if (videoFile.Audio[audioTrackNumber].Properties.ContainsKey("Bit rate"))
-                {
-                    try { double.TryParse(videoFile.Audio[audioTrackNumber].Properties["Bit rate"].Replace(" ", "").Replace("Kbps", ""), out bitrateOfFile); }
-                    catch { bitrateOfFile = 0; }
-
-                    bitrateOfFile = bitrateOfFile / videoFile.Audio[audioTrackNumber].Channels;
-                }
-
-
-                //If per channel Bitrate of file is < Selected Bitrate use the file's bitrate.
-
-                if (bitrateOfFile < userSelectedBitrate) { userSelectedBitrate = bitrateOfFile; }
-                if (bitrateOfFile == 0) { userSelectedBitrate = 96; } //Set to default if bitrate = 0
-
-                /*88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888*/
-                /*Fallback***********************************************************************************************************************************************************************************************/
-                switch (audioCodecComboBox.Text)
-                {
-
-                    case "Filtered Passthru":
-                        if (videoFile.Audio[audioTrackNumber].Properties.ContainsKey("Format"))
-                        {
-                            switch (videoFile.Audio[audioTrackNumber].Properties["Format"])
-                            {
-                                case "DTS":
-                                    outputFallBack = "--audio-fallback ac3 "; //No DTS encoder option
-                                    break;
-                                case "AC-3":
-                                    outputFallBack = "--audio-fallback ac3 ";
-                                    break;
-                                case "AAC":
-                                    outputFallBack = "--audio-fallback av_aac ";
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                        else //Default fallback is av_aac
-                        {
-                            outputFallBack = "--audio-fallback av_aac ";
-                        }
-                        break;
-                    default:
-                        outputFallBack = "--audio-fallback av_aac ";
-                        break;
-                }
-                /*Mixdown***********************************************************************************************************************************************************************************************/
-
-                //The options are auto, mono, stereo, dpl1 (Dolby Surround), dpl2 (Dolby ProLogic? 2), or 6ch (5.1).
-                switch (audioCodecComboBox.Text)
-                {
-                    case "Filtered Passthru":
-                        switch (videoFile.Audio[audioTrackNumber].Channels)
-                        {
-                            case 1:
-                                outputMixdown = "--mixdown mono ";
-                                outputBitrate = "--ab " + (userSelectedBitrate * 1).ToString() + " ";
-                                break;
-                            case 2:
-                                outputMixdown = "--mixdown dpl2  ";
-                                outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
-                                break;
-                            case 3:
-                                outputMixdown = "--mixdown dpl2  ";
-                                outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
-                                break;
-                            case 4:
-                                outputMixdown = "--mixdown dpl2  ";
-                                outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
-                                break;
-                            case 5:
-                                outputMixdown = "--mixdown dpl2  ";
-                                outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
-                                break;
-                            case 6:
-                                outputMixdown = "--mixdown 6ch  ";
-                                outputBitrate = "--ab " + (userSelectedBitrate * 6).ToString() + " ";
-                                break;
-                            default:
-                                outputMixdown = "--mixdown dpl2 ";
-                                outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
-                                break;
-                        }
-                        break;
-                    case "AAC (AVC)": //only good up to Dolby Pro Logic 2 (2 channel)
-                        switch (videoFile.Audio[audioTrackNumber].Channels)
-                        {
-                            case 1:
-                                outputMixdown = "--mixdown mono ";
-                                outputBitrate = "--ab " + (userSelectedBitrate * 1).ToString() + " ";
-                                break;
-                            default:
-                                outputMixdown = "--mixdown dpl2 ";
-                                outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
-                                break;
-                        }
-                        break;
-                    default:
-                        switch (mixdownComboBox.Text)
-                        {
-                            case "Dolby ProLogic 2":
-                                outputMixdown = "--mixdown dpl2 ";
-                                outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
-                                break;
-                            default: //5.1 Audio
-                                switch (videoFile.Audio[audioTrackNumber].Channels)
-                                {
-                                    case 1:
-                                        outputMixdown = "--mixdown mono ";
-                                        outputBitrate = "--ab " + (userSelectedBitrate * 1).ToString() + " ";
-                                        break;
-                                    case 2:
-                                        outputMixdown = "--mixdown dpl2 ";
-                                        outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
-                                        break;
-                                    case 3:
-                                        outputMixdown = "--mixdown dpl2 ";
-                                        outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
-                                        break;
-                                    case 4:
-                                        outputMixdown = "--mixdown dpl2 ";
-                                        outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
-                                        break;
-                                    case 5:
-                                        outputMixdown = "--mixdown dpl2 ";
-                                        outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
-                                        break;
-                                    case 6:
-                                        outputMixdown = "--mixdown 6ch ";
-                                        outputBitrate = "--ab " + (userSelectedBitrate * 6).ToString() + " ";
-                                        break;
-                                    case 7:
-                                        outputMixdown = "--mixdown 6ch ";
-                                        outputBitrate = "--ab " + (userSelectedBitrate * 6).ToString() + " ";
-                                        break;
-                                    case 8:
-                                        outputMixdown = "--mixdown 6ch ";
-                                        outputBitrate = "--ab " + (userSelectedBitrate * 6).ToString() + " ";
-                                        break;
-                                    default:
-                                        outputMixdown = "--mixdown 6ch ";
-                                        outputBitrate = "--ab " + (userSelectedBitrate * 6).ToString() + " ";
-                                        break;
-                                }
-                                break;
-                        }
-                        break;
-                }
-
-            }
-            else //Source Unreadable - Set variables derived from file to user selected values
-            {
-                //bitrateOfFile, audioTrackNumber, maxBitrate
-                outputAudioTrack = "--audio 1 ";
-                try { userSelectedBitrate = int.Parse(audioBitrateCombo.Text); } catch { userSelectedBitrate = 96; }//default value is 96
-                maxBitrate = userSelectedBitrate;
-
-                /*Samplerate***********************************************************************************************************************************************************************************************/
-                outputSampleRate = "--arate 48";
-
-                /*Fallback***********************************************************************************************************************************************************************************************/
-
-                outputFallBack = "--audio-fallback av_aac ";
-
-            }
-            /*Mixdown***********************************************************************************************************************************************************************************************/
-
-            //The options are auto, mono, stereo, dpl1 (Dolby Surround), dpl2 (Dolby ProLogic? 2), or 6ch (5.1).
-            switch (audioCodecComboBox.Text)
-            {
-                case "Filtered Passthru":
-                    outputMixdown = "";
-                    outputBitrate = "" + (userSelectedBitrate * 2).ToString() + " ";
-                    break;
-                case "AAC (AVC)": //only good up to Dolby Pro Logic 2 (2 channel)
-                    outputMixdown = "--mixdown dpl2 ";
-                    outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
-                    break;
-                default:
-                    switch (mixdownComboBox.Text)
-                    {
-                        case "Dolby ProLogic 2":
-                            outputMixdown = "--mixdown dpl2 ";
-                            outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
-                            break;
-                        default: //5.1 Audio
-                            outputMixdown = "--mixdown 6ch ";
-                            outputBitrate = "--ab " + (userSelectedBitrate * 6).ToString() + " ";
-                            break;
-                    }
-                    break;
-            }
-            /*Passthru Mask***********************************************************************************************************************************************************************************************/
-
-            if (audioCodecComboBox.Text == "Filtered Passthru")
-            {
-                outputAudioPassthruMask = "--audio-copy-mask ";
-                if (filteredAACCheck.Checked) { outputAudioPassthruMask += "aac"; }
-
-                if (filteredAC3Check.Checked)
-                {
-                    if (outputAudioPassthruMask.Contains("aac")) { outputAudioPassthruMask += ",ac3"; }
-                    else { outputAudioPassthruMask += "ac3"; }
-                }
-                if (filteredDTSCheck.Checked)
-                {
-                    if (outputAudioPassthruMask.Contains("aac") || outputAudioPassthruMask.Contains("ac3")) { outputAudioPassthruMask += ",dts"; }
-                    else { outputAudioPassthruMask += "dts"; }
-                }
-                outputAudioPassthruMask += " ";
-            }
-            else { outputAudioPassthruMask = ""; }
-
-
-
-            /*Encoder***********************************************************************************************************************************************************************************************/
-            switch (audioCodecComboBox.Text)
-            {
-                case "AAC (AVC)":
-                    outputEncoder = "--aencoder av_aac ";
-                    break;
-                case "AC3":
-                    outputEncoder = "--aencoder ac3 ";
-                    break;
-                case "Filtered Passthru":
-                    outputEncoder = "--aencoder copy ";
-                    break;
-                default:
-                    outputEncoder = "--aencoder av_aac ";
-                    break;
-            }
-
-            //Sets value of audio bitrate
-            int.TryParse(outputBitrate.Replace("--ab ", ""), out Abitrate);
-
-            return outputAudioTrack + outputEncoder + outputAudioPassthruMask + outputFallBack + outputBitrate + outputSampleRate + outputMixdown + outputDynamicRange;
-        }
-
         private string VideoConversionString(MediaFile videoFile, int audioTrack)
         {
             //Calculation Variables
@@ -1446,7 +1120,7 @@ namespace MovieDataCollector
                                         break;
                                 }
                             }
-                            else //Force framerate of 29.97
+                            else if (videoFile.Video[0].FrameRate >= 29) //Force to 29.97
                             {
                                 switch (frameRateModeCombo.Text)
                                 {
@@ -1465,8 +1139,27 @@ namespace MovieDataCollector
                                         break;
                                 }
                             }
-                            
-                        }                        
+                            else //Force down to 23.976
+                            {
+                                switch (frameRateModeCombo.Text)
+                                {
+                                    case "Constant": //Constant
+                                        outputFrameRate = "--rate 23.976 --cfr "; //Constant Framerate
+                                        break;
+                                    case "Peak": //Peak
+                                        outputFrameRate = "--rate 23.976 --pfr "; //Peak Framerate
+                                        break;
+                                    case "Variable": //Variable
+                                        nLabelUpdate("Variable Framerate Mode is not compatible with Roku players. Changed to Peak Framerate Mode.");
+                                        outputFrameRate = "--rate 23.976 --pfr "; //Peak Framerate
+                                        break;
+                                    default: //Peak
+                                        outputFrameRate = "--rate 23.976 --pfr "; //Peak Framerate
+                                        break;
+                                }
+                            }
+
+                        }
                         break;
                     case "Same As Source": //Same As Source 
                         outputFrameRate = "--vfr"; //preserves the source timing.
@@ -1808,9 +1501,6 @@ namespace MovieDataCollector
                     BufferSize = "20000"; //2 times the MaxBitrate
                 }
 
-
-
-
                 //These settings set the buffer size and maximum video bitrate, also setting the encoder level
                 outputEncopts = "--encopts level=" + encoderLevelComboBox.Text + ":vbv-bufsize=" + BufferSize + ":vbv-maxrate=" + MaxBitrate + " --verbose=1 --encoder-level=\"" + encoderLevelComboBox.Text + "\" --encoder-profile=" + encoderProfileComboBox.Text.ToLower() + "--verbose=1 ";
 
@@ -1854,7 +1544,7 @@ namespace MovieDataCollector
                                         break;
                                 }
                             }
-                            else //Force framerate of 29.97
+                            else if (videoFile.Video[0].FrameRate >= 29) //Force to 29.97
                             {
                                 switch (frameRateModeCombo.Text)
                                 {
@@ -1870,6 +1560,25 @@ namespace MovieDataCollector
                                         break;
                                     default: //Peak
                                         outputFrameRate = "--rate 29.97 --pfr "; //Peak Framerate
+                                        break;
+                                }
+                            }
+                            else //Force down to 23.976
+                            {
+                                switch (frameRateModeCombo.Text)
+                                {
+                                    case "Constant": //Constant
+                                        outputFrameRate = "--rate 23.976 --cfr "; //Constant Framerate
+                                        break;
+                                    case "Peak": //Peak
+                                        outputFrameRate = "--rate 23.976 --pfr "; //Peak Framerate
+                                        break;
+                                    case "Variable": //Variable
+                                        nLabelUpdate("Variable Framerate Mode is not compatible with Roku players. Changed to Peak Framerate Mode.");
+                                        outputFrameRate = "--rate 23.976 --pfr "; //Peak Framerate
+                                        break;
+                                    default: //Peak
+                                        outputFrameRate = "--rate 23.976 --pfr "; //Peak Framerate
                                         break;
                                 }
                             }
@@ -2240,6 +1949,332 @@ namespace MovieDataCollector
 
             return outputEncoder + outputEncoderSpeed + outputEncoderTune + outputEncopts + outputEncoderProfile + outputEncoderLevel + outputVideoBitrate + outputTwoPass + outputTurbo + outputFrameRate;
         }
+
+        private string AudioConversionString(MediaFile videoFile)
+        {
+            //Users selected variables
+            double userSelectedBitrate = 0; //Bitrate for audio is per channel so stereo audio of 96 bitrate would actually be 96 * 2 = 192
+
+            //Variables derived from file
+            double bitrateOfFile = 0; //used to determine the bitrate of the actual audio.
+            int audioTrackNumber = 0; //Highest bitrate audio track in English
+            double maxBitrate = 0;
+
+            //Variables for output string
+            string outputAudioPassthruMask = "";
+            string outputAudioTrack = "";
+            string outputEncoder = "";
+            string outputFallBack = "";
+            string outputMixdown = "";
+            string outputSampleRate = "--arate 48 "; //Auto is no longer listd as an option in handbrake cli documentation.
+            string outputDynamicRange = "--drc 0 --gain 0 ";
+            string outputBitrate = "";
+            /*****************************************************************************************************************************************************************************************************************************/
+
+
+
+            if (videoFile.Audio.Count > 0) //Source Readable
+            {
+                /*Select Audio Track to Use***********************************************************************************************************************************************************************************************/
+                //Select Audio Track to Use - Highest Bitrate Audio in English
+                for (int i = 0; i < videoFile.Audio.Count; i++)
+                {
+                    //Check for English Language Track
+                    if (videoFile.Audio[i].Properties.ContainsKey("Language"))
+                    {
+                        if (videoFile.Audio[i].Properties["Language"].ToUpper() == "ENGLISH" ||
+                            videoFile.Audio[i].Properties["Language"].ToUpper() == "ENG" ||
+                            videoFile.Audio[i].Properties["Language"].ToUpper() == "EN")
+                        {
+                            //Check for Max Bitrate English Track
+                            if (videoFile.Audio[i].Bitrate > maxBitrate)
+                            {
+                                maxBitrate = videoFile.Audio[i].Bitrate;
+                                audioTrackNumber = i; //Mark the audio track that has the highest bitrate
+                            }
+                        }
+                    }
+                    else //No Language code
+                    {
+                        //Check for Max Bitrate Track
+                        if (videoFile.Audio[i].Bitrate > maxBitrate)
+                        {
+                            maxBitrate = videoFile.Audio[i].Bitrate;
+                            audioTrackNumber = i; //Mark the audio track that has the highest bitrate
+                        }
+                    }
+                }
+                outputAudioTrack = "--audio " + (audioTrackNumber + 1).ToString() + " ";
+
+                /*Samplerate***********************************************************************************************************************************************************************************************/
+                if (!string.IsNullOrEmpty(sampleRateCombo.Text))
+                {
+                    if (videoFile.Audio[audioTrackNumber].SamplingRate / 1000 >= 48)
+                    {
+                        outputSampleRate = "--arate 48 ";
+                    }
+                    else if(videoFile.Audio[audioTrackNumber].SamplingRate / 1000 == 44.1)
+                    {
+                        outputSampleRate = "--arate 44.1 ";
+                    }
+                    else
+                    {
+                        outputSampleRate = "--arate 48";
+                    }
+                }
+                else
+                {
+                    outputSampleRate = "--arate 48";
+                }
+
+                /*Bitrate***********************************************************************************************************************************************************************************************/
+
+                //Determine per channel Bitrate selected by user
+                try { userSelectedBitrate = int.Parse(audioBitrateCombo.Text); } catch { userSelectedBitrate = 96; }//default value is 96
+
+                if (videoFile.Audio[audioTrackNumber].Bitrate != 0)
+                {
+                    //Determine per channel Bitrate of file
+                    bitrateOfFile = videoFile.Audio[audioTrackNumber].Bitrate / videoFile.Audio[audioTrackNumber].Channels;
+                }
+                else if (videoFile.Audio[audioTrackNumber].Properties.ContainsKey("Bit rate"))
+                {
+                    try { double.TryParse(videoFile.Audio[audioTrackNumber].Properties["Bit rate"].Replace(" ", "").Replace("Kbps", ""), out bitrateOfFile); }
+                    catch { bitrateOfFile = 0; }
+
+                    bitrateOfFile = bitrateOfFile / videoFile.Audio[audioTrackNumber].Channels;
+                }
+
+
+                //If per channel Bitrate of file is < Selected Bitrate use the file's bitrate.
+
+                if (bitrateOfFile < userSelectedBitrate) { userSelectedBitrate = bitrateOfFile; }
+                if (bitrateOfFile == 0) { userSelectedBitrate = 96; } //Set to default if bitrate = 0
+
+                /*88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888*/
+                /*Fallback***********************************************************************************************************************************************************************************************/
+                switch (audioCodecComboBox.Text)
+                {
+
+                    case "Filtered Passthru":
+                        if (videoFile.Audio[audioTrackNumber].Properties.ContainsKey("Format"))
+                        {
+                            switch (videoFile.Audio[audioTrackNumber].Properties["Format"])
+                            {
+                                case "DTS":
+                                    outputFallBack = "--audio-fallback ac3 "; //No DTS encoder option
+                                    break;
+                                case "AC-3":
+                                    outputFallBack = "--audio-fallback ac3 ";
+                                    break;
+                                case "AAC":
+                                    outputFallBack = "--audio-fallback av_aac ";
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                        else //Default fallback is av_aac
+                        {
+                            outputFallBack = "--audio-fallback av_aac ";
+                        }
+                        break;
+                    default:
+                        outputFallBack = "--audio-fallback av_aac ";
+                        break;
+                }
+                /*Mixdown***********************************************************************************************************************************************************************************************/
+
+                //The options are auto, mono, stereo, dpl1 (Dolby Surround), dpl2 (Dolby ProLogic? 2), or 6ch (5.1).
+                switch (audioCodecComboBox.Text)
+                {
+                    case "Filtered Passthru":
+                        switch (videoFile.Audio[audioTrackNumber].Channels)
+                        {
+                            case 1:
+                                outputMixdown = "--mixdown mono ";
+                                outputBitrate = "--ab " + (userSelectedBitrate * 1).ToString() + " ";
+                                break;
+                            case 2:
+                                outputMixdown = "--mixdown dpl2  ";
+                                outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
+                                break;
+                            case 3:
+                                outputMixdown = "--mixdown dpl2  ";
+                                outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
+                                break;
+                            case 4:
+                                outputMixdown = "--mixdown dpl2  ";
+                                outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
+                                break;
+                            case 5:
+                                outputMixdown = "--mixdown dpl2  ";
+                                outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
+                                break;
+                            case 6:
+                                outputMixdown = "--mixdown 6ch  ";
+                                outputBitrate = "--ab " + (userSelectedBitrate * 6).ToString() + " ";
+                                break;
+                            default:
+                                outputMixdown = "--mixdown dpl2 ";
+                                outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
+                                break;
+                        }
+                        break;
+                    case "AAC (AVC)": //only good up to Dolby Pro Logic 2 (2 channel)
+                        switch (videoFile.Audio[audioTrackNumber].Channels)
+                        {
+                            case 1:
+                                outputMixdown = "--mixdown mono ";
+                                outputBitrate = "--ab " + (userSelectedBitrate * 1).ToString() + " ";
+                                break;
+                            default:
+                                outputMixdown = "--mixdown dpl2 ";
+                                outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
+                                break;
+                        }
+                        break;
+                    default:
+                        switch (mixdownComboBox.Text)
+                        {
+                            case "Dolby ProLogic 2":
+                                outputMixdown = "--mixdown dpl2 ";
+                                outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
+                                break;
+                            default: //5.1 Audio
+                                switch (videoFile.Audio[audioTrackNumber].Channels)
+                                {
+                                    case 1:
+                                        outputMixdown = "--mixdown mono ";
+                                        outputBitrate = "--ab " + (userSelectedBitrate * 1).ToString() + " ";
+                                        break;
+                                    case 2:
+                                        outputMixdown = "--mixdown dpl2 ";
+                                        outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
+                                        break;
+                                    case 3:
+                                        outputMixdown = "--mixdown dpl2 ";
+                                        outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
+                                        break;
+                                    case 4:
+                                        outputMixdown = "--mixdown dpl2 ";
+                                        outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
+                                        break;
+                                    case 5:
+                                        outputMixdown = "--mixdown dpl2 ";
+                                        outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
+                                        break;
+                                    case 6:
+                                        outputMixdown = "--mixdown 6ch ";
+                                        outputBitrate = "--ab " + (userSelectedBitrate * 6).ToString() + " ";
+                                        break;
+                                    case 7:
+                                        outputMixdown = "--mixdown 6ch ";
+                                        outputBitrate = "--ab " + (userSelectedBitrate * 6).ToString() + " ";
+                                        break;
+                                    case 8:
+                                        outputMixdown = "--mixdown 6ch ";
+                                        outputBitrate = "--ab " + (userSelectedBitrate * 6).ToString() + " ";
+                                        break;
+                                    default:
+                                        outputMixdown = "--mixdown 6ch ";
+                                        outputBitrate = "--ab " + (userSelectedBitrate * 6).ToString() + " ";
+                                        break;
+                                }
+                                break;
+                        }
+                        break;
+                }
+
+            }
+            else //Source Unreadable - Set variables derived from file to user selected values
+            {
+                //bitrateOfFile, audioTrackNumber, maxBitrate
+                outputAudioTrack = "--audio 1 ";
+                try { userSelectedBitrate = int.Parse(audioBitrateCombo.Text); } catch { userSelectedBitrate = 96; }//default value is 96
+                maxBitrate = userSelectedBitrate;
+
+                /*Samplerate***********************************************************************************************************************************************************************************************/
+                outputSampleRate = "--arate 48";
+
+                /*Fallback***********************************************************************************************************************************************************************************************/
+
+                outputFallBack = "--audio-fallback av_aac ";
+
+            }
+            /*Mixdown***********************************************************************************************************************************************************************************************/
+
+            //The options are auto, mono, stereo, dpl1 (Dolby Surround), dpl2 (Dolby ProLogic? 2), or 6ch (5.1).
+            switch (audioCodecComboBox.Text)
+            {
+                case "Filtered Passthru":
+                    outputMixdown = "";
+                    outputBitrate = "" + (userSelectedBitrate * 2).ToString() + " ";
+                    break;
+                case "AAC (AVC)": //only good up to Dolby Pro Logic 2 (2 channel)
+                    outputMixdown = "--mixdown dpl2 ";
+                    outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
+                    break;
+                default:
+                    switch (mixdownComboBox.Text)
+                    {
+                        case "Dolby ProLogic 2":
+                            outputMixdown = "--mixdown dpl2 ";
+                            outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
+                            break;
+                        default: //5.1 Audio
+                            outputMixdown = "--mixdown 6ch ";
+                            outputBitrate = "--ab " + (userSelectedBitrate * 6).ToString() + " ";
+                            break;
+                    }
+                    break;
+            }
+            /*Passthru Mask***********************************************************************************************************************************************************************************************/
+
+            if (audioCodecComboBox.Text == "Filtered Passthru")
+            {
+                outputAudioPassthruMask = "--audio-copy-mask ";
+                if (filteredAACCheck.Checked) { outputAudioPassthruMask += "aac"; }
+
+                if (filteredAC3Check.Checked)
+                {
+                    if (outputAudioPassthruMask.Contains("aac")) { outputAudioPassthruMask += ",ac3"; }
+                    else { outputAudioPassthruMask += "ac3"; }
+                }
+                if (filteredDTSCheck.Checked)
+                {
+                    if (outputAudioPassthruMask.Contains("aac") || outputAudioPassthruMask.Contains("ac3")) { outputAudioPassthruMask += ",dts"; }
+                    else { outputAudioPassthruMask += "dts"; }
+                }
+                outputAudioPassthruMask += " ";
+            }
+            else { outputAudioPassthruMask = ""; }
+
+
+
+            /*Encoder***********************************************************************************************************************************************************************************************/
+            switch (audioCodecComboBox.Text)
+            {
+                case "AAC (AVC)":
+                    outputEncoder = "--aencoder av_aac ";
+                    break;
+                case "AC3":
+                    outputEncoder = "--aencoder ac3 ";
+                    break;
+                case "Filtered Passthru":
+                    outputEncoder = "--aencoder copy ";
+                    break;
+                default:
+                    outputEncoder = "--aencoder av_aac ";
+                    break;
+            }
+
+            //Sets value of audio bitrate
+            int.TryParse(outputBitrate.Replace("--ab ", ""), out Abitrate);
+
+            return outputAudioTrack + outputEncoder + outputAudioPassthruMask + outputFallBack + outputBitrate + outputSampleRate + outputMixdown + outputDynamicRange;
+        } //Researching 2 track audio playability on Roku and Xbox.
+
         private string SourceDestinationOptionsString(string filepath, string filename, string outputPath, bool outputLargerThan4Gb)
         {
             string inputFileExt = "";
