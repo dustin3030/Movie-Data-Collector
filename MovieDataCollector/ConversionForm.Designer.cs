@@ -528,6 +528,8 @@
             this.frameRateModeCombo.Size = new System.Drawing.Size(85, 21);
             this.frameRateModeCombo.TabIndex = 15;
             this.frameRateModeCombo.Text = "Constant";
+            this.frameRateModeCombo.SelectedIndexChanged += new System.EventHandler(this.frameRateModeCombo_SelectedIndexChanged);
+            this.frameRateModeCombo.Leave += new System.EventHandler(this.frameRateModeCombo_Leave);
             // 
             // framerateCombo
             // 
@@ -582,6 +584,7 @@
             this.avgBitrateCombo.Size = new System.Drawing.Size(51, 21);
             this.avgBitrateCombo.TabIndex = 13;
             this.avgBitrateCombo.Text = "3.5";
+            this.avgBitrateCombo.SelectedIndexChanged += new System.EventHandler(this.avgBitrateCombo_SelectedIndexChanged);
             this.avgBitrateCombo.Leave += new System.EventHandler(this.avgBitrateCombo_Leave);
             // 
             // encoderLevelComboBox
@@ -609,6 +612,7 @@
             this.encoderLevelComboBox.Size = new System.Drawing.Size(52, 21);
             this.encoderLevelComboBox.TabIndex = 12;
             this.encoderLevelComboBox.Text = "4.1";
+            this.encoderLevelComboBox.SelectedIndexChanged += new System.EventHandler(this.encoderLevelComboBox_SelectedIndexChanged);
             this.encoderLevelComboBox.Leave += new System.EventHandler(this.encoderLevelComboBox_Leave);
             // 
             // encoderProfileComboBox
@@ -625,6 +629,7 @@
             this.encoderProfileComboBox.Size = new System.Drawing.Size(76, 21);
             this.encoderProfileComboBox.TabIndex = 11;
             this.encoderProfileComboBox.Text = "High";
+            this.encoderProfileComboBox.SelectedIndexChanged += new System.EventHandler(this.encoderProfileComboBox_SelectedIndexChanged);
             this.encoderProfileComboBox.Leave += new System.EventHandler(this.encoderProfileComboBox_Leave);
             // 
             // encoderTuneComboBox
@@ -645,6 +650,7 @@
             this.encoderTuneComboBox.Size = new System.Drawing.Size(105, 21);
             this.encoderTuneComboBox.TabIndex = 10;
             this.encoderTuneComboBox.Text = "Fast Decode";
+            this.encoderTuneComboBox.SelectedIndexChanged += new System.EventHandler(this.encoderTuneComboBox_SelectedIndexChanged);
             this.encoderTuneComboBox.Leave += new System.EventHandler(this.encoderTuneComboBox_Leave);
             // 
             // encoderSpeedCombo
@@ -668,6 +674,7 @@
             this.encoderSpeedCombo.Size = new System.Drawing.Size(105, 21);
             this.encoderSpeedCombo.TabIndex = 9;
             this.encoderSpeedCombo.Text = "Medium";
+            this.encoderSpeedCombo.SelectedIndexChanged += new System.EventHandler(this.encoderSpeedCombo_SelectedIndexChanged);
             this.encoderSpeedCombo.Leave += new System.EventHandler(this.encoderSpeedCombo_Leave);
             // 
             // turboCheckBox
@@ -682,6 +689,7 @@
             this.turboCheckBox.TabIndex = 8;
             this.turboCheckBox.Text = "Turbo First Pass";
             this.turboCheckBox.UseVisualStyleBackColor = true;
+            this.turboCheckBox.CheckedChanged += new System.EventHandler(this.turboCheckBox_CheckedChanged);
             // 
             // twoPassCheckbox
             // 
@@ -695,6 +703,7 @@
             this.twoPassCheckbox.TabIndex = 8;
             this.twoPassCheckbox.Text = "2 Pass Encode";
             this.twoPassCheckbox.UseVisualStyleBackColor = true;
+            this.twoPassCheckbox.CheckStateChanged += new System.EventHandler(this.twoPassCheckbox_CheckStateChanged);
             // 
             // optimizeStreamingCheckBox
             // 
@@ -708,6 +717,7 @@
             this.optimizeStreamingCheckBox.TabIndex = 7;
             this.optimizeStreamingCheckBox.Text = "Optimize For Streaming";
             this.optimizeStreamingCheckBox.UseVisualStyleBackColor = true;
+            this.optimizeStreamingCheckBox.CheckedChanged += new System.EventHandler(this.optimizeStreamingCheckBox_CheckedChanged);
             // 
             // mbpsLabel
             // 

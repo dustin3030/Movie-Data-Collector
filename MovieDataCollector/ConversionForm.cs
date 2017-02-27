@@ -140,7 +140,7 @@ namespace MovieDataCollector
             "10"
         };
 
-        List<string> frameRateMode = new List<string>()
+        List<string> frameRateModeList = new List<string>()
         {
             "Constant",
             "Peak",
@@ -2309,69 +2309,27 @@ namespace MovieDataCollector
 
             return inputFile + outputFile;
         }
-        
 
-        
+
+
         /*The following methods are to ensure user input is valid*/
-        private void AudioCodecComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        //Video Comboboxes Index Change
+        private void avgBitrateCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //Only show filter options if Filtered Passthru is selected.
-            switch (audioCodecComboBox.Text)
-            {
-                case "Filtered Passthru":
-                    filteredAACCheck.Visible = true;
-                    filteredAC3Check.Visible = true;
-                    filteredDTSCheck.Visible = true;
-                    passthruFilterLabel.Visible = true;
-                    break;
-                case "AAC (AVC)":
-                    filteredAACCheck.Visible = false;
-                    filteredAC3Check.Visible = false;
-                    filteredDTSCheck.Visible = false;
-                    passthruFilterLabel.Visible = false;
-                    mixdownComboBox.Text = "Dolby ProLogic 2"; //AAC can only mix down to Prologic or Mono
-                    break;
-                case "AC3":
-                    filteredAACCheck.Visible = false;
-                    filteredAC3Check.Visible = false;
-                    filteredDTSCheck.Visible = false;
-                    passthruFilterLabel.Visible = false;
-                    break;
-                default:
-                    filteredAACCheck.Visible = false;
-                    filteredAC3Check.Visible = false;
-                    filteredDTSCheck.Visible = false;
-                    passthruFilterLabel.Visible = false;
-                    break;
-            }
-        }
-        private void MixdownComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            switch (audioCodecComboBox.Text)
-            {
-                case "AAC (AVC)":
-                    mixdownComboBox.Text = "Dolby ProLogic 2";
-
-                    notificationLabel.ForeColor = Color.Red;
-                    nLabelUpdate("The AAC codec can only mixdown to Dolby Prologic 2");
-                    notificationLabel.Visible = true;
-                    
-                    
-                    break;
-                default:
-                    break;
-            }
+            //Update default in dictionary
+            CF.DefaultSettings["VideoBitrateCap"] = avgBitrateCombo.Text;
         }
         private void framerateCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
+            //Update default in dictionary
+            CF.DefaultSettings["Framerate"] = framerateCombo.Text;
+
             switch (framerateCombo.Text)
             {
                 case "Same As Source":
                     notificationLabel.ForeColor = Color.Red;
                     nLabelUpdate("Framerates > 30 are not ROKU Compliant!");
                     notificationLabel.Visible = true;
-                    
-                    
                     break;
                 case "5":
                     notificationLabel.ForeColor = Color.GreenYellow;
@@ -2413,64 +2371,284 @@ namespace MovieDataCollector
                     notificationLabel.ForeColor = Color.Red;
                     nLabelUpdate("Framerates > 30 are not ROKU Compliant!");
                     notificationLabel.Visible = true;
-                    
-                    
                     break;
                 case "59.94":
                     notificationLabel.ForeColor = Color.Red;
                     nLabelUpdate("Framerates > 30 are not ROKU Compliant!");
                     notificationLabel.Visible = true;
-                    
-                    
                     break;
                 case "60":
                     notificationLabel.ForeColor = Color.Red;
                     nLabelUpdate("Framerates > 30 are not ROKU Compliant!");
                     notificationLabel.Visible = true;
-                    
-                    
                     break;
                 default:
                     notificationLabel.ForeColor = Color.Red;
                     nLabelUpdate("Framerates > 30 are not ROKU Compliant!");
                     notificationLabel.Visible = true;
-                    
-                    
                     break;
             }
         }
-        private void AudioCodecComboBox_Leave(object sender, EventArgs e)
+        private void frameRateModeCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!codecList.Contains(audioCodecComboBox.Text)) { audioCodecComboBox.Text = codecList[0]; }
+            //Update default in dictionary
+            CF.DefaultSettings["FramerateMode"] = frameRateModeCombo.Text;
         }
-        private void MixdownComboBox_Leave(object sender, EventArgs e)
+        private void encoderLevelComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!mixdownList.Contains(mixdownComboBox.Text)) { mixdownComboBox.Text = mixdownList[0]; }
+            //Update default in dictionary
+            CF.DefaultSettings["EncoderLevel"] = encoderLevelComboBox.Text;
         }
-        private void encoderTuneComboBox_Leave(object sender, EventArgs e)
+        private void encoderProfileComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!encoderTuneList.Contains(encoderTuneComboBox.Text)) { encoderTuneComboBox.Text = encoderTuneList[0]; }
+            //Update default in dictionary
+            CF.DefaultSettings["EncoderProfile"] = encoderProfileComboBox.Text;
         }
-        private void encoderProfileComboBox_Leave(object sender, EventArgs e)
+        private void encoderSpeedCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!encoderProfileList.Contains(encoderProfileComboBox.Text)) { encoderProfileComboBox.Text = encoderProfileList[0]; }
+            //Update default in dictionary
+            CF.DefaultSettings["EncoderSpeed"] = encoderSpeedCombo.Text;
+        }  
+        private void encoderTuneComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Update default in dictionary
+            CF.DefaultSettings["EncoderTune"] = encoderTuneComboBox.Text;
         }
-        private void encoderLevelComboBox_Leave(object sender, EventArgs e)
+        
+
+        //Video Checkboxes
+        private void optimizeStreamingCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            if (!encoderLevelList.Contains(encoderLevelComboBox.Text)) { encoderLevelComboBox.Text = encoderLevelList[0]; }
+            if (optimizeStreamingCheckBox.Checked)
+            {
+                //Update default in dictionary
+                CF.DefaultSettings["Optimize"] = "True";
+            }
+            else
+            {
+                //Update default in dictionary
+                CF.DefaultSettings["Optimize"] = "False";
+            }
+
+        }
+        private void turboCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (turboCheckBox.Checked)
+            {
+                //Update default in dictionary
+                CF.DefaultSettings["TurboFirstPass"] = "True";
+            }
+            else
+            {
+                //Update default in dictionary
+                CF.DefaultSettings["TurboFirstPass"] = "False";
+            }
+        }
+        private void twoPassCheckbox_CheckStateChanged(object sender, EventArgs e)
+        {
+            if (twoPassCheckbox.Checked)
+            {
+                //Update default in dictionary
+                CF.DefaultSettings["TwoPass"] = "True";
+            }
+            else
+            {
+                //Update default in dictionary
+                CF.DefaultSettings["TwoPass"] = "False";
+            }
+        }
+        
+
+        //Video ComboBoxes Leave
+        private void avgBitrateCombo_Leave(object sender, EventArgs e)
+        {
+            if (!videoBitrateCapList.Contains(avgBitrateCombo.Text))
+            {
+                avgBitrateCombo.Text = videoBitrateCapList[0];
+
+                //Update default in dictionary
+                CF.DefaultSettings["VideoBitrateCap"] = videoBitrateCapList[0];
+            }
+            else
+            {
+                //Update default in dictionary
+                CF.DefaultSettings["VideoBitrateCap"] = avgBitrateCombo.Text;
+            }
         }
         private void framerateCombo_Leave(object sender, EventArgs e)
         {
-            if (!framerateList.Contains(framerateCombo.Text)) { framerateCombo.Text = framerateList[0]; }
+            if (!framerateList.Contains(framerateCombo.Text))
+            {
+                framerateCombo.Text = framerateList[0];
+
+                //Update Default in Dictionary
+                CF.DefaultSettings["Framerate"] = framerateList[0];
+            }
+            else
+            {
+                CF.DefaultSettings["Framerate"] = framerateCombo.Text;
+            }
+        }
+        private void frameRateModeCombo_Leave(object sender, EventArgs e)
+        {
+            if(!frameRateModeList.Contains(frameRateModeCombo.Text))
+            {
+                frameRateModeCombo.Text = frameRateModeList[0];
+
+                //Update default in dictionary
+                CF.DefaultSettings["FramerateMode"] = frameRateModeList[0];
+            }
+            else
+            {
+                //Update default in dictionary
+                CF.DefaultSettings["FramerateMode"] = frameRateModeCombo.Text;
+            }
+        }
+        private void encoderLevelComboBox_Leave(object sender, EventArgs e)
+        {
+            if (!encoderLevelList.Contains(encoderLevelComboBox.Text))
+            {
+                encoderLevelComboBox.Text = encoderLevelList[0];
+
+                //Update Dictionary default
+                CF.DefaultSettings["EncoderLevel"] = encoderLevelList[0];
+            }
+            else
+            {
+                //Update Dictionary default
+                CF.DefaultSettings["EncoderLevel"] = encoderLevelComboBox.Text;
+            }
+        }
+        private void encoderProfileComboBox_Leave(object sender, EventArgs e)
+        {
+            if (!encoderProfileList.Contains(encoderProfileComboBox.Text))
+            {
+                encoderProfileComboBox.Text = encoderProfileList[0];
+
+                //Update Default in Dictionary
+                CF.DefaultSettings["EncoderProfile"] = encoderProfileList[0];
+            }
+            else
+            {
+                //Update Default in Dictionary
+                CF.DefaultSettings["EncoderProfile"] = encoderProfileComboBox.Text;
+            }
+        }
+        private void encoderTuneComboBox_Leave(object sender, EventArgs e)
+        {
+            if (!encoderTuneList.Contains(encoderTuneComboBox.Text))
+            {
+                encoderTuneComboBox.Text = encoderTuneList[0];
+
+                //Update default in dictionary
+                CF.DefaultSettings["EncoderTune"] = encoderTuneList[0];
+            }
+            else
+            {
+                //Update default in dictionary
+                CF.DefaultSettings["EncoderTune"] = encoderTuneComboBox.Text;
+            }
         }
         private void encoderSpeedCombo_Leave(object sender, EventArgs e)
         {
             //Verify text is in list
-            if (!encoderSpeedList.Contains(encoderSpeedCombo.Text)) { encoderSpeedCombo.Text = encoderSpeedList[0]; }
+            if (!encoderSpeedList.Contains(encoderSpeedCombo.Text))
+            {
+                encoderSpeedCombo.Text = encoderSpeedList[0];
+
+                //Update default in Dictionary
+                CF.DefaultSettings["EncoderSpeed"] = encoderSpeedList[0];
+            }
+            else
+            {
+                CF.DefaultSettings["EncoderSpeed"] = encoderSpeedCombo.Text;
+            }
         }
-        private void avgBitrateCombo_Leave(object sender, EventArgs e)
+        
+
+        //Audio
+        private void AudioCodecComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!videoBitrateCapList.Contains(avgBitrateCombo.Text)) { avgBitrateCombo.Text = videoBitrateCapList[0]; }
+            //set default value in dictionary.
+            CF.DefaultSettings["AudioCodec"] = audioCodecComboBox.Text;
+
+            //Only show filter options if Filtered Passthru is selected.
+            switch (audioCodecComboBox.Text)
+            {
+                case "Filtered Passthru":
+                    filteredAACCheck.Visible = true;
+                    filteredAC3Check.Visible = true;
+                    filteredDTSCheck.Visible = true;
+                    passthruFilterLabel.Visible = true;
+                    break;
+                case "AAC (AVC)":
+                    filteredAACCheck.Visible = false;
+                    filteredAC3Check.Visible = false;
+                    filteredDTSCheck.Visible = false;
+                    passthruFilterLabel.Visible = false;
+                    mixdownComboBox.Text = "Dolby ProLogic 2"; //AAC can only mix down to Prologic or Mono
+                    break;
+                case "AC3":
+                    filteredAACCheck.Visible = false;
+                    filteredAC3Check.Visible = false;
+                    filteredDTSCheck.Visible = false;
+                    passthruFilterLabel.Visible = false;
+                    break;
+                default:
+                    filteredAACCheck.Visible = false;
+                    filteredAC3Check.Visible = false;
+                    filteredDTSCheck.Visible = false;
+                    passthruFilterLabel.Visible = false;
+                    break;
+            }
+        }
+        private void MixdownComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //set default in dictionary
+            CF.DefaultSettings["Mixdown"] = mixdownComboBox.Text;
+            switch (audioCodecComboBox.Text)
+            {
+                case "AAC (AVC)":
+                    mixdownComboBox.Text = "Dolby ProLogic 2";
+
+                    notificationLabel.ForeColor = Color.Red;
+                    nLabelUpdate("The AAC codec can only mixdown to Dolby Prologic 2");
+                    notificationLabel.Visible = true;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+
+        private void AudioCodecComboBox_Leave(object sender, EventArgs e)
+        {
+            if (!codecList.Contains(audioCodecComboBox.Text))
+            {
+                audioCodecComboBox.Text = codecList[0];
+
+                //Update default in dictionary
+                CF.DefaultSettings["AudioCodec"] = codecList[0];
+            }
+            else
+            {
+                CF.DefaultSettings["AudioCodec"] = audioCodecComboBox.Text;
+            }
+        }
+        private void MixdownComboBox_Leave(object sender, EventArgs e)
+        {
+            if (!mixdownList.Contains(mixdownComboBox.Text))
+            {
+                mixdownComboBox.Text = mixdownList[0];
+
+                //Update default in dictionary
+                CF.DefaultSettings[""] = mixdownList[0];
+            }
+            else
+            {
+                //Update default in dictionary
+                CF.DefaultSettings[""] = mixdownComboBox.Text;
+            }
         }
         private void AudioBitrateCombo_Leave(object sender, EventArgs e)
         {
@@ -2483,6 +2661,8 @@ namespace MovieDataCollector
             if (ABitrate < 64) { ABitrate = 64; }
 
             audioBitrateCombo.Text = ABitrate.ToString();
+
+            CF.DefaultSettings["AudioBitrateCap"] = ABitrate.ToString();
         }
 
 
@@ -3172,5 +3352,7 @@ namespace MovieDataCollector
 
             return incompatible.ToString();
         }
+
+       
     }
 }
