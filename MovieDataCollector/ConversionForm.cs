@@ -3029,7 +3029,6 @@ namespace MovieDataCollector
         }
 
 
-
         /*The following methods are to check that video files are compatible with a certain device*/
         private void listIncompatibleButton_Click(object sender, EventArgs e)
         {
