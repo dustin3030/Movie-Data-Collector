@@ -217,7 +217,6 @@ namespace MovieDataCollector
         }
         private void returnAllVideoFiles()
         {
-            notificationLabel.ForeColor = Color.GreenYellow;
 
             int loopcount = 0; //displays iteration number of the loop. Used to display which file is being processed.
             int fileCount = 0; //displays the number of files in the directory to be processed.
@@ -230,7 +229,7 @@ namespace MovieDataCollector
                 VideoFilesList.Clear();
                 IncompatibilityInfo.Clear();
 
-                nLabelUpdate("Checking and filtering directory for video files ");
+                nLabelUpdate("Checking and filtering directory for video files ", Color.GreenYellow);
 
                 try
                 {
@@ -250,7 +249,7 @@ namespace MovieDataCollector
                     {
                         loopcount = loopcount + 1;
 
-                        nLabelUpdate("Processing file " + loopcount.ToString() + " of " + fileCount.ToString() + " - " + file);
+                        nLabelUpdate("Processing file " + loopcount.ToString() + " of " + fileCount.ToString() + " - " + file, Color.GreenYellow);
                         
                         fileName = file;
                         while (fileName.Contains(@"\"))
@@ -265,7 +264,7 @@ namespace MovieDataCollector
                         VideoFilesList.Add(file);
 
                     }
-                    nLabelUpdate("Listing " + filesListBox.Items.Count.ToString() + " Video Files");
+                    nLabelUpdate("Listing " + filesListBox.Items.Count.ToString() + " Video Files", Color.GreenYellow);
                 }
                 catch (Exception e){CustomMessageBox.Show(e.ToString(), 131, 280);}
             }
@@ -273,7 +272,6 @@ namespace MovieDataCollector
         private void listAllVideosButton_Click(object sender, EventArgs e)
         {
             returnAllVideoFiles();
-            notificationLabel.ForeColor = Color.GreenYellow;
         }       
         private void selectDirectory()
         {
@@ -362,8 +360,6 @@ namespace MovieDataCollector
         }
         private void ExportButton_Click(object sender, EventArgs e)
         {
-            notificationLabel.ForeColor = Color.GreenYellow;
-
             string fileLocation = "";
             //Check to see if data exist in fileslistbox
             if (VideoFilesList.Count > 0)
@@ -464,7 +460,6 @@ namespace MovieDataCollector
         }
         private void saveInfoButton_Click(object sender, EventArgs e)
         {
-            notificationLabel.ForeColor = Color.GreenYellow;
             string fileLocation = "";
             string outputBoxText = outPutTextBox.Text;
             outputBoxText = outputBoxText.Replace("\n", "\r\n");
@@ -630,7 +625,6 @@ namespace MovieDataCollector
         }
         private void QuickInfobutton_Click(object sender, EventArgs e)
         {
-            notificationLabel.ForeColor = Color.GreenYellow;
 
             if (VideoFilesList.Count > 0 & filesListBox.Items.Count > 0)
             {
@@ -639,7 +633,7 @@ namespace MovieDataCollector
                 notificationLabel.Visible = true;
                 for (int i = 0; i < VideoFilesList.Count(); i++)
                 {
-                    nLabelUpdate("Processing file " + (i + 1).ToString() + " of " + VideoFilesList.Count().ToString());
+                    nLabelUpdate("Processing file " + (i + 1).ToString() + " of " + VideoFilesList.Count().ToString(), Color.GreenYellow);
                     getQuickInfo(VideoFilesList[i], filesListBox.Items[i].ToString());
                 }
             }
@@ -721,7 +715,7 @@ namespace MovieDataCollector
                         CF.DefaultSettings["OutputFilePath"] = FBD.SelectedPath;
                         CF.updateDefaults();
 
-                        nLabelUpdate("Converting File ( " + filesListBox.SelectedItem.ToString() + " )");
+                        nLabelUpdate("Converting File ( " + filesListBox.SelectedItem.ToString() + " )", Color.GreenYellow);
 
                         DialogResult = DialogResult.None; //Prevents form from closing...
 
@@ -779,7 +773,7 @@ namespace MovieDataCollector
                                 }
                                 outPutTextBox.Text = "File skipped due to error:\r\n" + errorString;
 
-                                nLabelUpdate("Transcoding of \"" + filesListBox.SelectedItem.ToString() + "\" Failed.");
+                                nLabelUpdate("Transcoding of \"" + filesListBox.SelectedItem.ToString() + "\" Failed.", Color.GreenYellow);
 
 
 
@@ -796,7 +790,7 @@ namespace MovieDataCollector
                             else //No errors were thrown by handbrake cli
                             {
                                 outPutTextBox.Text = ""; //Clears Output Box on successful Encode
-                                nLabelUpdate("Transcoding of \"" + filesListBox.SelectedItem.ToString() + "\" completed in " + totalProcessingTime);
+                                nLabelUpdate("Transcoding of \"" + filesListBox.SelectedItem.ToString() + "\" completed in " + totalProcessingTime, Color.GreenYellow);
 
                                 if (notificationCheck.Checked)
                                 {
@@ -812,7 +806,7 @@ namespace MovieDataCollector
                         }
                         catch
                         {
-                            nLabelUpdate("Error Gathering File Info for " + filesListBox.SelectedItem.ToString() + " File May Be Corrupt.");
+                            nLabelUpdate("Error Gathering File Info for " + filesListBox.SelectedItem.ToString() + " File May Be Corrupt.", Color.GreenYellow);
 
 
 
@@ -831,7 +825,7 @@ namespace MovieDataCollector
                 else
                 {
                     //Clear notification label
-                    nLabelUpdate("");
+                    nLabelUpdate("", Color.GreenYellow);
                 }
             }
         }
@@ -867,7 +861,7 @@ namespace MovieDataCollector
                         for (int i = 0; i < VideoFilesList.Count; i++)
                         {
                             //Display which file is being converted
-                            nLabelUpdate("Converting File " + (i + 1).ToString() + " of " + VideoFilesList.Count.ToString() + " ( " + filesListBox.Items[i].ToString() + " )");
+                            nLabelUpdate("Converting File " + (i + 1).ToString() + " of " + VideoFilesList.Count.ToString() + " ( " + filesListBox.Items[i].ToString() + " )", Color.GreenYellow);
 
                             DialogResult = DialogResult.None; //Prevents form from closing...
 
@@ -931,8 +925,8 @@ namespace MovieDataCollector
                             }
                             outPutTextBox.Text = "Files skipped due to error:\r\n" + errorString;
 
-                            if (VideoFilesList.Count == 1) { nLabelUpdate("The transcoding que initiated " + startTime.ToString() + " failed. HandbrakeCLI exited with code " + exitCode.ToString()); }
-                            if (VideoFilesList.Count > 1) { nLabelUpdate("The transcoding que initiated " + startTime.ToString() + " is now complete. " + (VideoFilesList.Count() - Errors.Count()).ToString() + " of " + VideoFilesList.Count().ToString() + " files processed successfully in " + totalProcessingTime); }
+                            if (VideoFilesList.Count == 1) { nLabelUpdate("The transcoding que initiated " + startTime.ToString() + " failed. HandbrakeCLI exited with code " + exitCode.ToString(), Color.GreenYellow); }
+                            if (VideoFilesList.Count > 1) { nLabelUpdate("The transcoding que initiated " + startTime.ToString() + " is now complete. " + (VideoFilesList.Count() - Errors.Count()).ToString() + " of " + VideoFilesList.Count().ToString() + " files processed successfully in " + totalProcessingTime, Color.GreenYellow); }
 
 
 
@@ -951,8 +945,8 @@ namespace MovieDataCollector
                         {
                             outPutTextBox.Text = ""; //Clears Output Box on successful Encode
 
-                            if (VideoFilesList.Count == 1) { nLabelUpdate("The transcoding que initiated " + startTime.ToString() + " is now complete. The file was processed in " + totalProcessingTime); }
-                            if (VideoFilesList.Count > 1) { nLabelUpdate("The transcoding que initiated " + startTime.ToString() + " is now complete. " + VideoFilesList.Count().ToString() + " files were processed in " + totalProcessingTime); }
+                            if (VideoFilesList.Count == 1) { nLabelUpdate("The transcoding que initiated " + startTime.ToString() + " is now complete. The file was processed in " + totalProcessingTime, Color.GreenYellow); }
+                            if (VideoFilesList.Count > 1) { nLabelUpdate("The transcoding que initiated " + startTime.ToString() + " is now complete. " + VideoFilesList.Count().ToString() + " files were processed in " + totalProcessingTime, Color.GreenYellow); }
 
                             if (notificationCheck.Checked)
                             {
@@ -968,14 +962,14 @@ namespace MovieDataCollector
                 }
                 else
                 {
-                    nLabelUpdate("");
+                    nLabelUpdate("", Color.GreenYellow);
                 }
             }
         }
         private bool preConversionChecks()
         {
             bool checksPassed = true;
-            nLabelUpdate("Checking for existence of Handbrake CLI");
+            nLabelUpdate("Checking for existence of Handbrake CLI", Color.GreenYellow);
             string handBrakeCLILocation = CheckForHandbrakeCLI();
 
             //Ensure HandbrakeCLI is found
@@ -988,8 +982,7 @@ namespace MovieDataCollector
                     if (!filteredAACCheck.Checked && !filteredAC3Check.Checked && !filteredDTSCheck.Checked)
                     {
                         checksPassed = false;
-                        notificationLabel.Text += " No passthru filter selected! ";
-                        notificationLabel.ForeColor = Color.Red;
+                        nLabelUpdate(" No Passthru filter Selected!", Color.Red);
                     }
                     break;
                 default:
@@ -1111,7 +1104,7 @@ namespace MovieDataCollector
                                         outputFrameRate = "--rate  " + videoFile.Video[0].FrameRate.ToString() + " --pfr "; //Peak Framerate
                                         break;
                                     case "Variable": //Variable
-                                        nLabelUpdate("Variable Framerate Mode is not compatible with Roku players. Changed to Peak Framerate Mode.");
+                                        nLabelUpdate("Variable Framerate Mode is not compatible with Roku players. Changed to Peak Framerate Mode.", Color.Red);
                                         outputFrameRate = "--rate  " + videoFile.Video[0].FrameRate.ToString() + " --pfr "; //Peak Framerate
                                         break;
                                     default: //Peak
@@ -1130,7 +1123,7 @@ namespace MovieDataCollector
                                         outputFrameRate = "--rate 29.97 --pfr "; //Peak Framerate
                                         break;
                                     case "Variable": //Variable
-                                        nLabelUpdate("Variable Framerate Mode is not compatible with Roku players. Changed to Peak Framerate Mode.");
+                                        nLabelUpdate("Variable Framerate Mode is not compatible with Roku players. Changed to Peak Framerate Mode.", Color.Red);
                                         outputFrameRate = "--rate 29.97 --pfr "; //Peak Framerate
                                         break;
                                     default: //Peak
@@ -1149,7 +1142,7 @@ namespace MovieDataCollector
                                         outputFrameRate = "--rate 23.976 --pfr "; //Peak Framerate
                                         break;
                                     case "Variable": //Variable
-                                        nLabelUpdate("Variable Framerate Mode is not compatible with Roku players. Changed to Peak Framerate Mode.");
+                                        nLabelUpdate("Variable Framerate Mode is not compatible with Roku players. Changed to Peak Framerate Mode.", Color.Red);
                                         outputFrameRate = "--rate 23.976 --pfr "; //Peak Framerate
                                         break;
                                     default: //Peak
@@ -1173,7 +1166,7 @@ namespace MovieDataCollector
                                 outputFrameRate = "--rate 5 --pfr "; //Peak Framerate
                                 break;
                             case "Variable": //Variable
-                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.", Color.Red);
                                 outputFrameRate = " --vfr";
                                 break;
                             default: //Peak
@@ -1191,7 +1184,7 @@ namespace MovieDataCollector
                                 outputFrameRate = "--rate 10 --pfr "; //Peak Framerate
                                 break;
                             case "Variable": //Variable
-                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.", Color.Red);
                                 outputFrameRate = " --vfr";
                                 break;
                             default: //Peak
@@ -1209,7 +1202,7 @@ namespace MovieDataCollector
                                 outputFrameRate = "--rate 12 --pfr "; //Peak Framerate
                                 break;
                             case "Variable": //Variable
-                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.", Color.Red);
                                 outputFrameRate = " --vfr";
                                 break;
                             default: //Peak
@@ -1227,7 +1220,7 @@ namespace MovieDataCollector
                                 outputFrameRate = "--rate 15 --pfr "; //Peak Framerate
                                 break;
                             case "Variable": //Variable
-                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.", Color.Red);
                                 outputFrameRate = " --vfr";
                                 break;
                             default: //Peak
@@ -1245,7 +1238,7 @@ namespace MovieDataCollector
                                 outputFrameRate = "--rate 23.976 --pfr "; //Peak Framerate
                                 break;
                             case "Variable": //Variable
-                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.", Color.Red);
                                 outputFrameRate = " --vfr";
                                 break;
                             default: //Peak
@@ -1263,7 +1256,7 @@ namespace MovieDataCollector
                                 outputFrameRate = "--rate 24 --pfr "; //Peak Framerate
                                 break;
                             case "Variable": //Variable
-                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.", Color.Red);
                                 outputFrameRate = " --vfr";
                                 break;
                             default: //Peak
@@ -1281,7 +1274,7 @@ namespace MovieDataCollector
                                 outputFrameRate = "--rate 25 --pfr "; //Peak Framerate
                                 break;
                             case "Variable": //Variable
-                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.", Color.Red);
                                 outputFrameRate = " --vfr";
                                 break;
                             default: //Peak
@@ -1299,7 +1292,7 @@ namespace MovieDataCollector
                                 outputFrameRate = "--rate 29.97 --pfr "; //Peak Framerate
                                 break;
                             case "Variable": //Variable
-                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.", Color.Red);
                                 outputFrameRate = " --vfr";
                                 break;
                             default: //Peak
@@ -1317,7 +1310,7 @@ namespace MovieDataCollector
                                 outputFrameRate = "--rate 30 --pfr "; //Peak Framerate
                                 break;
                             case "Variable": //Variable
-                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.", Color.Red);
                                 outputFrameRate = " --vfr";
                                 break;
                             default: //Peak
@@ -1335,7 +1328,7 @@ namespace MovieDataCollector
                                 outputFrameRate = "--rate 50 --pfr "; //Peak Framerate
                                 break;
                             case "Variable": //Variable
-                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.", Color.Red);
                                 outputFrameRate = " --vfr";
                                 break;
                             default: //Peak
@@ -1353,7 +1346,7 @@ namespace MovieDataCollector
                                 outputFrameRate = "--rate 59.94 --pfr "; //Peak Framerate
                                 break;
                             case "Variable": //Variable
-                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.", Color.Red);
                                 outputFrameRate = " --vfr";
                                 break;
                             default: //Peak
@@ -1371,7 +1364,7 @@ namespace MovieDataCollector
                                 outputFrameRate = "--rate 60 --pfr "; //Peak Framerate
                                 break;
                             case "Variable": //Variable
-                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.", Color.Red);
                                 outputFrameRate = " --vfr";
                                 break;
                             default: //Peak
@@ -1380,7 +1373,7 @@ namespace MovieDataCollector
                         }
                         break;
                     default:
-                        nLabelUpdate("Framerate ignored, preserving source rate.");
+                        nLabelUpdate("Framerate ignored, preserving source rate.", Color.Red);
                         outputFrameRate = "--vfr"; ////preserves the source timing.
                         break;
                 }
@@ -1535,7 +1528,7 @@ namespace MovieDataCollector
                                         outputFrameRate = "--rate  " + videoFile.Video[0].FrameRate.ToString() + " --pfr "; //Peak Framerate
                                         break;
                                     case "Variable": //Variable
-                                        nLabelUpdate("Variable Framerate Mode is not compatible with Roku players. Changed to Peak Framerate Mode.");
+                                        nLabelUpdate("Variable Framerate Mode is not compatible with Roku players. Changed to Peak Framerate Mode.", Color.Red);
                                         outputFrameRate = "--rate  " + videoFile.Video[0].FrameRate.ToString() + " --pfr "; //Peak Framerate
                                         break;
                                     default: //Peak
@@ -1554,7 +1547,7 @@ namespace MovieDataCollector
                                         outputFrameRate = "--rate 29.97 --pfr "; //Peak Framerate
                                         break;
                                     case "Variable": //Variable
-                                        nLabelUpdate("Variable Framerate Mode is not compatible with Roku players. Changed to Peak Framerate Mode.");
+                                        nLabelUpdate("Variable Framerate Mode is not compatible with Roku players. Changed to Peak Framerate Mode.", Color.Red);
                                         outputFrameRate = "--rate 29.97 --pfr "; //Peak Framerate
                                         break;
                                     default: //Peak
@@ -1573,7 +1566,7 @@ namespace MovieDataCollector
                                         outputFrameRate = "--rate 23.976 --pfr "; //Peak Framerate
                                         break;
                                     case "Variable": //Variable
-                                        nLabelUpdate("Variable Framerate Mode is not compatible with Roku players. Changed to Peak Framerate Mode.");
+                                        nLabelUpdate("Variable Framerate Mode is not compatible with Roku players. Changed to Peak Framerate Mode.", Color.Red);
                                         outputFrameRate = "--rate 23.976 --pfr "; //Peak Framerate
                                         break;
                                     default: //Peak
@@ -1597,7 +1590,7 @@ namespace MovieDataCollector
                                 outputFrameRate = "--rate 5 --pfr "; //Peak Framerate
                                 break;
                             case "Variable": //Variable
-                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.", Color.Red);
                                 outputFrameRate = " --vfr";
                                 break;
                             default: //Peak
@@ -1615,7 +1608,7 @@ namespace MovieDataCollector
                                 outputFrameRate = "--rate 10 --pfr "; //Peak Framerate
                                 break;
                             case "Variable": //Variable
-                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.", Color.Red);
                                 outputFrameRate = " --vfr";
                                 break;
                             default: //Peak
@@ -1633,7 +1626,7 @@ namespace MovieDataCollector
                                 outputFrameRate = "--rate 12 --pfr "; //Peak Framerate
                                 break;
                             case "Variable": //Variable
-                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.", Color.Red);
                                 outputFrameRate = " --vfr";
                                 break;
                             default: //Peak
@@ -1651,7 +1644,7 @@ namespace MovieDataCollector
                                 outputFrameRate = "--rate 15 --pfr "; //Peak Framerate
                                 break;
                             case "Variable": //Variable
-                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.", Color.Red);
                                 outputFrameRate = " --vfr";
                                 break;
                             default: //Peak
@@ -1669,7 +1662,7 @@ namespace MovieDataCollector
                                 outputFrameRate = "--rate 23.976 --pfr "; //Peak Framerate
                                 break;
                             case "Variable": //Variable
-                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.", Color.Red);
                                 outputFrameRate = " --vfr";
                                 break;
                             default: //Peak
@@ -1687,7 +1680,7 @@ namespace MovieDataCollector
                                 outputFrameRate = "--rate 24 --pfr "; //Peak Framerate
                                 break;
                             case "Variable": //Variable
-                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.", Color.Red);
                                 outputFrameRate = " --vfr";
                                 break;
                             default: //Peak
@@ -1705,7 +1698,7 @@ namespace MovieDataCollector
                                 outputFrameRate = "--rate 25 --pfr "; //Peak Framerate
                                 break;
                             case "Variable": //Variable
-                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.", Color.Red);
                                 outputFrameRate = " --vfr";
                                 break;
                             default: //Peak
@@ -1723,7 +1716,7 @@ namespace MovieDataCollector
                                 outputFrameRate = "--rate 29.97 --pfr "; //Peak Framerate
                                 break;
                             case "Variable": //Variable
-                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.", Color.Red);
                                 outputFrameRate = " --vfr";
                                 break;
                             default: //Peak
@@ -1741,7 +1734,7 @@ namespace MovieDataCollector
                                 outputFrameRate = "--rate 30 --pfr "; //Peak Framerate
                                 break;
                             case "Variable": //Variable
-                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.", Color.Red);
                                 outputFrameRate = " --vfr";
                                 break;
                             default: //Peak
@@ -1759,7 +1752,7 @@ namespace MovieDataCollector
                                 outputFrameRate = "--rate 50 --pfr "; //Peak Framerate
                                 break;
                             case "Variable": //Variable
-                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.", Color.Red);
                                 outputFrameRate = " --vfr";
                                 break;
                             default: //Peak
@@ -1777,7 +1770,7 @@ namespace MovieDataCollector
                                 outputFrameRate = "--rate 59.94 --pfr "; //Peak Framerate
                                 break;
                             case "Variable": //Variable
-                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.", Color.Red);
                                 outputFrameRate = " --vfr";
                                 break;
                             default: //Peak
@@ -1795,7 +1788,7 @@ namespace MovieDataCollector
                                 outputFrameRate = "--rate 60 --pfr "; //Peak Framerate
                                 break;
                             case "Variable": //Variable
-                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.");
+                                nLabelUpdate("Variable Framerate Mode ignores framerate setting.", Color.Red);
                                 outputFrameRate = " --vfr";
                                 break;
                             default: //Peak
@@ -1804,7 +1797,7 @@ namespace MovieDataCollector
                         }
                         break;
                     default:
-                        nLabelUpdate("Framerate ignored, preserving source rate.");
+                        nLabelUpdate("Framerate ignored, preserving source rate.", Color.Red);
                         outputFrameRate = "--vfr"; ////preserves the source timing.
                         break;
                 }
@@ -2327,64 +2320,23 @@ namespace MovieDataCollector
             switch (framerateCombo.Text)
             {
                 case "Same As Source":
-                    notificationLabel.ForeColor = Color.Red;
-                    nLabelUpdate("Framerates > 30 are not ROKU Compliant!");
+                    nLabelUpdate("Framerates > 30 are not ROKU Compliant!", Color.Red);
                     notificationLabel.Visible = true;
                     break;
-                case "5":
-                    notificationLabel.ForeColor = Color.GreenYellow;
-                    notificationLabel.Visible = false;
-                    break;
-                case "10":
-                    notificationLabel.ForeColor = Color.GreenYellow;
-                    notificationLabel.Visible = false;
-                    break;
-                case "12":
-                    notificationLabel.ForeColor = Color.GreenYellow;
-                    notificationLabel.Visible = false;
-                    break;
-                case "15":
-                    notificationLabel.ForeColor = Color.GreenYellow;
-                    notificationLabel.Visible = false;
-                    break;
-                case "23.976":
-                    notificationLabel.ForeColor = Color.GreenYellow;
-                    notificationLabel.Visible = false;
-                    break;
-                case "24":
-                    notificationLabel.ForeColor = Color.GreenYellow;
-                    notificationLabel.Visible = false;
-                    break;
-                case "25":
-                    notificationLabel.ForeColor = Color.GreenYellow;
-                    notificationLabel.Visible = false;
-                    break;
-                case "29.97":
-                    notificationLabel.ForeColor = Color.GreenYellow;
-                    notificationLabel.Visible = false;
-                    break;
-                case "30":
-                    notificationLabel.ForeColor = Color.GreenYellow;
-                    notificationLabel.Visible = false;
-                    break;
                 case "50":
-                    notificationLabel.ForeColor = Color.Red;
-                    nLabelUpdate("Framerates > 30 are not ROKU Compliant!");
+                    nLabelUpdate("Framerates > 30 are not ROKU Compliant!", Color.Red);
                     notificationLabel.Visible = true;
                     break;
                 case "59.94":
-                    notificationLabel.ForeColor = Color.Red;
-                    nLabelUpdate("Framerates > 30 are not ROKU Compliant!");
+                    nLabelUpdate("Framerates > 30 are not ROKU Compliant!", Color.Red);
                     notificationLabel.Visible = true;
                     break;
                 case "60":
-                    notificationLabel.ForeColor = Color.Red;
-                    nLabelUpdate("Framerates > 30 are not ROKU Compliant!");
+                    nLabelUpdate("Framerates > 30 are not ROKU Compliant!", Color.Red);
                     notificationLabel.Visible = true;
                     break;
                 default:
-                    notificationLabel.ForeColor = Color.Red;
-                    nLabelUpdate("Framerates > 30 are not ROKU Compliant!");
+                    nLabelUpdate("Framerates > 30 are not ROKU Compliant!", Color.Red);
                     notificationLabel.Visible = true;
                     break;
             }
@@ -2728,9 +2680,7 @@ namespace MovieDataCollector
             {
                 case "AAC (AVC)":
                     mixdownComboBox.Text = "Dolby ProLogic 2";
-
-                    notificationLabel.ForeColor = Color.Red;
-                    nLabelUpdate("The AAC codec can only mixdown to Dolby Prologic 2");
+                    nLabelUpdate("The AAC codec can only mixdown to Dolby Prologic 2", Color.Red);
                     notificationLabel.Visible = true;
                     break;
                 default:
@@ -2917,6 +2867,8 @@ namespace MovieDataCollector
 
             if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(sendTo))
             {
+                nLabelUpdate("Attempting to send notification", Color.GreenYellow);
+
                 if (!userName.ToUpper().Contains("@GMAIL.COM")) { userName += "@gmail.com"; }
 
                 try
@@ -2959,13 +2911,14 @@ namespace MovieDataCollector
 
                     SmtpServer.Send(mail);
                     //CustomMessageBox.Show("Notification Sent!", 120, 230, "Notification Message");
-                    nLabelUpdate("Notification sent to :" + sendTo);
+                    nLabelUpdate("Notification sent to : " + sendTo, Color.GreenYellow);
 
 
                 }
                 catch (Exception ex)
                 {
                     CustomMessageBox.Show("You may have to enable less secure apps access to gmail. See https://support.google.com/accounts/answer/6010255?hl=en" + "/r/n" + ex.ToString(), 600, 300);
+                    nLabelUpdate("Notification failed to send.", Color.Red);
                 }
             }
             else
@@ -2980,6 +2933,7 @@ namespace MovieDataCollector
             string sendTo = sendToBox.Text;
 
             sendNotification(username, password, sendTo, "Test Notification", "Notification Test from Movie Data Collector");
+
         }
         private void notificationCheck_CheckedChanged_1(object sender, EventArgs e)
         {
@@ -3021,8 +2975,9 @@ namespace MovieDataCollector
             return totalTime;
 
         }
-        private void nLabelUpdate(string notificationText)
+        private void nLabelUpdate(string notificationText, Color color)
         {
+            notificationLabel.ForeColor = color;
             notificationLabel.Text = notificationText;
             notificationLabel.Invalidate();
             notificationLabel.Update();
@@ -3032,7 +2987,6 @@ namespace MovieDataCollector
         /*The following methods are to check that video files are compatible with a certain device*/
         private void listIncompatibleButton_Click(object sender, EventArgs e)
         {
-            notificationLabel.ForeColor = Color.GreenYellow;
 
             int loopcount = 0; //for progress bar value
             int fileCount = 0;
@@ -3041,7 +2995,7 @@ namespace MovieDataCollector
             {
                 if (Directory.Exists(CF.DefaultSettings["InputFilePath"]))
                 {
-                    nLabelUpdate("Checking and filtering directory for video files ");
+                    nLabelUpdate("Checking and filtering directory for video files ", Color.GreenYellow);
 
                     string fileName = "";
                     filesListBox.Items.Clear();
@@ -3072,7 +3026,7 @@ namespace MovieDataCollector
 
                             loopcount = loopcount + 1;
 
-                            nLabelUpdate("Analyzing file " + loopcount.ToString() + " of " + fileCount.ToString() + " - " + file);
+                            nLabelUpdate("Analyzing file " + loopcount.ToString() + " of " + fileCount.ToString() + " - " + file, Color.GreenYellow);
 
                             if (compatibilityCombo.SelectedIndex == 1)
                             {
@@ -3103,7 +3057,7 @@ namespace MovieDataCollector
                                     outPutTextBox.Text = "\t\t\t\tINVALID ATTRIBUTES:\n\n" + outPutText.ToString();
                                 }
 
-                                nLabelUpdate("Listing " + filesListBox.Items.Count.ToString() + " Files Incompatible with Xbox360");
+                                nLabelUpdate("Listing " + filesListBox.Items.Count.ToString() + " Files Incompatible with Xbox360", Color.GreenYellow);
                             }
                             if (compatibilityCombo.SelectedIndex == 0) //Roku is selected
                             {
@@ -3130,7 +3084,7 @@ namespace MovieDataCollector
                                     }
                                     outPutTextBox.Text = "\t\t\t\tINVALID ATTRIBUTES:\n\n" + outPutText.ToString();
                                 }
-                                nLabelUpdate("Listing " + filesListBox.Items.Count.ToString() + " Files Incompatible with Roku");
+                                nLabelUpdate("Listing " + filesListBox.Items.Count.ToString() + " Files Incompatible with Roku", Color.GreenYellow);
                             }
 
                         }
@@ -3139,7 +3093,6 @@ namespace MovieDataCollector
                     {
                         CustomMessageBox.Show(ex.ToString(), 131, 280);
                     }
-
                 }
             }
             else
