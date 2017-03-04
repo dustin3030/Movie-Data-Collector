@@ -451,7 +451,7 @@
             this.notificationCheck.TabIndex = 10;
             this.notificationCheck.Text = "Notification Toggle";
             this.notificationCheck.UseVisualStyleBackColor = false;
-            this.notificationCheck.CheckedChanged += new System.EventHandler(this.notificationCheck_CheckedChanged_1);
+            this.notificationCheck.CheckedChanged += new System.EventHandler(this.notificationCheck_CheckedChanged);
             // 
             // testNotificationButton
             // 

@@ -2923,7 +2923,7 @@ namespace MovieDataCollector
             }
             else
             {
-                CustomMessageBox.Show("Missing Notification Parameters", 300, 300);
+                nLabelUpdate("Missing Notification Parameters", Color.Red);
             }
         }
         private void testNotificationButton_Click(object sender, EventArgs e)
@@ -2935,9 +2935,11 @@ namespace MovieDataCollector
             sendNotification(username, password, sendTo, "Test Notification", "Notification Test from Movie Data Collector");
 
         }
-        private void notificationCheck_CheckedChanged_1(object sender, EventArgs e)
+        private void notificationCheck_CheckedChanged(object sender, EventArgs e)
         {
-
+            //Update values in usernameBox and SendToBox
+            usernameBox.Text = CF.DefaultSettings["GmailAccount"];
+            sendToBox.Text = CF.DefaultSettings["NotifyAddress"];
         }
         private string timeDifference(DateTime start, DateTime end)
         {
@@ -3097,7 +3099,7 @@ namespace MovieDataCollector
             }
             else
             {
-                CustomMessageBox.Show("Please select a compatibility option", 138, 269, "Compatibility");
+                nLabelUpdate("Please select a compatibility option", Color.Red);
             }
         }
         private string RokuCompatibilityCheck(string fileName)
@@ -3113,6 +3115,7 @@ namespace MovieDataCollector
             //Incompatibility Info
             StringBuilder incompatible = new StringBuilder(); //Stores string of why file is incompatile with Roku
 
+            nLabelUpdate("Checking if " + fileName + " is compatible with Roku players.", Color.GreenYellow);
 
             FileInfo fInfo = new FileInfo(fileName);
             fileSize = Convert.ToDecimal(fInfo.Length);
@@ -3320,6 +3323,8 @@ namespace MovieDataCollector
             fileSize = decimal.Round(((fileSize / 1024) / 1024), 2); //Bytes Converted to Megabytes
 
             MediaFile videoFile = new MediaFile(fileName);
+
+            nLabelUpdate("Checking if " + fileName + " is compatible with Xbox 360.", Color.GreenYellow);
 
             switch (videoFile.Extension)
             {
