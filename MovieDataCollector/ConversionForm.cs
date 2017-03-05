@@ -2780,20 +2780,6 @@ namespace MovieDataCollector
             }
         }
         private void MixdownComboBox_Leave(object sender, EventArgs e)
-        {
-            if (!mixdownList.Contains(mixdownComboBox.Text))
-            {
-                mixdownComboBox.Text = mixdownList[0];
-
-                //Update default in dictionary
-                CF.DefaultSettings[""] = mixdownList[0];
-            }
-            else
-            {
-                //Update default in dictionary
-                CF.DefaultSettings[""] = mixdownComboBox.Text;
-            }
-        }
         private void AudioBitrateCombo_Leave(object sender, EventArgs e)
         {
             double ABitrate;

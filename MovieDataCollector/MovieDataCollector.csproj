@@ -82,6 +82,7 @@
     <Compile Include="MovieSelection.Designer.cs">
       <DependentUpon>MovieSelection.cs</DependentUpon>
     </Compile>
+    <Compile Include="PresetFile.cs" />
     <Compile Include="TVManualRename.cs">
       <SubType>Form</SubType>
     </Compile>
