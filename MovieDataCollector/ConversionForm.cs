@@ -168,7 +168,8 @@ namespace MovieDataCollector
         public ConversionForm()
         {
             InitializeComponent(); //Initializes components.
-            setDefaults();  
+            setDefaults();
+             
         }
         private void setDefaults() //Sets encode options to values from file
         {
@@ -691,6 +692,7 @@ namespace MovieDataCollector
         /*The following methods are for converting video files*/
         private void ConvertSelectedButton_Click(object sender, EventArgs e)
         {
+            CF.updateDefaults();
             //Check for location of HandbrakeCLI
             string handBrakeCLILocation = CheckForHandbrakeCLI();
             string totalProcessingTime = "";
@@ -831,6 +833,8 @@ namespace MovieDataCollector
         }
         private void ConvertAllButton_Click(object sender, EventArgs e)
         {
+            CF.updateDefaults();
+
             //Check for location of HandbrakeCLI
             string handBrakeCLILocation = CheckForHandbrakeCLI();
             DateTime startTime = DateTime.Now;
@@ -2864,66 +2868,68 @@ namespace MovieDataCollector
         {
             //If this doesnt work it's because the gmail account needs to allow less secure apps access to send email
             //https://support.google.com/accounts/answer/6010255?hl=en
-
-            if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(sendTo))
+            if (notificationCheck.Checked) //Ensures that a notification doesn't try to send unless the user intends it.
             {
-                nLabelUpdate("Attempting to send notification", Color.GreenYellow);
-
-                if (!userName.ToUpper().Contains("@GMAIL.COM")) { userName += "@gmail.com"; }
-
-                try
+                if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(sendTo))
                 {
-                    MailMessage mail = new MailMessage();
-                    SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+                    nLabelUpdate("Attempting to send notification", Color.GreenYellow);
 
-                    mail.From = new MailAddress(userName);
-                    mail.To.Add(sendTo);
-                    mail.Subject = subject;
+                    if (!userName.ToUpper().Contains("@GMAIL.COM")) { userName += "@gmail.com"; }
 
-                    //Check if recipient is a cellphone, if so remove the subject
-                    if (sendTo.ToUpper().Contains("@VTEXT.COM") ||
-                        sendTo.ToUpper().Contains("@MMS.ATT.NET") ||
-                        sendTo.ToUpper().Contains("@TXT.ATT.NET") ||
-                        sendTo.ToUpper().Contains("@TMOMAIL.NET") ||
-                        sendTo.ToUpper().Contains("@SPRINTPCS.COM") ||
-                        sendTo.ToUpper().Contains("@PM.SPRINT.COM") ||
-                        sendTo.ToUpper().Contains("@VMOBL.COM") ||
-                        sendTo.ToUpper().Contains("@MMST5.TRACFONE.COM") ||
-                        sendTo.ToUpper().Contains("@MYMETROPCS.COM") ||
-                        sendTo.ToUpper().Contains("@MYBOOSTMOBILE.COM") ||
-                        sendTo.ToUpper().Contains("@SMS.MYCRICKET.COM") ||
-                        sendTo.ToUpper().Contains("@PTEL.COM") ||
-                        sendTo.ToUpper().Contains("@TEXT.REPUBLICWIRELESS.COM") ||
-                        sendTo.ToUpper().Contains("@TMS.SUNCOM.COM") ||
-                        sendTo.ToUpper().Contains("@MESSAGE.TING.COM") ||
-                        sendTo.ToUpper().Contains("@EMAIL.USCC.NET") ||
-                        sendTo.ToUpper().Contains("@CINGULARME.COM") ||
-                        sendTo.ToUpper().Contains("@CSPIRE1.COM"))
+                    try
                     {
-                        mail.Subject = "";
+                        MailMessage mail = new MailMessage();
+                        SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+
+                        mail.From = new MailAddress(userName);
+                        mail.To.Add(sendTo);
+                        mail.Subject = subject;
+
+                        //Check if recipient is a cellphone, if so remove the subject
+                        if (sendTo.ToUpper().Contains("@VTEXT.COM") ||
+                            sendTo.ToUpper().Contains("@MMS.ATT.NET") ||
+                            sendTo.ToUpper().Contains("@TXT.ATT.NET") ||
+                            sendTo.ToUpper().Contains("@TMOMAIL.NET") ||
+                            sendTo.ToUpper().Contains("@SPRINTPCS.COM") ||
+                            sendTo.ToUpper().Contains("@PM.SPRINT.COM") ||
+                            sendTo.ToUpper().Contains("@VMOBL.COM") ||
+                            sendTo.ToUpper().Contains("@MMST5.TRACFONE.COM") ||
+                            sendTo.ToUpper().Contains("@MYMETROPCS.COM") ||
+                            sendTo.ToUpper().Contains("@MYBOOSTMOBILE.COM") ||
+                            sendTo.ToUpper().Contains("@SMS.MYCRICKET.COM") ||
+                            sendTo.ToUpper().Contains("@PTEL.COM") ||
+                            sendTo.ToUpper().Contains("@TEXT.REPUBLICWIRELESS.COM") ||
+                            sendTo.ToUpper().Contains("@TMS.SUNCOM.COM") ||
+                            sendTo.ToUpper().Contains("@MESSAGE.TING.COM") ||
+                            sendTo.ToUpper().Contains("@EMAIL.USCC.NET") ||
+                            sendTo.ToUpper().Contains("@CINGULARME.COM") ||
+                            sendTo.ToUpper().Contains("@CSPIRE1.COM"))
+                        {
+                            mail.Subject = "";
+                        }
+
+                        mail.Body = message;
+
+                        SmtpServer.Port = 587;
+                        SmtpServer.Credentials = new System.Net.NetworkCredential(userName, password);
+                        SmtpServer.EnableSsl = true;
+
+                        SmtpServer.Send(mail);
+                        //CustomMessageBox.Show("Notification Sent!", 120, 230, "Notification Message");
+                        nLabelUpdate("Notification sent to : " + sendTo, Color.GreenYellow);
+
+
                     }
-
-                    mail.Body = message;
-
-                    SmtpServer.Port = 587;
-                    SmtpServer.Credentials = new System.Net.NetworkCredential(userName, password);
-                    SmtpServer.EnableSsl = true;
-
-                    SmtpServer.Send(mail);
-                    //CustomMessageBox.Show("Notification Sent!", 120, 230, "Notification Message");
-                    nLabelUpdate("Notification sent to : " + sendTo, Color.GreenYellow);
-
-
+                    catch (Exception ex)
+                    {
+                        CustomMessageBox.Show("You may have to enable less secure apps access to gmail. See https://support.google.com/accounts/answer/6010255?hl=en" + "/r/n" + ex.ToString(), 600, 300);
+                        nLabelUpdate("Notification failed to send.", Color.Red);
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    CustomMessageBox.Show("You may have to enable less secure apps access to gmail. See https://support.google.com/accounts/answer/6010255?hl=en" + "/r/n" + ex.ToString(), 600, 300);
-                    nLabelUpdate("Notification failed to send.", Color.Red);
+                    nLabelUpdate("Missing Notification Parameters", Color.Red);
                 }
-            }
-            else
-            {
-                nLabelUpdate("Missing Notification Parameters", Color.Red);
             }
         }
         private void testNotificationButton_Click(object sender, EventArgs e)
@@ -2937,9 +2943,27 @@ namespace MovieDataCollector
         }
         private void notificationCheck_CheckedChanged(object sender, EventArgs e)
         {
-            //Update values in usernameBox and SendToBox
-            usernameBox.Text = CF.DefaultSettings["GmailAccount"];
-            sendToBox.Text = CF.DefaultSettings["NotifyAddress"];
+            if(notificationCheck.Checked)
+            {
+                userNameLabel.Visible = true;
+                usernameBox.Visible = true;
+                passwordLabel.Visible = true;
+                passwordBox.Visible = true;
+                sendToLabel.Visible = true;
+                sendToBox.Visible = true;
+                testNotificationButton.Visible = true;
+            }
+            else
+            {
+                userNameLabel.Visible = false;
+                usernameBox.Visible = false;
+                passwordLabel.Visible = false;
+                passwordBox.Visible = false;
+                sendToLabel.Visible = false;
+                sendToBox.Visible = false;
+                testNotificationButton.Visible = false;
+
+            }
         }
         private string timeDifference(DateTime start, DateTime end)
         {
@@ -2983,13 +3007,22 @@ namespace MovieDataCollector
             notificationLabel.Text = notificationText;
             notificationLabel.Invalidate();
             notificationLabel.Update();
+            notificationLabel.Visible = true;
+        }
+        private void usernameBox_Leave(object sender, EventArgs e)
+        {
+            CF.DefaultSettings["GmailAccount"] = usernameBox.Text;
+        }
+        private void sendToBox_Leave(object sender, EventArgs e)
+        {
+            CF.DefaultSettings["NotifyAddress"] = sendToBox.Text;
         }
 
 
         /*The following methods are to check that video files are compatible with a certain device*/
         private void listIncompatibleButton_Click(object sender, EventArgs e)
         {
-
+            tabControl1.SelectedIndex = 0; //Sets the tabcontrol to show data being presented on the page. 
             int loopcount = 0; //for progress bar value
             int fileCount = 0;
 
@@ -3551,6 +3584,45 @@ namespace MovieDataCollector
             return incompatible.ToString();
         }
 
-        
+        private void presetComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Sets presets values based on selection.
+            switch(presetComboBox.SelectedIndex)
+            {
+                case 0:
+                    break;
+
+                case 1:
+                    //Audio
+                    audioCodecComboBox.Text = "AAC (AVC)";
+                    mixdownComboBox.Text = "Dolby ProLogic 2";
+                    sampleRateCombo.Text = "48";
+                    filteredAACCheck.Checked = false;
+                    filteredAACCheck.Visible = false;
+                    filteredAC3Check.Checked = false;
+                    filteredAC3Check.Visible = false;
+                    filteredDTSCheck.Checked = false;
+                    filteredDTSCheck.Visible = false;
+                    audioBitrateCombo.Text = "96"; //equivalent to 192 for stereo tracks
+
+                    //Video
+                    encoderSpeedCombo.Text = "Very Fast";
+                    frameRateModeCombo.Text = "Peak";
+                    framerateCombo.Text = "Roku Compliant";
+                    encoderTuneComboBox.Text = "Fast Decode";
+                    avgBitrateCombo.Text = "3.5";
+                    encoderProfileComboBox.Text = "High";
+                    encoderLevelComboBox.Text = "4.0";
+
+                    //Options
+                    optimizeStreamingCheckBox.Checked = true;
+                    twoPassCheckbox.Checked = true;
+                    turboCheckBox.Checked = true;
+                    break;
+                
+                default:
+                    break;
+            }
+        }
     }
 }

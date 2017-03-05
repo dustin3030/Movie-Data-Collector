@@ -371,10 +371,14 @@
             this.presetComboBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.presetComboBox.ForeColor = System.Drawing.Color.GreenYellow;
             this.presetComboBox.FormattingEnabled = true;
+            this.presetComboBox.Items.AddRange(new object[] {
+            "None",
+            "Roku Compliant"});
             this.presetComboBox.Location = new System.Drawing.Point(407, 6);
             this.presetComboBox.Name = "presetComboBox";
             this.presetComboBox.Size = new System.Drawing.Size(121, 21);
             this.presetComboBox.TabIndex = 17;
+            this.presetComboBox.SelectedIndexChanged += new System.EventHandler(this.presetComboBox_SelectedIndexChanged);
             // 
             // presetLabel
             // 
@@ -393,6 +397,8 @@
             this.sendToBox.Name = "sendToBox";
             this.sendToBox.Size = new System.Drawing.Size(158, 20);
             this.sendToBox.TabIndex = 16;
+            this.sendToBox.Visible = false;
+            this.sendToBox.Leave += new System.EventHandler(this.sendToBox_Leave);
             // 
             // passwordBox
             // 
@@ -403,6 +409,7 @@
             this.passwordBox.Size = new System.Drawing.Size(158, 20);
             this.passwordBox.TabIndex = 15;
             this.passwordBox.UseSystemPasswordChar = true;
+            this.passwordBox.Visible = false;
             // 
             // usernameBox
             // 
@@ -412,6 +419,8 @@
             this.usernameBox.Name = "usernameBox";
             this.usernameBox.Size = new System.Drawing.Size(158, 20);
             this.usernameBox.TabIndex = 14;
+            this.usernameBox.Visible = false;
+            this.usernameBox.Leave += new System.EventHandler(this.usernameBox_Leave);
             // 
             // sendToLabel
             // 
@@ -421,6 +430,7 @@
             this.sendToLabel.Size = new System.Drawing.Size(59, 13);
             this.sendToLabel.TabIndex = 13;
             this.sendToLabel.Text = "Send To:";
+            this.sendToLabel.Visible = false;
             // 
             // passwordLabel
             // 
@@ -430,6 +440,7 @@
             this.passwordLabel.Size = new System.Drawing.Size(96, 13);
             this.passwordLabel.TabIndex = 12;
             this.passwordLabel.Text = "Gmail Password";
+            this.passwordLabel.Visible = false;
             // 
             // userNameLabel
             // 
@@ -439,11 +450,15 @@
             this.userNameLabel.Size = new System.Drawing.Size(98, 13);
             this.userNameLabel.TabIndex = 11;
             this.userNameLabel.Text = "Gmail Username";
+            this.userNameLabel.Visible = false;
             // 
             // notificationCheck
             // 
             this.notificationCheck.Appearance = System.Windows.Forms.Appearance.Button;
             this.notificationCheck.BackColor = System.Drawing.Color.GreenYellow;
+            this.notificationCheck.FlatAppearance.CheckedBackColor = System.Drawing.Color.OliveDrab;
+            this.notificationCheck.FlatAppearance.MouseDownBackColor = System.Drawing.Color.YellowGreen;
+            this.notificationCheck.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.notificationCheck.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.notificationCheck.Location = new System.Drawing.Point(6, 348);
             this.notificationCheck.Name = "notificationCheck";
@@ -463,6 +478,7 @@
             this.testNotificationButton.TabIndex = 9;
             this.testNotificationButton.Text = "Test Notification";
             this.testNotificationButton.UseVisualStyleBackColor = false;
+            this.testNotificationButton.Visible = false;
             this.testNotificationButton.Click += new System.EventHandler(this.testNotificationButton_Click);
             // 
             // convertAllButton
