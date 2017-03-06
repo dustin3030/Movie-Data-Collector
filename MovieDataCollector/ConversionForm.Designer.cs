@@ -1070,6 +1070,7 @@
             this.removePresetButton.TabIndex = 18;
             this.removePresetButton.Text = "Remove";
             this.removePresetButton.UseVisualStyleBackColor = false;
+            this.removePresetButton.Click += new System.EventHandler(this.removePresetButton_Click);
             // 
             // ConversionForm
             // 

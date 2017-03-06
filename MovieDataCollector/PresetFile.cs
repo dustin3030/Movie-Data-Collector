@@ -188,7 +188,7 @@ namespace MovieDataCollector
             for (int i = 0; i < PresetList.Count(); i++)
             {
                 presetFileString.Append("<Preset_" + presetNames[i] + ">\r\n");
-                for (int a = 0; a < keyList.Count() - 1; a++)
+                for (int a = 0; a < keyList.Count(); a++)
                 {
                     presetFileString.Append("\t<" + keyList[a] + ">" + PresetList[i][keyList[a]] + "</" + keyList[a] + ">\r\n");
                 }
@@ -209,6 +209,25 @@ namespace MovieDataCollector
             presetNames.Add(NewPreset["Name"]);
             PresetList.Add(NewPreset);
             UpdatePresets();
+        }
+        public void RemovePreset(string PName)
+        {
+            int itemToRemove = -1;
+            for (int i = 0; i < PresetList.Count(); i++)
+            {
+                if(PresetList[i]["Name"] == PName)
+                {
+                    itemToRemove = i;
+                }
+            }
+            if(itemToRemove != -1)
+            {
+                PresetList.RemoveAt(itemToRemove);
+                presetNames.RemoveAt(itemToRemove);
+            }
+
+            UpdatePresets();
+
         }
 
     }

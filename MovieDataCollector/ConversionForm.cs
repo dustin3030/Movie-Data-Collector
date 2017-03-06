@@ -3578,43 +3578,29 @@ namespace MovieDataCollector
 
         private void presetComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //Sets presets values based on selection.
-            switch(presetComboBox.SelectedIndex)
-            {
-                case 0:
-                    break;
+            int index = presetComboBox.SelectedIndex;
+            //Pull values from preset dictionaries in the PF object.
+            audioCodecComboBox.Text = PF.PresetList[index]["AudioCodec"];
+            mixdownComboBox.Text = PF.PresetList[index]["AudioMixdown"];
+            sampleRateCombo.Text = PF.PresetList[index]["AudioSampleRate"];
 
-                case 1:
-                    //Audio
-                    audioCodecComboBox.Text = "AAC (AVC)";
-                    mixdownComboBox.Text = "Dolby ProLogic 2";
-                    sampleRateCombo.Text = "48";
-                    filteredAACCheck.Checked = false;
-                    filteredAACCheck.Visible = false;
-                    filteredAC3Check.Checked = false;
-                    filteredAC3Check.Visible = false;
-                    filteredDTSCheck.Checked = false;
-                    filteredDTSCheck.Visible = false;
-                    audioBitrateCombo.Text = "96"; //equivalent to 192 for stereo tracks
+            if (PF.PresetList[index]["FilteredAACCheck"] == "true") { filteredAACCheck.Checked = true; } else { filteredAACCheck.Checked = false;}
+            if (PF.PresetList[index]["FilteredAC3Check"] == "true") { filteredAC3Check.Checked = true; } else { filteredAC3Check.Checked = false; }
+            if (PF.PresetList[index]["FilteredDTSCheck"] == "true") { filteredDTSCheck.Checked = true; } else { filteredDTSCheck.Checked = false; }
 
-                    //Video
-                    encoderSpeedCombo.Text = "Very Fast";
-                    frameRateModeCombo.Text = "Peak";
-                    framerateCombo.Text = "Roku Compliant";
-                    encoderTuneComboBox.Text = "Fast Decode";
-                    avgBitrateCombo.Text = "3.5";
-                    encoderProfileComboBox.Text = "High";
-                    encoderLevelComboBox.Text = "4.0";
+            audioBitrateCombo.Text = PF.PresetList[index]["AudioBitrate"];
+            encoderSpeedCombo.Text = PF.PresetList[index]["EncoderSpeed"];
+            frameRateModeCombo.Text = PF.PresetList[index]["FrameRateMode"];
+            framerateCombo.Text = PF.PresetList[index]["FrameRate"];
+            encoderTuneComboBox.Text = PF.PresetList[index]["EncoderTune"];
+            avgBitrateCombo.Text = PF.PresetList[index]["VideoBitrate"];
+            encoderProfileComboBox.Text = PF.PresetList[index]["EncoderProfile"];
+            encoderLevelComboBox.Text = PF.PresetList[index]["EncoderLevel"];
 
-                    //Options
-                    optimizeStreamingCheckBox.Checked = true;
-                    twoPassCheckbox.Checked = true;
-                    turboCheckBox.Checked = true;
-                    break;
-                
-                default:
-                    break;
-            }
+            if (PF.PresetList[index]["Optimize"] == "true") { optimizeStreamingCheckBox.Checked = true; } else { optimizeStreamingCheckBox.Checked = false; }
+            if (PF.PresetList[index]["TwoPass"] == "true") { twoPassCheckbox.Checked = true; } else { twoPassCheckbox.Checked = false; }
+            if (PF.PresetList[index]["TurboFirstPass"] == "true") { turboCheckBox.Checked = true; } else { turboCheckBox.Checked = false; }
+
         }
 
         private void addPresetButton_Click(object sender, EventArgs e)
@@ -3663,13 +3649,24 @@ namespace MovieDataCollector
                 if (turboCheckBox.Checked) { NewPreset.Add("TurboFirstPass", "true"); } else { NewPreset.Add("TurboFirstPass", "false"); }
 
                 PF.AddPreset(NewPreset);
-                
+                presetComboBox.Items.Add(presetComboBox.Text);
             }
             else
             {
                 nLabelUpdate("Presets must be named.", Color.Red);
             }
 
+        }
+
+        private void removePresetButton_Click(object sender, EventArgs e)
+        {
+            if(presetComboBox.SelectedIndex != -1)
+            {
+                PF.RemovePreset(presetComboBox.Text);
+                presetComboBox.Items.RemoveAt(presetComboBox.SelectedIndex);
+            }
+            
+            
         }
     }
 }
