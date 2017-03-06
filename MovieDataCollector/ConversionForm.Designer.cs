@@ -99,6 +99,8 @@
             this.conversionSettingsLabel = new System.Windows.Forms.Label();
             this.compatibilitySelectionLabel = new System.Windows.Forms.Label();
             this.invisibleCloseButton = new System.Windows.Forms.Button();
+            this.addPresetButton = new System.Windows.Forms.Button();
+            this.removePresetButton = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.selectionPicturebox)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -343,6 +345,8 @@
             // conversionSettingsPage
             // 
             this.conversionSettingsPage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.conversionSettingsPage.Controls.Add(this.removePresetButton);
+            this.conversionSettingsPage.Controls.Add(this.addPresetButton);
             this.conversionSettingsPage.Controls.Add(this.presetComboBox);
             this.conversionSettingsPage.Controls.Add(this.presetLabel);
             this.conversionSettingsPage.Controls.Add(this.sendToBox);
@@ -374,7 +378,7 @@
             this.presetComboBox.Items.AddRange(new object[] {
             "None",
             "Roku Compliant"});
-            this.presetComboBox.Location = new System.Drawing.Point(407, 6);
+            this.presetComboBox.Location = new System.Drawing.Point(281, 6);
             this.presetComboBox.Name = "presetComboBox";
             this.presetComboBox.Size = new System.Drawing.Size(121, 21);
             this.presetComboBox.TabIndex = 17;
@@ -383,7 +387,7 @@
             // presetLabel
             // 
             this.presetLabel.AutoSize = true;
-            this.presetLabel.Location = new System.Drawing.Point(359, 9);
+            this.presetLabel.Location = new System.Drawing.Point(232, 9);
             this.presetLabel.Name = "presetLabel";
             this.presetLabel.Size = new System.Drawing.Size(43, 13);
             this.presetLabel.TabIndex = 16;
@@ -1044,6 +1048,29 @@
             this.invisibleCloseButton.UseVisualStyleBackColor = true;
             this.invisibleCloseButton.Click += new System.EventHandler(this.invisibleCloseButton_Click);
             // 
+            // addPresetButton
+            // 
+            this.addPresetButton.BackColor = System.Drawing.Color.GreenYellow;
+            this.addPresetButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.addPresetButton.Location = new System.Drawing.Point(408, 4);
+            this.addPresetButton.Name = "addPresetButton";
+            this.addPresetButton.Size = new System.Drawing.Size(47, 23);
+            this.addPresetButton.TabIndex = 18;
+            this.addPresetButton.Text = "Add";
+            this.addPresetButton.UseVisualStyleBackColor = false;
+            this.addPresetButton.Click += new System.EventHandler(this.addPresetButton_Click);
+            // 
+            // removePresetButton
+            // 
+            this.removePresetButton.BackColor = System.Drawing.Color.GreenYellow;
+            this.removePresetButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.removePresetButton.Location = new System.Drawing.Point(461, 4);
+            this.removePresetButton.Name = "removePresetButton";
+            this.removePresetButton.Size = new System.Drawing.Size(67, 23);
+            this.removePresetButton.TabIndex = 18;
+            this.removePresetButton.Text = "Remove";
+            this.removePresetButton.UseVisualStyleBackColor = false;
+            // 
             // ConversionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1161,5 +1188,7 @@
         private System.Windows.Forms.Label sampleRateLabel;
         private System.Windows.Forms.Button invisibleCloseButton;
         private System.Windows.Forms.ComboBox frameRateModeCombo;
+        private System.Windows.Forms.Button removePresetButton;
+        private System.Windows.Forms.Button addPresetButton;
     }
 }

@@ -84,6 +84,8 @@ namespace MovieDataCollector
 
             presetDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector";//Writable folder location for config file.
             presetPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector\\Presets.txt"; //Writable file location for config file.
+
+            checkPresetFile();
         }
         public void checkPresetFile()
         {
@@ -96,6 +98,14 @@ namespace MovieDataCollector
                 if (!File.Exists(presetPath))
                 {
                     using (StreamWriter sw = File.CreateText(presetPath)) { }
+
+                    //Write default presets to file since it is empty
+                    using (StreamWriter sw = new StreamWriter(presetPath))
+                    {
+                        sw.WriteLine(CreateDefaultPresetText());
+                        sw.Close();
+                    }
+                    
                 }
 
                 //Extract File Text
@@ -104,6 +114,8 @@ namespace MovieDataCollector
                     presetString = sr.ReadToEnd();
                     sr.Close();
                 }
+
+                //Check that
 
                 //Get presets from file and add to list
                 ParsePresets(presetString);
@@ -165,6 +177,19 @@ namespace MovieDataCollector
                     PresetList.Add(presets);
                 }
             }
+        }
+        private string CreateDefaultPresetText()
+        {
+            StringBuilder presetFileString = new StringBuilder();
+
+            presetFileString.Append("<Preset_RokuCompliant>\r\n");
+            for (int i = 0; i < keyList.Count() -1; i++)
+            {
+                presetFileString.Append("\t<" + keyList[i] + ">" + valueList[i] + "</" + keyList[i] + ">\r\n");
+            }
+            presetFileString.Append("</Preset_RokuCompliant>\r\n");
+
+            return presetFileString.ToString();
         }
 
     }
