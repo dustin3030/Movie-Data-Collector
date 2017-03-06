@@ -2780,6 +2780,9 @@ namespace MovieDataCollector
             }
         }
         private void MixdownComboBox_Leave(object sender, EventArgs e)
+        {
+            //Need to add code again
+        }
         private void AudioBitrateCombo_Leave(object sender, EventArgs e)
         {
             double ABitrate;

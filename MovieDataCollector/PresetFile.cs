@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace MovieDataCollector
@@ -12,6 +13,7 @@ namespace MovieDataCollector
         public string presetPath { get; set; }
         public List<Dictionary<string, string>> PresetList { get; set; } //Holds values for conversion form presets.
         Dictionary<string, string> presets;
+        List<string> presetNames = new List<string>();
         string presetString = ""; //Holds file text when it is read in.
         string[,] presetArray = new string[,]
         {
@@ -78,11 +80,14 @@ namespace MovieDataCollector
 
         public PresetFile()
         {
+            PresetList = new List<Dictionary<string, string>>(); //Instantiate List
+
             presetDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector";//Writable folder location for config file.
             presetPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector\\Presets.txt"; //Writable file location for config file.
         }
         public void checkPresetFile()
         {
+            StringBuilder presetFileString = new StringBuilder();
 
             //Check Directory and File, Create if they dont' exist.
             try
@@ -103,10 +108,21 @@ namespace MovieDataCollector
                 //Get presets from file and add to list
                 ParsePresets(presetString);
 
+                //Create String to write to file
+                for (int i = 0; i < PresetList.Count() -1; i++)
+                {
+                    presetFileString.Append("<" + presetNames[i] + ">\r\n");
+                    for (int a = 0; a < keyList.Count() -1; a++)
+                    {
+                        presetFileString.Append("\t<" + keyList[a] + ">" + PresetList[i][keyList[a]] + "</" + keyList[a] + ">\r\n");
+                    }
+                    presetFileString.Append("</" + presetNames[i] + ">\r\n");
+                }
+
                 //Write text file with new text
                 using (StreamWriter sw = new StreamWriter(presetPath))
                 {
-                    sw.WriteLine(defaults + "\r\n" + favorites);
+                    sw.WriteLine(presetFileString);
                     sw.Close();
                 }
             }
@@ -119,18 +135,37 @@ namespace MovieDataCollector
         private void ParsePresets(string presetFileString)
         {
             //Split string into different presets and populate list with those splits
-            char delim = '\\';
-            string[] Tokens = SFD.FileName.Split(delim);
-            CF.DefaultSettings["ExportFilePath"] = ""; //Clear Path
+            string[] delim = new string[] { "<Preset" };
+            string[] Tokens = presetString.Split(delim,StringSplitOptions.None);
+            
+
+            //Create Dictionary for each split if it has the values
 
             for (int i = 0; i < Tokens.Count() - 1; i++)
             {
-                CF.DefaultSettings["ExportFilePath"] += Tokens[i].ToString() + "\\"; //Sets the default directory for exporting text file.
+                //Check information
+                if(Tokens[i].Contains("<AudioCodec>"))
+                {
+                    //Parse for Preset Name
+                    presetNames.Add(Program.GeneralParser(Tokens[i], "_", ">"));
+
+                    //Create Dictionary
+                    presets = new Dictionary<string, string>();
+
+                    //Parse Dictionary Items
+                    for (int a = 0; a < keyList.Count() - 1; a++)
+                    {
+                        string parsedValue = Program.GeneralParser(Tokens[i], "<" + keyList[a] + ">", "</" + keyList[a] + ">");
+                        if (!string.IsNullOrEmpty(parsedValue))
+                        {
+                            presets[keyList[a]] = parsedValue;
+                        }
+                    }
+                    //Add Dictionary to List
+                    PresetList.Add(presets);
+                }
             }
-
-
         }
+
     }
-
-
 }
