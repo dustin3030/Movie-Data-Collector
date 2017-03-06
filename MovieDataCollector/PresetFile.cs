@@ -14,10 +14,11 @@ namespace MovieDataCollector
         public List<Dictionary<string, string>> PresetList { get; set; } //Holds values for conversion form presets.
         Dictionary<string, string> presets;
         List<string> presetNames = new List<string>();
+        
         string presetString = ""; //Holds file text when it is read in.
         string[,] presetArray = new string[,]
         {
-            {"AudioCodecAAC", "AAC (AVC)"},
+            {"AudioCodec", "AAC (AVC)"},
             {"AudioMixdown", "Dolby ProLogic 2"},
             {"AudioSampleRate","48"},
             {"FilteredAACCheck","false"},
@@ -36,9 +37,9 @@ namespace MovieDataCollector
             {"TurboFirstPass","true"}
         };
 
-        List<string> keyList = new List<string>()
+        public List<string> keyList = new List<string>()
         {
-            "AudioCodecAAC", //AAC (AVC)
+            "AudioCodec", //AAC (AVC)
             "AudioMixdown", //Dolby ProLogic 2
             "AudioSampleRate", //48
             "FilteredAACCheck", //false
@@ -87,14 +88,15 @@ namespace MovieDataCollector
 
             checkPresetFile();
         }
+        /// <summary>
+        /// Creates preset file if necessary and populates with one preset. Reads in file contents to list of dictionaries
+        /// </summary>
         public void checkPresetFile()
         {
-            StringBuilder presetFileString = new StringBuilder();
-
             //Check Directory and File, Create if they dont' exist.
             try
             {
-                new FileInfo(presetPath).Directory.Create();
+                new FileInfo(presetDirectory).Directory.Create();
                 if (!File.Exists(presetPath))
                 {
                     using (StreamWriter sw = File.CreateText(presetPath)) { }
@@ -120,23 +122,7 @@ namespace MovieDataCollector
                 //Get presets from file and add to list
                 ParsePresets(presetString);
 
-                //Create String to write to file
-                for (int i = 0; i < PresetList.Count() -1; i++)
-                {
-                    presetFileString.Append("<" + presetNames[i] + ">\r\n");
-                    for (int a = 0; a < keyList.Count() -1; a++)
-                    {
-                        presetFileString.Append("\t<" + keyList[a] + ">" + PresetList[i][keyList[a]] + "</" + keyList[a] + ">\r\n");
-                    }
-                    presetFileString.Append("</" + presetNames[i] + ">\r\n");
-                }
-
-                //Write text file with new text
-                using (StreamWriter sw = new StreamWriter(presetPath))
-                {
-                    sw.WriteLine(presetFileString);
-                    sw.Close();
-                }
+                
             }
             catch (Exception ex)
             {
@@ -153,24 +139,28 @@ namespace MovieDataCollector
 
             //Create Dictionary for each split if it has the values
 
-            for (int i = 0; i < Tokens.Count() - 1; i++)
+            for (int i = 0; i < Tokens.Count(); i++)
             {
                 //Check information
                 if(Tokens[i].Contains("<AudioCodec>"))
                 {
                     //Parse for Preset Name
-                    presetNames.Add(Program.GeneralParser(Tokens[i], "_", ">"));
+                    string Pname = Program.GeneralParser(Tokens[i], "_", ">");
+                    presetNames.Add(Pname);
 
                     //Create Dictionary
                     presets = new Dictionary<string, string>();
 
+                    //Add Preset Name to dictionary
+                    presets.Add("Name", Pname);
+
                     //Parse Dictionary Items
-                    for (int a = 0; a < keyList.Count() - 1; a++)
+                    for (int a = 0; a < keyList.Count(); a++)
                     {
                         string parsedValue = Program.GeneralParser(Tokens[i], "<" + keyList[a] + ">", "</" + keyList[a] + ">");
                         if (!string.IsNullOrEmpty(parsedValue))
                         {
-                            presets[keyList[a]] = parsedValue;
+                            presets.Add(keyList[a], parsedValue);
                         }
                     }
                     //Add Dictionary to List
@@ -183,13 +173,42 @@ namespace MovieDataCollector
             StringBuilder presetFileString = new StringBuilder();
 
             presetFileString.Append("<Preset_RokuCompliant>\r\n");
-            for (int i = 0; i < keyList.Count() -1; i++)
+            for (int i = 0; i < keyList.Count(); i++)
             {
                 presetFileString.Append("\t<" + keyList[i] + ">" + valueList[i] + "</" + keyList[i] + ">\r\n");
             }
             presetFileString.Append("</Preset_RokuCompliant>\r\n");
 
             return presetFileString.ToString();
+        }
+        public void UpdatePresets()
+        {
+            StringBuilder presetFileString = new StringBuilder();
+            //Create String to write to file
+            for (int i = 0; i < PresetList.Count(); i++)
+            {
+                presetFileString.Append("<Preset_" + presetNames[i] + ">\r\n");
+                for (int a = 0; a < keyList.Count() - 1; a++)
+                {
+                    presetFileString.Append("\t<" + keyList[a] + ">" + PresetList[i][keyList[a]] + "</" + keyList[a] + ">\r\n");
+                }
+                presetFileString.Append("</Preset_" + presetNames[i] + ">\r\n");
+            }
+
+            //Write text file with new text
+            using (StreamWriter sw = new StreamWriter(presetPath))
+            {
+                sw.WriteLine(presetFileString);
+                sw.Close();
+            }
+
+        }
+        public void AddPreset(Dictionary<string,string> NewPreset)
+        {
+            //Add Preset Name
+            presetNames.Add(NewPreset["Name"]);
+            PresetList.Add(NewPreset);
+            UpdatePresets();
         }
 
     }

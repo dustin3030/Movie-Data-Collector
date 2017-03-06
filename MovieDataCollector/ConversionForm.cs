@@ -164,7 +164,10 @@ namespace MovieDataCollector
             "59.94",
             "60"
         };
+        //Create object containing Configuration information
         ConfigFile CF = new ConfigFile();
+        //Create object containing preset information
+        PresetFile PF = new PresetFile();
         public ConversionForm()
         {
             InitializeComponent(); //Initializes components.
@@ -3616,7 +3619,56 @@ namespace MovieDataCollector
 
         private void addPresetButton_Click(object sender, EventArgs e)
         {
-            PresetFile PF = new PresetFile();
+            //Check that there is a preset name
+            if(!string.IsNullOrEmpty(presetComboBox.Text))
+            {
+                /*"AudioCodec", //AAC (AVC)
+            "AudioMixdown", //Dolby ProLogic 2
+            "AudioSampleRate", //48
+            "FilteredAACCheck", //false
+            "FilteredAC3Check", //false
+            "FilteredDTSCheck", //false
+            "AudioBitrate", //96
+            "EncoderSpeed", //Very Fast
+            "FrameRateMode", //Peak
+            "FrameRate", //Roku Compliant\
+            "EncoderTune", //Fast Decode
+            "VideoBitrate", //3.5
+            "EncoderProfile", //High
+            "EncoderLevel", //4.0
+            "Optimize", //true
+            "TwoPass", //true
+            "TurboFirstPass" //true*/
+                Dictionary<string, string> NewPreset = new Dictionary<string, string>();
+                NewPreset.Add("Name",presetComboBox.Text);
+                NewPreset.Add("AudioCodec", audioCodecComboBox.Text);
+                NewPreset.Add("AudioMixdown", mixdownComboBox.Text);
+                NewPreset.Add("AudioSampleRate", sampleRateCombo.Text);
+
+                if (filteredAACCheck.Checked) { NewPreset.Add("FilteredAACCheck", "true"); } else { NewPreset.Add("FilteredAACCheck", "false"); }
+                if (filteredAC3Check.Checked) { NewPreset.Add("FilteredAC3Check", "true"); } else { NewPreset.Add("FilteredAC3Check", "false"); }
+                if (filteredDTSCheck.Checked) { NewPreset.Add("FilteredDTSCheck", "true"); } else { NewPreset.Add("FilteredDTSCheck", "false"); }
+
+                NewPreset.Add("AudioBitrate", audioBitrateCombo.Text);
+                NewPreset.Add("EncoderSpeed", encoderSpeedCombo.Text);
+                NewPreset.Add("FrameRateMode", frameRateModeCombo.Text);
+                NewPreset.Add("FrameRate", framerateCombo.Text);
+                NewPreset.Add("EncoderTune", encoderTuneComboBox.Text);
+                NewPreset.Add("VideoBitrate", avgBitrateCombo.Text);
+                NewPreset.Add("EncoderProfile", encoderProfileComboBox.Text);
+                NewPreset.Add("EncoderLevel", encoderLevelComboBox.Text);
+
+                if (optimizeStreamingCheckBox.Checked) { NewPreset.Add("Optimize", "true"); } else { NewPreset.Add("Optimize", "false"); }
+                if (twoPassCheckbox.Checked) { NewPreset.Add("TwoPass", "true"); } else { NewPreset.Add("TwoPass", "false"); }
+                if (turboCheckBox.Checked) { NewPreset.Add("TurboFirstPass", "true"); } else { NewPreset.Add("TurboFirstPass", "false"); }
+
+                PF.AddPreset(NewPreset);
+                
+            }
+            else
+            {
+                nLabelUpdate("Presets must be named.", Color.Red);
+            }
 
         }
     }

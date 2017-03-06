@@ -85,7 +85,6 @@ namespace MovieDataCollector
         {
             configDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector";//Writable folder location for config file.
             configPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector\\Config.txt"; //Writable file location for config file.
-            configPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector\\Presets.txt"; //Writable file location for config file.
 
             DefaultSettings = new Dictionary<string, string>();//Dictionary containing default settings
             favoritesList = new List<string>(); //List containing favorite TV show information from config file
