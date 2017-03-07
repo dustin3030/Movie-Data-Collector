@@ -12,30 +12,11 @@ namespace MovieDataCollector
         public string presetDirectory { get; set; }
         public string presetPath { get; set; }
         public List<Dictionary<string, string>> PresetList { get; set; } //Holds values for conversion form presets.
+        public List<Dictionary<string, string>> PresetListSorter { get; set; } // Holds sorted presets
         Dictionary<string, string> presets;
-        List<string> presetNames = new List<string>();
+        public List<string> presetNames = new List<string>();
         
         string presetString = ""; //Holds file text when it is read in.
-        string[,] presetArray = new string[,]
-        {
-            {"AudioCodec", "AAC (AVC)"},
-            {"AudioMixdown", "Dolby ProLogic 2"},
-            {"AudioSampleRate","48"},
-            {"FilteredAACCheck","false"},
-            {"FilteredAC3Check","false"},
-            {"FilteredDTSCheck","false"},
-            {"AudioBitrate","96"},
-            {"EncoderSpeed","Very Fast"},
-            {"FrameRateMode","Peak"},
-            {"FrameRate","Roku Compliant"},
-            {"EncoderTune","Fast Decode"},
-            {"VideoBitrate","3.5"},
-            {"EncoderProfile","High"},
-            {"EncoderLevel","4.0"},
-            {"Optimize","true"},
-            {"TwoPass","true"},
-            {"TurboFirstPass","true"}
-        };
 
         public List<string> keyList = new List<string>()
         {
@@ -82,6 +63,7 @@ namespace MovieDataCollector
         public PresetFile()
         {
             PresetList = new List<Dictionary<string, string>>(); //Instantiate List
+            PresetListSorter = new List<Dictionary<string, string>>(); //Instantiate List
 
             presetDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector";//Writable folder location for config file.
             presetPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector\\Presets.txt"; //Writable file location for config file.
@@ -116,8 +98,6 @@ namespace MovieDataCollector
                     presetString = sr.ReadToEnd();
                     sr.Close();
                 }
-
-                //Check that
 
                 //Get presets from file and add to list
                 ParsePresets(presetString);
@@ -172,18 +152,20 @@ namespace MovieDataCollector
         {
             StringBuilder presetFileString = new StringBuilder();
 
-            presetFileString.Append("<Preset_RokuCompliant>\r\n");
+            presetFileString.Append("<Preset_Roku Compliant>\r\n");
             for (int i = 0; i < keyList.Count(); i++)
             {
                 presetFileString.Append("\t<" + keyList[i] + ">" + valueList[i] + "</" + keyList[i] + ">\r\n");
             }
-            presetFileString.Append("</Preset_RokuCompliant>\r\n");
+            presetFileString.Append("</Preset_Roku Compliant>\r\n");
 
             return presetFileString.ToString();
         }
         public void UpdatePresets()
         {
             StringBuilder presetFileString = new StringBuilder();
+
+            sortPresets();
             //Create String to write to file
             for (int i = 0; i < PresetList.Count(); i++)
             {
@@ -205,10 +187,24 @@ namespace MovieDataCollector
         }
         public void AddPreset(Dictionary<string,string> NewPreset)
         {
-            //Add Preset Name
-            presetNames.Add(NewPreset["Name"]);
-            PresetList.Add(NewPreset);
-            UpdatePresets();
+            //Check preset doesn't already exist
+            if(!presetNames.Contains(NewPreset["Name"]))
+            {
+                //Add Preset Name
+                presetNames.Add(NewPreset["Name"]);
+                PresetList.Add(NewPreset);
+                UpdatePresets();
+            }
+            else
+            {
+                //Remove the preset first
+                RemovePreset(NewPreset["Name"]);
+
+                //Add Preset Name
+                presetNames.Add(NewPreset["Name"]);
+                PresetList.Add(NewPreset);
+                UpdatePresets();
+            }
         }
         public void RemovePreset(string PName)
         {
@@ -229,6 +225,32 @@ namespace MovieDataCollector
             UpdatePresets();
 
         }
+        public void sortPresets()
+        {
+            PresetListSorter.Clear();
+            //take name list, sort it
+            presetNames.Sort();
 
+            //Loop through sorted name list and match dictionary entry
+            for (int i = 0; i < presetNames.Count(); i++)
+            {
+                for (int a = 0; a < PresetList.Count(); a++)
+                {
+                    if(PresetList[a]["Name"] == presetNames[i])
+                    {
+                        //Add matched dictionary to new list containing dictionaries
+                        PresetListSorter.Add(PresetList[a]);
+                    }
+                }
+            }
+
+            //Add presets back to list
+            PresetList.Clear();
+
+            for (int i = 0; i < PresetListSorter.Count(); i++)
+            {
+                PresetList.Add(PresetListSorter[i]);
+            }
+        }
     }
 }

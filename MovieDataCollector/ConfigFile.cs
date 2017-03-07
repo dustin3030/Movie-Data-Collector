@@ -44,7 +44,7 @@ namespace MovieDataCollector
                 "Framerate", //Roku Compliant
                 "FramerateMode", //Constant, Peak, Variable
                 "AudioSampleRate", //48
-                "ConversionPreset", //RokuCompliant
+                "ConversionPreset", //Roku Compliant
                 "GmailAccount", //Left blank as default
                 "NotifyAddress" //Left blank as default
             };
@@ -76,7 +76,7 @@ namespace MovieDataCollector
                 "Roku Compliant", //Framerate
                 "Peak", //FramerateMode
                 "48", //AudioSampleRate
-                "RokuCompliant", //ConversionPreset
+                "Roku Compliant", //ConversionPreset
                 "", //GmailAccount
                 "", //NotifyAddress
             };

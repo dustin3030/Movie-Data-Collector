@@ -172,7 +172,7 @@ namespace MovieDataCollector
         {
             InitializeComponent(); //Initializes components.
             setDefaults();
-             
+            populatePresets();
         }
         private void setDefaults() //Sets encode options to values from file
         {
@@ -689,7 +689,6 @@ namespace MovieDataCollector
                 }
             }
         }
-
 
 
         /*The following methods are for converting video files*/
@@ -2343,7 +2342,6 @@ namespace MovieDataCollector
                     notificationLabel.Visible = true;
                     break;
                 default:
-                    nLabelUpdate("Framerates > 30 are not ROKU Compliant!", Color.Red);
                     notificationLabel.Visible = true;
                     break;
             }
@@ -2687,8 +2685,6 @@ namespace MovieDataCollector
             {
                 case "AAC (AVC)":
                     mixdownComboBox.Text = "Dolby ProLogic 2";
-                    nLabelUpdate("The AAC codec can only mixdown to Dolby Prologic 2", Color.Red);
-                    notificationLabel.Visible = true;
                     break;
                 default:
                     break;
@@ -3576,97 +3572,115 @@ namespace MovieDataCollector
             return incompatible.ToString();
         }
 
+        //Conversion Presets
+        private void populatePresets()
+        {
+            presetComboBox.Items.Clear();
+            for (int i = 0; i < PF.presetNames.Count(); i++)
+            {
+                presetComboBox.Items.Add(PF.presetNames[i]);
+            }
+        }
         private void presetComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             int index = presetComboBox.SelectedIndex;
-            //Pull values from preset dictionaries in the PF object.
-            audioCodecComboBox.Text = PF.PresetList[index]["AudioCodec"];
-            mixdownComboBox.Text = PF.PresetList[index]["AudioMixdown"];
-            sampleRateCombo.Text = PF.PresetList[index]["AudioSampleRate"];
+            CF.DefaultSettings["ConversionPreset"] = presetComboBox.Text;
+            CF.updateDefaults();
 
-            if (PF.PresetList[index]["FilteredAACCheck"] == "true") { filteredAACCheck.Checked = true; } else { filteredAACCheck.Checked = false;}
-            if (PF.PresetList[index]["FilteredAC3Check"] == "true") { filteredAC3Check.Checked = true; } else { filteredAC3Check.Checked = false; }
-            if (PF.PresetList[index]["FilteredDTSCheck"] == "true") { filteredDTSCheck.Checked = true; } else { filteredDTSCheck.Checked = false; }
+            if(PF.presetNames.Contains(presetComboBox.Text))
+            {
+                //Pull values from preset dictionaries in the PF object.
+                audioCodecComboBox.Text = PF.PresetList[index]["AudioCodec"];
+                mixdownComboBox.Text = PF.PresetList[index]["AudioMixdown"];
+                sampleRateCombo.Text = PF.PresetList[index]["AudioSampleRate"];
 
-            audioBitrateCombo.Text = PF.PresetList[index]["AudioBitrate"];
-            encoderSpeedCombo.Text = PF.PresetList[index]["EncoderSpeed"];
-            frameRateModeCombo.Text = PF.PresetList[index]["FrameRateMode"];
-            framerateCombo.Text = PF.PresetList[index]["FrameRate"];
-            encoderTuneComboBox.Text = PF.PresetList[index]["EncoderTune"];
-            avgBitrateCombo.Text = PF.PresetList[index]["VideoBitrate"];
-            encoderProfileComboBox.Text = PF.PresetList[index]["EncoderProfile"];
-            encoderLevelComboBox.Text = PF.PresetList[index]["EncoderLevel"];
+                if (PF.PresetList[index]["FilteredAACCheck"] == "true") { filteredAACCheck.Checked = true; } else { filteredAACCheck.Checked = false; }
+                if (PF.PresetList[index]["FilteredAC3Check"] == "true") { filteredAC3Check.Checked = true; } else { filteredAC3Check.Checked = false; }
+                if (PF.PresetList[index]["FilteredDTSCheck"] == "true") { filteredDTSCheck.Checked = true; } else { filteredDTSCheck.Checked = false; }
 
-            if (PF.PresetList[index]["Optimize"] == "true") { optimizeStreamingCheckBox.Checked = true; } else { optimizeStreamingCheckBox.Checked = false; }
-            if (PF.PresetList[index]["TwoPass"] == "true") { twoPassCheckbox.Checked = true; } else { twoPassCheckbox.Checked = false; }
-            if (PF.PresetList[index]["TurboFirstPass"] == "true") { turboCheckBox.Checked = true; } else { turboCheckBox.Checked = false; }
+                audioBitrateCombo.Text = PF.PresetList[index]["AudioBitrate"];
+                encoderSpeedCombo.Text = PF.PresetList[index]["EncoderSpeed"];
+                frameRateModeCombo.Text = PF.PresetList[index]["FrameRateMode"];
+                framerateCombo.Text = PF.PresetList[index]["FrameRate"];
+                encoderTuneComboBox.Text = PF.PresetList[index]["EncoderTune"];
+                avgBitrateCombo.Text = PF.PresetList[index]["VideoBitrate"];
+                encoderProfileComboBox.Text = PF.PresetList[index]["EncoderProfile"];
+                encoderLevelComboBox.Text = PF.PresetList[index]["EncoderLevel"];
+
+                if (PF.PresetList[index]["Optimize"] == "true") { optimizeStreamingCheckBox.Checked = true; } else { optimizeStreamingCheckBox.Checked = false; }
+                if (PF.PresetList[index]["TwoPass"] == "true") { twoPassCheckbox.Checked = true; } else { twoPassCheckbox.Checked = false; }
+                if (PF.PresetList[index]["TurboFirstPass"] == "true") { turboCheckBox.Checked = true; } else { turboCheckBox.Checked = false; }
+            }
 
         }
-
+        private void presetComboBox_Leave(object sender, EventArgs e)
+        {
+            CF.DefaultSettings["ConversionPreset"] = presetComboBox.Text;
+            CF.updateDefaults();
+        }
         private void addPresetButton_Click(object sender, EventArgs e)
         {
             //Check that there is a preset name
             if(!string.IsNullOrEmpty(presetComboBox.Text))
             {
-                /*"AudioCodec", //AAC (AVC)
-            "AudioMixdown", //Dolby ProLogic 2
-            "AudioSampleRate", //48
-            "FilteredAACCheck", //false
-            "FilteredAC3Check", //false
-            "FilteredDTSCheck", //false
-            "AudioBitrate", //96
-            "EncoderSpeed", //Very Fast
-            "FrameRateMode", //Peak
-            "FrameRate", //Roku Compliant\
-            "EncoderTune", //Fast Decode
-            "VideoBitrate", //3.5
-            "EncoderProfile", //High
-            "EncoderLevel", //4.0
-            "Optimize", //true
-            "TwoPass", //true
-            "TurboFirstPass" //true*/
-                Dictionary<string, string> NewPreset = new Dictionary<string, string>();
-                NewPreset.Add("Name",presetComboBox.Text);
-                NewPreset.Add("AudioCodec", audioCodecComboBox.Text);
-                NewPreset.Add("AudioMixdown", mixdownComboBox.Text);
-                NewPreset.Add("AudioSampleRate", sampleRateCombo.Text);
+                    Dictionary<string, string> NewPreset = new Dictionary<string, string>();
+                    NewPreset.Add("Name", presetComboBox.Text);
+                    NewPreset.Add("AudioCodec", audioCodecComboBox.Text);
+                    NewPreset.Add("AudioMixdown", mixdownComboBox.Text);
+                    NewPreset.Add("AudioSampleRate", sampleRateCombo.Text);
 
-                if (filteredAACCheck.Checked) { NewPreset.Add("FilteredAACCheck", "true"); } else { NewPreset.Add("FilteredAACCheck", "false"); }
-                if (filteredAC3Check.Checked) { NewPreset.Add("FilteredAC3Check", "true"); } else { NewPreset.Add("FilteredAC3Check", "false"); }
-                if (filteredDTSCheck.Checked) { NewPreset.Add("FilteredDTSCheck", "true"); } else { NewPreset.Add("FilteredDTSCheck", "false"); }
+                    if (filteredAACCheck.Checked) { NewPreset.Add("FilteredAACCheck", "true"); } else { NewPreset.Add("FilteredAACCheck", "false"); }
+                    if (filteredAC3Check.Checked) { NewPreset.Add("FilteredAC3Check", "true"); } else { NewPreset.Add("FilteredAC3Check", "false"); }
+                    if (filteredDTSCheck.Checked) { NewPreset.Add("FilteredDTSCheck", "true"); } else { NewPreset.Add("FilteredDTSCheck", "false"); }
 
-                NewPreset.Add("AudioBitrate", audioBitrateCombo.Text);
-                NewPreset.Add("EncoderSpeed", encoderSpeedCombo.Text);
-                NewPreset.Add("FrameRateMode", frameRateModeCombo.Text);
-                NewPreset.Add("FrameRate", framerateCombo.Text);
-                NewPreset.Add("EncoderTune", encoderTuneComboBox.Text);
-                NewPreset.Add("VideoBitrate", avgBitrateCombo.Text);
-                NewPreset.Add("EncoderProfile", encoderProfileComboBox.Text);
-                NewPreset.Add("EncoderLevel", encoderLevelComboBox.Text);
+                    NewPreset.Add("AudioBitrate", audioBitrateCombo.Text);
+                    NewPreset.Add("EncoderSpeed", encoderSpeedCombo.Text);
+                    NewPreset.Add("FrameRateMode", frameRateModeCombo.Text);
+                    NewPreset.Add("FrameRate", framerateCombo.Text);
+                    NewPreset.Add("EncoderTune", encoderTuneComboBox.Text);
+                    NewPreset.Add("VideoBitrate", avgBitrateCombo.Text);
+                    NewPreset.Add("EncoderProfile", encoderProfileComboBox.Text);
+                    NewPreset.Add("EncoderLevel", encoderLevelComboBox.Text);
 
-                if (optimizeStreamingCheckBox.Checked) { NewPreset.Add("Optimize", "true"); } else { NewPreset.Add("Optimize", "false"); }
-                if (twoPassCheckbox.Checked) { NewPreset.Add("TwoPass", "true"); } else { NewPreset.Add("TwoPass", "false"); }
-                if (turboCheckBox.Checked) { NewPreset.Add("TurboFirstPass", "true"); } else { NewPreset.Add("TurboFirstPass", "false"); }
+                    if (optimizeStreamingCheckBox.Checked) { NewPreset.Add("Optimize", "true"); } else { NewPreset.Add("Optimize", "false"); }
+                    if (twoPassCheckbox.Checked) { NewPreset.Add("TwoPass", "true"); } else { NewPreset.Add("TwoPass", "false"); }
+                    if (turboCheckBox.Checked) { NewPreset.Add("TurboFirstPass", "true"); } else { NewPreset.Add("TurboFirstPass", "false"); }
 
-                PF.AddPreset(NewPreset);
-                presetComboBox.Items.Add(presetComboBox.Text);
+                    PF.AddPreset(NewPreset);
+
+                    //re-populate presets combobox
+                    presetComboBox.Items.Clear();
+                    for (int i = 0; i < PF.presetNames.Count(); i++)
+                    {
+                        presetComboBox.Items.Add(PF.presetNames[i]);
+                    }
+
+                    nLabelUpdate("Added Preset: " + presetComboBox.Text, Color.GreenYellow);
             }
             else
             {
-                nLabelUpdate("Presets must be named.", Color.Red);
+                nLabelUpdate("No name present. Preset must have a name.", Color.Red);
             }
 
         }
-
         private void removePresetButton_Click(object sender, EventArgs e)
         {
             if(presetComboBox.SelectedIndex != -1)
             {
                 PF.RemovePreset(presetComboBox.Text);
-                presetComboBox.Items.RemoveAt(presetComboBox.SelectedIndex);
+
+                //re-populate presets combobox
+                presetComboBox.Items.Clear();
+                for (int i = 0; i < PF.presetNames.Count(); i++)
+                {
+                    presetComboBox.Items.Add(PF.presetNames[i]);
+                }
+                nLabelUpdate("Removed preset: " + presetComboBox.Text,Color.GreenYellow);
+
+                presetComboBox.Text = "";
             }
-            
-            
         }
+
+        
     }
 }

@@ -50,6 +50,8 @@
             this.outPutTextBox = new System.Windows.Forms.RichTextBox();
             this.exportInfoButton = new System.Windows.Forms.Button();
             this.conversionSettingsPage = new System.Windows.Forms.TabPage();
+            this.removePresetButton = new System.Windows.Forms.Button();
+            this.addPresetButton = new System.Windows.Forms.Button();
             this.presetComboBox = new System.Windows.Forms.ComboBox();
             this.presetLabel = new System.Windows.Forms.Label();
             this.sendToBox = new System.Windows.Forms.TextBox();
@@ -99,8 +101,6 @@
             this.conversionSettingsLabel = new System.Windows.Forms.Label();
             this.compatibilitySelectionLabel = new System.Windows.Forms.Label();
             this.invisibleCloseButton = new System.Windows.Forms.Button();
-            this.addPresetButton = new System.Windows.Forms.Button();
-            this.removePresetButton = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.selectionPicturebox)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -292,9 +292,8 @@
             this.notificationLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.notificationLabel.Location = new System.Drawing.Point(9, 589);
             this.notificationLabel.Name = "notificationLabel";
-            this.notificationLabel.Size = new System.Drawing.Size(105, 13);
+            this.notificationLabel.Size = new System.Drawing.Size(0, 13);
             this.notificationLabel.TabIndex = 12;
-            this.notificationLabel.Text = "notification Label";
             this.notificationLabel.Visible = false;
             // 
             // tabControl1
@@ -370,19 +369,41 @@
             this.conversionSettingsPage.TabIndex = 1;
             this.conversionSettingsPage.Text = "Conversion Settings";
             // 
+            // removePresetButton
+            // 
+            this.removePresetButton.BackColor = System.Drawing.Color.GreenYellow;
+            this.removePresetButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.removePresetButton.Location = new System.Drawing.Point(461, 4);
+            this.removePresetButton.Name = "removePresetButton";
+            this.removePresetButton.Size = new System.Drawing.Size(67, 23);
+            this.removePresetButton.TabIndex = 18;
+            this.removePresetButton.Text = "Remove";
+            this.removePresetButton.UseVisualStyleBackColor = false;
+            this.removePresetButton.Click += new System.EventHandler(this.removePresetButton_Click);
+            // 
+            // addPresetButton
+            // 
+            this.addPresetButton.BackColor = System.Drawing.Color.GreenYellow;
+            this.addPresetButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.addPresetButton.Location = new System.Drawing.Point(408, 4);
+            this.addPresetButton.Name = "addPresetButton";
+            this.addPresetButton.Size = new System.Drawing.Size(47, 23);
+            this.addPresetButton.TabIndex = 18;
+            this.addPresetButton.Text = "Add";
+            this.addPresetButton.UseVisualStyleBackColor = false;
+            this.addPresetButton.Click += new System.EventHandler(this.addPresetButton_Click);
+            // 
             // presetComboBox
             // 
             this.presetComboBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.presetComboBox.ForeColor = System.Drawing.Color.GreenYellow;
             this.presetComboBox.FormattingEnabled = true;
-            this.presetComboBox.Items.AddRange(new object[] {
-            "None",
-            "Roku Compliant"});
             this.presetComboBox.Location = new System.Drawing.Point(281, 6);
             this.presetComboBox.Name = "presetComboBox";
             this.presetComboBox.Size = new System.Drawing.Size(121, 21);
             this.presetComboBox.TabIndex = 17;
             this.presetComboBox.SelectedIndexChanged += new System.EventHandler(this.presetComboBox_SelectedIndexChanged);
+            this.presetComboBox.Leave += new System.EventHandler(this.presetComboBox_Leave);
             // 
             // presetLabel
             // 
@@ -547,7 +568,6 @@
             this.frameRateModeCombo.Name = "frameRateModeCombo";
             this.frameRateModeCombo.Size = new System.Drawing.Size(85, 21);
             this.frameRateModeCombo.TabIndex = 15;
-            this.frameRateModeCombo.Text = "Constant";
             this.frameRateModeCombo.SelectedIndexChanged += new System.EventHandler(this.frameRateModeCombo_SelectedIndexChanged);
             this.frameRateModeCombo.TextChanged += new System.EventHandler(this.frameRateModeCombo_TextChanged);
             this.frameRateModeCombo.Leave += new System.EventHandler(this.frameRateModeCombo_Leave);
@@ -576,7 +596,6 @@
             this.framerateCombo.Name = "framerateCombo";
             this.framerateCombo.Size = new System.Drawing.Size(120, 21);
             this.framerateCombo.TabIndex = 14;
-            this.framerateCombo.Text = "Roku Compliant";
             this.framerateCombo.SelectedIndexChanged += new System.EventHandler(this.framerateCombo_SelectedIndexChanged);
             this.framerateCombo.TextChanged += new System.EventHandler(this.framerateCombo_TextChanged);
             this.framerateCombo.Leave += new System.EventHandler(this.framerateCombo_Leave);
@@ -605,7 +624,6 @@
             this.avgBitrateCombo.Name = "avgBitrateCombo";
             this.avgBitrateCombo.Size = new System.Drawing.Size(51, 21);
             this.avgBitrateCombo.TabIndex = 13;
-            this.avgBitrateCombo.Text = "3.5";
             this.avgBitrateCombo.SelectedIndexChanged += new System.EventHandler(this.avgBitrateCombo_SelectedIndexChanged);
             this.avgBitrateCombo.TextChanged += new System.EventHandler(this.avgBitrateCombo_TextChanged);
             this.avgBitrateCombo.Leave += new System.EventHandler(this.avgBitrateCombo_Leave);
@@ -634,7 +652,6 @@
             this.encoderLevelComboBox.Name = "encoderLevelComboBox";
             this.encoderLevelComboBox.Size = new System.Drawing.Size(52, 21);
             this.encoderLevelComboBox.TabIndex = 12;
-            this.encoderLevelComboBox.Text = "4.1";
             this.encoderLevelComboBox.SelectedIndexChanged += new System.EventHandler(this.encoderLevelComboBox_SelectedIndexChanged);
             this.encoderLevelComboBox.TextChanged += new System.EventHandler(this.encoderLevelComboBox_TextChanged);
             this.encoderLevelComboBox.Leave += new System.EventHandler(this.encoderLevelComboBox_Leave);
@@ -652,7 +669,6 @@
             this.encoderProfileComboBox.Name = "encoderProfileComboBox";
             this.encoderProfileComboBox.Size = new System.Drawing.Size(76, 21);
             this.encoderProfileComboBox.TabIndex = 11;
-            this.encoderProfileComboBox.Text = "High";
             this.encoderProfileComboBox.SelectedIndexChanged += new System.EventHandler(this.encoderProfileComboBox_SelectedIndexChanged);
             this.encoderProfileComboBox.TextChanged += new System.EventHandler(this.encoderProfileComboBox_TextChanged);
             this.encoderProfileComboBox.Leave += new System.EventHandler(this.encoderProfileComboBox_Leave);
@@ -674,7 +690,6 @@
             this.encoderTuneComboBox.Name = "encoderTuneComboBox";
             this.encoderTuneComboBox.Size = new System.Drawing.Size(105, 21);
             this.encoderTuneComboBox.TabIndex = 10;
-            this.encoderTuneComboBox.Text = "Fast Decode";
             this.encoderTuneComboBox.SelectedIndexChanged += new System.EventHandler(this.encoderTuneComboBox_SelectedIndexChanged);
             this.encoderTuneComboBox.TextChanged += new System.EventHandler(this.encoderTuneComboBox_TextChanged);
             this.encoderTuneComboBox.Leave += new System.EventHandler(this.encoderTuneComboBox_Leave);
@@ -699,7 +714,6 @@
             this.encoderSpeedCombo.Name = "encoderSpeedCombo";
             this.encoderSpeedCombo.Size = new System.Drawing.Size(105, 21);
             this.encoderSpeedCombo.TabIndex = 9;
-            this.encoderSpeedCombo.Text = "Medium";
             this.encoderSpeedCombo.SelectedIndexChanged += new System.EventHandler(this.encoderSpeedCombo_SelectedIndexChanged);
             this.encoderSpeedCombo.TextUpdate += new System.EventHandler(this.encoderSpeedCombo_TextUpdate);
             this.encoderSpeedCombo.Leave += new System.EventHandler(this.encoderSpeedCombo_Leave);
@@ -916,7 +930,6 @@
             this.audioBitrateCombo.Name = "audioBitrateCombo";
             this.audioBitrateCombo.Size = new System.Drawing.Size(47, 21);
             this.audioBitrateCombo.TabIndex = 6;
-            this.audioBitrateCombo.Text = "96";
             this.audioBitrateCombo.SelectedIndexChanged += new System.EventHandler(this.audioBitrateCombo_SelectedIndexChanged);
             this.audioBitrateCombo.TextChanged += new System.EventHandler(this.audioBitrateCombo_TextChanged);
             this.audioBitrateCombo.Leave += new System.EventHandler(this.AudioCodecComboBox_Leave);
@@ -943,7 +956,6 @@
             this.sampleRateCombo.Name = "sampleRateCombo";
             this.sampleRateCombo.Size = new System.Drawing.Size(54, 21);
             this.sampleRateCombo.TabIndex = 0;
-            this.sampleRateCombo.Text = "48";
             this.sampleRateCombo.SelectedIndexChanged += new System.EventHandler(this.sampleRateCombo_SelectedIndexChanged);
             this.sampleRateCombo.TextChanged += new System.EventHandler(this.sampleRateCombo_TextChanged);
             this.sampleRateCombo.Leave += new System.EventHandler(this.sampleRateCombo_Leave);
@@ -960,7 +972,6 @@
             this.mixdownComboBox.Name = "mixdownComboBox";
             this.mixdownComboBox.Size = new System.Drawing.Size(133, 21);
             this.mixdownComboBox.TabIndex = 0;
-            this.mixdownComboBox.Text = "Dolby ProLogic 2";
             this.mixdownComboBox.SelectedIndexChanged += new System.EventHandler(this.MixdownComboBox_SelectedIndexChanged);
             this.mixdownComboBox.TextChanged += new System.EventHandler(this.mixdownComboBox_TextChanged);
             // 
@@ -986,7 +997,6 @@
             this.audioCodecComboBox.Name = "audioCodecComboBox";
             this.audioCodecComboBox.Size = new System.Drawing.Size(133, 21);
             this.audioCodecComboBox.TabIndex = 0;
-            this.audioCodecComboBox.Text = "AAC (AVC)";
             this.audioCodecComboBox.SelectedIndexChanged += new System.EventHandler(this.AudioCodecComboBox_SelectedIndexChanged);
             this.audioCodecComboBox.TextChanged += new System.EventHandler(this.audioCodecComboBox_TextChanged);
             // 
@@ -1047,30 +1057,6 @@
             this.invisibleCloseButton.Text = "button1";
             this.invisibleCloseButton.UseVisualStyleBackColor = true;
             this.invisibleCloseButton.Click += new System.EventHandler(this.invisibleCloseButton_Click);
-            // 
-            // addPresetButton
-            // 
-            this.addPresetButton.BackColor = System.Drawing.Color.GreenYellow;
-            this.addPresetButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.addPresetButton.Location = new System.Drawing.Point(408, 4);
-            this.addPresetButton.Name = "addPresetButton";
-            this.addPresetButton.Size = new System.Drawing.Size(47, 23);
-            this.addPresetButton.TabIndex = 18;
-            this.addPresetButton.Text = "Add";
-            this.addPresetButton.UseVisualStyleBackColor = false;
-            this.addPresetButton.Click += new System.EventHandler(this.addPresetButton_Click);
-            // 
-            // removePresetButton
-            // 
-            this.removePresetButton.BackColor = System.Drawing.Color.GreenYellow;
-            this.removePresetButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.removePresetButton.Location = new System.Drawing.Point(461, 4);
-            this.removePresetButton.Name = "removePresetButton";
-            this.removePresetButton.Size = new System.Drawing.Size(67, 23);
-            this.removePresetButton.TabIndex = 18;
-            this.removePresetButton.Text = "Remove";
-            this.removePresetButton.UseVisualStyleBackColor = false;
-            this.removePresetButton.Click += new System.EventHandler(this.removePresetButton_Click);
             // 
             // ConversionForm
             // 
