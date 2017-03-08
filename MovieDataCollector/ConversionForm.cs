@@ -739,10 +739,18 @@ namespace MovieDataCollector
                                 Process conversionProcess = new Process();
                                 conversionProcess.StartInfo.FileName = handBrakeCLILocation + @"\HandBrakeCLI.exe";
                                 conversionProcess.StartInfo.Arguments = "/c " + handBrakeCLIString; //Sets commandline arguments
+
+                                conversionProcess.StartInfo.UseShellExecute = false; //Must be set to false to redirect standard error.
+                                //conversionProcess.StartInfo.RedirectStandardError = true; //Allows for redirect of the standard error for the process.
+
                                 conversionProcess.EnableRaisingEvents = true; //Raises process exited event on close
+                               
+                                
                                 conversionProcess.Start();
+                                //StreamReader SError = conversionProcess.StandardError;
+
                                 conversionProcess.WaitForExit();
-                                exitCode = conversionProcess.ExitCode; //gathers exit code of process (Error, or exited normally with no error)
+                                //string standardError = SError.ReadToEnd();
 
                             }
 
