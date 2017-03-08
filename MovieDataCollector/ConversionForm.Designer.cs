@@ -325,7 +325,7 @@
             this.outPutTextBox.ForeColor = System.Drawing.Color.GreenYellow;
             this.outPutTextBox.Location = new System.Drawing.Point(3, 3);
             this.outPutTextBox.Name = "outPutTextBox";
-            this.outPutTextBox.Size = new System.Drawing.Size(502, 444);
+            this.outPutTextBox.Size = new System.Drawing.Size(531, 444);
             this.outPutTextBox.TabIndex = 2;
             this.outPutTextBox.Text = "";
             // 

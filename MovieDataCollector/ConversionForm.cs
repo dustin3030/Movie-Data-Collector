@@ -21,7 +21,8 @@ namespace MovieDataCollector
         //string folderPath = ""; //Contains path for parent directory
         List<string> VideoFilesList = new List<string>(); //Contains File Paths for video files 
         StringBuilder incompatible = new StringBuilder();
-
+        string separator = "========================================================================\n";
+        string separator2 = "\n.........................................................................................................................\r\n \r\n";
         List<string> IncompatibilityInfo = new List<string>(); //Contains Incompatibility info for each file listed in VideoFilesList
 
         //string configDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector"; //Writable folder location for config file.
@@ -352,7 +353,7 @@ namespace MovieDataCollector
                                 filesListBox.SelectedItem.ToString() + "\r\n\r\n" +
                                 "INCOMPATIBLE FILE ATTRIBUTES LISTED BELOW:\r\n\r\n" +
                                 IncompatibilityInfo[filesListBox.SelectedIndex] +
-                                "\n.....................................................................................................................\r\n \r\n" +
+                                separator2 +
                                 videoFile.Info_Text;
                             outPutTextBox.SelectionStart = 0;
                             outPutTextBox.ScrollToCaret(); // force current position back to top
@@ -471,7 +472,7 @@ namespace MovieDataCollector
             //SaveFileDialog
             SaveFileDialog SFD = new SaveFileDialog();
             SFD.DefaultExt = "txt";
-            if (outPutTextBox.Text.Contains("===================="))
+            if (outPutTextBox.Text.Contains(separator))
             {
                 SFD.FileName = "Quick_Media_Info.txt";
             }
@@ -503,6 +504,7 @@ namespace MovieDataCollector
         }
         private void getQuickInfo(string file, string fileName)
         {
+            
             StringBuilder VideoInfo = new StringBuilder();
             StringBuilder AudioInfo = new StringBuilder();
 
@@ -609,7 +611,7 @@ namespace MovieDataCollector
 
             if (string.IsNullOrEmpty(VideoInfo.ToString()) && string.IsNullOrEmpty(AudioInfo.ToString()))
             {
-                outPutTextBox.Text = outPutTextBox.Text + fileName + "\n\t" + "Unable to gather info. File may be corrupt." + "\n=====================================================================\n";
+                outPutTextBox.Text = outPutTextBox.Text + fileName + "\n\t" + "Unable to gather info. File may be corrupt." + separator;
                 outPutTextBox.SelectionStart = 0;
                 //outPutTextBox.ScrollToCaret(); // force current position back to top
                 outPutTextBox.Update();
@@ -618,7 +620,7 @@ namespace MovieDataCollector
             {
                 outPutTextBox.Text = outPutTextBox.Text + fileName + "\n\t"
                 + VideoInfo.ToString() + "\n\t"
-                + AudioInfo.ToString().TrimEnd('\t') + "=====================================================================\n";
+                + AudioInfo.ToString().TrimEnd('\t') + separator;
                 outPutTextBox.SelectionStart = 0;
                 //outPutTextBox.ScrollToCaret(); // force current position back to top
                 outPutTextBox.Update();
@@ -680,7 +682,7 @@ namespace MovieDataCollector
                                 filesListBox.SelectedItem.ToString() + "\r\n\r\n" +
                                 "INCOMPATIBLE FILE ATTRIBUTES LISTED BELOW:\r\n\r\n" +
                                 IncompatibilityInfo[filesListBox.SelectedIndex] +
-                                "\n.....................................................................................................................\r\n \r\n" +
+                                separator2 +
                                 videoFile.Info_Text;
                             outPutTextBox.SelectionStart = 0;
                             outPutTextBox.ScrollToCaret(); // force current position back to top
@@ -3082,7 +3084,7 @@ namespace MovieDataCollector
 
                                     for (int i = 0; i < IncompatibilityInfo.Count; i++)
                                     {
-                                        outPutText.Append("\n" + filesListBox.Items[i] + "\n" + IncompatibilityInfo[i] + "=====================================================================");
+                                        outPutText.Append("\n" + filesListBox.Items[i] + "\n" + IncompatibilityInfo[i] + separator);
                                     }
 
                                     outPutTextBox.Text = "\t\t\t\tINVALID ATTRIBUTES:\n\n" + outPutText.ToString();
@@ -3111,7 +3113,7 @@ namespace MovieDataCollector
                                     //Add filename, bitrate, framerate to the Media Info Box
                                     for (int i = 0; i < IncompatibilityInfo.Count; i++)
                                     {
-                                        outPutText.Append("\n" + filesListBox.Items[i] + "\n" + IncompatibilityInfo[i] + "=====================================================================");
+                                        outPutText.Append("\n" + filesListBox.Items[i] + "\n" + IncompatibilityInfo[i] + separator);
                                     }
                                     outPutTextBox.Text = "\t\t\t\tINVALID ATTRIBUTES:\n\n" + outPutText.ToString();
                                 }
