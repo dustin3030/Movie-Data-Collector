@@ -171,10 +171,11 @@ namespace MovieDataCollector
         public ConversionForm()
         {
             InitializeComponent(); //Initializes components.
-            setDefaults();
+            ApplyConfigDefaults();
             populatePresets();
+            applyPreset(); // Applies the preset corresponding to the text in the preset combobox.
         }
-        private void setDefaults() //Sets encode options to values from file
+        private void ApplyConfigDefaults() //Sets encode options to values from file
         {
             /*Preset*/
             presetComboBox.Text = CF.DefaultSettings["ConversionPreset"];
@@ -2681,14 +2682,13 @@ namespace MovieDataCollector
         {
             //set default in dictionary
             CF.DefaultSettings["Mixdown"] = mixdownComboBox.Text;
-            switch (audioCodecComboBox.Text)
+
+            if(audioCodecComboBox.Text == "AAC (AVC)" && mixdownComboBox.Text != "Dolby ProLogic 2")
             {
-                case "AAC (AVC)":
-                    mixdownComboBox.Text = "Dolby ProLogic 2";
-                    break;
-                default:
-                    break;
+                nLabelUpdate("The AAC (AVC) Codec can only mixdown to \"Dolby ProLogic 2\"", Color.Red);
+                mixdownComboBox.Text = "Dolby ProLogic 2";
             }
+            
         }
         private void sampleRateCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -3576,6 +3576,8 @@ namespace MovieDataCollector
         private void populatePresets()
         {
             presetComboBox.Items.Clear();
+            presetComboBox.Items.Add(""); //Add blank row at top
+
             for (int i = 0; i < PF.presetNames.Count(); i++)
             {
                 presetComboBox.Items.Add(PF.presetNames[i]);
@@ -3583,35 +3585,9 @@ namespace MovieDataCollector
         }
         private void presetComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int index = presetComboBox.SelectedIndex;
+            applyPreset();
             CF.DefaultSettings["ConversionPreset"] = presetComboBox.Text;
             CF.updateDefaults();
-
-            if(PF.presetNames.Contains(presetComboBox.Text))
-            {
-                //Pull values from preset dictionaries in the PF object.
-                audioCodecComboBox.Text = PF.PresetList[index]["AudioCodec"];
-                mixdownComboBox.Text = PF.PresetList[index]["AudioMixdown"];
-                sampleRateCombo.Text = PF.PresetList[index]["AudioSampleRate"];
-
-                if (PF.PresetList[index]["FilteredAACCheck"] == "true") { filteredAACCheck.Checked = true; } else { filteredAACCheck.Checked = false; }
-                if (PF.PresetList[index]["FilteredAC3Check"] == "true") { filteredAC3Check.Checked = true; } else { filteredAC3Check.Checked = false; }
-                if (PF.PresetList[index]["FilteredDTSCheck"] == "true") { filteredDTSCheck.Checked = true; } else { filteredDTSCheck.Checked = false; }
-
-                audioBitrateCombo.Text = PF.PresetList[index]["AudioBitrate"];
-                encoderSpeedCombo.Text = PF.PresetList[index]["EncoderSpeed"];
-                frameRateModeCombo.Text = PF.PresetList[index]["FrameRateMode"];
-                framerateCombo.Text = PF.PresetList[index]["FrameRate"];
-                encoderTuneComboBox.Text = PF.PresetList[index]["EncoderTune"];
-                avgBitrateCombo.Text = PF.PresetList[index]["VideoBitrate"];
-                encoderProfileComboBox.Text = PF.PresetList[index]["EncoderProfile"];
-                encoderLevelComboBox.Text = PF.PresetList[index]["EncoderLevel"];
-
-                if (PF.PresetList[index]["Optimize"] == "true") { optimizeStreamingCheckBox.Checked = true; } else { optimizeStreamingCheckBox.Checked = false; }
-                if (PF.PresetList[index]["TwoPass"] == "true") { twoPassCheckbox.Checked = true; } else { twoPassCheckbox.Checked = false; }
-                if (PF.PresetList[index]["TurboFirstPass"] == "true") { turboCheckBox.Checked = true; } else { turboCheckBox.Checked = false; }
-            }
-
         }
         private void presetComboBox_Leave(object sender, EventArgs e)
         {
@@ -3650,6 +3626,7 @@ namespace MovieDataCollector
 
                     //re-populate presets combobox
                     presetComboBox.Items.Clear();
+                    presetComboBox.Items.Add(""); //Add in blank at the top
                     for (int i = 0; i < PF.presetNames.Count(); i++)
                     {
                         presetComboBox.Items.Add(PF.presetNames[i]);
@@ -3671,6 +3648,8 @@ namespace MovieDataCollector
 
                 //re-populate presets combobox
                 presetComboBox.Items.Clear();
+                presetComboBox.Items.Add(""); //adds blank at the top
+
                 for (int i = 0; i < PF.presetNames.Count(); i++)
                 {
                     presetComboBox.Items.Add(PF.presetNames[i]);
@@ -3679,6 +3658,51 @@ namespace MovieDataCollector
 
                 presetComboBox.Text = "";
             }
+        }
+        private void applyPreset()
+        {
+            int index = -1;
+
+            if (!string.IsNullOrEmpty(presetComboBox.Text))
+            {
+                //Find index
+                for (int i = 0; i < presetComboBox.Items.Count; i++)
+                {
+                    if(presetComboBox.Text == presetComboBox.Items[i].ToString())
+                    {
+                        index = i - 1; //the -1 is to account for the blank that I added in.
+                    } 
+                }
+
+                
+
+
+                if (PF.presetNames.Contains(presetComboBox.Text))
+                {
+                    //Pull values from preset dictionaries in the PF object.
+                    audioCodecComboBox.Text = PF.PresetList[index]["AudioCodec"];
+                    mixdownComboBox.Text = PF.PresetList[index]["AudioMixdown"];
+                    sampleRateCombo.Text = PF.PresetList[index]["AudioSampleRate"];
+
+                    if (PF.PresetList[index]["FilteredAACCheck"] == "true") { filteredAACCheck.Checked = true; } else { filteredAACCheck.Checked = false; }
+                    if (PF.PresetList[index]["FilteredAC3Check"] == "true") { filteredAC3Check.Checked = true; } else { filteredAC3Check.Checked = false; }
+                    if (PF.PresetList[index]["FilteredDTSCheck"] == "true") { filteredDTSCheck.Checked = true; } else { filteredDTSCheck.Checked = false; }
+
+                    audioBitrateCombo.Text = PF.PresetList[index]["AudioBitrate"];
+                    encoderSpeedCombo.Text = PF.PresetList[index]["EncoderSpeed"];
+                    frameRateModeCombo.Text = PF.PresetList[index]["FrameRateMode"];
+                    framerateCombo.Text = PF.PresetList[index]["FrameRate"];
+                    encoderTuneComboBox.Text = PF.PresetList[index]["EncoderTune"];
+                    avgBitrateCombo.Text = PF.PresetList[index]["VideoBitrate"];
+                    encoderProfileComboBox.Text = PF.PresetList[index]["EncoderProfile"];
+                    encoderLevelComboBox.Text = PF.PresetList[index]["EncoderLevel"];
+
+                    if (PF.PresetList[index]["Optimize"] == "true") { optimizeStreamingCheckBox.Checked = true; } else { optimizeStreamingCheckBox.Checked = false; }
+                    if (PF.PresetList[index]["TwoPass"] == "true") { twoPassCheckbox.Checked = true; } else { twoPassCheckbox.Checked = false; }
+                    if (PF.PresetList[index]["TurboFirstPass"] == "true") { turboCheckBox.Checked = true; } else { turboCheckBox.Checked = false; }
+                }
+            }
+            
         }
 
         
