@@ -148,7 +148,10 @@ namespace MovieDataCollector
                         //Once show is selected, use selected shows ID to gather episode information
                         TVSeriesInfo T = new TVSeriesInfo(APIKey, M.SelectedID);
                         //display series banner 
-                        seriesImagePicturebox.ImageLocation = "http://thetvdb.com/banners/" + T.series["banner"];
+                        if (T.series.ContainsKey("banner"))
+                        {
+                            seriesImagePicturebox.ImageLocation = "http://thetvdb.com/banners/" + T.series["banner"];
+                        }
                         SeriesInfo = T;
                         if (T.series.ContainsKey("SeriesName")) { favoritesCombo.Text = T.series["SeriesName"]; }
                         seriesIDTitleTextbox.Text = T.Series_ID;
@@ -162,7 +165,11 @@ namespace MovieDataCollector
                     notificationLabel.Update();
 
                     TVSeriesInfo T = new TVSeriesInfo(APIKey, S.SeriesList[0]["seriesid"]);
-                    seriesImagePicturebox.ImageLocation = "http://thetvdb.com/banners/" + T.series["banner"];
+                    if (T.series.ContainsKey("banner"))
+                    {
+                        seriesImagePicturebox.ImageLocation = "http://thetvdb.com/banners/" + T.series["banner"];
+                    }
+                    
                     SeriesInfo = T;
                     if (T.series.ContainsKey("SeriesName")) { favoritesCombo.Text = T.series["SeriesName"]; }
                     seriesIDTitleTextbox.Text = T.Series_ID;

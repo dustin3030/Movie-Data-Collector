@@ -1993,20 +1993,43 @@ namespace MovieDataCollector
                             videoFile.Audio[i].Properties["Language"].ToUpper() == "EN")
                         {
                             //Check for Max per channel Bitrate English Track
+                            if(videoFile.Audio[i].Channels > 0)
+                            {
+                                if ((videoFile.Audio[i].Bitrate / videoFile.Audio[i].Channels) > maxBitrate)
+                                {
+                                    maxBitrate = videoFile.Audio[i].Bitrate / videoFile.Audio[i].Channels; //Get the per channel bitrate
+                                    audioTrackNumber = i; //Mark the audio track that has the highest bitrate
+                                }
+                            }
+                            else
+                            {
+                                if ((videoFile.Audio[i].Bitrate / 2) > maxBitrate) // Assume at least stereo
+                                {
+                                    maxBitrate = videoFile.Audio[i].Bitrate / 2; //Get the per channel bitrate
+                                    audioTrackNumber = i; //Mark the audio track that has the highest bitrate
+                                }
+                            }
+                            
+                        }
+                    }
+                    else //No Language code
+                    {
+                        //Check for Max Bitrate Track
+                        if (videoFile.Audio[i].Channels > 0)
+                        {
                             if ((videoFile.Audio[i].Bitrate / videoFile.Audio[i].Channels) > maxBitrate)
                             {
                                 maxBitrate = videoFile.Audio[i].Bitrate / videoFile.Audio[i].Channels; //Get the per channel bitrate
                                 audioTrackNumber = i; //Mark the audio track that has the highest bitrate
                             }
                         }
-                    }
-                    else //No Language code
-                    {
-                        //Check for Max Bitrate Track
-                        if ((videoFile.Audio[i].Bitrate / videoFile.Audio[i].Channels) > maxBitrate)
+                        else
                         {
-                            maxBitrate = videoFile.Audio[i].Bitrate / videoFile.Audio[i].Channels;
-                            audioTrackNumber = i; //Mark the audio track that has the highest bitrate
+                            if ((videoFile.Audio[i].Bitrate / 2) > maxBitrate) // Assume at least stereo
+                            {
+                                maxBitrate = videoFile.Audio[i].Bitrate / 2; //Get the per channel bitrate
+                                audioTrackNumber = i; //Mark the audio track that has the highest bitrate
+                            }
                         }
                     }
                 }
