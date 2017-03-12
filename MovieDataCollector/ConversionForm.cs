@@ -738,21 +738,33 @@ namespace MovieDataCollector
                                     handBrakeCLIString = "-i " + FBD.SelectedPath + "\\" + filesListBox.SelectedItem.ToString() + " -o "; // Set to defaults let handbrake error out if necessary
                                 }
 
-                                Process conversionProcess = new Process();
-                                conversionProcess.StartInfo.FileName = handBrakeCLILocation + @"\HandBrakeCLI.exe";
-                                conversionProcess.StartInfo.Arguments = "/c " + handBrakeCLIString; //Sets commandline arguments
+                                try
+                                {
+                                    using (Process conversionProcess = new Process())
+                                    {
+                                        conversionProcess.StartInfo.FileName = handBrakeCLILocation + @"\HandBrakeCLI.exe";
+                                        conversionProcess.StartInfo.Arguments = "/c " + handBrakeCLIString; //Sets commandline arguments
 
-                                conversionProcess.StartInfo.UseShellExecute = false; //Must be set to false to redirect standard error.
-                                //conversionProcess.StartInfo.RedirectStandardError = true; //Allows for redirect of the standard error for the process.
+                                        conversionProcess.StartInfo.UseShellExecute = false; //Must be set to false to redirect standard error.
+                                                                                             //conversionProcess.StartInfo.RedirectStandardError = true; //Allows for redirect of the standard error for the process.
 
-                                conversionProcess.EnableRaisingEvents = true; //Raises process exited event on close
-                               
+                                        conversionProcess.EnableRaisingEvents = true; //Raises process exited event on close
+
+
+                                        conversionProcess.Start();
+                                        //StreamReader SError = conversionProcess.StandardError;
+                                        conversionProcess.PriorityClass = ProcessPriorityClass.High; //starts the process with the highest possible priority.
+                                        conversionProcess.WaitForExit();
+                                        //string standardError = SError.ReadToEnd();
+                                        exitCode = conversionProcess.ExitCode;
+                                    }
+                                }
+                                catch
+                                {
+                                    exitCode = 4; //Unknown Error
+                                }
                                 
-                                conversionProcess.Start();
-                                //StreamReader SError = conversionProcess.StandardError;
 
-                                conversionProcess.WaitForExit();
-                                //string standardError = SError.ReadToEnd();
 
                             }
 
@@ -894,13 +906,29 @@ namespace MovieDataCollector
                                 //Launch command line object to pass the commands to
                                 if (System.IO.File.Exists(VideoFilesList[i])) //Skip file if it has been moved or deleted 
                                 {
-                                    Process conversionProcess = new Process();
-                                    conversionProcess.StartInfo.FileName = handBrakeCLILocation + @"\HandBrakeCLI.exe";
-                                    conversionProcess.StartInfo.Arguments = "/c " + handBrakeCLIString;
-                                    conversionProcess.EnableRaisingEvents = true;
-                                    conversionProcess.Start();
-                                    conversionProcess.WaitForExit();
-                                    exitCode = conversionProcess.ExitCode;
+                                    try
+                                    {
+                                        using (Process conversionProcess = new Process())
+                                        {
+                                            conversionProcess.StartInfo.FileName = handBrakeCLILocation + @"\HandBrakeCLI.exe";
+                                            conversionProcess.StartInfo.Arguments = "/c " + handBrakeCLIString; //Sets commandline arguments
+                                            conversionProcess.StartInfo.UseShellExecute = false; //Must be set to false to redirect standard error.
+                                                                                                 //conversionProcess.StartInfo.RedirectStandardError = true; //Allows for redirect of the standard error for the process.
+                                            conversionProcess.EnableRaisingEvents = true; //Raises process exited event on close
+                                            conversionProcess.Start();
+                                            //StreamReader SError = conversionProcess.StandardError;
+                                            conversionProcess.PriorityClass = ProcessPriorityClass.High; //starts the process with the highest possible priority.
+                                            conversionProcess.WaitForExit();
+                                            //string standardError = SError.ReadToEnd();
+                                            exitCode = conversionProcess.ExitCode;
+                                        }
+                                    }
+                                    catch
+                                    {
+                                        exitCode = 4; //Unknown Error
+                                    }
+                                    
+                                    
                                 }
 
                                 switch (exitCode)
