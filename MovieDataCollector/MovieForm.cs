@@ -129,10 +129,6 @@ namespace MovieDataCollector
         {
             openVideoFile();
         }
-        private void WriteDefaultFilePath()
-        {
-            
-        }
         private void openVideoFile()
         {
             OpenFileDialog OFD = new OpenFileDialog();
@@ -1566,10 +1562,6 @@ namespace MovieDataCollector
             runTimeTextBox.Clear();
             genresTextBox.Clear();
             plotTextBox.Clear();
-            backDropPictureBox.ImageLocation = "";
-            backDropPictureBox.Image = MovieDataCollector.Properties.Resources.highlight_reel;
-            moviePosterPictureBox.ImageLocation = "";
-            moviePosterPictureBox.Image = MovieDataCollector.Properties.Resources.film_reel__Small_;
             subfilesList.Clear();
             backdropNumberLabel.Text = "";
             posterNumberLabel.Text = " of 1";
@@ -1582,6 +1574,10 @@ namespace MovieDataCollector
             titleComboBox.Text = "";
             Movie.listProperties["Backdrops"].Clear();
             Movie.listProperties["Posters"].Clear();
+            backDropPictureBox.ImageLocation = "";
+            backDropPictureBox.Image = MovieDataCollector.Properties.Resources.highlight_reel;
+            moviePosterPictureBox.ImageLocation = "";
+            moviePosterPictureBox.Image = MovieDataCollector.Properties.Resources.film_reel__Small_;
 
         }
         private string validTitle(string unformattedTitle)

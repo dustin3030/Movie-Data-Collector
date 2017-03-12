@@ -340,16 +340,16 @@
 		<col def="S0">ISDotNetInstallerArgsCommit</col>
 		<col def="S0">ISDotNetInstallerArgsUninstall</col>
 		<col def="S0">ISDotNetInstallerArgsRollback</col>
-		<row><td>HandBrakeCLI.exe</td><td>{31CDF341-7B18-4635-865F-88DE2B20F324}</td><td>HANDBRAKECLI</td><td>2</td><td/><td>handbrakecli.exe</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>HandBrakeCLI.exe</td><td>{FD862C45-655B-42D3-98ED-290345043822}</td><td>HANDBRAKECLI</td><td>2</td><td/><td>handbrakecli.exe</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT</td><td>{400A93F9-EC16-4A85-A480-9E1E45A70DCF}</td><td>DATABASEDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT1</td><td>{C66F9F6A-44DE-4785-8EDC-1A5D48CCD8BC}</td><td>INSTALLDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>ISX_DEFAULTCOMPONENT2</td><td>{2FB6F170-5D7E-461C-97C9-2EDDE6C7B59F}</td><td>HANDBRAKECLI</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>ISX_DEFAULTCOMPONENT3</td><td>{D189371B-610A-4329-9B5B-5637CD337960}</td><td>DOC</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>ISX_DEFAULTCOMPONENT4</td><td>{EA67A7A0-7A48-4E7C-A226-72A0CB4A307A}</td><td>FONTS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>ISX_DEFAULTCOMPONENT5</td><td>{4A267521-CDED-4657-91C0-3908F3139790}</td><td>CONF.D</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>MediaInfo.dll</td><td>{029BD6CD-91AA-4031-BCD6-A452B349691F}</td><td>INSTALLDIR</td><td>2</td><td/><td>mediainfo.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>MediaInfoNET.dll</td><td>{781FB95A-F943-4E10-836A-17A6E8C75F55}</td><td>INSTALLDIR</td><td>2</td><td/><td>mediainfonet.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>MovieDataCollector.exe</td><td>{738AAC55-E059-4854-8874-8A2E98AF71A3}</td><td>INSTALLDIR</td><td>2</td><td/><td>moviedatacollector.exe</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT2</td><td>{21A7B555-D0F9-4389-8E47-87650077CE4C}</td><td>HANDBRAKECLI</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT3</td><td>{4492CA37-90F2-4AD7-B152-8886E823F415}</td><td>DOC</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT4</td><td>{8085F561-3CE2-4276-BBBE-4B0DB2E6CBDF}</td><td>FONTS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT5</td><td>{AB1B916B-DCB4-433D-ABAD-65FC16C9701D}</td><td>CONF.D</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>MediaInfo.dll</td><td>{778B790B-34F2-42F2-9D86-91E91F018A3F}</td><td>INSTALLDIR</td><td>2</td><td/><td>mediainfo.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>MediaInfoNET.dll</td><td>{A0EC2546-866D-486F-B413-51CC3ED4DC2A}</td><td>INSTALLDIR</td><td>2</td><td/><td>mediainfonet.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>MovieDataCollector.exe</td><td>{C42E5EE4-9030-452E-B191-10112F99FBD4}</td><td>INSTALLDIR</td><td>2</td><td/><td>moviedatacollector.exe</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>NewComponent1</td><td>{4885EFF6-19C3-4C29-9C69-38303DFCD634}</td><td>INSTALLDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 	</table>
 
@@ -2096,16 +2096,16 @@
 		<col def="S0">FTPLocation</col>
 		<col def="S0">HTTPLocation</col>
 		<col def="S0">Miscellaneous</col>
-		<row><td>HandBrakeCLI.exe</td><td/><td/><td>_A891C17E_91B2_4841_B0FC_BC1C03436E3C_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>HandBrakeCLI.exe</td><td/><td/><td>_8ED6F930_2869_4C3D_B258_AEDFA57DA08A_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT</td><td/><td/><td>_B2CBF7CA_6F0D_4BDB_9A27_516B786295C6_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT1</td><td/><td/><td>_EE954A2E_A05A_4245_973A_FD98D493A9C3_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>ISX_DEFAULTCOMPONENT2</td><td/><td/><td>_95E4E430_0DD3_45CA_A1CF_6EC2B0CDDB71_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>ISX_DEFAULTCOMPONENT3</td><td/><td/><td>_A8F8C6DE_1B4C_4797_9867_5B6B4BFF7AE5_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>ISX_DEFAULTCOMPONENT4</td><td/><td/><td>_962B41B8_08CF_4565_8950_C9280E519A1F_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>ISX_DEFAULTCOMPONENT5</td><td/><td/><td>_65ED74CF_F2B7_473E_9849_00A769436166_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>MediaInfo.dll</td><td/><td/><td>_4BD6875D_E978_4645_8D45_523A79A42A75_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>MediaInfoNET.dll</td><td/><td/><td>_DB6BA90C_556F_4F0C_854F_1D1A1F3BD14C_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>MovieDataCollector.exe</td><td/><td/><td>_024D2E75_4981_4962_97FE_50BA2C063CB3_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT2</td><td/><td/><td>_898847D5_808E_44FA_B9CA_86B4C1F36BD1_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT3</td><td/><td/><td>_8BB31058_F45E_4AB0_AF2D_BBCD8DD76A89_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT4</td><td/><td/><td>_FA99E09C_DD23_4AF0_ADD0_0B60B60FF12C_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT5</td><td/><td/><td>_A913197C_AFC5_4B99_9271_CF84A404FF83_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>MediaInfo.dll</td><td/><td/><td>_54B80345_26D0_4C8B_B570_E3806A3F9877_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>MediaInfoNET.dll</td><td/><td/><td>_E0435B97_2215_43FD_8095_70C1B6BF91EC_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>MovieDataCollector.exe</td><td/><td/><td>_608D8EDD_10DE_48EE_998E_37EAA291BBFF_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>NewComponent1</td><td/><td/><td>_0E680989_EBFD_4F31_AC5E_38ECEAC30A16_FILTER</td><td/><td/><td/><td/></row>
 	</table>
 
@@ -3595,6 +3595,8 @@
 		<row><td>IDS_SHORTCUT_DISPLAY_NAME62</td><td>1033</td><td>LAUNCH~1.EXE|Launch HandBrakeCLI.exe</td><td>0</td><td/><td>-651863692</td></row>
 		<row><td>IDS_SHORTCUT_DISPLAY_NAME63</td><td>1033</td><td>MovieDataCollector</td><td>0</td><td/><td>1101350443</td></row>
 		<row><td>IDS_SHORTCUT_DISPLAY_NAME64</td><td>1033</td><td>LAUNCH~1.EXE|Launch HandBrakeCLI.exe</td><td>0</td><td/><td>1101391371</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME65</td><td>1033</td><td>MovieDataCollector</td><td>0</td><td/><td>1504004682</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME66</td><td>1033</td><td>LAUNCH~1.EXE|Launch HandBrakeCLI.exe</td><td>0</td><td/><td>1503986250</td></row>
 		<row><td>IDS_SHORTCUT_DISPLAY_NAME7</td><td>1033</td><td>Movie Data Collector.exe</td><td>0</td><td/><td>-2120010611</td></row>
 		<row><td>IDS_SHORTCUT_DISPLAY_NAME8</td><td>1033</td><td>LAUNCH~1.EXE|Launch Movie Data Collector.exe</td><td>0</td><td/><td>-2120012531</td></row>
 		<row><td>IDS_SHORTCUT_DISPLAY_NAME9</td><td>1033</td><td>LAUNCH~1.EXE|Launch Movie Data Collector.vshost.exe</td><td>0</td><td/><td>-2120012531</td></row>
@@ -4023,6 +4025,7 @@
 		<col def="I2">ISIconIndex</col>
 		<row><td>ARPPRODUCTICON.exe</td><td/><td>C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MovieDataCollector\MovieDataCollector\Icons\folder movies.ico</td><td>0</td></row>
 		<row><td>MovieDataCollector_361B2159C8CA4632B3ACB59B3035BA40.exe</td><td/><td>C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MovieDataCollector\MovieDataCollector\Icons\folder movies.ico</td><td>0</td></row>
+		<row><td>MovieDataCollector_B239E7A1D63B4A309A753A9CB7A6130B.exe</td><td/><td>C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MovieDataCollector\MovieDataCollector\Icons\folder movies.ico</td><td>0</td></row>
 		<row><td>MovieDataCollector_DAC4FD27F777472283169B1988D13DEC.exe</td><td/><td>C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MovieDataCollector\MovieDataCollector\Icons\folder movies.ico</td><td>0</td></row>
 		<row><td>MovieDataCollector_F6AA68D4B5FE4F7EBE4522D8CBF6760F.exe</td><td/><td>C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MovieDataCollector\MovieDataCollector\Icons\folder movies.ico</td><td>0</td></row>
 		<row><td>Movie_Data_Collect_08606AE48AA74FCF92B7871A51CE8AED.exe</td><td/><td>C:\Users\Dustin\Desktop\FileRenamer 12-30-15\FileRenamer\bin\Release\Movie Data Collector.exe</td><td>0</td></row>
@@ -4593,7 +4596,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGRAMFILETOLAUNCHATEND</td><td>[DATABASEDIR]Movie Data Collector.exe</td><td/></row>
 		<row><td>ProductCode</td><td>{6C62594A-700E-4685-9263-28848FC089BF}</td><td/></row>
 		<row><td>ProductName</td><td>Movie Data Collector</td><td/></row>
-		<row><td>ProductVersion</td><td>0.3</td><td/></row>
+		<row><td>ProductVersion</td><td>0.4</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>
@@ -4755,7 +4758,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="S255">ISComments</col>
 		<col def="S255">ISShortcutName</col>
 		<col def="I4">ISAttributes</col>
-		<row><td>MovieDataCollector.exe</td><td>movied_1_movie_data_collector2</td><td>##IDS_SHORTCUT_DISPLAY_NAME63##</td><td>MovieDataCollector.exe</td><td>AlwaysInstall</td><td/><td/><td/><td>MovieDataCollector_DAC4FD27F777472283169B1988D13DEC.exe</td><td>0</td><td>1</td><td>INSTALLDIR</td><td/><td/><td/><td/><td/><td/><td/></row>
+		<row><td>MovieDataCollector.exe</td><td>movied_1_movie_data_collector2</td><td>##IDS_SHORTCUT_DISPLAY_NAME65##</td><td>MovieDataCollector.exe</td><td>AlwaysInstall</td><td/><td/><td/><td>MovieDataCollector_B239E7A1D63B4A309A753A9CB7A6130B.exe</td><td>0</td><td>1</td><td>INSTALLDIR</td><td/><td/><td/><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="Signature">
