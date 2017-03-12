@@ -71,6 +71,7 @@
             this.tmdbPictureBox = new System.Windows.Forms.PictureBox();
             this.backDropPictureBox = new System.Windows.Forms.PictureBox();
             this.InvisibleCloseButton = new System.Windows.Forms.Button();
+            this.theMovieDBorgToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.backdropNumericUpDown)).BeginInit();
@@ -127,7 +128,8 @@
             // goToToolStripMenuItem
             // 
             this.goToToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.iMDBcomToolStripMenuItem});
+            this.iMDBcomToolStripMenuItem,
+            this.theMovieDBorgToolStripMenuItem});
             this.goToToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.goToToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.goToToolStripMenuItem.Name = "goToToolStripMenuItem";
@@ -139,7 +141,7 @@
             this.iMDBcomToolStripMenuItem.BackColor = System.Drawing.Color.GreenYellow;
             this.iMDBcomToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.iMDBcomToolStripMenuItem.Name = "iMDBcomToolStripMenuItem";
-            this.iMDBcomToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.iMDBcomToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.iMDBcomToolStripMenuItem.Text = "IMDB.com";
             this.iMDBcomToolStripMenuItem.Click += new System.EventHandler(this.iMDBcomToolStripMenuItem_Click);
             // 
@@ -543,6 +545,15 @@
             this.InvisibleCloseButton.UseVisualStyleBackColor = true;
             this.InvisibleCloseButton.Click += new System.EventHandler(this.InvisibleCloseButton_Click);
             // 
+            // theMovieDBorgToolStripMenuItem
+            // 
+            this.theMovieDBorgToolStripMenuItem.BackColor = System.Drawing.Color.GreenYellow;
+            this.theMovieDBorgToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.theMovieDBorgToolStripMenuItem.Name = "theMovieDBorgToolStripMenuItem";
+            this.theMovieDBorgToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.theMovieDBorgToolStripMenuItem.Text = "TheMovieDB.org";
+            this.theMovieDBorgToolStripMenuItem.Click += new System.EventHandler(this.theMovieDBorgToolStripMenuItem_Click);
+            // 
             // MovieForm
             // 
             this.AcceptButton = this.getHTMLButton;
@@ -653,5 +664,6 @@
         private System.Windows.Forms.Label mpaaLabel;
         private System.Windows.Forms.Label genresLabel;
         private System.Windows.Forms.Button InvisibleCloseButton;
+        private System.Windows.Forms.ToolStripMenuItem theMovieDBorgToolStripMenuItem;
     }
 }

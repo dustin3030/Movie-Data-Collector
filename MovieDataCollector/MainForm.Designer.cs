@@ -31,9 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tVShowsInstructionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.moviesInstructionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.compatibilityCheckerInstructionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.goToToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.iMDBcomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -63,37 +60,20 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tVShowsInstructionsToolStripMenuItem,
-            this.moviesInstructionsToolStripMenuItem,
-            this.compatibilityCheckerInstructionsToolStripMenuItem,
             this.exitToolStripMenuItem});
+            this.fileToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(38, 19);
             this.fileToolStripMenuItem.Text = "&File";
             // 
-            // tVShowsInstructionsToolStripMenuItem
-            // 
-            this.tVShowsInstructionsToolStripMenuItem.Name = "tVShowsInstructionsToolStripMenuItem";
-            this.tVShowsInstructionsToolStripMenuItem.Size = new System.Drawing.Size(265, 22);
-            this.tVShowsInstructionsToolStripMenuItem.Text = "TV Shows Instructions";
-            // 
-            // moviesInstructionsToolStripMenuItem
-            // 
-            this.moviesInstructionsToolStripMenuItem.Name = "moviesInstructionsToolStripMenuItem";
-            this.moviesInstructionsToolStripMenuItem.Size = new System.Drawing.Size(265, 22);
-            this.moviesInstructionsToolStripMenuItem.Text = "Movies Instructions";
-            // 
-            // compatibilityCheckerInstructionsToolStripMenuItem
-            // 
-            this.compatibilityCheckerInstructionsToolStripMenuItem.Name = "compatibilityCheckerInstructionsToolStripMenuItem";
-            this.compatibilityCheckerInstructionsToolStripMenuItem.Size = new System.Drawing.Size(265, 22);
-            this.compatibilityCheckerInstructionsToolStripMenuItem.Text = "Compatibility Checker Instructions";
-            // 
             // exitToolStripMenuItem
             // 
+            this.exitToolStripMenuItem.BackColor = System.Drawing.Color.GreenYellow;
+            this.exitToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(265, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.invisibleCloseButton_Click);
             // 
             // goToToolStripMenuItem
             // 
@@ -101,27 +81,37 @@
             this.iMDBcomToolStripMenuItem,
             this.theTVDBcomToolStripMenuItem,
             this.theMovieDBorgToolStripMenuItem});
+            this.goToToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.goToToolStripMenuItem.Name = "goToToolStripMenuItem";
             this.goToToolStripMenuItem.Size = new System.Drawing.Size(51, 19);
             this.goToToolStripMenuItem.Text = "&Go To";
             // 
             // iMDBcomToolStripMenuItem
             // 
+            this.iMDBcomToolStripMenuItem.BackColor = System.Drawing.Color.GreenYellow;
+            this.iMDBcomToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.iMDBcomToolStripMenuItem.Name = "iMDBcomToolStripMenuItem";
             this.iMDBcomToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.iMDBcomToolStripMenuItem.Text = "IMDB.com";
+            this.iMDBcomToolStripMenuItem.Click += new System.EventHandler(this.iMDBcomToolStripMenuItem_Click);
             // 
             // theTVDBcomToolStripMenuItem
             // 
+            this.theTVDBcomToolStripMenuItem.BackColor = System.Drawing.Color.GreenYellow;
+            this.theTVDBcomToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.theTVDBcomToolStripMenuItem.Name = "theTVDBcomToolStripMenuItem";
             this.theTVDBcomToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.theTVDBcomToolStripMenuItem.Text = "TheTVDB.com";
+            this.theTVDBcomToolStripMenuItem.Click += new System.EventHandler(this.theTVDBcomToolStripMenuItem_Click);
             // 
             // theMovieDBorgToolStripMenuItem
             // 
+            this.theMovieDBorgToolStripMenuItem.BackColor = System.Drawing.Color.GreenYellow;
+            this.theMovieDBorgToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.theMovieDBorgToolStripMenuItem.Name = "theMovieDBorgToolStripMenuItem";
             this.theMovieDBorgToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.theMovieDBorgToolStripMenuItem.Text = "TheMovieDB.org";
+            this.theMovieDBorgToolStripMenuItem.Click += new System.EventHandler(this.theMovieDBorgToolStripMenuItem_Click);
             // 
             // tvButton
             // 
@@ -207,9 +197,6 @@
 
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem tVShowsInstructionsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem moviesInstructionsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem compatibilityCheckerInstructionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem goToToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem iMDBcomToolStripMenuItem;

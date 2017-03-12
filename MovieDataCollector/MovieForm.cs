@@ -1572,8 +1572,10 @@ namespace MovieDataCollector
             backdropNumericUpDown.Minimum = 1;
             titleComboBox.Items.Clear();
             titleComboBox.Text = "";
-            Movie.listProperties["Backdrops"].Clear();
-            Movie.listProperties["Posters"].Clear();
+
+            if(Movie != null && Movie.listProperties.ContainsKey("Backdrops") && Movie.listProperties["Backdrops"].Count() > 0) { Movie.listProperties["Backdrops"].Clear(); }
+            if (Movie != null && Movie.listProperties.ContainsKey("Posters") && Movie.listProperties["Posters"].Count() > 0) { Movie.listProperties["Posters"].Clear(); }
+
             backDropPictureBox.ImageLocation = "";
             backDropPictureBox.Image = MovieDataCollector.Properties.Resources.highlight_reel;
             moviePosterPictureBox.ImageLocation = "";
@@ -1745,6 +1747,11 @@ namespace MovieDataCollector
                 }
                 titleComboBox.DropDownWidth = max;
             }
+        }
+
+        private void theMovieDBorgToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start("http://www.TheMovieDB.org");
         }
     }
 }

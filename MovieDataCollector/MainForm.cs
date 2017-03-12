@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics; //Allows for using Process.Start codes lines
 
 namespace MovieDataCollector
 {
@@ -50,6 +43,21 @@ namespace MovieDataCollector
             this.Hide();
             M.ShowDialog();
             this.Show();
+        }
+
+        private void iMDBcomToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start("http://www.imdb.com");
+        }
+
+        private void theTVDBcomToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start("http://www.thetvdb.com");
+        }
+
+        private void theMovieDBorgToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start("http://www.themoviedb.org");
         }
     }
 }
