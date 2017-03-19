@@ -1165,7 +1165,7 @@ namespace MovieDataCollector
             genresTextBox.Text = Movie.staticProperties["Genres"];
 
             if (string.IsNullOrEmpty(Movie.staticProperties["Tag_Line"])) { plotTextBox.Text = Movie.staticProperties["Plot"]; }
-            else { plotTextBox.Text = Movie.staticProperties["Tag_Line"] + "\r\r" + Movie.staticProperties["Plot"]; }
+            else { plotTextBox.Text = Movie.staticProperties["Tag_Line"] + "..\r\n\r\n" + Movie.staticProperties["Plot"]; }
 
 
             nLabelUpdate("Setting up images");
