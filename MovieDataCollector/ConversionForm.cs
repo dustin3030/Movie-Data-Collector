@@ -717,6 +717,11 @@ namespace MovieDataCollector
                     FolderBrowserDialog FBD = new FolderBrowserDialog(); //creates new instance of the FolderBrowserDialog
                     FBD.Description = "Select Output Folder for Converted Video Files";
 
+                    if (!string.IsNullOrEmpty(CF.DefaultSettings["OutputFilePath"])) //if folderpath contains a path, sets folderBrowserDialog to default to this path
+                    {
+                        FBD.SelectedPath = CF.DefaultSettings["OutputFilePath"];
+                    }
+
                     if (FBD.ShowDialog() == DialogResult.OK) //shows folderbrowserdialog, runs addtional code if not cancelled out
                     {
                         CF.DefaultSettings["OutputFilePath"] = FBD.SelectedPath;

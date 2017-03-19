@@ -340,16 +340,17 @@
 		<col def="S0">ISDotNetInstallerArgsCommit</col>
 		<col def="S0">ISDotNetInstallerArgsUninstall</col>
 		<col def="S0">ISDotNetInstallerArgsRollback</col>
-		<row><td>HandBrakeCLI.exe</td><td>{BBF8E54A-A66C-4FF7-8107-F822825A5012}</td><td>HANDBRAKECLI</td><td>2</td><td/><td>handbrakecli.exe</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>HandBrakeCLI.exe</td><td>{DE895A82-0052-4422-A31B-DF53AB7A5C42}</td><td>HANDBRAKECLI</td><td>2</td><td/><td>handbrakecli.exe</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT</td><td>{400A93F9-EC16-4A85-A480-9E1E45A70DCF}</td><td>DATABASEDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT1</td><td>{C66F9F6A-44DE-4785-8EDC-1A5D48CCD8BC}</td><td>INSTALLDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>ISX_DEFAULTCOMPONENT2</td><td>{9AE8CE94-43FE-4D0E-B718-D344B508EB8B}</td><td>HANDBRAKECLI</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>ISX_DEFAULTCOMPONENT3</td><td>{272506B6-03A8-4F7D-A5C1-EDCD9F6ECCEB}</td><td>DOC</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>ISX_DEFAULTCOMPONENT4</td><td>{D2B5449F-87C2-4F82-B224-F96182BCAC9C}</td><td>FONTS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>ISX_DEFAULTCOMPONENT5</td><td>{CB6F3B4A-5595-4B97-9FDF-4A596AC5F642}</td><td>CONF.D</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>MediaInfo.dll</td><td>{7450F190-4E66-4435-8203-70CCB5B0F3F0}</td><td>INSTALLDIR</td><td>2</td><td/><td>mediainfo.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>MediaInfoNET.dll</td><td>{E3DCBA16-1295-4EF4-88A8-882F4F6BD476}</td><td>INSTALLDIR</td><td>2</td><td/><td>mediainfonet.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>MovieDataCollector.exe</td><td>{01D2EB0E-9333-4326-8FB3-473387590D45}</td><td>INSTALLDIR</td><td>2</td><td/><td>moviedatacollector.exe</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT2</td><td>{A7D1484E-8016-441D-9DA7-61BA43D3BA7C}</td><td>HANDBRAKECLI</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT3</td><td>{6035EA5B-ED11-493E-8C71-992E8157012B}</td><td>DOC</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT4</td><td>{EDE641C3-78ED-4A1B-B684-E9B85F3F2B01}</td><td>FONTS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT5</td><td>{E248D071-63B3-4520-A6FF-8C4828CD3D2F}</td><td>CONF.D</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>MediaInfo.dll</td><td>{3F514789-1C36-44D5-A580-A1FA6B9547B2}</td><td>INSTALLDIR</td><td>2</td><td/><td>mediainfo.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>MediaInfoNET.dll</td><td>{D9EC6BE9-F73E-40A7-8931-A91CA9F15516}</td><td>INSTALLDIR</td><td>2</td><td/><td>mediainfonet.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>MovieDataCollector.exe</td><td>{89F571A5-7834-44D1-A449-2C906AB61A90}</td><td>INSTALLDIR</td><td>2</td><td/><td>moviedatacollector.exe</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>MovieDataCollector.vshost.exe</td><td>{0651CEA7-19DE-45AC-A63B-A9979BBC8EE6}</td><td>INSTALLDIR</td><td>2</td><td/><td>moviedatacollector.vshost.ex</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>NewComponent1</td><td>{4885EFF6-19C3-4C29-9C69-38303DFCD634}</td><td>INSTALLDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 	</table>
 
@@ -1078,6 +1079,7 @@
 		<row><td>INSTALLDIR</td><td>MediaInfo.dll</td></row>
 		<row><td>INSTALLDIR</td><td>MediaInfoNET.dll</td></row>
 		<row><td>INSTALLDIR</td><td>MovieDataCollector.exe</td></row>
+		<row><td>INSTALLDIR</td><td>MovieDataCollector.vshost.exe</td></row>
 		<row><td>INSTALLDIR</td><td>NewComponent1</td></row>
 	</table>
 
@@ -1906,6 +1908,7 @@
 		<row><td>AlwaysInstall</td><td>MediaInfo.dll</td></row>
 		<row><td>AlwaysInstall</td><td>MediaInfoNET.dll</td></row>
 		<row><td>AlwaysInstall</td><td>MovieDataCollector.exe</td></row>
+		<row><td>AlwaysInstall</td><td>MovieDataCollector.vshost.exe</td></row>
 		<row><td>AlwaysInstall</td><td>NewComponent1</td></row>
 	</table>
 
@@ -1947,6 +1950,9 @@
 		<row><td>moviedatacollector.exe</td><td>MovieDataCollector.exe</td><td>MOVIED~1.EXE|MovieDataCollector.exe</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MovieDataCollector\MovieDataCollector\bin\Release\MovieDataCollector.exe</td><td>1</td><td/></row>
 		<row><td>moviedatacollector.exe.confi</td><td>ISX_DEFAULTCOMPONENT1</td><td>MOVIED~1.CON|MovieDataCollector.exe.config</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MovieDataCollector\MovieDataCollector\bin\Release\MovieDataCollector.exe.config</td><td>1</td><td/></row>
 		<row><td>moviedatacollector.pdb</td><td>ISX_DEFAULTCOMPONENT1</td><td>MOVIED~1.PDB|MovieDataCollector.pdb</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MovieDataCollector\MovieDataCollector\bin\Release\MovieDataCollector.pdb</td><td>1</td><td/></row>
+		<row><td>moviedatacollector.vshost.ex</td><td>MovieDataCollector.vshost.exe</td><td>MOVIED~1.EXE|MovieDataCollector.vshost.exe</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MovieDataCollector\MovieDataCollector\bin\Release\MovieDataCollector.vshost.exe</td><td>1</td><td/></row>
+		<row><td>moviedatacollector.vshost.ex1</td><td>ISX_DEFAULTCOMPONENT1</td><td>MOVIED~1.CON|MovieDataCollector.vshost.exe.config</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MovieDataCollector\MovieDataCollector\bin\Release\MovieDataCollector.vshost.exe.config</td><td>1</td><td/></row>
+		<row><td>moviedatacollector.vshost.ex2</td><td>ISX_DEFAULTCOMPONENT1</td><td>MOVIED~1.MAN|MovieDataCollector.vshost.exe.manifest</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MovieDataCollector\MovieDataCollector\bin\Release\MovieDataCollector.vshost.exe.manifest</td><td>1</td><td/></row>
 		<row><td>news.markdown</td><td>ISX_DEFAULTCOMPONENT3</td><td>NEWS~1.MAR|NEWS.markdown</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MovieDataCollector\MovieDataCollector\bin\Release\HandbrakeCLI\doc\NEWS.markdown</td><td>1</td><td/></row>
 		<row><td>readme</td><td>ISX_DEFAULTCOMPONENT5</td><td>README</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MovieDataCollector\MovieDataCollector\bin\Release\HandbrakeCLI\fonts\conf.d\README</td><td>1</td><td/></row>
 		<row><td>readme.markdown</td><td>ISX_DEFAULTCOMPONENT3</td><td>README~1.MAR|README.markdown</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MovieDataCollector\MovieDataCollector\bin\Release\HandbrakeCLI\doc\README.markdown</td><td>1</td><td/></row>
@@ -2095,16 +2101,17 @@
 		<col def="S0">FTPLocation</col>
 		<col def="S0">HTTPLocation</col>
 		<col def="S0">Miscellaneous</col>
-		<row><td>HandBrakeCLI.exe</td><td/><td/><td>_791EA3A9_DD8D_4636_9486_1BF26B407F0C_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>HandBrakeCLI.exe</td><td/><td/><td>_FD59EB0D_A69D_4D00_B8F3_122D560942E4_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT</td><td/><td/><td>_B2CBF7CA_6F0D_4BDB_9A27_516B786295C6_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT1</td><td/><td/><td>_EE954A2E_A05A_4245_973A_FD98D493A9C3_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>ISX_DEFAULTCOMPONENT2</td><td/><td/><td>_3D9020A3_5614_43BE_A855_72671CE46B8C_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>ISX_DEFAULTCOMPONENT3</td><td/><td/><td>_0F77A6AE_CA52_4AE3_A362_EBD28A45955F_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>ISX_DEFAULTCOMPONENT4</td><td/><td/><td>_A904F00B_E270_40CF_AF9F_31F90B0477BB_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>ISX_DEFAULTCOMPONENT5</td><td/><td/><td>_AAC75E9D_6673_41A1_B31B_B93C597E1481_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>MediaInfo.dll</td><td/><td/><td>_8A698705_301F_4348_AC8B_5E9574B16AE4_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>MediaInfoNET.dll</td><td/><td/><td>_1EF19E70_8307_4890_9809_33251F3744DC_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>MovieDataCollector.exe</td><td/><td/><td>_04A5EE57_809D_4635_849B_201ED735D041_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT2</td><td/><td/><td>_8A58D6C5_6BC1_4923_8912_6AB84F4EEE0A_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT3</td><td/><td/><td>_41106285_9970_4662_9FB3_177CB92B2646_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT4</td><td/><td/><td>_25484B03_4990_4CFD_913C_3D5263001D32_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT5</td><td/><td/><td>_FBC5F02A_36C5_4C67_A087_3C7CBB3C83C5_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>MediaInfo.dll</td><td/><td/><td>_19BF1925_F304_4AB4_A3A2_12C134184C4C_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>MediaInfoNET.dll</td><td/><td/><td>_77D6C1F8_3C6B_45ED_83DC_543FD3C0C665_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>MovieDataCollector.exe</td><td/><td/><td>_532A1D83_D52E_47E4_8030_75C7C4266A6E_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>MovieDataCollector.vshost.exe</td><td/><td/><td>_551D5922_111A_4622_8ED5_48284D798166_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>NewComponent1</td><td/><td/><td>_0E680989_EBFD_4F31_AC5E_38ECEAC30A16_FILTER</td><td/><td/><td/><td/></row>
 	</table>
 
@@ -3598,7 +3605,11 @@
 		<row><td>IDS_SHORTCUT_DISPLAY_NAME66</td><td>1033</td><td>LAUNCH~1.EXE|Launch HandBrakeCLI.exe</td><td>0</td><td/><td>1503986250</td></row>
 		<row><td>IDS_SHORTCUT_DISPLAY_NAME67</td><td>1033</td><td>MovieDataCollector</td><td>0</td><td/><td>1638220625</td></row>
 		<row><td>IDS_SHORTCUT_DISPLAY_NAME68</td><td>1033</td><td>LAUNCH~1.EXE|Launch HandBrakeCLI.exe</td><td>0</td><td/><td>1638249265</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME69</td><td>1033</td><td>LAUNCH~1.EXE|Launch MovieDataCollector.exe</td><td>0</td><td/><td>1906682343</td></row>
 		<row><td>IDS_SHORTCUT_DISPLAY_NAME7</td><td>1033</td><td>Movie Data Collector.exe</td><td>0</td><td/><td>-2120010611</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME70</td><td>1033</td><td>MovieDataCollector</td><td>0</td><td/><td>1906645543</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME71</td><td>1033</td><td>LAUNCH~1.EXE|Launch MovieDataCollector.vshost.exe</td><td>0</td><td/><td>1906698727</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME72</td><td>1033</td><td>LAUNCH~1.EXE|Launch HandBrakeCLI.exe</td><td>0</td><td/><td>1906668039</td></row>
 		<row><td>IDS_SHORTCUT_DISPLAY_NAME8</td><td>1033</td><td>LAUNCH~1.EXE|Launch Movie Data Collector.exe</td><td>0</td><td/><td>-2120012531</td></row>
 		<row><td>IDS_SHORTCUT_DISPLAY_NAME9</td><td>1033</td><td>LAUNCH~1.EXE|Launch Movie Data Collector.vshost.exe</td><td>0</td><td/><td>-2120012531</td></row>
 		<row><td>IDS_SQLBROWSE_INTRO</td><td>1033</td><td>From the list of servers below, select the database server you would like to target.</td><td>0</td><td/><td>-995959542</td></row>
@@ -4026,10 +4037,12 @@
 		<col def="I2">ISIconIndex</col>
 		<row><td>ARPPRODUCTICON.exe</td><td/><td>C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MovieDataCollector\MovieDataCollector\Icons\folder movies.ico</td><td>0</td></row>
 		<row><td>MovieDataCollector_361B2159C8CA4632B3ACB59B3035BA40.exe</td><td/><td>C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MovieDataCollector\MovieDataCollector\Icons\folder movies.ico</td><td>0</td></row>
+		<row><td>MovieDataCollector_39648C73B07B4A328DBC4A67699DE451.exe</td><td/><td>C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MovieDataCollector\MovieDataCollector\Icons\folder movies.ico</td><td>0</td></row>
 		<row><td>MovieDataCollector_B239E7A1D63B4A309A753A9CB7A6130B.exe</td><td/><td>C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MovieDataCollector\MovieDataCollector\Icons\folder movies.ico</td><td>0</td></row>
 		<row><td>MovieDataCollector_DAC4FD27F777472283169B1988D13DEC.exe</td><td/><td>C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MovieDataCollector\MovieDataCollector\Icons\folder movies.ico</td><td>0</td></row>
 		<row><td>MovieDataCollector_E6244F1E773E474991F4E431A309F6EC.exe</td><td/><td>C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MovieDataCollector\MovieDataCollector\Icons\folder movies.ico</td><td>0</td></row>
 		<row><td>MovieDataCollector_F6AA68D4B5FE4F7EBE4522D8CBF6760F.exe</td><td/><td>C:\Users\Dustin\Documents\Visual Studio 2015\Projects\MovieDataCollector\MovieDataCollector\Icons\folder movies.ico</td><td>0</td></row>
+		<row><td>MovieDataCollector_FCFCAC3D4357430C87CE6C51E1081D8F.exe</td><td/><td>&lt;ISProductFolder&gt;\redist\Language Independent\OS Independent\GenericExe.ico</td><td>0</td></row>
 		<row><td>Movie_Data_Collect_08606AE48AA74FCF92B7871A51CE8AED.exe</td><td/><td>C:\Users\Dustin\Desktop\FileRenamer 12-30-15\FileRenamer\bin\Release\Movie Data Collector.exe</td><td>0</td></row>
 		<row><td>Movie_Data_Collect_0B610C85ADF84120B4BD9B642D8009F3.exe</td><td/><td>C:\Users\doldroyd\Desktop\FileRenamer 3-14-15\FileRenamer 3-14-15\FileRenamer\bin\Release\Movie Data Collector.exe</td><td>0</td></row>
 		<row><td>Movie_Data_Collect_0D74D0CA730340BF94547B741B7E4732.exe</td><td/><td>C:\Users\Dustin\Desktop\FileRenamer 1-19-16\FileRenamer\bin\Release\Movie Data Collector.exe</td><td>0</td></row>
@@ -4598,7 +4611,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGRAMFILETOLAUNCHATEND</td><td>[DATABASEDIR]Movie Data Collector.exe</td><td/></row>
 		<row><td>ProductCode</td><td>{6C62594A-700E-4685-9263-28848FC089BF}</td><td/></row>
 		<row><td>ProductName</td><td>Movie Data Collector</td><td/></row>
-		<row><td>ProductVersion</td><td>0.5</td><td/></row>
+		<row><td>ProductVersion</td><td>0.6</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>
@@ -4760,7 +4773,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="S255">ISComments</col>
 		<col def="S255">ISShortcutName</col>
 		<col def="I4">ISAttributes</col>
-		<row><td>MovieDataCollector.exe</td><td>movied_1_movie_data_collector2</td><td>##IDS_SHORTCUT_DISPLAY_NAME67##</td><td>MovieDataCollector.exe</td><td>AlwaysInstall</td><td/><td/><td/><td>MovieDataCollector_E6244F1E773E474991F4E431A309F6EC.exe</td><td>0</td><td>1</td><td>INSTALLDIR</td><td/><td/><td/><td/><td/><td/><td/></row>
+		<row><td>MovieDataCollector.exe</td><td>movied_1_movie_data_collector2</td><td>##IDS_SHORTCUT_DISPLAY_NAME70##</td><td>MovieDataCollector.exe</td><td>AlwaysInstall</td><td/><td/><td/><td>MovieDataCollector_39648C73B07B4A328DBC4A67699DE451.exe</td><td>0</td><td>1</td><td>INSTALLDIR</td><td/><td/><td/><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="Signature">
