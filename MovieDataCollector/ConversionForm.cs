@@ -758,7 +758,7 @@ namespace MovieDataCollector
 
                                         conversionProcess.Start();
                                         //StreamReader SError = conversionProcess.StandardError;
-                                        conversionProcess.PriorityClass = ProcessPriorityClass.High; //starts the process with the highest possible priority.
+                                        //conversionProcess.PriorityClass = ProcessPriorityClass.High; //starts the process with the highest possible priority.
                                         conversionProcess.WaitForExit();
                                         //string standardError = SError.ReadToEnd();
                                         exitCode = conversionProcess.ExitCode;
@@ -768,8 +768,6 @@ namespace MovieDataCollector
                                 {
                                     exitCode = 4; //Unknown Error
                                 }
-                                
-
 
                             }
 
