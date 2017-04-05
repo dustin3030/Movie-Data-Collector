@@ -4611,7 +4611,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGRAMFILETOLAUNCHATEND</td><td>[DATABASEDIR]Movie Data Collector.exe</td><td/></row>
 		<row><td>ProductCode</td><td>{6C62594A-700E-4685-9263-28848FC089BF}</td><td/></row>
 		<row><td>ProductName</td><td>Movie Data Collector</td><td/></row>
-		<row><td>ProductVersion</td><td>0.6</td><td/></row>
+		<row><td>ProductVersion</td><td>0.7</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>
