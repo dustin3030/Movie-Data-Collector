@@ -3769,6 +3769,23 @@ namespace MovieDataCollector
             
         }
 
-        
+        private void compatibilityCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (compatibilityCombo.SelectedIndex)
+            {
+                case 0:
+                    selectionPicturebox.Image = MovieDataCollector.Properties.Resources.Roku;
+                    break;
+                case -1:
+                    selectionPicturebox.Image = MovieDataCollector.Properties.Resources.Roku;
+                    break;
+                case 1:
+                    selectionPicturebox.Image = MovieDataCollector.Properties.Resources.xbox;
+                    break;
+                default:
+                    selectionPicturebox.Image = MovieDataCollector.Properties.Resources.Roku;
+                    break;
+            }
+        }
     }
 }

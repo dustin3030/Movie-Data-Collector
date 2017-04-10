@@ -91,7 +91,7 @@
             this.openToolStripMenuItem.BackColor = System.Drawing.Color.GreenYellow;
             this.openToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(104, 22);
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
@@ -100,7 +100,7 @@
             this.closeToolStripMenuItem.BackColor = System.Drawing.Color.GreenYellow;
             this.closeToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(104, 22);
             this.closeToolStripMenuItem.Text = "Close";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -174,7 +174,7 @@
             this.getHTMLButton.Name = "getHTMLButton";
             this.getHTMLButton.Size = new System.Drawing.Size(77, 21);
             this.getHTMLButton.TabIndex = 6;
-            this.getHTMLButton.Text = "Get &HTML";
+            this.getHTMLButton.Text = "&Search";
             this.getHTMLButton.UseVisualStyleBackColor = false;
             this.getHTMLButton.Click += new System.EventHandler(this.getHTMLButton_Click);
             // 
@@ -227,7 +227,7 @@
             this.getFileNamesButton.Name = "getFileNamesButton";
             this.getFileNamesButton.Size = new System.Drawing.Size(106, 25);
             this.getFileNamesButton.TabIndex = 10;
-            this.getFileNamesButton.Text = "&Get File Names";
+            this.getFileNamesButton.Text = "&Open Folder";
             this.getFileNamesButton.UseVisualStyleBackColor = false;
             this.getFileNamesButton.Click += new System.EventHandler(this.getFileNamesButton_Click);
             // 

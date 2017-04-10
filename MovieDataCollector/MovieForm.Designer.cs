@@ -35,6 +35,7 @@
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.goToToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.iMDBcomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.theMovieDBorgToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
             this.backdropNumberLabel = new System.Windows.Forms.Label();
             this.backdropNumericUpDown = new System.Windows.Forms.NumericUpDown();
@@ -71,7 +72,6 @@
             this.tmdbPictureBox = new System.Windows.Forms.PictureBox();
             this.backDropPictureBox = new System.Windows.Forms.PictureBox();
             this.InvisibleCloseButton = new System.Windows.Forms.Button();
-            this.theMovieDBorgToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.backdropNumericUpDown)).BeginInit();
@@ -113,7 +113,7 @@
             // 
             this.openToolStripMenuItem.BackColor = System.Drawing.Color.GreenYellow;
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(104, 22);
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openVideoFileButton_Click);
             // 
@@ -121,7 +121,7 @@
             // 
             this.closeToolStripMenuItem.BackColor = System.Drawing.Color.GreenYellow;
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(104, 22);
             this.closeToolStripMenuItem.Text = "Close";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.InvisibleCloseButton_Click);
             // 
@@ -144,6 +144,15 @@
             this.iMDBcomToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.iMDBcomToolStripMenuItem.Text = "IMDB.com";
             this.iMDBcomToolStripMenuItem.Click += new System.EventHandler(this.iMDBcomToolStripMenuItem_Click);
+            // 
+            // theMovieDBorgToolStripMenuItem
+            // 
+            this.theMovieDBorgToolStripMenuItem.BackColor = System.Drawing.Color.GreenYellow;
+            this.theMovieDBorgToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.theMovieDBorgToolStripMenuItem.Name = "theMovieDBorgToolStripMenuItem";
+            this.theMovieDBorgToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.theMovieDBorgToolStripMenuItem.Text = "TheMovieDB.org";
+            this.theMovieDBorgToolStripMenuItem.Click += new System.EventHandler(this.theMovieDBorgToolStripMenuItem_Click);
             // 
             // panel1
             // 
@@ -199,7 +208,7 @@
             this.openVideoFileButton.Name = "openVideoFileButton";
             this.openVideoFileButton.Size = new System.Drawing.Size(97, 23);
             this.openVideoFileButton.TabIndex = 4;
-            this.openVideoFileButton.Text = "&Open Video File";
+            this.openVideoFileButton.Text = "Select &File";
             this.openVideoFileButton.UseVisualStyleBackColor = false;
             this.openVideoFileButton.Click += new System.EventHandler(this.openVideoFileButton_Click);
             // 
@@ -229,7 +238,7 @@
             this.getHTMLButton.Name = "getHTMLButton";
             this.getHTMLButton.Size = new System.Drawing.Size(75, 23);
             this.getHTMLButton.TabIndex = 7;
-            this.getHTMLButton.Text = "Get &HTML";
+            this.getHTMLButton.Text = "&Search";
             this.getHTMLButton.UseVisualStyleBackColor = false;
             this.getHTMLButton.Click += new System.EventHandler(this.GetHTMLButton_Click);
             // 
@@ -544,15 +553,6 @@
             this.InvisibleCloseButton.Text = "button1";
             this.InvisibleCloseButton.UseVisualStyleBackColor = true;
             this.InvisibleCloseButton.Click += new System.EventHandler(this.InvisibleCloseButton_Click);
-            // 
-            // theMovieDBorgToolStripMenuItem
-            // 
-            this.theMovieDBorgToolStripMenuItem.BackColor = System.Drawing.Color.GreenYellow;
-            this.theMovieDBorgToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.theMovieDBorgToolStripMenuItem.Name = "theMovieDBorgToolStripMenuItem";
-            this.theMovieDBorgToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
-            this.theMovieDBorgToolStripMenuItem.Text = "TheMovieDB.org";
-            this.theMovieDBorgToolStripMenuItem.Click += new System.EventHandler(this.theMovieDBorgToolStripMenuItem_Click);
             // 
             // MovieForm
             // 
