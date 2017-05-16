@@ -648,6 +648,7 @@ namespace MovieDataCollector
         }
         private void detailInfoButton_Click(object sender, EventArgs e)
         {
+            
             if (filesListBox.SelectedIndex == -1) { filesListBox.SelectedIndex = 0; } //Sets index selection to top of the list
             tabControl1.SelectedIndex = 0; //Changes tab to media info tab.
             if (IncompatibilityInfo.Count <= 0) //Incompatible List not available
@@ -655,14 +656,17 @@ namespace MovieDataCollector
                 if (filesListBox.Items.Count > 0) //ensures that the files listbox isn't emtpy
                 {
                     string videoFileName = VideoFilesList[filesListBox.SelectedIndex]; //returns currently selected items file path
+                    
 
                     if (!string.IsNullOrEmpty(CF.DefaultSettings["InputFilePath"])) //As long as the file path isn't empty or null, get info about file
                     {
+                        nLabelUpdate("Processing detailed info for " + filesListBox.Items[filesListBox.SelectedIndex].ToString() + ".", Color.GreenYellow);
                         MediaFile videoFile = new MediaFile(videoFileName); //return info about selected file
                         outPutTextBox.Text = videoFile.Info_Text; //output info about selected file to the output box
                         outPutTextBox.SelectionStart = 0;
                         outPutTextBox.ScrollToCaret(); // force current position back to top
                         outPutTextBox.Update();
+                        nLabelUpdate("Processing detailed info for " + filesListBox.Items[filesListBox.SelectedIndex].ToString() + " is now complete.", Color.GreenYellow);
                     }
                 }
             }
@@ -678,6 +682,7 @@ namespace MovieDataCollector
 
                         if (!string.IsNullOrEmpty(CF.DefaultSettings["InputFilePath"])) //check that folderpath isn't empty
                         {
+                            nLabelUpdate("Processing detailed info for " + filesListBox.Items[filesListBox.SelectedIndex].ToString() + ".", Color.GreenYellow);
                             MediaFile videoFile = new MediaFile(videoFileName); //list incompatible file attributes.
                             outPutTextBox.Text = "INCOMPATIBLE FILE FOUND - " +
                                 filesListBox.SelectedItem.ToString() + "\r\n\r\n" +
@@ -688,6 +693,7 @@ namespace MovieDataCollector
                             outPutTextBox.SelectionStart = 0;
                             outPutTextBox.ScrollToCaret(); // force current position back to top
                             outPutTextBox.Update();
+                            nLabelUpdate("Processing detailed info for " + filesListBox.Items[filesListBox.SelectedIndex].ToString() + " is now complete.", Color.GreenYellow);
                         }
                     }
                 }
