@@ -643,6 +643,7 @@ namespace MovieDataCollector
                     nLabelUpdate("Processing file " + (i + 1).ToString() + " of " + VideoFilesList.Count().ToString(), Color.GreenYellow);
                     getQuickInfo(VideoFilesList[i], filesListBox.Items[i].ToString());
                 }
+                nLabelUpdate("Processing complete.", Color.GreenYellow);
             }
         }
         private void detailInfoButton_Click(object sender, EventArgs e)
