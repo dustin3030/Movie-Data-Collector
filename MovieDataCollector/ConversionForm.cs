@@ -21,7 +21,7 @@ namespace MovieDataCollector
         //string folderPath = ""; //Contains path for parent directory
         List<string> VideoFilesList = new List<string>(); //Contains File Paths for video files 
         StringBuilder incompatible = new StringBuilder();
-        string separator = "==========================================================================\n";
+        string separator = "========================================================================\n"; //When the scroll bar in a few characters get squished onto the next line. Don't modify unless you change the size of the control.
         string separator2 = "\n.........................................................................................................................\r\n \r\n";
         List<string> IncompatibilityInfo = new List<string>(); //Contains Incompatibility info for each file listed in VideoFilesList
 

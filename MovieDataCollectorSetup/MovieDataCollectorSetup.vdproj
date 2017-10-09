@@ -574,12 +574,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_5981E2E624226956E70DA55D679C7B0F"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_7071153AE30249E7BE781CFFA6B8A619"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -911,6 +905,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_7F189B6059B95B8FA5EB999EE58273E4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_5981E2E624226956E70DA55D679C7B0F"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -1815,7 +1815,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:FALSE"
+            "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
@@ -2460,7 +2460,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:FALSE"
+            "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
@@ -3458,7 +3458,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Movie Data Collector"
         "ProductCode" = "8:{554AF993-3C92-47FA-A095-99E6258BF987}"
-        "PackageCode" = "8:{A628857D-8BB2-45F1-912A-CE83C587174A}"
+        "PackageCode" = "8:{3DE5F991-E5BE-469B-925F-00148D3BBB79}"
         "UpgradeCode" = "8:{A0ECBEB5-1F6F-430E-83C7-09CCE4E392C2}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
