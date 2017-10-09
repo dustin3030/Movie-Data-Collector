@@ -603,7 +603,6 @@ namespace MovieDataCollector
             string subtitleLanguage = "";
             string subtitleForcedFlag = "";
             string subtitleDefaultFlag = "";
-            string subtitleFlags = "";
 
 
 
@@ -751,7 +750,6 @@ namespace MovieDataCollector
                 subtitleLanguage = "";
                 subtitleForcedFlag = "";
                 subtitleDefaultFlag = "";
-                subtitleFlags = "";
             }
 
             if (string.IsNullOrEmpty(VideoInfo.ToString()) && string.IsNullOrEmpty(AudioInfo.ToString()) && string.IsNullOrEmpty(SubtitleInfo.ToString()))
