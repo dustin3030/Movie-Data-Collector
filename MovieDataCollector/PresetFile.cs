@@ -60,8 +60,8 @@ namespace MovieDataCollector
             "true", //Optimize
             "true", //TwoPass
             "true", //TurboFirstPass
-            "None", //SubtitleSelection
-            "False" //ForcedSubtitlesBurnIn
+            "English", //SubtitleSelection
+            "True" //ForcedSubtitlesBurnIn
         };
 
         List<string> MoviePresetValueList = new List<string>()
@@ -96,6 +96,7 @@ namespace MovieDataCollector
             presetPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector\\Presets.txt"; //Writable file location for config file.
 
             checkPresetFile();
+
         }
         /// <summary>
         /// Creates preset file if necessary and populates with one preset. Reads in file contents to list of dictionaries
@@ -115,6 +116,36 @@ namespace MovieDataCollector
                     {
                         sw.WriteLine(CreateDefaultPresetText());
                         sw.Close();
+                    }
+                    
+                }
+                else //File does exist, check contents
+                {
+                    using (StreamReader sr = new StreamReader(presetPath))
+                    {
+                        presetString = sr.ReadToEnd();
+                        sr.Close();
+                    }
+
+                    //Check that string contains all the keys of the dictionary
+                    bool valueMissing = false;
+                    for (int i = 0; i < keyList.Count(); i++)
+                    {
+                        if(!valueMissing)
+                        {
+                            if (string.IsNullOrEmpty(Program.GeneralParser(presetString, "<" + keyList[i] + ">", "</" + keyList[i] + ">")))
+                            {
+                                valueMissing = true;
+                            }
+                        }
+                    }
+                    if(valueMissing) //if a value is missing create new file with defaults.
+                    {
+                        using (StreamWriter sw = new StreamWriter(presetPath))
+                        {
+                            sw.WriteLine(CreateDefaultPresetText());
+                            sw.Close();
+                        }
                     }
                     
                 }
@@ -168,6 +199,10 @@ namespace MovieDataCollector
                         if (!string.IsNullOrEmpty(parsedValue))
                         {
                             presets.Add(keyList[a], parsedValue);
+                        }
+                        else
+                        {
+                            presets.Add(keyList[a], ""); //add empty string if value isn't found in the file.
                         }
                     }
                     //Add Dictionary to List
