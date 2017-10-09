@@ -65,6 +65,10 @@
             this.convertAllButton = new System.Windows.Forms.Button();
             this.convertSelectedButton = new System.Windows.Forms.Button();
             this.videoSettingsPanel = new System.Windows.Forms.Panel();
+            this.subtitleGroupBox = new System.Windows.Forms.GroupBox();
+            this.burnInSubtitlesCheck = new System.Windows.Forms.CheckBox();
+            this.subtitleLabel = new System.Windows.Forms.Label();
+            this.subtitleCombo = new System.Windows.Forms.ComboBox();
             this.frameRateModeCombo = new System.Windows.Forms.ComboBox();
             this.framerateCombo = new System.Windows.Forms.ComboBox();
             this.avgBitrateCombo = new System.Windows.Forms.ComboBox();
@@ -101,12 +105,15 @@
             this.conversionSettingsLabel = new System.Windows.Forms.Label();
             this.compatibilitySelectionLabel = new System.Windows.Forms.Label();
             this.invisibleCloseButton = new System.Windows.Forms.Button();
+            this.subIncludeLabel = new System.Windows.Forms.Label();
+            this.subtitleInfoLabel = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.selectionPicturebox)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.mediaInfoPage.SuspendLayout();
             this.conversionSettingsPage.SuspendLayout();
             this.videoSettingsPanel.SuspendLayout();
+            this.subtitleGroupBox.SuspendLayout();
             this.audioSettinsPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -419,7 +426,7 @@
             // 
             this.sendToBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.sendToBox.ForeColor = System.Drawing.Color.GreenYellow;
-            this.sendToBox.Location = new System.Drawing.Point(144, 389);
+            this.sendToBox.Location = new System.Drawing.Point(144, 416);
             this.sendToBox.Name = "sendToBox";
             this.sendToBox.Size = new System.Drawing.Size(158, 20);
             this.sendToBox.TabIndex = 16;
@@ -430,7 +437,7 @@
             // 
             this.passwordBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.passwordBox.ForeColor = System.Drawing.Color.GreenYellow;
-            this.passwordBox.Location = new System.Drawing.Point(310, 347);
+            this.passwordBox.Location = new System.Drawing.Point(310, 374);
             this.passwordBox.Name = "passwordBox";
             this.passwordBox.Size = new System.Drawing.Size(158, 20);
             this.passwordBox.TabIndex = 15;
@@ -441,7 +448,7 @@
             // 
             this.usernameBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.usernameBox.ForeColor = System.Drawing.Color.GreenYellow;
-            this.usernameBox.Location = new System.Drawing.Point(143, 347);
+            this.usernameBox.Location = new System.Drawing.Point(143, 374);
             this.usernameBox.Name = "usernameBox";
             this.usernameBox.Size = new System.Drawing.Size(158, 20);
             this.usernameBox.TabIndex = 14;
@@ -451,7 +458,7 @@
             // sendToLabel
             // 
             this.sendToLabel.AutoSize = true;
-            this.sendToLabel.Location = new System.Drawing.Point(141, 373);
+            this.sendToLabel.Location = new System.Drawing.Point(141, 400);
             this.sendToLabel.Name = "sendToLabel";
             this.sendToLabel.Size = new System.Drawing.Size(59, 13);
             this.sendToLabel.TabIndex = 13;
@@ -461,7 +468,7 @@
             // passwordLabel
             // 
             this.passwordLabel.AutoSize = true;
-            this.passwordLabel.Location = new System.Drawing.Point(307, 331);
+            this.passwordLabel.Location = new System.Drawing.Point(307, 358);
             this.passwordLabel.Name = "passwordLabel";
             this.passwordLabel.Size = new System.Drawing.Size(96, 13);
             this.passwordLabel.TabIndex = 12;
@@ -471,7 +478,7 @@
             // userNameLabel
             // 
             this.userNameLabel.AutoSize = true;
-            this.userNameLabel.Location = new System.Drawing.Point(141, 331);
+            this.userNameLabel.Location = new System.Drawing.Point(141, 358);
             this.userNameLabel.Name = "userNameLabel";
             this.userNameLabel.Size = new System.Drawing.Size(98, 13);
             this.userNameLabel.TabIndex = 11;
@@ -486,7 +493,7 @@
             this.notificationCheck.FlatAppearance.MouseDownBackColor = System.Drawing.Color.YellowGreen;
             this.notificationCheck.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.notificationCheck.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.notificationCheck.Location = new System.Drawing.Point(6, 348);
+            this.notificationCheck.Location = new System.Drawing.Point(6, 375);
             this.notificationCheck.Name = "notificationCheck";
             this.notificationCheck.Size = new System.Drawing.Size(125, 62);
             this.notificationCheck.TabIndex = 10;
@@ -498,7 +505,7 @@
             // 
             this.testNotificationButton.BackColor = System.Drawing.Color.GreenYellow;
             this.testNotificationButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.testNotificationButton.Location = new System.Drawing.Point(329, 387);
+            this.testNotificationButton.Location = new System.Drawing.Point(329, 414);
             this.testNotificationButton.Name = "testNotificationButton";
             this.testNotificationButton.Size = new System.Drawing.Size(121, 23);
             this.testNotificationButton.TabIndex = 9;
@@ -511,7 +518,7 @@
             // 
             this.convertAllButton.BackColor = System.Drawing.Color.GreenYellow;
             this.convertAllButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.convertAllButton.Location = new System.Drawing.Point(133, 431);
+            this.convertAllButton.Location = new System.Drawing.Point(133, 458);
             this.convertAllButton.Name = "convertAllButton";
             this.convertAllButton.Size = new System.Drawing.Size(121, 32);
             this.convertAllButton.TabIndex = 8;
@@ -523,7 +530,7 @@
             // 
             this.convertSelectedButton.BackColor = System.Drawing.Color.GreenYellow;
             this.convertSelectedButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.convertSelectedButton.Location = new System.Drawing.Point(6, 431);
+            this.convertSelectedButton.Location = new System.Drawing.Point(6, 458);
             this.convertSelectedButton.Name = "convertSelectedButton";
             this.convertSelectedButton.Size = new System.Drawing.Size(121, 32);
             this.convertSelectedButton.TabIndex = 7;
@@ -534,6 +541,7 @@
             // videoSettingsPanel
             // 
             this.videoSettingsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.videoSettingsPanel.Controls.Add(this.subtitleGroupBox);
             this.videoSettingsPanel.Controls.Add(this.frameRateModeCombo);
             this.videoSettingsPanel.Controls.Add(this.framerateCombo);
             this.videoSettingsPanel.Controls.Add(this.avgBitrateCombo);
@@ -553,8 +561,72 @@
             this.videoSettingsPanel.Controls.Add(this.encoderSpeedLabel);
             this.videoSettingsPanel.Location = new System.Drawing.Point(6, 176);
             this.videoSettingsPanel.Name = "videoSettingsPanel";
-            this.videoSettingsPanel.Size = new System.Drawing.Size(522, 146);
+            this.videoSettingsPanel.Size = new System.Drawing.Size(522, 179);
             this.videoSettingsPanel.TabIndex = 6;
+            // 
+            // subtitleGroupBox
+            // 
+            this.subtitleGroupBox.Controls.Add(this.subtitleInfoLabel);
+            this.subtitleGroupBox.Controls.Add(this.subIncludeLabel);
+            this.subtitleGroupBox.Controls.Add(this.burnInSubtitlesCheck);
+            this.subtitleGroupBox.Controls.Add(this.subtitleLabel);
+            this.subtitleGroupBox.Controls.Add(this.subtitleCombo);
+            this.subtitleGroupBox.Location = new System.Drawing.Point(296, 84);
+            this.subtitleGroupBox.Name = "subtitleGroupBox";
+            this.subtitleGroupBox.Size = new System.Drawing.Size(221, 90);
+            this.subtitleGroupBox.TabIndex = 17;
+            this.subtitleGroupBox.TabStop = false;
+            // 
+            // burnInSubtitlesCheck
+            // 
+            this.burnInSubtitlesCheck.AutoSize = true;
+            this.burnInSubtitlesCheck.Location = new System.Drawing.Point(6, 42);
+            this.burnInSubtitlesCheck.Name = "burnInSubtitlesCheck";
+            this.burnInSubtitlesCheck.Size = new System.Drawing.Size(163, 17);
+            this.burnInSubtitlesCheck.TabIndex = 17;
+            this.burnInSubtitlesCheck.Text = "Burn In Forced Subtitles";
+            this.burnInSubtitlesCheck.UseVisualStyleBackColor = true;
+            this.burnInSubtitlesCheck.CheckedChanged += new System.EventHandler(this.burnInSubtitlesCheck_CheckedChanged);
+            // 
+            // subtitleLabel
+            // 
+            this.subtitleLabel.AutoSize = true;
+            this.subtitleLabel.Location = new System.Drawing.Point(75, 0);
+            this.subtitleLabel.Name = "subtitleLabel";
+            this.subtitleLabel.Size = new System.Drawing.Size(56, 13);
+            this.subtitleLabel.TabIndex = 16;
+            this.subtitleLabel.Text = "Subtitles";
+            // 
+            // subtitleCombo
+            // 
+            this.subtitleCombo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.subtitleCombo.ForeColor = System.Drawing.Color.GreenYellow;
+            this.subtitleCombo.FormattingEnabled = true;
+            this.subtitleCombo.Items.AddRange(new object[] {
+            "None",
+            "All",
+            "Default",
+            "First",
+            "Chinese",
+            "Czech",
+            "English",
+            "Finnish",
+            "French",
+            "German",
+            "Greek",
+            "Japanese",
+            "Korean",
+            "Portuguese",
+            "Russian",
+            "Spanish",
+            "Swedish"});
+            this.subtitleCombo.Location = new System.Drawing.Point(65, 18);
+            this.subtitleCombo.Name = "subtitleCombo";
+            this.subtitleCombo.Size = new System.Drawing.Size(150, 21);
+            this.subtitleCombo.TabIndex = 12;
+            this.subtitleCombo.SelectedIndexChanged += new System.EventHandler(this.subtitleCombo_SelectedIndexChanged);
+            this.subtitleCombo.TextChanged += new System.EventHandler(this.subtitleCombo_TextChanged);
+            this.subtitleCombo.Leave += new System.EventHandler(this.subtitleCombo_Leave_1);
             // 
             // frameRateModeCombo
             // 
@@ -725,7 +797,7 @@
             this.turboCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.turboCheckBox.Checked = true;
             this.turboCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.turboCheckBox.Location = new System.Drawing.Point(294, 119);
+            this.turboCheckBox.Location = new System.Drawing.Point(53, 157);
             this.turboCheckBox.Name = "turboCheckBox";
             this.turboCheckBox.Size = new System.Drawing.Size(118, 17);
             this.turboCheckBox.TabIndex = 8;
@@ -739,7 +811,7 @@
             this.twoPassCheckbox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.twoPassCheckbox.Checked = true;
             this.twoPassCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.twoPassCheckbox.Location = new System.Drawing.Point(177, 119);
+            this.twoPassCheckbox.Location = new System.Drawing.Point(60, 134);
             this.twoPassCheckbox.Name = "twoPassCheckbox";
             this.twoPassCheckbox.Size = new System.Drawing.Size(111, 17);
             this.twoPassCheckbox.TabIndex = 8;
@@ -753,7 +825,7 @@
             this.optimizeStreamingCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.optimizeStreamingCheckBox.Checked = true;
             this.optimizeStreamingCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.optimizeStreamingCheckBox.Location = new System.Drawing.Point(15, 119);
+            this.optimizeStreamingCheckBox.Location = new System.Drawing.Point(15, 111);
             this.optimizeStreamingCheckBox.Name = "optimizeStreamingCheckBox";
             this.optimizeStreamingCheckBox.Size = new System.Drawing.Size(156, 17);
             this.optimizeStreamingCheckBox.TabIndex = 7;
@@ -1059,6 +1131,24 @@
             this.invisibleCloseButton.UseVisualStyleBackColor = true;
             this.invisibleCloseButton.Click += new System.EventHandler(this.invisibleCloseButton_Click);
             // 
+            // subIncludeLabel
+            // 
+            this.subIncludeLabel.AutoSize = true;
+            this.subIncludeLabel.Location = new System.Drawing.Point(6, 21);
+            this.subIncludeLabel.Name = "subIncludeLabel";
+            this.subIncludeLabel.Size = new System.Drawing.Size(53, 13);
+            this.subIncludeLabel.TabIndex = 18;
+            this.subIncludeLabel.Text = "Include:";
+            // 
+            // subtitleInfoLabel
+            // 
+            this.subtitleInfoLabel.AutoSize = true;
+            this.subtitleInfoLabel.Location = new System.Drawing.Point(31, 62);
+            this.subtitleInfoLabel.Name = "subtitleInfoLabel";
+            this.subtitleInfoLabel.Size = new System.Drawing.Size(166, 13);
+            this.subtitleInfoLabel.TabIndex = 19;
+            this.subtitleInfoLabel.Text = "*Also Filename + -Forced.srt";
+            // 
             // ConversionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1097,6 +1187,8 @@
             this.conversionSettingsPage.PerformLayout();
             this.videoSettingsPanel.ResumeLayout(false);
             this.videoSettingsPanel.PerformLayout();
+            this.subtitleGroupBox.ResumeLayout(false);
+            this.subtitleGroupBox.PerformLayout();
             this.audioSettinsPanel.ResumeLayout(false);
             this.audioSettinsPanel.PerformLayout();
             this.ResumeLayout(false);
@@ -1178,5 +1270,11 @@
         private System.Windows.Forms.ComboBox frameRateModeCombo;
         private System.Windows.Forms.Button removePresetButton;
         private System.Windows.Forms.Button addPresetButton;
+        private System.Windows.Forms.GroupBox subtitleGroupBox;
+        private System.Windows.Forms.CheckBox burnInSubtitlesCheck;
+        private System.Windows.Forms.Label subtitleLabel;
+        private System.Windows.Forms.ComboBox subtitleCombo;
+        private System.Windows.Forms.Label subIncludeLabel;
+        private System.Windows.Forms.Label subtitleInfoLabel;
     }
 }

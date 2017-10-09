@@ -1,0 +1,34 @@
+<Defaults>
+	<MFPath>E:\Handbrake Encodes\</MFPath>
+	<TFPath>F:\Downloads\Complete\Need To Convert\TV</TFPath>
+	<InputFilePath>F:\Downloads\Complete\Need To Convert\Movies\</InputFilePath>
+	<OutputFilePath>E:\Handbrake Encodes</OutputFilePath>
+	<ExportFilePath>C:\</ExportFilePath>
+	<CompatibilitySelector>Roku</CompatibilitySelector>
+	<TVAbsoluteNumbersCheck>False</TVAbsoluteNumbersCheck>
+	<TVTitleInFilenameCheck>False</TVTitleInFilenameCheck>
+	<DefaultFormat>Synology</DefaultFormat>
+	<AudioCodec>AAC (AVC)</AudioCodec>
+	<AAC_Passthru>False</AAC_Passthru>
+	<AC3_Passthru>False</AC3_Passthru>
+	<DTS_Passthru>False</DTS_Passthru>
+	<TwoPass>True</TwoPass>
+	<TurboFirstPass>True</TurboFirstPass>
+	<Optimize>True</Optimize>
+	<Mixdown>Dolby ProLogic 2</Mixdown>
+	<AudioBitrateCap>160</AudioBitrateCap>
+	<EncoderSpeed>Medium</EncoderSpeed>
+	<EncoderTune>Fast Decode</EncoderTune>
+	<EncoderProfile>High</EncoderProfile>
+	<EncoderLevel>4.0</EncoderLevel>
+	<VideoBitrateCap>5.5</VideoBitrateCap>
+	<Framerate>23.976</Framerate>
+	<FramerateMode>Peak</FramerateMode>
+	<AudioSampleRate>48</AudioSampleRate>
+	<ConversionPreset>Movie</ConversionPreset>
+	<GmailAccount>dustin.oldroyd</GmailAccount>
+	<NotifyAddress>8014734543@vtext.com</NotifyAddress>
+</Defaults>
+<Favorites>
+
+</Favorites>

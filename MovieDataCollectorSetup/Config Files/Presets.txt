@@ -1,0 +1,39 @@
+<Preset_Movie>
+	<AudioCodec>AAC (AVC)</AudioCodec>
+	<AudioMixdown>Dolby ProLogic 2</AudioMixdown>
+	<AudioSampleRate>48</AudioSampleRate>
+	<FilteredAACCheck>false</FilteredAACCheck>
+	<FilteredAC3Check>false</FilteredAC3Check>
+	<FilteredDTSCheck>false</FilteredDTSCheck>
+	<AudioBitrate>160</AudioBitrate>
+	<EncoderSpeed>Medium</EncoderSpeed>
+	<FrameRateMode>Peak</FrameRateMode>
+	<FrameRate>23.976</FrameRate>
+	<EncoderTune>Fast Decode</EncoderTune>
+	<VideoBitrate>5.5</VideoBitrate>
+	<EncoderProfile>High</EncoderProfile>
+	<EncoderLevel>4.0</EncoderLevel>
+	<Optimize>true</Optimize>
+	<TwoPass>true</TwoPass>
+	<TurboFirstPass>true</TurboFirstPass>
+</Preset_Movie>
+<Preset_TV>
+	<AudioCodec>AAC (AVC)</AudioCodec>
+	<AudioMixdown>Dolby ProLogic 2</AudioMixdown>
+	<AudioSampleRate>48</AudioSampleRate>
+	<FilteredAACCheck>false</FilteredAACCheck>
+	<FilteredAC3Check>false</FilteredAC3Check>
+	<FilteredDTSCheck>false</FilteredDTSCheck>
+	<AudioBitrate>128</AudioBitrate>
+	<EncoderSpeed>Very Fast</EncoderSpeed>
+	<FrameRateMode>Peak</FrameRateMode>
+	<FrameRate>23.976</FrameRate>
+	<EncoderTune>Fast Decode</EncoderTune>
+	<VideoBitrate>3.5</VideoBitrate>
+	<EncoderProfile>High</EncoderProfile>
+	<EncoderLevel>4.0</EncoderLevel>
+	<Optimize>true</Optimize>
+	<TwoPass>true</TwoPass>
+	<TurboFirstPass>true</TurboFirstPass>
+</Preset_TV>
+

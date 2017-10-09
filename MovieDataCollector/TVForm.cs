@@ -44,6 +44,7 @@ namespace MovieDataCollector
         }
         private void getHTML()
         {
+
             int ID = 0;
             string TitleBox = seriesIDTitleTextbox.Text;
 

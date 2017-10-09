@@ -46,7 +46,9 @@ namespace MovieDataCollector
                 "AudioSampleRate", //48
                 "ConversionPreset", //Roku Compliant
                 "GmailAccount", //Left blank as default
-                "NotifyAddress" //Left blank as default
+                "NotifyAddress", //Left blank as default
+                "SubtitleSelection", //None
+                "ForcedSubtitleBurnIn" //False
             };
         List<string> ValueList = new List<string>()
             {
@@ -79,6 +81,8 @@ namespace MovieDataCollector
                 "", //ConversionPreset is blank by default
                 "", //GmailAccount
                 "", //NotifyAddress
+                "None", //SubtitleSelection
+                "False" //ForcedSubtitleBurnIn
             };
 
         public ConfigFile()

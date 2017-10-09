@@ -36,10 +36,12 @@ namespace MovieDataCollector
             "EncoderLevel", //4.0
             "Optimize", //true
             "TwoPass", //true
-            "TurboFirstPass" //true
+            "TurboFirstPass", //true
+            "SubtitleSelection", //None for TV, All For Movie
+            "ForcedSubtitleBurnIn" //False for TV, True for Movie
         };
 
-        List<string> valueList = new List<string>()
+        List<string> TVPresetValueList = new List<string>()
         {
             "AAC (AVC)", //AudioCodecAAC
             "Dolby ProLogic 2", //AudioMixdown,
@@ -47,10 +49,10 @@ namespace MovieDataCollector
             "false", //FilteredAACCheck
             "false", //FilteredAC3Check
             "false", //FilteredDTSCheck
-            "96", //AudioBitrate
+            "128", //AudioBitrate
             "Very Fast", //EncoderSpeed
             "Peak", //FrameRateMode
-            "Roku Compliant", //FrameRate
+            "23.976", //FrameRate
             "Fast Decode", //EncoderTune
             "3.5", //VideoBitrate
             "High", //EncoderProfile
@@ -58,6 +60,31 @@ namespace MovieDataCollector
             "true", //Optimize
             "true", //TwoPass
             "true", //TurboFirstPass
+            "None", //SubtitleSelection
+            "False" //ForcedSubtitlesBurnIn
+        };
+
+        List<string> MoviePresetValueList = new List<string>()
+        {
+            "AAC (AVC)", //AudioCodecAAC
+            "Dolby ProLogic 2", //AudioMixdown,
+            "48", //AudioSampleRate
+            "false", //FilteredAACCheck
+            "false", //FilteredAC3Check
+            "false", //FilteredDTSCheck
+            "160", //AudioBitrate
+            "Medium", //EncoderSpeed
+            "Peak", //FrameRateMode
+            "23.976", //FrameRate
+            "Fast Decode", //EncoderTune
+            "5.5", //VideoBitrate
+            "High", //EncoderProfile
+            "4.0", //EncoderLevel
+            "true", //Optimize
+            "true", //TwoPass
+            "true", //TurboFirstPass
+            "All", //SubtitleSelection
+            "True" //ForcedSubtitlesBurnIn
         };
 
         public PresetFile()
@@ -152,12 +179,21 @@ namespace MovieDataCollector
         {
             StringBuilder presetFileString = new StringBuilder();
 
-            presetFileString.Append("<Preset_Roku Compliant>\r\n");
+            //TV Presets
+            presetFileString.Append("<Preset_TV>\r\n");
             for (int i = 0; i < keyList.Count(); i++)
             {
-                presetFileString.Append("\t<" + keyList[i] + ">" + valueList[i] + "</" + keyList[i] + ">\r\n");
+                presetFileString.Append("\t<" + keyList[i] + ">" + TVPresetValueList[i] + "</" + keyList[i] + ">\r\n");
             }
-            presetFileString.Append("</Preset_Roku Compliant>\r\n");
+            presetFileString.Append("</Preset_TV>\r\n");
+
+            //Movie Presets
+            presetFileString.Append("<Preset_Movie>\r\n");
+            for (int i = 0; i < keyList.Count(); i++)
+            {
+                presetFileString.Append("\t<" + keyList[i] + ">" + MoviePresetValueList[i] + "</" + keyList[i] + ">\r\n");
+            }
+            presetFileString.Append("</Preset_Movie>\r\n");
 
             return presetFileString.ToString();
         }

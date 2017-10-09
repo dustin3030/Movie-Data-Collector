@@ -21,7 +21,7 @@ namespace MovieDataCollector
         //string folderPath = ""; //Contains path for parent directory
         List<string> VideoFilesList = new List<string>(); //Contains File Paths for video files 
         StringBuilder incompatible = new StringBuilder();
-        string separator = "========================================================================\n";
+        string separator = "==========================================================================\n";
         string separator2 = "\n.........................................................................................................................\r\n \r\n";
         List<string> IncompatibilityInfo = new List<string>(); //Contains Incompatibility info for each file listed in VideoFilesList
 
@@ -29,6 +29,86 @@ namespace MovieDataCollector
         //string configPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector\\Config.txt"; //Writable file location for config file.
 
         //Ending audio bitrate string used in encoder and setting video bitrate buffer and maxrate size.
+        string[,] subLanguageCodes = new string[,] //Holds common subtitle language codes
+            { {"English","En","Eng"},
+              {"French","Fr","Fre"},
+              {"French","Fr","Fra"},
+              {"German","De","Ger"},
+              {"German","De","Deu"},
+              {"Spanish","Es","Spa"},
+              {"Russian","Ru","Rus"},
+              {"Chinese","Zh","Chi"},
+              {"Chinese","Zh","Zho"},
+              {"Japanese","Ja","Jpn"},
+              {"Korean","Ko","Kor"},
+              {"Portuguese","Pt","Por"},
+              {"Swedish","Sv","Swe"},
+              {"Finnish","Fi","Fin"},
+              {"Czech","Cs","Cze"},
+              {"Czech","Cs","Ces"},
+              {"Greek","El","Gre"},
+              {"Greek","El","Ell"},
+              {"Italian","It","Ita"},
+
+              {"ENGLISH","EN","ENG"},
+              {"FRENCH","FR","FRE"},
+              {"FRENCH","FR","FRA"},
+              {"GERMAN","DE","GER"},
+              {"GERMAN","DE","DEU"},
+              {"SPANISH","ES","SPA"},
+              {"RUSSIAN","RU","RUS"},
+              {"CHINESE","ZH","CHI"},
+              {"CHINESE","ZH","ZHO"},
+              {"JAPANESE","JA","JPN"},
+              {"KOREAN","KO","KOR"},
+              {"PORTUGUESE","PT","POR"},
+              {"SWEDISH","SV","SWE"},
+              {"FINNISH","FI","FIN"},
+              {"CZECH","CS","CZE"},
+              {"CZECH","CS","CES"},
+              {"GREEK","EL","GRE"},
+              {"GREEK","EL","ELL"},
+              {"ITALIAN","IT","ITA"},
+
+              {"english","en","eng"},
+              {"french","fr","fre"},
+              {"french","fr","fra"},
+              {"german","de","ger"},
+              {"german","de","deu"},
+              {"spanish","es","spa"},
+              {"russian","ru","rus"},
+              {"chinese","zh","chi"},
+              {"chinese","zh","zho"},
+              {"japanese","ja","jpn"},
+              {"korean","ko","kor"},
+              {"portuguese","pt","por"},
+              {"swedish","sv","swe"},
+              {"finnish","fi","fin"},
+              {"czech","cs","cze"},
+              {"czech","cs","ces"},
+              {"greek","el","gre"},
+              {"greek","el","ell"}}; //Language Codes
+
+        List<string> subtitleComboList = new List<string>()
+        {
+            "None",
+            "All",
+            "Default",
+            "First",
+            "Chinese",
+            "Czech",
+            "English",
+            "Finnish",
+            "French",
+            "German",
+            "Greek",
+            "Japanese",
+            "Korean",
+            "Portuguese",
+            "Russian",
+            "Spanish",
+            "Swedish"
+        };
 
         /*Values available for conversion*/
         List<string> codecList = new List<string>()
@@ -43,8 +123,6 @@ namespace MovieDataCollector
             "Dolby ProLogic 2", //Default
             "5.1 Audio"
         };
-
-        
 
         List<string> audioBitrateCapList = new List<string>()
         {
@@ -210,11 +288,12 @@ namespace MovieDataCollector
             avgBitrateCombo.Text = CF.DefaultSettings["VideoBitrateCap"];
             encoderProfileComboBox.Text = CF.DefaultSettings["EncoderProfile"];
             encoderLevelComboBox.Text = CF.DefaultSettings["EncoderLevel"];
+            subtitleCombo.Text = CF.DefaultSettings["SubtitleSelection"];
 
             if (CF.DefaultSettings["Optimize"] == "True") { optimizeStreamingCheckBox.Checked = true; } else { optimizeStreamingCheckBox.Checked = false; }
             if (CF.DefaultSettings["TwoPass"] == "True") { twoPassCheckbox.Checked = true; } else { twoPassCheckbox.Checked = false; }
             if (CF.DefaultSettings["TurboFirstPass"] == "True") { turboCheckBox.Checked = true; } else { turboCheckBox.Checked = false; }
-
+            if(CF.DefaultSettings["ForcedSubtitleBurnIn"] == "True") { burnInSubtitlesCheck.Checked = true; } else { burnInSubtitlesCheck.Checked = false; } 
 
             /*Notification Settings*/
             if (!string.IsNullOrEmpty(CF.DefaultSettings["GmailAccount"])) { usernameBox.Text = CF.DefaultSettings["GmailAccount"]; }
@@ -507,6 +586,7 @@ namespace MovieDataCollector
             
             StringBuilder VideoInfo = new StringBuilder();
             StringBuilder AudioInfo = new StringBuilder();
+            StringBuilder SubtitleInfo = new StringBuilder();
 
             string videoBitrate = "";
             string FPS = "";
@@ -518,9 +598,19 @@ namespace MovieDataCollector
             string audioFormat = "";
             string audioChannels = "";
 
+            string subtitleFormat = "";
+            string subtitleTitle = "";
+            string subtitleLanguage = "";
+            string subtitleForcedFlag = "";
+            string subtitleDefaultFlag = "";
+            string subtitleFlags = "";
+
+
+
             //Add filename, bitrate, framerate to the Media Info Box
             MediaFile videoFile = new MediaFile(file);
 
+            //Video Info
             for (int a = 0; a < videoFile.Video.Count; a++)
             {
                 if (videoFile.Video[a].Properties.ContainsKey("Bit rate") && videoFile.Video[a].Properties["Bit rate"] != "0")
@@ -571,6 +661,7 @@ namespace MovieDataCollector
                 videoFormat = null;
             }
 
+            //Audio Info
             for (int i = 0; i < videoFile.Audio.Count(); i++)
             {
                 if (videoFile.Audio[i].Properties.ContainsKey("Language"))
@@ -609,7 +700,61 @@ namespace MovieDataCollector
                 audioChannels = null;
             }
 
-            if (string.IsNullOrEmpty(VideoInfo.ToString()) && string.IsNullOrEmpty(AudioInfo.ToString()))
+            //Subtitle Info
+            /*string subtitleInfo = "";
+            string subtitleFormat = "";
+            string subtitleTitle = "";
+            string subtitleLanguage = "";
+            bool subtitleForcedFlag = false;
+            bool subtitleDefaulFlag = false;*/
+
+            for (int i = 0; i < videoFile.Text.Count; i++)
+            {
+                //Title
+                if(videoFile.Text[i].Properties.ContainsKey("Title")){ subtitleTitle = videoFile.Text[i].Properties["Title"] + ", "; }
+
+                //Language
+                if (videoFile.Text[i].Properties.ContainsKey("Language")){ subtitleLanguage = videoFile.Text[i].Properties["Language"] + ", "; }
+
+                //Flags
+                if (videoFile.Text[i].Properties.ContainsKey("Forced"))
+                {
+                    if(videoFile.Text[i].Properties["Forced"] == "Yes")
+                    {
+                        subtitleForcedFlag = "Forced";
+                    }
+                }
+                if (videoFile.Text[i].Properties.ContainsKey("Default"))
+                {
+
+                    if (videoFile.Text[i].Properties["Default"] == "Yes")
+                    {
+                        if(string.IsNullOrEmpty(subtitleForcedFlag))
+                        {
+                            subtitleDefaultFlag = "Default";
+                        }
+                        else
+                        {
+                            subtitleDefaultFlag = ", Default ";
+                        }
+                        
+                    }
+                }
+
+                //Format
+                if (videoFile.Text[i].Properties.ContainsKey("Format")) { subtitleFormat = videoFile.Text[i].Properties["Format"] + ", "; }
+                string substring = (" Subtitle" + (i + 1).ToString() + ": " + subtitleTitle + subtitleFormat + subtitleLanguage + subtitleForcedFlag + subtitleDefaultFlag);
+                substring = substring.TrimEnd(' ',',');
+                SubtitleInfo.Append(substring + "\n\t");
+                subtitleFormat = "";
+                subtitleTitle = "";
+                subtitleLanguage = "";
+                subtitleForcedFlag = "";
+                subtitleDefaultFlag = "";
+                subtitleFlags = "";
+            }
+
+            if (string.IsNullOrEmpty(VideoInfo.ToString()) && string.IsNullOrEmpty(AudioInfo.ToString()) && string.IsNullOrEmpty(SubtitleInfo.ToString()))
             {
                 outPutTextBox.Text = outPutTextBox.Text + fileName + "\n\t" + "Unable to gather info. File may be corrupt." + separator;
                 outPutTextBox.SelectionStart = 0;
@@ -619,8 +764,13 @@ namespace MovieDataCollector
             else
             {
                 outPutTextBox.Text = outPutTextBox.Text + fileName + "\n\t"
-                + VideoInfo.ToString() + "\n\t"
-                + AudioInfo.ToString().TrimEnd('\t') + separator;
+                + VideoInfo.ToString() + "\n\t";
+                if (!string.IsNullOrEmpty(AudioInfo.ToString())) { outPutTextBox.Text += AudioInfo.ToString(); }
+                if (!string.IsNullOrEmpty(SubtitleInfo.ToString())) { outPutTextBox.Text += SubtitleInfo.ToString(); }
+
+                //Add Separator
+                outPutTextBox.Text = outPutTextBox.Text.TrimEnd('\t') + separator;
+
                 outPutTextBox.SelectionStart = 0;
                 //outPutTextBox.ScrollToCaret(); // force current position back to top
                 outPutTextBox.Update();
@@ -629,6 +779,7 @@ namespace MovieDataCollector
 
             VideoInfo.Clear();
             AudioInfo.Clear();
+            SubtitleInfo.Clear();
         }
         private void QuickInfobutton_Click(object sender, EventArgs e)
         {
@@ -702,7 +853,7 @@ namespace MovieDataCollector
 
 
         /*The following methods are for converting video files*/
-        private void ConvertSelectedButton_Click(object sender, EventArgs e)
+            private void ConvertSelectedButton_Click(object sender, EventArgs e)
         {
             CF.updateDefaults();
             //Check for location of HandbrakeCLI
@@ -1111,6 +1262,9 @@ namespace MovieDataCollector
 
             //Variables from Form
             double avgBitrateCap = 0.0;
+            bool burnForcedSubs = false;
+            string subsToInclude = subtitleCombo.Text;
+            if (burnInSubtitlesCheck.Checked) { burnForcedSubs = true; }
 
             //Output Variables
             string outputEncoder = ""; //encoder and speed preset
@@ -1123,6 +1277,10 @@ namespace MovieDataCollector
             string outputTwoPass = "";
             string outputTurbo = "";
             string outputFrameRate = "";
+            string subtitleString = "";
+            string subtitleBurnString = "";
+            //string subtitleSubString = "";
+            
 
 
             if (videoFile.Video.Count > 0) //video stream found
@@ -1994,7 +2152,135 @@ namespace MovieDataCollector
                     break;
             }
 
-            return outputEncoder + outputEncoderSpeed + outputEncoderTune + outputEncopts + outputEncoderProfile + outputEncoderLevel + outputVideoBitrate + outputTwoPass + outputTurbo + outputFrameRate;
+            //Subtitle Options
+            //burnForcedSubs
+            //subsToInclude
+            //Determine number of subtitle streams
+
+            /*None
+            All
+            Default
+            First
+            Chinese
+            Czech
+            English
+            Finnish
+            French
+            German
+            Greek
+            Japanese
+            Korean
+            Portuguese
+            Russian
+            Spanish
+            Swedish*/
+            if (videoFile.Text.Count() > 0)
+            {
+
+                switch(subtitleCombo.Text)
+                {
+                    case "None":
+                        subtitleString = "";
+                        break;
+                    case "All":
+                        for (int i = 0; i < videoFile.Text.Count(); i++)
+                        {
+                            if (string.IsNullOrEmpty(subtitleString)) { subtitleString = "--subtitle \"" + (i + 1).ToString(); }
+                            else { subtitleString += "," + (i + 1).ToString(); }
+                        }
+                        subtitleString +=  "\" "; //adds the last quote and space
+                        break;
+                    case "Default": //Adds first track with default flag, there should only be one and tags it as default.
+                        for (int i = 0; i < videoFile.Text.Count(); i++)
+                        {
+                            if(string.IsNullOrEmpty(subtitleString))
+                            {
+                                if(videoFile.Text[i].Properties.ContainsKey("Default"))
+                                {
+                                    subtitleString = "--subtitle-default " + (i + 1).ToString() + " ";
+                                }
+                            }
+                        }
+                        break;
+                    case "First": //Adds the first subtitle track regarless of what it is.
+                        subtitleString = "--subtitle \"1\"";
+                        break;
+                    default: //All other language codes
+                        for (int i = 0; i < subtitleComboList.Count(); i++)
+                        {
+                            if(string.IsNullOrEmpty(subtitleString)) //only want to gather once for the specified language otherwise results in duplication.
+                            {
+                                for (int b = 0; b < videoFile.Text.Count(); b++)
+                                {
+                                    if (videoFile.Text[b].Properties.ContainsKey("Language"))
+                                    {
+                                        if (videoFile.Text[b].Properties["Language"] == subsToInclude)
+                                        {
+                                            if (string.IsNullOrEmpty(subtitleString))
+                                            {
+                                                subtitleString = "--subtitle \"" + (b + 1).ToString();
+                                            }
+                                            else
+                                            {
+                                                subtitleString += "," + (b + 1).ToString();
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (!string.IsNullOrEmpty(subtitleString))
+                        {
+                            subtitleString += "\" "; //adds the last quote and space 
+                        } 
+                            break;
+                }
+
+                //Burn Forced Subtitles Checked
+                if(burnForcedSubs)
+                {
+                    //Check for forced flag, and English
+                    for (int i = 0; i < videoFile.Text.Count(); i++)
+                    {
+                        if (string.IsNullOrEmpty(subtitleBurnString))
+                        {
+                            if (videoFile.Text[i].Properties.ContainsKey("Forced"))
+                            {
+                                if (videoFile.Text[i].Properties["Forced"] == "Yes")
+                                {
+                                    if (videoFile.Text[i].Properties.ContainsKey("Language"))
+                                    {
+                                        if (videoFile.Text[i].Properties["Language"] == "English")
+                                        {
+                                            subtitleBurnString = "--subtitle-burned " + (i + 1).ToString() + " ";
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        
+                    }
+                    if(string.IsNullOrEmpty(subtitleBurnString)) //Search for srt file in the same folder named the same as the file with a -Forced on the end.
+                    {
+                        char delim = '.';
+                        string[] Tokens = videoFile.File.Split(delim);
+
+                        //This looks weird because handbrake doesn't properly handle the \ escape character in the input srt string. I had to add extra so the output would have double \\ instead.
+                        string forcedSRTFileName = videoFile.File.Replace("\\","\\\\").Replace("." + Tokens[Tokens.Count() - 1].ToString(), "-Forced.srt");
+
+                        if(System.IO.File.Exists(forcedSRTFileName))
+                        {
+                            subtitleBurnString = "--srt-file \"" + forcedSRTFileName + "\" --srt-burn " + "--srt-codeset UTF-8 ";
+                        }
+                    }
+                }
+
+            }
+            
+
+
+
+            return outputEncoder + outputEncoderSpeed + outputEncoderTune + subtitleString + subtitleBurnString + outputEncopts + outputEncoderProfile + outputEncoderLevel + outputVideoBitrate + outputTwoPass + outputTurbo + outputFrameRate ;
         }
         private string AudioConversionString(MediaFile videoFile)
         {
@@ -2443,7 +2729,12 @@ namespace MovieDataCollector
             //Update default in dictionary
             CF.DefaultSettings["EncoderTune"] = encoderTuneComboBox.Text;
         }
-        
+        private void subtitleCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Update default in dictionary
+            CF.DefaultSettings["SubtitleSelection"] = subtitleCombo.Text;
+        }
+
 
         //Video Checkboxes
         private void optimizeStreamingCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -2486,7 +2777,20 @@ namespace MovieDataCollector
                 CF.DefaultSettings["TwoPass"] = "False";
             }
         }
-        
+        private void burnInSubtitlesCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            if (burnInSubtitlesCheck.Checked)
+            {
+                //Update default in dictionary
+                CF.DefaultSettings["ForcedSubtitleBurnIn"] = "True";
+            }
+            else
+            {
+                //Update default in dictionary
+                CF.DefaultSettings["ForcedSubtitleBurnIn"] = "False";
+            }
+        }
+
 
         //Video ComboBoxes Leave
         private void avgBitrateCombo_Leave(object sender, EventArgs e)
@@ -2591,6 +2895,21 @@ namespace MovieDataCollector
             else
             {
                 CF.DefaultSettings["EncoderSpeed"] = encoderSpeedCombo.Text;
+            }
+        }
+        private void subtitleCombo_Leave_1(object sender, EventArgs e)
+        {
+            //Verify text is in list
+            if (!subtitleComboList.Contains(subtitleCombo.Text))
+            {
+                subtitleCombo.Text = subtitleComboList[0];
+
+                //Update default in Dictionary
+                CF.DefaultSettings["SubtitleSelection"] = subtitleComboList[0];
+            }
+            else
+            {
+                CF.DefaultSettings["SubtitleSelection"] = subtitleCombo.Text;
             }
         }
 
@@ -2700,7 +3019,21 @@ namespace MovieDataCollector
                 CF.DefaultSettings["EncoderSpeed"] = encoderSpeedCombo.Text;
             }
         }
+        private void subtitleCombo_TextChanged(object sender, EventArgs e)
+        {
+            //Verify text is in list
+            if (!subtitleComboList.Contains(subtitleCombo.Text))
+            {
+                subtitleCombo.Text = subtitleComboList[0];
 
+                //Update default in Dictionary
+                CF.DefaultSettings["SubtitleSelection"] = subtitleComboList[0];
+            }
+            else
+            {
+                CF.DefaultSettings["SubtitleSelection"] = subtitleCombo.Text;
+            }
+        }
 
 
         //Audio
@@ -3670,28 +4003,40 @@ namespace MovieDataCollector
             //Check that there is a preset name
             if(!string.IsNullOrEmpty(presetComboBox.Text))
             {
-                    Dictionary<string, string> NewPreset = new Dictionary<string, string>();
-                    NewPreset.Add("Name", presetComboBox.Text);
-                    NewPreset.Add("AudioCodec", audioCodecComboBox.Text);
-                    NewPreset.Add("AudioMixdown", mixdownComboBox.Text);
-                    NewPreset.Add("AudioSampleRate", sampleRateCombo.Text);
+                Dictionary<string, string> NewPreset = new Dictionary<string, string>();
+                NewPreset.Add("Name", presetComboBox.Text);
+                NewPreset.Add("AudioCodec", audioCodecComboBox.Text);
+                NewPreset.Add("AudioMixdown", mixdownComboBox.Text);
+                NewPreset.Add("AudioSampleRate", sampleRateCombo.Text);
 
-                    if (filteredAACCheck.Checked) { NewPreset.Add("FilteredAACCheck", "true"); } else { NewPreset.Add("FilteredAACCheck", "false"); }
-                    if (filteredAC3Check.Checked) { NewPreset.Add("FilteredAC3Check", "true"); } else { NewPreset.Add("FilteredAC3Check", "false"); }
-                    if (filteredDTSCheck.Checked) { NewPreset.Add("FilteredDTSCheck", "true"); } else { NewPreset.Add("FilteredDTSCheck", "false"); }
+                if (filteredAACCheck.Checked) { NewPreset.Add("FilteredAACCheck", "true"); } else { NewPreset.Add("FilteredAACCheck", "false"); }
+                if (filteredAC3Check.Checked) { NewPreset.Add("FilteredAC3Check", "true"); } else { NewPreset.Add("FilteredAC3Check", "false"); }
+                if (filteredDTSCheck.Checked) { NewPreset.Add("FilteredDTSCheck", "true"); } else { NewPreset.Add("FilteredDTSCheck", "false"); }
 
-                    NewPreset.Add("AudioBitrate", audioBitrateCombo.Text);
-                    NewPreset.Add("EncoderSpeed", encoderSpeedCombo.Text);
-                    NewPreset.Add("FrameRateMode", frameRateModeCombo.Text);
-                    NewPreset.Add("FrameRate", framerateCombo.Text);
-                    NewPreset.Add("EncoderTune", encoderTuneComboBox.Text);
-                    NewPreset.Add("VideoBitrate", avgBitrateCombo.Text);
-                    NewPreset.Add("EncoderProfile", encoderProfileComboBox.Text);
-                    NewPreset.Add("EncoderLevel", encoderLevelComboBox.Text);
+                NewPreset.Add("AudioBitrate", audioBitrateCombo.Text);
+                NewPreset.Add("EncoderSpeed", encoderSpeedCombo.Text);
+                NewPreset.Add("FrameRateMode", frameRateModeCombo.Text);
+                NewPreset.Add("FrameRate", framerateCombo.Text);
+                NewPreset.Add("EncoderTune", encoderTuneComboBox.Text);
+                NewPreset.Add("VideoBitrate", avgBitrateCombo.Text);
+                NewPreset.Add("EncoderProfile", encoderProfileComboBox.Text);
+                NewPreset.Add("EncoderLevel", encoderLevelComboBox.Text);
 
-                    if (optimizeStreamingCheckBox.Checked) { NewPreset.Add("Optimize", "true"); } else { NewPreset.Add("Optimize", "false"); }
-                    if (twoPassCheckbox.Checked) { NewPreset.Add("TwoPass", "true"); } else { NewPreset.Add("TwoPass", "false"); }
-                    if (turboCheckBox.Checked) { NewPreset.Add("TurboFirstPass", "true"); } else { NewPreset.Add("TurboFirstPass", "false"); }
+                if (optimizeStreamingCheckBox.Checked) { NewPreset.Add("Optimize", "true"); } else { NewPreset.Add("Optimize", "false"); }
+                if (twoPassCheckbox.Checked) { NewPreset.Add("TwoPass", "true"); } else { NewPreset.Add("TwoPass", "false"); }
+                if (turboCheckBox.Checked) { NewPreset.Add("TurboFirstPass", "true"); } else { NewPreset.Add("TurboFirstPass", "false"); }
+
+
+                //Subtitles
+                NewPreset.Add("SubtitleSelection", subtitleCombo.Text);
+                if (burnInSubtitlesCheck.Checked)
+                {
+                    NewPreset.Add("ForcedSubtitleBurnIn", "True");
+                }
+                else
+                {
+                    NewPreset.Add("ForcedSubtitleBurnIn", "False");
+                }
 
                     PF.AddPreset(NewPreset);
 
@@ -3771,6 +4116,10 @@ namespace MovieDataCollector
                     if (PF.PresetList[index]["Optimize"] == "true") { optimizeStreamingCheckBox.Checked = true; } else { optimizeStreamingCheckBox.Checked = false; }
                     if (PF.PresetList[index]["TwoPass"] == "true") { twoPassCheckbox.Checked = true; } else { twoPassCheckbox.Checked = false; }
                     if (PF.PresetList[index]["TurboFirstPass"] == "true") { turboCheckBox.Checked = true; } else { turboCheckBox.Checked = false; }
+
+                    //subtitles
+                    subtitleCombo.Text = PF.PresetList[index]["SubtitleSelection"];
+                    if (PF.PresetList[index]["ForcedSubtitleBurnIn"] == "True") { burnInSubtitlesCheck.Checked = true; } else { burnInSubtitlesCheck.Checked = false; }
                 }
             }
             
@@ -3794,5 +4143,7 @@ namespace MovieDataCollector
                     break;
             }
         }
+
+       
     }
 }

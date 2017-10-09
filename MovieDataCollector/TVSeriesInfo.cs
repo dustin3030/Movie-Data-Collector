@@ -23,6 +23,9 @@ namespace MovieDataCollector
         }
         private void GatherSeriesInfo()
         {
+
+            
+
             string responseContent; //stores response from web request
             string URL = "http://thetvdb.com/api/" + API_Key + "/series/" + Series_ID + "/all";
 
