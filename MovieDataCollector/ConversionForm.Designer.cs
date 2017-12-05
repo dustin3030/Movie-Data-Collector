@@ -66,6 +66,8 @@
             this.convertSelectedButton = new System.Windows.Forms.Button();
             this.videoSettingsPanel = new System.Windows.Forms.Panel();
             this.subtitleGroupBox = new System.Windows.Forms.GroupBox();
+            this.subtitleInfoLabel = new System.Windows.Forms.Label();
+            this.subIncludeLabel = new System.Windows.Forms.Label();
             this.burnInSubtitlesCheck = new System.Windows.Forms.CheckBox();
             this.subtitleLabel = new System.Windows.Forms.Label();
             this.subtitleCombo = new System.Windows.Forms.ComboBox();
@@ -105,8 +107,6 @@
             this.conversionSettingsLabel = new System.Windows.Forms.Label();
             this.compatibilitySelectionLabel = new System.Windows.Forms.Label();
             this.invisibleCloseButton = new System.Windows.Forms.Button();
-            this.subIncludeLabel = new System.Windows.Forms.Label();
-            this.subtitleInfoLabel = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.selectionPicturebox)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -577,6 +577,24 @@
             this.subtitleGroupBox.TabIndex = 17;
             this.subtitleGroupBox.TabStop = false;
             // 
+            // subtitleInfoLabel
+            // 
+            this.subtitleInfoLabel.AutoSize = true;
+            this.subtitleInfoLabel.Location = new System.Drawing.Point(31, 62);
+            this.subtitleInfoLabel.Name = "subtitleInfoLabel";
+            this.subtitleInfoLabel.Size = new System.Drawing.Size(166, 13);
+            this.subtitleInfoLabel.TabIndex = 19;
+            this.subtitleInfoLabel.Text = "*Also Filename + -Forced.srt";
+            // 
+            // subIncludeLabel
+            // 
+            this.subIncludeLabel.AutoSize = true;
+            this.subIncludeLabel.Location = new System.Drawing.Point(6, 21);
+            this.subIncludeLabel.Name = "subIncludeLabel";
+            this.subIncludeLabel.Size = new System.Drawing.Size(53, 13);
+            this.subIncludeLabel.TabIndex = 18;
+            this.subIncludeLabel.Text = "Include:";
+            // 
             // burnInSubtitlesCheck
             // 
             this.burnInSubtitlesCheck.AutoSize = true;
@@ -692,7 +710,13 @@
             "5.5",
             "6",
             "6.5",
-            "7"});
+            "7",
+            "7.5",
+            "8",
+            "8.5",
+            "9",
+            "9.5",
+            "10"});
             this.avgBitrateCombo.Location = new System.Drawing.Point(321, 51);
             this.avgBitrateCombo.Name = "avgBitrateCombo";
             this.avgBitrateCombo.Size = new System.Drawing.Size(51, 21);
@@ -1130,24 +1154,6 @@
             this.invisibleCloseButton.Text = "button1";
             this.invisibleCloseButton.UseVisualStyleBackColor = true;
             this.invisibleCloseButton.Click += new System.EventHandler(this.invisibleCloseButton_Click);
-            // 
-            // subIncludeLabel
-            // 
-            this.subIncludeLabel.AutoSize = true;
-            this.subIncludeLabel.Location = new System.Drawing.Point(6, 21);
-            this.subIncludeLabel.Name = "subIncludeLabel";
-            this.subIncludeLabel.Size = new System.Drawing.Size(53, 13);
-            this.subIncludeLabel.TabIndex = 18;
-            this.subIncludeLabel.Text = "Include:";
-            // 
-            // subtitleInfoLabel
-            // 
-            this.subtitleInfoLabel.AutoSize = true;
-            this.subtitleInfoLabel.Location = new System.Drawing.Point(31, 62);
-            this.subtitleInfoLabel.Name = "subtitleInfoLabel";
-            this.subtitleInfoLabel.Size = new System.Drawing.Size(166, 13);
-            this.subtitleInfoLabel.TabIndex = 19;
-            this.subtitleInfoLabel.Text = "*Also Filename + -Forced.srt";
             // 
             // ConversionForm
             // 

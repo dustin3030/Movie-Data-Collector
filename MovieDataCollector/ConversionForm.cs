@@ -893,7 +893,7 @@ namespace MovieDataCollector
                             if (System.IO.File.Exists(VideoFilesList[filesListBox.SelectedIndex])) //Skip file if it has been moved or deleted 
                             {
                                 handBrakeCLIString = GenerateConversionString(VideoFilesList[filesListBox.SelectedIndex], filesListBox.SelectedItem.ToString(), FBD.SelectedPath);
-
+ 
                                 if (string.IsNullOrEmpty(handBrakeCLIString))
                                 {
                                     handBrakeCLIString = "-i " + FBD.SelectedPath + "\\" + filesListBox.SelectedItem.ToString() + " -o "; // Set to defaults let handbrake error out if necessary
@@ -2172,6 +2172,8 @@ namespace MovieDataCollector
             Russian
             Spanish
             Swedish*/
+
+            //PGS can only be burned into video, not passed through. Ignore PGS here.
             if (videoFile.Text.Count() > 0)
             {
 
@@ -2183,55 +2185,83 @@ namespace MovieDataCollector
                     case "All":
                         for (int i = 0; i < videoFile.Text.Count(); i++)
                         {
-                            if (string.IsNullOrEmpty(subtitleString)) { subtitleString = "--subtitle \"" + (i + 1).ToString(); }
-                            else { subtitleString += "," + (i + 1).ToString(); }
+                            //Check for PGS subtitles and ignore them, they cannot be passed through only burned.
+                            if(videoFile.Text[i].Properties.ContainsKey("Format"))
+                            {
+                                if(!videoFile.Text[i].Properties["Format"].Contains("PGS"))
+                                {
+                                    if (string.IsNullOrEmpty(subtitleString)) { subtitleString = "--subtitle \"" + (i + 1).ToString(); }
+                                    else { subtitleString += "," + (i + 1).ToString(); }
+                                }
+                            }  
                         }
-                        subtitleString +=  "\" "; //adds the last quote and space
+                        if (!string.IsNullOrEmpty(subtitleString))
+                        {
+                            subtitleString += "\" "; //adds the last quote and space 
+                        }
                         break;
                     case "Default": //Adds first track with default flag, there should only be one and tags it as default.
                         for (int i = 0; i < videoFile.Text.Count(); i++)
                         {
-                            if(string.IsNullOrEmpty(subtitleString))
+                            //Check for PGS subtitles and ignore them, they cannot be passed through only burned.
+                            if (videoFile.Text[i].Properties.ContainsKey("Format"))
                             {
-                                if(videoFile.Text[i].Properties.ContainsKey("Default"))
+                                if (!videoFile.Text[i].Properties["Format"].Contains("PGS"))
                                 {
-                                    subtitleString = "--subtitle-default " + (i + 1).ToString() + " ";
+                                    if (string.IsNullOrEmpty(subtitleString))
+                                    {
+                                        if (videoFile.Text[i].Properties.ContainsKey("Default"))
+                                        {
+                                            subtitleString = "--subtitle-default " + (i + 1).ToString() + " ";
+                                        }
+                                    }
                                 }
                             }
+                            
                         }
                         break;
                     case "First": //Adds the first subtitle track regarless of what it is.
-                        subtitleString = "--subtitle \"1\"";
+                                  //Check for PGS subtitles and ignore them, they cannot be passed through only burned.
+                        if (videoFile.Text[0].Properties.ContainsKey("Format"))
+                        {
+                            if (!videoFile.Text[0].Properties["Format"].Contains("PGS"))
+                            {
+                                subtitleString = "--subtitle \"1\"";
+                            }
+                        }
+                        
                         break;
                     default: //All other language codes
-                        for (int i = 0; i < subtitleComboList.Count(); i++)
+                        for (int i = 0; i < videoFile.Text.Count(); i++)
                         {
-                            if(string.IsNullOrEmpty(subtitleString)) //only want to gather once for the specified language otherwise results in duplication.
+                            //Check for PGS subtitles and ignore them, they cannot be passed through only burned.
+                            if (videoFile.Text[i].Properties.ContainsKey("Format"))
                             {
-                                for (int b = 0; b < videoFile.Text.Count(); b++)
+                                if (!videoFile.Text[i].Properties["Format"].Contains("PGS"))
                                 {
-                                    if (videoFile.Text[b].Properties.ContainsKey("Language"))
+                                    if (videoFile.Text[i].Properties.ContainsKey("Language"))
                                     {
-                                        if (videoFile.Text[b].Properties["Language"] == subsToInclude)
+                                        if (videoFile.Text[i].Properties["Language"] == subsToInclude)
                                         {
                                             if (string.IsNullOrEmpty(subtitleString))
                                             {
-                                                subtitleString = "--subtitle \"" + (b + 1).ToString();
+                                                subtitleString = "--subtitle \"" + (i + 1).ToString();
                                             }
                                             else
                                             {
-                                                subtitleString += "," + (b + 1).ToString();
+                                                subtitleString += "," + (i + 1).ToString();
                                             }
                                         }
                                     }
                                 }
                             }
+                            
                         }
                         if (!string.IsNullOrEmpty(subtitleString))
                         {
                             subtitleString += "\" "; //adds the last quote and space 
                         } 
-                            break;
+                        break;
                 }
 
                 //Burn Forced Subtitles Checked
@@ -2274,9 +2304,6 @@ namespace MovieDataCollector
                 }
 
             }
-            
-
-
 
             return outputEncoder + outputEncoderSpeed + outputEncoderTune + subtitleString + subtitleBurnString + outputEncopts + outputEncoderProfile + outputEncoderLevel + outputVideoBitrate + outputTwoPass + outputTurbo + outputFrameRate ;
         }
@@ -2370,12 +2397,12 @@ namespace MovieDataCollector
                     }
                     else
                     {
-                        outputSampleRate = "--arate 48"; //Default to 48
+                        outputSampleRate = "--arate 48 "; //Default to 48
                     }
                 }
                 else //Use user selected samplerate
                 {
-                    outputSampleRate = "--arate " + sampleRateCombo.Text;
+                    outputSampleRate = "--arate " + sampleRateCombo.Text + " ";
                 }
 
                 /*Bitrate***********************************************************************************************************************************************************************************************/
@@ -2543,7 +2570,7 @@ namespace MovieDataCollector
                 maxBitrate = userSelectedBitrate;
 
                 /*Samplerate***********************************************************************************************************************************************************************************************/
-                outputSampleRate = "--arate " + sampleRateCombo.Text;
+                outputSampleRate = "--arate " + sampleRateCombo.Text + " ";
 
                 /*Fallback***********************************************************************************************************************************************************************************************/
 
@@ -2647,7 +2674,8 @@ namespace MovieDataCollector
 
             if (!System.IO.File.Exists(outputPath + "\\" + filename.Replace(inputFileExt, outputFileExt)))
             {
-                outputFile = "--output \"" + outputPath + "\\" + filename.Replace(inputFileExt, outputFileExt) + "\" ";
+                //outputFile = "--output \"" + outputPath + "\\" + filename.Replace(inputFileExt, outputFileExt) + "\" ";
+                outputFile = "--output \"" + outputPath + "\\" + filename.Replace(inputFileExt, outputFileExt) + "\" " + containerFormat + chapterMarkers + largeFileSize + webOptimization;
             }
             else
             {

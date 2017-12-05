@@ -32,7 +32,7 @@ namespace MovieDataCollector
             "FrameRate", //Roku Compliant\
             "EncoderTune", //Fast Decode
             "VideoBitrate", //3.5
-            "EncoderProfile", //High
+            "EncoderProfile", //Main
             "EncoderLevel", //4.0
             "Optimize", //true
             "TwoPass", //true
@@ -55,7 +55,7 @@ namespace MovieDataCollector
             "23.976", //FrameRate
             "Fast Decode", //EncoderTune
             "3.5", //VideoBitrate
-            "High", //EncoderProfile
+            "Main", //EncoderProfile
             "4.0", //EncoderLevel
             "true", //Optimize
             "true", //TwoPass
@@ -78,7 +78,7 @@ namespace MovieDataCollector
             "23.976", //FrameRate
             "Fast Decode", //EncoderTune
             "5.5", //VideoBitrate
-            "High", //EncoderProfile
+            "Main", //EncoderProfile
             "4.0", //EncoderLevel
             "true", //Optimize
             "true", //TwoPass
