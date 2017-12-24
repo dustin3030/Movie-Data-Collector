@@ -2352,7 +2352,13 @@ namespace MovieDataCollector
                             }
                             else
                             {
-                                if ((videoFile.Audio[i].Bitrate / 2) > maxBitrate) // Assume at least stereo
+                                //ATOMS tracks are object oriented and show 0 channels
+                                if (videoFile.Audio[i].Description.Contains("ATMOS"))
+                                {
+                                    maxBitrate = videoFile.Audio[i].Bitrate / 8; //7.1 audio has 8 channels, ATMOS is at least 7.1 always.
+                                    audioTrackNumber = i; //Mark the audio track that has the highest bitrate
+                                }
+                                else if ((videoFile.Audio[i].Bitrate / 2) > maxBitrate) // Assume at least stereo
                                 {
                                     maxBitrate = videoFile.Audio[i].Bitrate / 2; //Get the per channel bitrate
                                     audioTrackNumber = i; //Mark the audio track that has the highest bitrate
@@ -2374,7 +2380,13 @@ namespace MovieDataCollector
                         }
                         else
                         {
-                            if ((videoFile.Audio[i].Bitrate / 2) > maxBitrate) // Assume at least stereo
+                            //ATOMS tracks are object oriented and show 0 channels
+                            if(videoFile.Audio[i].Description.Contains("ATMOS"))
+                            {
+                                maxBitrate = videoFile.Audio[i].Bitrate / 8; //7.1 audio has 8 channels, ATMOS is at least 7.1 always.
+                                audioTrackNumber = i; //Mark the audio track that has the highest bitrate
+                            }
+                            else if ((videoFile.Audio[i].Bitrate / 2) > maxBitrate) // Assume at least stereo
                             {
                                 maxBitrate = videoFile.Audio[i].Bitrate / 2; //Get the per channel bitrate
                                 audioTrackNumber = i; //Mark the audio track that has the highest bitrate
@@ -2412,15 +2424,31 @@ namespace MovieDataCollector
 
                 if (videoFile.Audio[audioTrackNumber].Bitrate != 0)
                 {
-                    //Determine per channel Bitrate of file
-                    bitrateOfFile = videoFile.Audio[audioTrackNumber].Bitrate / videoFile.Audio[audioTrackNumber].Channels;
+                    //ATOMS tracks are object oriented and show 0 channels
+                    if (videoFile.Audio[audioTrackNumber].Description.Contains("ATMOS"))
+                    {
+                        bitrateOfFile = videoFile.Audio[audioTrackNumber].Bitrate / 8; //7.1 audio has 8 channels, ATMOS is at least 7.1 always.
+                    }
+                    else
+                    {
+                        //Determine per channel Bitrate of file
+                        bitrateOfFile = videoFile.Audio[audioTrackNumber].Bitrate / videoFile.Audio[audioTrackNumber].Channels;
+                    }
                 }
                 else if (videoFile.Audio[audioTrackNumber].Properties.ContainsKey("Bit rate"))
                 {
                     try { double.TryParse(videoFile.Audio[audioTrackNumber].Properties["Bit rate"].Replace(" ", "").Replace("Kbps", ""), out bitrateOfFile); }
                     catch { bitrateOfFile = 0; }
 
-                    bitrateOfFile = bitrateOfFile / videoFile.Audio[audioTrackNumber].Channels;
+                    if(videoFile.Audio[audioTrackNumber].Description.Contains("ATMOS"))
+                    {
+                        bitrateOfFile = bitrateOfFile / 8;
+                    }
+                    else
+                    {
+                        bitrateOfFile = bitrateOfFile / videoFile.Audio[audioTrackNumber].Channels;
+                    }
+                    
                 }
 
 
@@ -3719,8 +3747,15 @@ namespace MovieDataCollector
                         }
 
                     }
-
-                    audioBitrate = audioBitrate / videoFile.Audio[i].Channels; //Converts to bitrate per channel of audio
+                    if(videoFile.Audio[i].Description.Contains("ATMOS")) //ATMOS is at least 8 channels but shows 0 because it's object oriented.
+                    {
+                        audioBitrate = audioBitrate / 8;
+                    }
+                    else
+                    {
+                        audioBitrate = audioBitrate / videoFile.Audio[i].Channels; //Converts to bitrate per channel of audio
+                    }
+                    
                     if (audioBitrate != 0 & audioBitrate < 32 | audioBitrate > 256)
                     {
                         incompatible.Append("\tAudio" + ((i + 1).ToString()).Replace("0", "") + ": bitrate " + audioBitrate.ToString() + ", must be between 32 & 256 kbps\n");
