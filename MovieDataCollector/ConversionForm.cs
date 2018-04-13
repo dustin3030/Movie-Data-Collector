@@ -787,58 +787,44 @@ namespace MovieDataCollector
                 tabControl1.SelectedIndex = 0; //Selects Media Info Tab
                 outPutTextBox.Clear();
                 notificationLabel.Visible = true;
-                for (int i = 0; i < VideoFilesList.Count(); i++)
+                if(filesListBox.SelectedIndices.Count > 0) //selected items
                 {
-                    nLabelUpdate("Processing file " + (i + 1).ToString() + " of " + VideoFilesList.Count().ToString(), Color.GreenYellow);
-                    getQuickInfo(VideoFilesList[i], filesListBox.Items[i].ToString());
+                    for (int i = 0; i < filesListBox.SelectedIndices.Count; i++)
+                    {
+                        nLabelUpdate("Processing file " + (i + 1).ToString() + " of " + filesListBox.SelectedIndices.Count.ToString(), Color.GreenYellow);
+                        getQuickInfo(VideoFilesList[filesListBox.SelectedIndices[i]], filesListBox.Items[filesListBox.SelectedIndices[i]].ToString());
+                    }
                 }
+                else //no items selected, perform on all items in listbox.
+                {
+                    for (int i = 0; i < VideoFilesList.Count(); i++)
+                    {
+                        nLabelUpdate("Processing file " + (i + 1).ToString() + " of " + VideoFilesList.Count().ToString(), Color.GreenYellow);
+                        getQuickInfo(VideoFilesList[i], filesListBox.Items[i].ToString());
+                    }
+                }
+                
                 nLabelUpdate("Processing complete.", Color.GreenYellow);
             }
         }
         private void detailInfoButton_Click(object sender, EventArgs e)
         {
-            
-            if (filesListBox.SelectedIndex == -1) { filesListBox.SelectedIndex = 0; } //Sets index selection to top of the list
-            tabControl1.SelectedIndex = 0; //Changes tab to media info tab.
-            if (IncompatibilityInfo.Count <= 0) //Incompatible List not available
+            if(filesListBox.SelectedIndices.Count == 1 || filesListBox.SelectedIndices.Count == 0) //Only 0 or 1 item selected
             {
-                if (filesListBox.Items.Count > 0) //ensures that the files listbox isn't emtpy
+                if (filesListBox.SelectedIndex == -1) { filesListBox.SelectedIndex = 0; } //Sets index selection to top of the list
+                tabControl1.SelectedIndex = 0; //Changes tab to media info tab.
+                if (IncompatibilityInfo.Count <= 0) //Incompatible List not available
                 {
-                    string videoFileName = VideoFilesList[filesListBox.SelectedIndex]; //returns currently selected items file path
-                    
-
-                    if (!string.IsNullOrEmpty(CF.DefaultSettings["InputFilePath"])) //As long as the file path isn't empty or null, get info about file
+                    if (filesListBox.Items.Count > 0) //ensures that the files listbox isn't emtpy
                     {
-                        nLabelUpdate("Processing detailed info for " + filesListBox.Items[filesListBox.SelectedIndex].ToString() + ".", Color.GreenYellow);
-                        MediaFile videoFile = new MediaFile(videoFileName); //return info about selected file
-                        outPutTextBox.Text = videoFile.Info_Text; //output info about selected file to the output box
-                        outPutTextBox.SelectionStart = 0;
-                        outPutTextBox.ScrollToCaret(); // force current position back to top
-                        outPutTextBox.Update();
-                        nLabelUpdate("Processing detailed info for " + filesListBox.Items[filesListBox.SelectedIndex].ToString() + " is now complete.", Color.GreenYellow);
-                    }
-                }
-            }
-            else //List available for Incompatible files
-            {
-                //checks that there is incompatibility info, and that the counts are correct.
-                //The IncompatibilityInfo count should be equal to the filesListBox count.
-                if (IncompatibilityInfo.Count > 0 & !(filesListBox.Items.Count > IncompatibilityInfo.Count))
-                {
-                    if (filesListBox.Items.Count > 0) //Ensure there is something in the listbox
-                    {
-                        string videoFileName = VideoFilesList[filesListBox.SelectedIndex]; //pulls filepath (videoFileName) from listbox
+                        string videoFileName = VideoFilesList[filesListBox.SelectedIndex]; //returns currently selected items file path
 
-                        if (!string.IsNullOrEmpty(CF.DefaultSettings["InputFilePath"])) //check that folderpath isn't empty
+
+                        if (!string.IsNullOrEmpty(CF.DefaultSettings["InputFilePath"])) //As long as the file path isn't empty or null, get info about file
                         {
                             nLabelUpdate("Processing detailed info for " + filesListBox.Items[filesListBox.SelectedIndex].ToString() + ".", Color.GreenYellow);
-                            MediaFile videoFile = new MediaFile(videoFileName); //list incompatible file attributes.
-                            outPutTextBox.Text = "INCOMPATIBLE FILE FOUND - " +
-                                filesListBox.SelectedItem.ToString() + "\r\n\r\n" +
-                                "INCOMPATIBLE FILE ATTRIBUTES LISTED BELOW:\r\n\r\n" +
-                                IncompatibilityInfo[filesListBox.SelectedIndex] +
-                                separator2 +
-                                videoFile.Info_Text;
+                            MediaFile videoFile = new MediaFile(videoFileName); //return info about selected file
+                            outPutTextBox.Text = videoFile.Info_Text; //output info about selected file to the output box
                             outPutTextBox.SelectionStart = 0;
                             outPutTextBox.ScrollToCaret(); // force current position back to top
                             outPutTextBox.Update();
@@ -846,175 +832,44 @@ namespace MovieDataCollector
                         }
                     }
                 }
+                else //List available for Incompatible files
+                {
+                    //checks that there is incompatibility info, and that the counts are correct.
+                    //The IncompatibilityInfo count should be equal to the filesListBox count.
+                    if (IncompatibilityInfo.Count > 0 & !(filesListBox.Items.Count > IncompatibilityInfo.Count))
+                    {
+                        if (filesListBox.Items.Count > 0) //Ensure there is something in the listbox
+                        {
+                            string videoFileName = VideoFilesList[filesListBox.SelectedIndex]; //pulls filepath (videoFileName) from listbox
+
+                            if (!string.IsNullOrEmpty(CF.DefaultSettings["InputFilePath"])) //check that folderpath isn't empty
+                            {
+                                nLabelUpdate("Processing detailed info for " + filesListBox.Items[filesListBox.SelectedIndex].ToString() + ".", Color.GreenYellow);
+                                MediaFile videoFile = new MediaFile(videoFileName); //list incompatible file attributes.
+                                outPutTextBox.Text = "INCOMPATIBLE FILE FOUND - " +
+                                    filesListBox.SelectedItem.ToString() + "\r\n\r\n" +
+                                    "INCOMPATIBLE FILE ATTRIBUTES LISTED BELOW:\r\n\r\n" +
+                                    IncompatibilityInfo[filesListBox.SelectedIndex] +
+                                    separator2 +
+                                    videoFile.Info_Text;
+                                outPutTextBox.SelectionStart = 0;
+                                outPutTextBox.ScrollToCaret(); // force current position back to top
+                                outPutTextBox.Update();
+                                nLabelUpdate("Processing detailed info for " + filesListBox.Items[filesListBox.SelectedIndex].ToString() + " is now complete.", Color.GreenYellow);
+                            }
+                        }
+                    }
+                }
             }
+            else //Multiple Selected
+            {
+                CustomMessageBox.Show("Detailed info can only be provided for 1 item at a time.", 150, 300, "Error");
+            }
+            
         }
 
 
         /*The following methods are for converting video files*/
-            private void ConvertSelectedButton_Click(object sender, EventArgs e)
-        {
-            CF.updateDefaults();
-            //Check for location of HandbrakeCLI
-            string handBrakeCLILocation = CheckForHandbrakeCLI();
-            string totalProcessingTime = "";
-            DateTime startTime = DateTime.Now;
-            DateTime endTime;
-            List<string> Errors = new List<string>(); //Stores error information as files process or fail to.
-            string errorString = "";
-            Errors.Clear();
-            int exitCode = 0; //Exit code for HandbrakeCLI
-
-            if (preConversionChecks()) //Several Checks take place prior to conversion
-            {
-                string handBrakeCLIString;
-
-                if (filesListBox.SelectedIndex >= 0)
-                {
-                    FolderBrowserDialog FBD = new FolderBrowserDialog(); //creates new instance of the FolderBrowserDialog
-                    FBD.Description = "Select Output Folder for Converted Video Files";
-
-                    if (!string.IsNullOrEmpty(CF.DefaultSettings["OutputFilePath"])) //if folderpath contains a path, sets folderBrowserDialog to default to this path
-                    {
-                        FBD.SelectedPath = CF.DefaultSettings["OutputFilePath"];
-                    }
-
-                    if (FBD.ShowDialog() == DialogResult.OK) //shows folderbrowserdialog, runs addtional code if not cancelled out
-                    {
-                        CF.DefaultSettings["OutputFilePath"] = FBD.SelectedPath;
-                        CF.updateDefaults();
-
-                        nLabelUpdate("Converting File ( " + filesListBox.SelectedItem.ToString() + " )", Color.GreenYellow);
-
-                        DialogResult = DialogResult.None; //Prevents form from closing...
-
-                        try
-                        {
-
-                            if (System.IO.File.Exists(VideoFilesList[filesListBox.SelectedIndex])) //Skip file if it has been moved or deleted 
-                            {
-                                handBrakeCLIString = GenerateConversionString(VideoFilesList[filesListBox.SelectedIndex], filesListBox.SelectedItem.ToString(), FBD.SelectedPath);
- 
-                                if (string.IsNullOrEmpty(handBrakeCLIString))
-                                {
-                                    handBrakeCLIString = "-i " + FBD.SelectedPath + "\\" + filesListBox.SelectedItem.ToString() + " -o "; // Set to defaults let handbrake error out if necessary
-                                }
-
-                                try
-                                {
-                                    using (Process conversionProcess = new Process())
-                                    {
-                                        conversionProcess.StartInfo.FileName = handBrakeCLILocation + @"\HandBrakeCLI.exe";
-                                        conversionProcess.StartInfo.Arguments = "/c " + handBrakeCLIString; //Sets commandline arguments
-
-                                        conversionProcess.StartInfo.UseShellExecute = false; //Must be set to false to redirect standard error.
-                                                                                             //conversionProcess.StartInfo.RedirectStandardError = true; //Allows for redirect of the standard error for the process.
-
-                                        conversionProcess.EnableRaisingEvents = true; //Raises process exited event on close
-
-
-                                        conversionProcess.Start();
-                                        //StreamReader SError = conversionProcess.StandardError;
-                                        //conversionProcess.PriorityClass = ProcessPriorityClass.High; //starts the process with the highest possible priority.
-                                        conversionProcess.WaitForExit();
-                                        //string standardError = SError.ReadToEnd();
-                                        exitCode = conversionProcess.ExitCode;
-                                    }
-                                }
-                                catch
-                                {
-                                    exitCode = 4; //Unknown Error
-                                }
-
-                            }
-
-                            switch (exitCode)
-                            {
-                                case 0: //Completed Successfully
-                                    break;
-                                case 1: //Cancelld
-                                    Errors.Add("Error Processing File " + filesListBox.SelectedItem.ToString() + "\r\n\t Exited with code = " + exitCode + " - Cancelled");
-                                    break;
-                                case 2: //Invalid Input
-                                    Errors.Add("Error Processing File " + filesListBox.SelectedItem.ToString() + "\r\n\t Exited with code = " + exitCode + " - Invalid Input");
-                                    break;
-                                case 3: //Initialization Error
-                                    Errors.Add("Error Processing File " + filesListBox.SelectedItem.ToString() + "\r\n\t Exited with code = " + exitCode + " - Initialization Error");
-                                    break;
-                                case 4: //Unknown Error
-                                    Errors.Add("Error Processing File " + filesListBox.SelectedItem.ToString() + "\r\n\t Exited with code = " + exitCode + " - Unknown Error");
-                                    break;
-                                default:
-                                    break;
-                            }
-
-                            endTime = DateTime.Now;
-                            totalProcessingTime = timeDifference(startTime, endTime);
-
-                            if (Errors.Count > 0)
-                            {
-                                tabControl1.SelectedIndex = 0; //select output text box
-                                foreach (var ErrorLine in Errors)
-                                {
-                                    errorString += ErrorLine + "\r\n"; //write out errors for user to see
-                                }
-                                outPutTextBox.Text = "File skipped due to error:\r\n" + errorString;
-
-                                nLabelUpdate("Transcoding of \"" + filesListBox.SelectedItem.ToString() + "\" Failed.", Color.GreenYellow);
-
-
-
-                                if (notificationCheck.Checked)
-                                {
-                                    string username = usernameBox.Text;
-                                    string password = passwordBox.Text;
-                                    string sendTo = sendToBox.Text;
-
-                                    sendNotification(username, password, sendTo, "Movie Data Collector Notification", "The transcoding que initiated " + startTime.ToString() + " Failed with exit code " + exitCode.ToString() + ".");
-                                }
-
-                            }
-                            else //No errors were thrown by handbrake cli
-                            {
-                                outPutTextBox.Text = ""; //Clears Output Box on successful Encode
-                                nLabelUpdate("Transcoding of \"" + filesListBox.SelectedItem.ToString() + "\" completed in " + totalProcessingTime, Color.GreenYellow);
-
-                                if (notificationCheck.Checked)
-                                {
-                                    string username = usernameBox.Text;
-                                    string password = passwordBox.Text;
-                                    string sendTo = sendToBox.Text;
-
-                                    //Send notification that transcoding is complete
-                                    sendNotification(username, password, sendTo, "Movie Data Collector Notification", "The transcoding que initiated " + startTime.ToString() + " is now complete. \r\n The file was processed in " + totalProcessingTime);
-                                }
-                            }
-
-                        }
-                        catch
-                        {
-                            nLabelUpdate("Error Gathering File Info for " + filesListBox.SelectedItem.ToString() + " File May Be Corrupt.", Color.GreenYellow);
-
-
-
-                            if (notificationCheck.Checked)
-                            {
-                                string username = usernameBox.Text;
-                                string password = passwordBox.Text;
-                                string sendTo = sendToBox.Text;
-
-                                //Send notification that the transcoding is complete
-                                sendNotification(username, password, sendTo, "Movie Data Collector Notification", "The transcoding que initiated " + startTime.ToString() + " failed. \r\n The file may be corrupt");
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    //Clear notification label
-                    nLabelUpdate("", Color.GreenYellow);
-                }
-            }
-        }
         private void ConvertAllButton_Click(object sender, EventArgs e)
         {
             CF.updateDefaults();
@@ -1028,6 +883,8 @@ namespace MovieDataCollector
             string errorString = "";
             Errors.Clear();
             int exitCode = 0; //HandbrakeCLI Exit Code 0=Exited Normally, 1=Cancelled, 2=Invalid Input, 3=Initalization Error, 4=Unknown Error
+            int selectCounter = 0; //Counter to measure number of selected items vs processes ones.
+
 
             if (preConversionChecks()) //If handbrake is found continue
             {
@@ -1048,72 +905,159 @@ namespace MovieDataCollector
 
                         for (int i = 0; i < VideoFilesList.Count; i++)
                         {
-                            //Display which file is being converted
-                            nLabelUpdate("Converting File " + (i + 1).ToString() + " of " + VideoFilesList.Count.ToString() + " ( " + filesListBox.Items[i].ToString() + " )", Color.GreenYellow);
-
-                            DialogResult = DialogResult.None; //Prevents form from closing...
-
-                            handBrakeCLIString = GenerateConversionString(VideoFilesList[i], filesListBox.Items[i].ToString(), FBD.SelectedPath);
-
-                            if (string.IsNullOrEmpty(handBrakeCLIString))
+                            if(filesListBox.SelectedIndices.Count > 0)
                             {
-                                handBrakeCLIString = ""; // Set to defaults let handbrake error out if necessary
-                            }
-
-                            try //Check for errors and continue processing 
-                            {
-                                //Launch command line object to pass the commands to
-                                if (System.IO.File.Exists(VideoFilesList[i])) //Skip file if it has been moved or deleted 
+                                
+                                for (int a = 0; a < filesListBox.SelectedIndices.Count; a++)
                                 {
-                                    try
+                                    //Selected item to process
+                                    if(filesListBox.SelectedIndices[a] == i )
                                     {
-                                        using (Process conversionProcess = new Process())
+                                        selectCounter += 1;
+                                        //Display which file is being converted
+                                        nLabelUpdate("Converting File " + (selectCounter).ToString() + " of " + filesListBox.SelectedIndices.Count.ToString() + " ( " + filesListBox.Items[i].ToString() + " )", Color.GreenYellow);
+
+                                        DialogResult = DialogResult.None; //Prevents form from closing...
+
+                                        handBrakeCLIString = GenerateConversionString(VideoFilesList[i], filesListBox.Items[i].ToString(), FBD.SelectedPath);
+
+                                        if (string.IsNullOrEmpty(handBrakeCLIString))
                                         {
-                                            conversionProcess.StartInfo.FileName = handBrakeCLILocation + @"\HandBrakeCLI.exe";
-                                            conversionProcess.StartInfo.Arguments = "/c " + handBrakeCLIString; //Sets commandline arguments
-                                            conversionProcess.StartInfo.UseShellExecute = false; //Must be set to false to redirect standard error.
-                                                                                                 //conversionProcess.StartInfo.RedirectStandardError = true; //Allows for redirect of the standard error for the process.
-                                            conversionProcess.EnableRaisingEvents = true; //Raises process exited event on close
-                                            conversionProcess.Start();
-                                            //StreamReader SError = conversionProcess.StandardError;
-                                            conversionProcess.PriorityClass = ProcessPriorityClass.High; //starts the process with the highest possible priority.
-                                            conversionProcess.WaitForExit();
-                                            //string standardError = SError.ReadToEnd();
-                                            exitCode = conversionProcess.ExitCode;
+                                            handBrakeCLIString = ""; // Set to defaults let handbrake error out if necessary
+                                        }
+
+                                        try //Check for errors and continue processing 
+                                        {
+                                            //Launch command line object to pass the commands to
+                                            if (System.IO.File.Exists(VideoFilesList[i])) //Skip file if it has been moved or deleted 
+                                            {
+                                                try
+                                                {
+                                                    using (Process conversionProcess = new Process())
+                                                    {
+                                                        conversionProcess.StartInfo.FileName = handBrakeCLILocation + @"\HandBrakeCLI.exe";
+                                                        conversionProcess.StartInfo.Arguments = "/c " + handBrakeCLIString; //Sets commandline arguments
+                                                        conversionProcess.StartInfo.UseShellExecute = false; //Must be set to false to redirect standard error.
+                                                                                                             //conversionProcess.StartInfo.RedirectStandardError = true; //Allows for redirect of the standard error for the process.
+                                                        conversionProcess.EnableRaisingEvents = true; //Raises process exited event on close
+                                                        conversionProcess.Start();
+                                                        //StreamReader SError = conversionProcess.StandardError;
+                                                        conversionProcess.PriorityClass = ProcessPriorityClass.High; //starts the process with the highest possible priority.
+                                                        conversionProcess.WaitForExit();
+                                                        //string standardError = SError.ReadToEnd();
+                                                        exitCode = conversionProcess.ExitCode;
+                                                    }
+                                                }
+                                                catch
+                                                {
+                                                    exitCode = 4; //Unknown Error
+                                                }
+
+
+                                            }
+
+                                            switch (exitCode)
+                                            {
+                                                case 0: //Completed Successfully
+                                                    break;
+                                                case 1: //Cancelld
+                                                    Errors.Add("Error Processing File " + filesListBox.Items[i] + "\r\n\t Exited with code = " + exitCode + " - Cancelled");
+                                                    break;
+                                                case 2: //Invalid Input
+                                                    Errors.Add("Error Processing File " + filesListBox.Items[i] + "\r\n\t Exited with code = " + exitCode + " - Invalid Input");
+                                                    break;
+                                                case 3: //Initialization Error
+                                                    Errors.Add("Error Processing File " + filesListBox.Items[i] + "\r\n\t Exited with code = " + exitCode + " - Initialization Error");
+                                                    break;
+                                                case 4: //Unknown Error
+                                                    Errors.Add("Error Processing File " + filesListBox.Items[i] + "\r\n\t Exited with code = " + exitCode + " - Unknown Error");
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                        }
+                                        catch
+                                        {
+                                            Errors.Add("Error Processing File " + filesListBox.Items[i] + " . File May Be Corrupt.");
                                         }
                                     }
-                                    catch
+                                    //No item selected
+                                    else
                                     {
-                                        exitCode = 4; //Unknown Error
+
                                     }
-                                    
-                                    
+                                }
+                            }
+                            else //No items selected, process all items as normal.
+                            {
+                                //Display which file is being converted
+                                nLabelUpdate("Converting File " + (i + 1).ToString() + " of " + VideoFilesList.Count.ToString() + " ( " + filesListBox.Items[i].ToString() + " )", Color.GreenYellow);
+
+                                DialogResult = DialogResult.None; //Prevents form from closing...
+
+                                handBrakeCLIString = GenerateConversionString(VideoFilesList[i], filesListBox.Items[i].ToString(), FBD.SelectedPath);
+
+                                if (string.IsNullOrEmpty(handBrakeCLIString))
+                                {
+                                    handBrakeCLIString = ""; // Set to defaults let handbrake error out if necessary
                                 }
 
-                                switch (exitCode)
+                                try //Check for errors and continue processing 
                                 {
-                                    case 0: //Completed Successfully
-                                        break;
-                                    case 1: //Cancelld
-                                        Errors.Add("Error Processing File " + filesListBox.Items[i] + "\r\n\t Exited with code = " + exitCode + " - Cancelled");
-                                        break;
-                                    case 2: //Invalid Input
-                                        Errors.Add("Error Processing File " + filesListBox.Items[i] + "\r\n\t Exited with code = " + exitCode + " - Invalid Input");
-                                        break;
-                                    case 3: //Initialization Error
-                                        Errors.Add("Error Processing File " + filesListBox.Items[i] + "\r\n\t Exited with code = " + exitCode + " - Initialization Error");
-                                        break;
-                                    case 4: //Unknown Error
-                                        Errors.Add("Error Processing File " + filesListBox.Items[i] + "\r\n\t Exited with code = " + exitCode + " - Unknown Error");
-                                        break;
-                                    default:
-                                        break;
+                                    //Launch command line object to pass the commands to
+                                    if (System.IO.File.Exists(VideoFilesList[i])) //Skip file if it has been moved or deleted 
+                                    {
+                                        try
+                                        {
+                                            using (Process conversionProcess = new Process())
+                                            {
+                                                conversionProcess.StartInfo.FileName = handBrakeCLILocation + @"\HandBrakeCLI.exe";
+                                                conversionProcess.StartInfo.Arguments = "/c " + handBrakeCLIString; //Sets commandline arguments
+                                                conversionProcess.StartInfo.UseShellExecute = false; //Must be set to false to redirect standard error.
+                                                                                                     //conversionProcess.StartInfo.RedirectStandardError = true; //Allows for redirect of the standard error for the process.
+                                                conversionProcess.EnableRaisingEvents = true; //Raises process exited event on close
+                                                conversionProcess.Start();
+                                                //StreamReader SError = conversionProcess.StandardError;
+                                                conversionProcess.PriorityClass = ProcessPriorityClass.High; //starts the process with the highest possible priority.
+                                                conversionProcess.WaitForExit();
+                                                //string standardError = SError.ReadToEnd();
+                                                exitCode = conversionProcess.ExitCode;
+                                            }
+                                        }
+                                        catch
+                                        {
+                                            exitCode = 4; //Unknown Error
+                                        }
+
+
+                                    }
+
+                                    switch (exitCode)
+                                    {
+                                        case 0: //Completed Successfully
+                                            break;
+                                        case 1: //Cancelld
+                                            Errors.Add("Error Processing File " + filesListBox.Items[i] + "\r\n\t Exited with code = " + exitCode + " - Cancelled");
+                                            break;
+                                        case 2: //Invalid Input
+                                            Errors.Add("Error Processing File " + filesListBox.Items[i] + "\r\n\t Exited with code = " + exitCode + " - Invalid Input");
+                                            break;
+                                        case 3: //Initialization Error
+                                            Errors.Add("Error Processing File " + filesListBox.Items[i] + "\r\n\t Exited with code = " + exitCode + " - Initialization Error");
+                                            break;
+                                        case 4: //Unknown Error
+                                            Errors.Add("Error Processing File " + filesListBox.Items[i] + "\r\n\t Exited with code = " + exitCode + " - Unknown Error");
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+                                catch
+                                {
+                                    Errors.Add("Error Processing File " + filesListBox.Items[i] + " . File May Be Corrupt.");
                                 }
                             }
-                            catch
-                            {
-                                Errors.Add("Error Processing File " + filesListBox.Items[i] + " . File May Be Corrupt.");
-                            }
+                            
 
                         }
 
@@ -1143,6 +1087,23 @@ namespace MovieDataCollector
 
                                 if (VideoFilesList.Count == 1) { sendNotification(username, password, sendTo, "Movie Data Collector Notification", "The transcoding que initiated " + startTime.ToString() + " failed. HandbrakeCLI exited with code" + exitCode.ToString()); }
                                 if (VideoFilesList.Count > 1) { sendNotification(username, password, sendTo, "Movie Data Collector Notification", "The transcoding que initiated " + startTime.ToString() + " is now complete. " + (VideoFilesList.Count() - Errors.Count()).ToString() + " of " + VideoFilesList.Count().ToString() + " files processed successfully in " + totalProcessingTime); }
+                            }
+                        }
+                        else if (selectCounter > 0) //Items selected from list
+                        {
+                            outPutTextBox.Text = ""; //Clears Output Box on successful Encode
+
+                            if (filesListBox.SelectedIndices.Count == 1) { nLabelUpdate("The transcoding que initiated " + startTime.ToString() + " is now complete. The file was processed in " + totalProcessingTime, Color.GreenYellow); }
+                            if (filesListBox.SelectedIndices.Count > 1) { nLabelUpdate("The transcoding que initiated " + startTime.ToString() + " is now complete. " + filesListBox.SelectedIndices.Count.ToString() + " files were processed in " + totalProcessingTime, Color.GreenYellow); }
+
+                            if (notificationCheck.Checked)
+                            {
+                                string username = usernameBox.Text;
+                                string password = passwordBox.Text;
+                                string sendTo = sendToBox.Text;
+
+                                if (filesListBox.SelectedIndices.Count == 1) { sendNotification(username, password, sendTo, "Movie Data Collector Notification", "The transcoding que initiated " + startTime.ToString() + " is now complete. The file was processed in " + totalProcessingTime); }
+                                if (filesListBox.SelectedIndices.Count > 1) { sendNotification(username, password, sendTo, "Movie Data Collector Notification", "The transcoding que initiated " + startTime.ToString() + " is now complete. " + filesListBox.SelectedIndices.Count.ToString() + " files were processed in " + totalProcessingTime); }
                             }
                         }
                         else
@@ -1192,6 +1153,7 @@ namespace MovieDataCollector
                 default:
                     break;
             }
+
             notificationLabel.Visible = true;
             return checksPassed;
         }
@@ -4204,7 +4166,5 @@ namespace MovieDataCollector
                     break;
             }
         }
-
-       
     }
 }

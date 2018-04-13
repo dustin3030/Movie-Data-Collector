@@ -316,6 +316,7 @@ namespace MovieDataCollector
 
             if (fileNamesListbox.Items.Count > 0) //checks that fileNamesListbox is not empty
             {
+                
                 //look for highest season number, highest episode nmber and build list of all episodes of the show.
                 for (int i = 0; i < SeriesInfo.episodes.Count(); i++)
                 {
@@ -336,7 +337,7 @@ namespace MovieDataCollector
                     }
                 }
 
-
+                //Check for selected items, if there are items selected then for the non selected items set the season and episode numbers as -1 to effectively disable them
                 for (int i = 0; i < fileNamesListbox.Items.Count; i++) //loop through listbox items
                 {
                     string[] Tokens = fileNamesListbox.Items[i].ToString().Split(delim);
@@ -344,10 +345,38 @@ namespace MovieDataCollector
                     season = "";
                     episode = "";
                     string newTitle = "";
+                    bool isSelected = false;
 
+                    //loop through selected indecies to ensure item is selected or not
+                    if(fileNamesListbox.SelectedIndices.Count > 0)
+                    {
+                        for (int a = 0; a < fileNamesListbox.SelectedIndices.Count; a++)
+                        {
+                            //If its found to exist in the selected indices
+                            if (fileNamesListbox.SelectedIndices[a] == i)
+                            {
+                                isSelected = true;
+                            }
+                        }
+                        if(isSelected)
+                        {
+                            season = checkSeason(fileNamesListbox.Items[i].ToString().ToUpper(), maxSeason); //tries to parse season info from filename
+                            episode = checkEpisode(fileNamesListbox.Items[i].ToString().ToUpper(), maxEpisode); //tries to parse episode info from filename
+                        }
+                        else
+                        {
+                            season = "-1";
+                            episode = "-1";
+                        }
+                    }
+                    else //None selected, perform check on the entire list.
+                    {
+                        season = checkSeason(fileNamesListbox.Items[i].ToString().ToUpper(), maxSeason); //tries to parse season info from filename
+                        episode = checkEpisode(fileNamesListbox.Items[i].ToString().ToUpper(), maxEpisode); //tries to parse episode info from filename
+                    }
+                    
 
-                    season = checkSeason(fileNamesListbox.Items[i].ToString().ToUpper(), maxSeason); //tries to parse season info from filename
-                    episode = checkEpisode(fileNamesListbox.Items[i].ToString().ToUpper(), maxEpisode); //tries to parse episode info from filename
+                    
 
                     if ((string.IsNullOrEmpty(season) | string.IsNullOrEmpty(episode)) & titleCb.Checked)
                     {
@@ -412,6 +441,8 @@ namespace MovieDataCollector
                             }
                         }
                     }
+                    //Selections made, other items are marked with -1 and then skipped
+                    if (season == "-1") { newTitle = "SKIPPED"; }
 
                     if ((string.IsNullOrEmpty(season) | string.IsNullOrEmpty(episode)) & absoluteCb.Checked)
                     {
@@ -471,8 +502,13 @@ namespace MovieDataCollector
                         }
                         if (string.IsNullOrEmpty(newTitle) & !string.IsNullOrEmpty(season) & !string.IsNullOrEmpty(episode)) { newTitle = "NO SUCH EPISODE FOUND"; }
                         else if (string.IsNullOrEmpty(newTitle)) { newTitle = "EPISODE COULD NOT BE DETERMINED"; }
+                        else if (newTitle == "SKIPPED") { newTitle =""; MessageBox.Show("title change"); } //items marked as SKIPPED are items that were not selected and thus not evaluated.
                     }
-                    newTitle = formatFileName(newTitle); //removes invalid characters from the filename.
+                    if (newTitle == "SKIPPED") { newTitle = ""; }
+                    else
+                    {
+                        newTitle = formatFileName(newTitle); //removes invalid characters from the filename.
+                    }
                     changedFileNamesListbox.Items.Add(newTitle);
                 }
             }
@@ -522,7 +558,7 @@ namespace MovieDataCollector
                     FileName.Contains("S" + i.ToString() + "E") ||
                     FileName.Contains("S0" + i.ToString() + "E") ||
                     FileName.Contains(i.ToString() + "X") ||
-                    FileName.Contains(i.ToString() + ".E") ||
+                    //FileName.Contains(i.ToString() + ".E") ||
                     FileName.Contains("SEASON_" + i.ToString()) ||
                     FileName.Contains("SEASON " + i.ToString()) ||
                     FileName.Contains("SEASON 0" + i.ToString()) ||
@@ -854,12 +890,11 @@ namespace MovieDataCollector
                         {
                             errorList += fileNamesListbox.Items[i].ToString() + " - " + changedFileNamesListbox.Items[i].ToString() + "\n";
                         }
-
                         /*Don't attempt to change the filename if a file with the new name already exists.
-                        This would be the case if there were multiple fils with the same name in the chosen
+                        This would be the case if there were multiple files with the same name in the chosen
                             directory*/
 
-                        else
+                        else if(changedFileNamesListbox.Items[i].ToString() !="")
                         {
                             if (!File.Exists(parentPathLabel.Text + changedFileNamesListbox.Items[i].ToString()))
                             {

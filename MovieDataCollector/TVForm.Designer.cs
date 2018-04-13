@@ -300,6 +300,7 @@
             this.fileNamesListbox.FormattingEnabled = true;
             this.fileNamesListbox.Location = new System.Drawing.Point(12, 244);
             this.fileNamesListbox.Name = "fileNamesListbox";
+            this.fileNamesListbox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.fileNamesListbox.Size = new System.Drawing.Size(401, 199);
             this.fileNamesListbox.TabIndex = 16;
             this.fileNamesListbox.SelectedIndexChanged += new System.EventHandler(this.fileNamesListbox_SelectedIndexChanged);

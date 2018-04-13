@@ -290,6 +290,7 @@
             this.filesListBox.FormattingEnabled = true;
             this.filesListBox.Location = new System.Drawing.Point(12, 204);
             this.filesListBox.Name = "filesListBox";
+            this.filesListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.filesListBox.Size = new System.Drawing.Size(548, 381);
             this.filesListBox.TabIndex = 11;
             this.filesListBox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.filesListBox_MouseDoubleClick);
@@ -518,25 +519,20 @@
             // 
             this.convertAllButton.BackColor = System.Drawing.Color.GreenYellow;
             this.convertAllButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.convertAllButton.Location = new System.Drawing.Point(133, 458);
+            this.convertAllButton.Location = new System.Drawing.Point(6, 457);
             this.convertAllButton.Name = "convertAllButton";
             this.convertAllButton.Size = new System.Drawing.Size(121, 32);
             this.convertAllButton.TabIndex = 8;
-            this.convertAllButton.Text = "Convert &All";
+            this.convertAllButton.Text = "Convert";
             this.convertAllButton.UseVisualStyleBackColor = false;
             this.convertAllButton.Click += new System.EventHandler(this.ConvertAllButton_Click);
             // 
             // convertSelectedButton
             // 
-            this.convertSelectedButton.BackColor = System.Drawing.Color.GreenYellow;
-            this.convertSelectedButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.convertSelectedButton.Location = new System.Drawing.Point(6, 458);
+            this.convertSelectedButton.Location = new System.Drawing.Point(0, 0);
             this.convertSelectedButton.Name = "convertSelectedButton";
-            this.convertSelectedButton.Size = new System.Drawing.Size(121, 32);
-            this.convertSelectedButton.TabIndex = 7;
-            this.convertSelectedButton.Text = "Convert &Selected";
-            this.convertSelectedButton.UseVisualStyleBackColor = false;
-            this.convertSelectedButton.Click += new System.EventHandler(this.ConvertSelectedButton_Click);
+            this.convertSelectedButton.Size = new System.Drawing.Size(75, 23);
+            this.convertSelectedButton.TabIndex = 19;
             // 
             // videoSettingsPanel
             // 
