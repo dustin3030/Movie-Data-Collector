@@ -63,7 +63,6 @@
             this.notificationCheck = new System.Windows.Forms.CheckBox();
             this.testNotificationButton = new System.Windows.Forms.Button();
             this.convertAllButton = new System.Windows.Forms.Button();
-            this.convertSelectedButton = new System.Windows.Forms.Button();
             this.videoSettingsPanel = new System.Windows.Forms.Panel();
             this.subtitleGroupBox = new System.Windows.Forms.GroupBox();
             this.subtitleInfoLabel = new System.Windows.Forms.Label();
@@ -366,7 +365,6 @@
             this.conversionSettingsPage.Controls.Add(this.notificationCheck);
             this.conversionSettingsPage.Controls.Add(this.testNotificationButton);
             this.conversionSettingsPage.Controls.Add(this.convertAllButton);
-            this.conversionSettingsPage.Controls.Add(this.convertSelectedButton);
             this.conversionSettingsPage.Controls.Add(this.videoSettingsPanel);
             this.conversionSettingsPage.Controls.Add(this.videoSettingsLabel);
             this.conversionSettingsPage.Controls.Add(this.audioSettingsLabel);
@@ -526,13 +524,6 @@
             this.convertAllButton.Text = "Convert";
             this.convertAllButton.UseVisualStyleBackColor = false;
             this.convertAllButton.Click += new System.EventHandler(this.ConvertAllButton_Click);
-            // 
-            // convertSelectedButton
-            // 
-            this.convertSelectedButton.Location = new System.Drawing.Point(0, 0);
-            this.convertSelectedButton.Name = "convertSelectedButton";
-            this.convertSelectedButton.Size = new System.Drawing.Size(75, 23);
-            this.convertSelectedButton.TabIndex = 19;
             // 
             // videoSettingsPanel
             // 
@@ -1257,7 +1248,6 @@
         private System.Windows.Forms.CheckBox notificationCheck;
         private System.Windows.Forms.Button testNotificationButton;
         private System.Windows.Forms.Button convertAllButton;
-        private System.Windows.Forms.Button convertSelectedButton;
         private System.Windows.Forms.Label passwordLabel;
         private System.Windows.Forms.Label userNameLabel;
         private System.Windows.Forms.Label sendToLabel;

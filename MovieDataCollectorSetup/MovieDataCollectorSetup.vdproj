@@ -15,86 +15,116 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_02FD8DF3AFCA4A8891D03FDD68F74BCE"
+        "MsmKey" = "8:_035648153B0E4EEA94A508E65C8ECD43"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_03A6439DC17B4C2DA136C9F01F2A5E07"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_03DC5D17043B4D1CA76B6C24251AB390"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_04D99874DFE415BD7D05E06BB797E63F"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_053768BB84EC454B801A71858878D459"
-        "OwnerKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_06CC5E2C8CF0C848561944F726668871"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_071A0BF5BAC5ABDF717F4BF902E3C74F"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_084F8E2CA7CD9332F4594B7FBAC16450"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_093A1F3BFF49FEF7A36A09BD78623365"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "MsmKey" = "8:_0E37452B12324C2A8541674DF8E098FF"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_137F9E61C0CB48E30B10FCE06F392D69"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_13FC26C08B594303ADF77EF7BEB01AE3"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_1607FE724BE751909CBC57075995D8F4"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_17A3D9733B9A52EC573503563C88CCEA"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_18DCE506763F4FFB939B4F90D2E3EB0E"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_19B46EBFF134464CA43826494FD59EE5"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_1E163A75265D59B57D0F2C952214B6E7"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_1E22D985571C45189456C043643FDCE4"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_1E788106F56ABFE9DA0F2CD88975651E"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_2356BDC8F037A4F75AA862B25ACF1347"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -106,199 +136,163 @@
         "Entry"
         {
         "MsmKey" = "8:_276CD07867D1621522F3FF9F868C4D0A"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_2D3477E0BCA5470A91A4C2CDA49E82A8"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_2D3EA303113F40C9B5F5BA4E71B3B6F3"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_2DBBE9A654024CDE938F2348085B4D9D"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_311DCED5EB174E5B9F8BD6779388DFF6"
-        "OwnerKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_335A94910D194010E6F6F8E2925CA788"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_3379D27C82024C4AB47C27368F6853A3"
+        "MsmKey" = "8:_4033C7908A034399911BC4811F2DC66D"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_45D2D1744BB609BF35FC5E434518F048"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_46D640D03B1E98AAFD8EBCD63DDC140F"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_485A63231766445AB1AA6EEAD687FBD0"
-        "OwnerKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_4A712618C9C5B776EBC7C8CF7D8E99DB"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_517172CF4D04C4796EBDC82345E460C5"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_58491A9105136214D59F5A5AFDCD6CD8"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_590A1E7CDCF44F965DA0794DE06C78C1"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_5981E2E624226956E70DA55D679C7B0F"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_5A5B03A1E5A440CCB083366BD211F355"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_5B028DD5E2EB85A3FAA0A26E44CE5222"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_643401C904D149619C6DCC4B572554DA"
-        "OwnerKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_6680134BFD3EA6435314A4D008E85CA3"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_6B06FE4ED7F9F35C2C3307F1894FD1C1"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_6DEB33D049162D888BCAA849E7B203D7"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_724FDE2358A89135CB18FC494E985F0B"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_7480BC11D2A03C32DD49106CBBDC1D57"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_7637A3626327B17D2A25619471867770"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_76B1A0F8779516A95E01C6F2256A4330"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_77691BC526154A59AFD42BF0080B61D8"
+        "MsmKey" = "8:_75BA2117A52C4FBD8E054ACBA730FD0A"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
+        "MsmKey" = "8:_7637A3626327B17D2A25619471867770"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_7689CD60799146FFABEC6DF9CDC8AE8A"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_76B1A0F8779516A95E01C6F2256A4330"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_7956B8059B92AFA62D9C27C3C50074A0"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_7C1001A8B16A93256D29A92B4CAA6455"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_7CB6CA5A8A574918A791511C8FE42142"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_7DF091C2C61AF1F4F9407DE9627EB579"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_7F189B6059B95B8FA5EB999EE58273E4"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_7F189B6059B95B8FA5EB999EE58273E4"
         "OwnerKey" = "8:_D86BA392473B76ED7FBFCF85B51CF2EC"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_812222C8CF8A4CBE94A9AC3AF9A37837"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_82860D3C548D456F9BB6AC7F8257BDCC"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_829661A01F924955A3A0482001E483E4"
-        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -315,26 +309,8 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_878F98F0022948548721FE8C777B1AFE"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_8B4DB7C6F2585A6F0CAC243AD2A42283"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_8B5510D8B4334BB5B6701508163F0974"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_8C6E8ACB1FB7479DBC083B46D0B3E9AE"
-        "OwnerKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -351,122 +327,128 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_979C1B1108DD40B091B61F25798640C5"
+        "MsmKey" = "8:_97943AE6AC8E46829288D4E33C1A3187"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_98F3FCD59ADB0E444E20CFDB00DF5749"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_9961954B748EC14AB4D45F12AC3D1C8F"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_A65E15CF4945F54F786A78BACB97F6CC"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_A71A8AB0ADC24F7BB505B8DFEC28F7DA"
+        "MsmKey" = "8:_98FEDF83B8CB4E788A65C24573DBF3DC"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_AABFBD3A9A7C455F9B8D5A55A545DA9B"
+        "MsmKey" = "8:_9961954B748EC14AB4D45F12AC3D1C8F"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9C0F82A447B94388AB50A498A3CCE727"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9F992DD4E25248EC867A38EBADCB3422"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A65E15CF4945F54F786A78BACB97F6CC"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A6D6E4C0F9444C349B963D2164E5B329"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A7189F780D06430D8F40473000E501D9"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B01A9E009D6A401C8C7572CBBF6C1C98"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_B44972F38BE8418DA1D0602D38F3A443"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_B527FFF6C53EA6FDAC9BB26FB416E76D"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B9886968583047E2A76165C92EE22104"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_BF4ACC66DB4B522D6033D2C07E39CC9B"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_BFF9403FE26576A3815861DAF167C8AD"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_C0A49E692EAB15FBA62CC81FB25D1D89"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_C0E458CB0E204FDFA5E2528592B1F242"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_C273BEC5A89043E99639A58AE40ACCF7"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_C36B12FC43C248AF930AB991BF7A475F"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_CAD3DCB374254EACAB00B7CD4536340D"
-        "OwnerKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_CC114CD7230F7D1AED6341156DBEF666"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_CCA1803D4E214C55833E3E9ED3272910"
-        "OwnerKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_CD75F03C73005E9A08A23DACFD5CF187"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_CE196FF0CFDCF1F42E2885A2C2202C1F"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_CF67B0ADA43D47108713C03DBDEC8052"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_D1FB820B92ED9DB8A23FE6969540C97C"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -484,43 +466,43 @@
         "Entry"
         {
         "MsmKey" = "8:_D3785FB3EA385322B0C47A957DCAACD7"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_D4EDA9AB7A66383ED4289D1E5F63E7D9"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_D5F58FAC506B5224DA5EEF8167DD6BBA"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_D86BA392473B76ED7FBFCF85B51CF2EC"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_DE8110B1226BAD9456257C96924C1271"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_DF17162806D54D17833F6E8B1BB6F80D"
+        "MsmKey" = "8:_D791285AA7F643D38BF547756CB7DC09"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
+        "MsmKey" = "8:_D86BA392473B76ED7FBFCF85B51CF2EC"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_DE8110B1226BAD9456257C96924C1271"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_E1009F04E97F011398A10640E35CC93A"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -531,20 +513,26 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_E124BB7586CB44828998ACAB765F06DD"
+        "MsmKey" = "8:_E1A1BF7D9AD8457DB69B9D69AFCF9A35"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_E795533C632E4745B678AB530F05B3D8"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_E9C904BB473780A01C18D3A648427BA2"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_EFCA9A08842FFD2FF2F38C2BF8FB638A"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -555,26 +543,38 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_F0914297FA3647879729EBA8B1CF3F24"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_F45A36EA35ABF2351BAC919FF4B60F0D"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_F4BD5AD3885A15D1055040454A261913"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F4C1BD2B55C14003BB4DB68F6426CB16"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_F5066E8E97059830CD6761F1073EF707"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+        "OwnerKey" = "8:_B9886968583047E2A76165C92EE22104"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1008,12 +1008,52 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_02FD8DF3AFCA4A8891D03FDD68F74BCE"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_035648153B0E4EEA94A508E65C8ECD43"
             {
-            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Release\\HandbrakeCLI\\HandBrakeCLI.exe"
-            "TargetName" = "8:HandBrakeCLI.exe"
+            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Debug\\HandbrakeCLI\\fonts\\conf.d\\README"
+            "TargetName" = "8:README"
             "Tag" = "8:"
-            "Folder" = "8:_C6BD91A322E34DC2A994670BF32E9A5E"
+            "Folder" = "8:_B1F9DC54AE1A41D7B7C135BBDF1CB9CD"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_03A6439DC17B4C2DA136C9F01F2A5E07"
+            {
+            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Debug\\HandbrakeCLI\\fonts\\conf.d\\45-latin.conf"
+            "TargetName" = "8:45-latin.conf"
+            "Tag" = "8:"
+            "Folder" = "8:_B1F9DC54AE1A41D7B7C135BBDF1CB9CD"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_03DC5D17043B4D1CA76B6C24251AB390"
+            {
+            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Debug\\HandbrakeCLI\\fonts\\conf.d\\69-unifont.conf"
+            "TargetName" = "8:69-unifont.conf"
+            "Tag" = "8:"
+            "Folder" = "8:_B1F9DC54AE1A41D7B7C135BBDF1CB9CD"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1057,26 +1097,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_053768BB84EC454B801A71858878D459"
-            {
-            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Release\\HandbrakeCLI\\fonts\\conf.d\\10-scale-bitmap-fonts.conf"
-            "TargetName" = "8:10-scale-bitmap-fonts.conf"
-            "Tag" = "8:"
-            "Folder" = "8:_98785C436C2243639B8D2A6EEF1872E6"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_06CC5E2C8CF0C848561944F726668871"
@@ -1203,6 +1223,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0E37452B12324C2A8541674DF8E098FF"
+            {
+            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Debug\\HandbrakeCLI\\fonts\\conf.d\\65-nonlatin.conf"
+            "TargetName" = "8:65-nonlatin.conf"
+            "Tag" = "8:"
+            "Folder" = "8:_B1F9DC54AE1A41D7B7C135BBDF1CB9CD"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_137F9E61C0CB48E30B10FCE06F392D69"
             {
             "AssemblyRegister" = "3:1"
@@ -1232,6 +1272,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_13FC26C08B594303ADF77EF7BEB01AE3"
+            {
+            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Debug\\HandbrakeCLI\\fonts\\conf.d\\80-delicious.conf"
+            "TargetName" = "8:80-delicious.conf"
+            "Tag" = "8:"
+            "Folder" = "8:_B1F9DC54AE1A41D7B7C135BBDF1CB9CD"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_1607FE724BE751909CBC57075995D8F4"
@@ -1296,6 +1356,46 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_18DCE506763F4FFB939B4F90D2E3EB0E"
+            {
+            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Debug\\HandbrakeCLI\\doc\\README.markdown"
+            "TargetName" = "8:README.markdown"
+            "Tag" = "8:"
+            "Folder" = "8:_9B2AC9873663421D940D810C291A1F24"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_19B46EBFF134464CA43826494FD59EE5"
+            {
+            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Debug\\HandbrakeCLI\\fonts\\conf.d\\20-unhint-small-vera.conf"
+            "TargetName" = "8:20-unhint-small-vera.conf"
+            "Tag" = "8:"
+            "Folder" = "8:_B1F9DC54AE1A41D7B7C135BBDF1CB9CD"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_1E163A75265D59B57D0F2C952214B6E7"
             {
             "AssemblyRegister" = "3:1"
@@ -1325,6 +1425,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1E22D985571C45189456C043643FDCE4"
+            {
+            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Debug\\HandbrakeCLI\\fonts\\conf.d\\40-nonlatin.conf"
+            "TargetName" = "8:40-nonlatin.conf"
+            "Tag" = "8:"
+            "Folder" = "8:_B1F9DC54AE1A41D7B7C135BBDF1CB9CD"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_1E788106F56ABFE9DA0F2CD88975651E"
@@ -1420,86 +1540,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2D3477E0BCA5470A91A4C2CDA49E82A8"
-            {
-            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Release\\HandbrakeCLI\\doc\\THANKS.markdown"
-            "TargetName" = "8:THANKS.markdown"
-            "Tag" = "8:"
-            "Folder" = "8:_22D8D3EAD7864062AEA3E784A6AB3F58"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2D3EA303113F40C9B5F5BA4E71B3B6F3"
-            {
-            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Release\\HandbrakeCLI\\fonts\\conf.d\\65-nonlatin.conf"
-            "TargetName" = "8:65-nonlatin.conf"
-            "Tag" = "8:"
-            "Folder" = "8:_98785C436C2243639B8D2A6EEF1872E6"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2DBBE9A654024CDE938F2348085B4D9D"
-            {
-            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Release\\HandbrakeCLI\\fonts\\conf.d\\80-delicious.conf"
-            "TargetName" = "8:80-delicious.conf"
-            "Tag" = "8:"
-            "Folder" = "8:_98785C436C2243639B8D2A6EEF1872E6"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_311DCED5EB174E5B9F8BD6779388DFF6"
-            {
-            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Release\\HandbrakeCLI\\fonts\\conf.d\\10-hinting-slight.conf"
-            "TargetName" = "8:10-hinting-slight.conf"
-            "Tag" = "8:"
-            "Folder" = "8:_98785C436C2243639B8D2A6EEF1872E6"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_335A94910D194010E6F6F8E2925CA788"
             {
             "AssemblyRegister" = "3:1"
@@ -1531,12 +1571,12 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3379D27C82024C4AB47C27368F6853A3"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4033C7908A034399911BC4811F2DC66D"
             {
-            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Release\\HandbrakeCLI\\fonts\\conf.d\\65-fonts-persian.conf"
-            "TargetName" = "8:65-fonts-persian.conf"
+            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Debug\\HandbrakeCLI\\doc\\NEWS.markdown"
+            "TargetName" = "8:NEWS.markdown"
             "Tag" = "8:"
-            "Folder" = "8:_98785C436C2243639B8D2A6EEF1872E6"
+            "Folder" = "8:_9B2AC9873663421D940D810C291A1F24"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1611,26 +1651,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_485A63231766445AB1AA6EEAD687FBD0"
-            {
-            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Release\\MediaInfo.dll"
-            "TargetName" = "8:MediaInfo.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_E68730F5D9744C16913FA111012DE717"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_4A712618C9C5B776EBC7C8CF7D8E99DB"
@@ -1788,6 +1808,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5A5B03A1E5A440CCB083366BD211F355"
+            {
+            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Debug\\HandbrakeCLI\\fonts\\conf.d\\65-fonts-persian.conf"
+            "TargetName" = "8:65-fonts-persian.conf"
+            "Tag" = "8:"
+            "Folder" = "8:_B1F9DC54AE1A41D7B7C135BBDF1CB9CD"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_5B028DD5E2EB85A3FAA0A26E44CE5222"
             {
             "AssemblyRegister" = "3:1"
@@ -1817,26 +1857,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_643401C904D149619C6DCC4B572554DA"
-            {
-            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Release\\HandbrakeCLI\\fonts\\conf.d\\30-urw-aliases.conf"
-            "TargetName" = "8:30-urw-aliases.conf"
-            "Tag" = "8:"
-            "Folder" = "8:_98785C436C2243639B8D2A6EEF1872E6"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_6680134BFD3EA6435314A4D008E85CA3"
@@ -1994,6 +2014,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_75BA2117A52C4FBD8E054ACBA730FD0A"
+            {
+            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Debug\\HandbrakeCLI\\fonts\\conf.d\\30-urw-aliases.conf"
+            "TargetName" = "8:30-urw-aliases.conf"
+            "Tag" = "8:"
+            "Folder" = "8:_B1F9DC54AE1A41D7B7C135BBDF1CB9CD"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_7637A3626327B17D2A25619471867770"
             {
             "AssemblyRegister" = "3:1"
@@ -2025,6 +2065,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7689CD60799146FFABEC6DF9CDC8AE8A"
+            {
+            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Debug\\HandbrakeCLI\\HandBrakeCLI.exe"
+            "TargetName" = "8:HandBrakeCLI.exe"
+            "Tag" = "8:"
+            "Folder" = "8:_B3BBF59E8F2745F68F20FCEAC4FE8B5E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_76B1A0F8779516A95E01C6F2256A4330"
             {
             "AssemblyRegister" = "3:1"
@@ -2054,26 +2114,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_77691BC526154A59AFD42BF0080B61D8"
-            {
-            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Release\\HandbrakeCLI\\fonts\\conf.d\\40-nonlatin.conf"
-            "TargetName" = "8:40-nonlatin.conf"
-            "Tag" = "8:"
-            "Folder" = "8:_98785C436C2243639B8D2A6EEF1872E6"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_7956B8059B92AFA62D9C27C3C50074A0"
@@ -2138,6 +2178,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7CB6CA5A8A574918A791511C8FE42142"
+            {
+            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Debug\\HandbrakeCLI\\fonts\\fonts.conf"
+            "TargetName" = "8:fonts.conf"
+            "Tag" = "8:"
+            "Folder" = "8:_BC33EB603AA348F99C08A7404228AA0A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_7DF091C2C61AF1F4F9407DE9627EB579"
             {
             "AssemblyRegister" = "3:1"
@@ -2200,66 +2260,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_812222C8CF8A4CBE94A9AC3AF9A37837"
-            {
-            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Release\\HandbrakeCLI\\fonts\\conf.d\\20-unhint-small-vera.conf"
-            "TargetName" = "8:20-unhint-small-vera.conf"
-            "Tag" = "8:"
-            "Folder" = "8:_98785C436C2243639B8D2A6EEF1872E6"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_82860D3C548D456F9BB6AC7F8257BDCC"
-            {
-            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Release\\HandbrakeCLI\\fonts\\conf.d\\90-synthetic.conf"
-            "TargetName" = "8:90-synthetic.conf"
-            "Tag" = "8:"
-            "Folder" = "8:_98785C436C2243639B8D2A6EEF1872E6"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_829661A01F924955A3A0482001E483E4"
-            {
-            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Release\\HandbrakeCLI\\doc\\COPYING"
-            "TargetName" = "8:COPYING"
-            "Tag" = "8:"
-            "Folder" = "8:_22D8D3EAD7864062AEA3E784A6AB3F58"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_873EDEE7308919911AFBB79F5D6FD374"
             {
             "AssemblyRegister" = "3:1"
@@ -2291,26 +2291,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_878F98F0022948548721FE8C777B1AFE"
-            {
-            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Release\\HandbrakeCLI\\fonts\\conf.d\\60-latin.conf"
-            "TargetName" = "8:60-latin.conf"
-            "Tag" = "8:"
-            "Folder" = "8:_98785C436C2243639B8D2A6EEF1872E6"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_8B4DB7C6F2585A6F0CAC243AD2A42283"
             {
             "AssemblyRegister" = "3:1"
@@ -2340,46 +2320,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8B5510D8B4334BB5B6701508163F0974"
-            {
-            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Release\\HandbrakeCLI\\doc\\LICENSE"
-            "TargetName" = "8:LICENSE"
-            "Tag" = "8:"
-            "Folder" = "8:_22D8D3EAD7864062AEA3E784A6AB3F58"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8C6E8ACB1FB7479DBC083B46D0B3E9AE"
-            {
-            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Release\\HandbrakeCLI\\doc\\README.markdown"
-            "TargetName" = "8:README.markdown"
-            "Tag" = "8:"
-            "Folder" = "8:_22D8D3EAD7864062AEA3E784A6AB3F58"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8F42563D7D2E4CF0850874E4F904DE6D"
@@ -2433,12 +2373,12 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_979C1B1108DD40B091B61F25798640C5"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_97943AE6AC8E46829288D4E33C1A3187"
             {
-            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Release\\HandbrakeCLI\\fonts\\conf.d\\30-metric-aliases.conf"
-            "TargetName" = "8:30-metric-aliases.conf"
+            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Debug\\MediaInfo.dll"
+            "TargetName" = "8:MediaInfo.dll"
             "Tag" = "8:"
-            "Folder" = "8:_98785C436C2243639B8D2A6EEF1872E6"
+            "Folder" = "8:_E68730F5D9744C16913FA111012DE717"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -2484,6 +2424,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_98FEDF83B8CB4E788A65C24573DBF3DC"
+            {
+            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Debug\\HandbrakeCLI\\fonts\\conf.d\\49-sansserif.conf"
+            "TargetName" = "8:49-sansserif.conf"
+            "Tag" = "8:"
+            "Folder" = "8:_B1F9DC54AE1A41D7B7C135BBDF1CB9CD"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_9961954B748EC14AB4D45F12AC3D1C8F"
             {
             "AssemblyRegister" = "3:1"
@@ -2513,6 +2473,46 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9C0F82A447B94388AB50A498A3CCE727"
+            {
+            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Debug\\HandbrakeCLI\\fonts\\conf.d\\90-synthetic.conf"
+            "TargetName" = "8:90-synthetic.conf"
+            "Tag" = "8:"
+            "Folder" = "8:_B1F9DC54AE1A41D7B7C135BBDF1CB9CD"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9F992DD4E25248EC867A38EBADCB3422"
+            {
+            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Debug\\HandbrakeCLI\\doc\\AUTHORS.markdown"
+            "TargetName" = "8:AUTHORS.markdown"
+            "Tag" = "8:"
+            "Folder" = "8:_9B2AC9873663421D940D810C291A1F24"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A65E15CF4945F54F786A78BACB97F6CC"
@@ -2546,12 +2546,12 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A71A8AB0ADC24F7BB505B8DFEC28F7DA"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A6D6E4C0F9444C349B963D2164E5B329"
             {
-            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Release\\HandbrakeCLI\\fonts\\conf.d\\45-latin.conf"
-            "TargetName" = "8:45-latin.conf"
+            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Debug\\HandbrakeCLI\\fonts\\conf.d\\50-user.conf"
+            "TargetName" = "8:50-user.conf"
             "Tag" = "8:"
-            "Folder" = "8:_98785C436C2243639B8D2A6EEF1872E6"
+            "Folder" = "8:_B1F9DC54AE1A41D7B7C135BBDF1CB9CD"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -2566,12 +2566,32 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_AABFBD3A9A7C455F9B8D5A55A545DA9B"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A7189F780D06430D8F40473000E501D9"
             {
-            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Release\\HandbrakeCLI\\fonts\\fonts.conf"
-            "TargetName" = "8:fonts.conf"
+            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Debug\\HandbrakeCLI\\fonts\\conf.d\\60-latin.conf"
+            "TargetName" = "8:60-latin.conf"
             "Tag" = "8:"
-            "Folder" = "8:_220B6F32B15941DB8106D94DDBD10E57"
+            "Folder" = "8:_B1F9DC54AE1A41D7B7C135BBDF1CB9CD"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B01A9E009D6A401C8C7572CBBF6C1C98"
+            {
+            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Debug\\HandbrakeCLI\\fonts\\conf.d\\51-local.conf"
+            "TargetName" = "8:51-local.conf"
+            "Tag" = "8:"
+            "Folder" = "8:_B1F9DC54AE1A41D7B7C135BBDF1CB9CD"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -2741,86 +2761,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C0E458CB0E204FDFA5E2528592B1F242"
-            {
-            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Release\\HandbrakeCLI\\fonts\\conf.d\\69-unifont.conf"
-            "TargetName" = "8:69-unifont.conf"
-            "Tag" = "8:"
-            "Folder" = "8:_98785C436C2243639B8D2A6EEF1872E6"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C273BEC5A89043E99639A58AE40ACCF7"
-            {
-            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Release\\HandbrakeCLI\\fonts\\conf.d\\README"
-            "TargetName" = "8:README"
-            "Tag" = "8:"
-            "Folder" = "8:_98785C436C2243639B8D2A6EEF1872E6"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C36B12FC43C248AF930AB991BF7A475F"
-            {
-            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Release\\HandbrakeCLI\\doc\\NEWS.markdown"
-            "TargetName" = "8:NEWS.markdown"
-            "Tag" = "8:"
-            "Folder" = "8:_22D8D3EAD7864062AEA3E784A6AB3F58"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CAD3DCB374254EACAB00B7CD4536340D"
-            {
-            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Release\\HandbrakeCLI\\doc\\AUTHORS.markdown"
-            "TargetName" = "8:AUTHORS.markdown"
-            "Tag" = "8:"
-            "Folder" = "8:_22D8D3EAD7864062AEA3E784A6AB3F58"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_CC114CD7230F7D1AED6341156DBEF666"
             {
             "AssemblyRegister" = "3:1"
@@ -2850,26 +2790,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CCA1803D4E214C55833E3E9ED3272910"
-            {
-            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Release\\HandbrakeCLI\\fonts\\conf.d\\51-local.conf"
-            "TargetName" = "8:51-local.conf"
-            "Tag" = "8:"
-            "Folder" = "8:_98785C436C2243639B8D2A6EEF1872E6"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_CD75F03C73005E9A08A23DACFD5CF187"
@@ -2932,6 +2852,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CF67B0ADA43D47108713C03DBDEC8052"
+            {
+            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Debug\\HandbrakeCLI\\doc\\COPYING"
+            "TargetName" = "8:COPYING"
+            "Tag" = "8:"
+            "Folder" = "8:_9B2AC9873663421D940D810C291A1F24"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D1FB820B92ED9DB8A23FE6969540C97C"
@@ -3058,6 +2998,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D791285AA7F643D38BF547756CB7DC09"
+            {
+            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Debug\\HandbrakeCLI\\fonts\\conf.d\\30-metric-aliases.conf"
+            "TargetName" = "8:30-metric-aliases.conf"
+            "Tag" = "8:"
+            "Folder" = "8:_B1F9DC54AE1A41D7B7C135BBDF1CB9CD"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D86BA392473B76ED7FBFCF85B51CF2EC"
             {
             "AssemblyRegister" = "3:1"
@@ -3120,26 +3080,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DF17162806D54D17833F6E8B1BB6F80D"
-            {
-            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Release\\HandbrakeCLI\\fonts\\conf.d\\50-user.conf"
-            "TargetName" = "8:50-user.conf"
-            "Tag" = "8:"
-            "Folder" = "8:_98785C436C2243639B8D2A6EEF1872E6"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_E1009F04E97F011398A10640E35CC93A"
             {
             "AssemblyRegister" = "3:1"
@@ -3171,12 +3111,32 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E124BB7586CB44828998ACAB765F06DD"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E1A1BF7D9AD8457DB69B9D69AFCF9A35"
             {
-            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Release\\HandbrakeCLI\\fonts\\conf.d\\49-sansserif.conf"
-            "TargetName" = "8:49-sansserif.conf"
+            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Debug\\HandbrakeCLI\\fonts\\conf.d\\10-scale-bitmap-fonts.conf"
+            "TargetName" = "8:10-scale-bitmap-fonts.conf"
             "Tag" = "8:"
-            "Folder" = "8:_98785C436C2243639B8D2A6EEF1872E6"
+            "Folder" = "8:_B1F9DC54AE1A41D7B7C135BBDF1CB9CD"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E795533C632E4745B678AB530F05B3D8"
+            {
+            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Debug\\HandbrakeCLI\\doc\\LICENSE"
+            "TargetName" = "8:LICENSE"
+            "Tag" = "8:"
+            "Folder" = "8:_9B2AC9873663421D940D810C291A1F24"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -3253,6 +3213,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F0914297FA3647879729EBA8B1CF3F24"
+            {
+            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Debug\\HandbrakeCLI\\fonts\\conf.d\\10-hinting-slight.conf"
+            "TargetName" = "8:10-hinting-slight.conf"
+            "Tag" = "8:"
+            "Folder" = "8:_B1F9DC54AE1A41D7B7C135BBDF1CB9CD"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_F45A36EA35ABF2351BAC919FF4B60F0D"
             {
             "AssemblyRegister" = "3:1"
@@ -3313,6 +3293,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F4C1BD2B55C14003BB4DB68F6426CB16"
+            {
+            "SourcePath" = "8:..\\MovieDataCollector\\bin\\Debug\\HandbrakeCLI\\doc\\THANKS.markdown"
+            "TargetName" = "8:THANKS.markdown"
+            "Tag" = "8:"
+            "Folder" = "8:_9B2AC9873663421D940D810C291A1F24"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_F5066E8E97059830CD6761F1073EF707"
@@ -3395,46 +3395,46 @@
             "Property" = "8:TARGETDIR"
                 "Folders"
                 {
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_C6BD91A322E34DC2A994670BF32E9A5E"
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_B3BBF59E8F2745F68F20FCEAC4FE8B5E"
                     {
                     "Name" = "8:HandbrakeCLI"
                     "AlwaysCreate" = "11:FALSE"
                     "Condition" = "8:"
                     "Transitive" = "11:FALSE"
-                    "Property" = "8:_EC690925743B4C559933FBA7F55D8FAF"
+                    "Property" = "8:_CE3FA41C38954C4A9FD20ECC50EEA90E"
                         "Folders"
                         {
-                            "{9EF0B969-E518-4E46-987F-47570745A589}:_220B6F32B15941DB8106D94DDBD10E57"
-                            {
-                            "Name" = "8:fonts"
-                            "AlwaysCreate" = "11:FALSE"
-                            "Condition" = "8:"
-                            "Transitive" = "11:FALSE"
-                            "Property" = "8:_3789F738075C44F0B14BE27D3D699726"
-                                "Folders"
-                                {
-                                    "{9EF0B969-E518-4E46-987F-47570745A589}:_98785C436C2243639B8D2A6EEF1872E6"
-                                    {
-                                    "Name" = "8:conf.d"
-                                    "AlwaysCreate" = "11:FALSE"
-                                    "Condition" = "8:"
-                                    "Transitive" = "11:FALSE"
-                                    "Property" = "8:_70FACA0DFDDC4D2881A145577AF600F6"
-                                        "Folders"
-                                        {
-                                        }
-                                    }
-                                }
-                            }
-                            "{9EF0B969-E518-4E46-987F-47570745A589}:_22D8D3EAD7864062AEA3E784A6AB3F58"
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_9B2AC9873663421D940D810C291A1F24"
                             {
                             "Name" = "8:doc"
                             "AlwaysCreate" = "11:FALSE"
                             "Condition" = "8:"
                             "Transitive" = "11:FALSE"
-                            "Property" = "8:_424E69941AF04DF4BAEDFC9FD2C05AA4"
+                            "Property" = "8:_D61E107E506B4F8893970A4C8DA12C84"
                                 "Folders"
                                 {
+                                }
+                            }
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_BC33EB603AA348F99C08A7404228AA0A"
+                            {
+                            "Name" = "8:fonts"
+                            "AlwaysCreate" = "11:FALSE"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_ACBFF6AB3DEA46FBA7B820DDBEAC4371"
+                                "Folders"
+                                {
+                                    "{9EF0B969-E518-4E46-987F-47570745A589}:_B1F9DC54AE1A41D7B7C135BBDF1CB9CD"
+                                    {
+                                    "Name" = "8:conf.d"
+                                    "AlwaysCreate" = "11:FALSE"
+                                    "Condition" = "8:"
+                                    "Transitive" = "11:FALSE"
+                                    "Property" = "8:_2FC56C02C81D4467AFD80BE255B65249"
+                                        "Folders"
+                                        {
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -3457,15 +3457,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Movie Data Collector"
-        "ProductCode" = "8:{10C39E97-E457-49C3-A0B5-640889BF6530}"
-        "PackageCode" = "8:{4A8F7783-64B9-4A70-9939-2179E43453E1}"
+        "ProductCode" = "8:{2528DEEF-090B-41E1-873B-D2FEE9CDB661}"
+        "PackageCode" = "8:{31BD4A6B-BE32-4625-8248-21849B16A149}"
         "UpgradeCode" = "8:{A0ECBEB5-1F6F-430E-83C7-09CCE4E392C2}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:8.5"
+        "ProductVersion" = "8:9.1"
         "Manufacturer" = "8:OldroydIT"
         "ARPHELPTELEPHONE" = "8:1-801-473-4543"
         "ARPHELPLINK" = "8:https://github.com/dustin3030/Movie-Data-Collector"
@@ -3578,44 +3578,44 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_015D73E2571C40BDB13E8AA34D3A8C4D"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_166CD646D5174243B7569DFC3BE90F7E"
             {
-            "Name" = "8:Movie Data Collector 8.5"
+            "Name" = "8:Movie Data Collector 9.1"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
-            "Folder" = "8:_76088B0AB53E45A6AFA7998DB3868966"
-            "WorkingFolder" = "8:_E68730F5D9744C16913FA111012DE717"
-            "Icon" = "8:_8F42563D7D2E4CF0850874E4F904DE6D"
-            "Feature" = "8:"
-            }
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_99961392E16945D895D54E35B6E58303"
-            {
-            "Name" = "8:Movie Data Collector 8.5"
-            "Arguments" = "8:"
-            "Description" = "8:"
-            "ShowCmd" = "3:1"
-            "IconIndex" = "3:0"
-            "Transitive" = "11:FALSE"
-            "Target" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+            "Target" = "8:_B9886968583047E2A76165C92EE22104"
             "Folder" = "8:_E68730F5D9744C16913FA111012DE717"
             "WorkingFolder" = "8:_E68730F5D9744C16913FA111012DE717"
             "Icon" = "8:_8F42563D7D2E4CF0850874E4F904DE6D"
             "Feature" = "8:"
             }
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_B14AD1CA02614D8F8DFE6C27FFB68767"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_4BEDC14EB7634EF8B127DA2843CC3DEE"
             {
-            "Name" = "8:Movie Data Collector 8.5"
+            "Name" = "8:Movie Data Collector 9.1"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_1143168994CC43FBBC6EF4A46B32A3E9"
+            "Target" = "8:_B9886968583047E2A76165C92EE22104"
             "Folder" = "8:_31EA3296FCC7499EA81FC944E02A5309"
+            "WorkingFolder" = "8:_E68730F5D9744C16913FA111012DE717"
+            "Icon" = "8:_8F42563D7D2E4CF0850874E4F904DE6D"
+            "Feature" = "8:"
+            }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_60FC88B4C9254BD0A36AEEF554C3B0AC"
+            {
+            "Name" = "8:Movie Data Collector 9.1"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_B9886968583047E2A76165C92EE22104"
+            "Folder" = "8:_76088B0AB53E45A6AFA7998DB3868966"
             "WorkingFolder" = "8:_E68730F5D9744C16913FA111012DE717"
             "Icon" = "8:_8F42563D7D2E4CF0850874E4F904DE6D"
             "Feature" = "8:"
@@ -4019,9 +4019,9 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_1143168994CC43FBBC6EF4A46B32A3E9"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_B9886968583047E2A76165C92EE22104"
             {
-            "SourcePath" = "8:..\\MovieDataCollector\\obj\\Release\\MovieDataCollector.exe"
+            "SourcePath" = "8:..\\MovieDataCollector\\obj\\Debug\\MovieDataCollector.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_E68730F5D9744C16913FA111012DE717"

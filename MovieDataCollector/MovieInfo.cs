@@ -89,7 +89,7 @@ namespace MovieDataCollector
             string URL = "https://api.themoviedb.org/3/movie/" + staticProperties["IMDB_ID"] + "/releases?api_key=" + staticProperties["API_Key"];
             responseContent = MyWebRequest(URL);
 
-            //With a null response there is nothing to parse so excape the method on set staticProperties["MPAA_Rating"] to Error
+            //With a null response there is nothing to parse so escape the method on set staticProperties["MPAA_Rating"] to Error
             if (string.IsNullOrEmpty(responseContent)) { staticProperties["MPAA_Rating"] = "Error"; return; }
 
             //Split reponse string into array to prepare for parsing
@@ -444,11 +444,11 @@ namespace MovieDataCollector
             {
                 if (s.Contains("\":\"US\""))
                 {
-                    listProperties["USTitles"].Add(GeneralParser(s, "\"title\":\"", "\"}", "\"title\":null"));
+                    listProperties["USTitles"].Add(GeneralParser(s, "\"title\":\"", "\",\"type\":", "\"title\":null"));
                 }
                 if (s.Contains("\":\"en\""))
                 {
-                    listProperties["USTitles"].Add(GeneralParser(s, "\"title\":\"", "\"}", "\"title\":null"));
+                    listProperties["USTitles"].Add(GeneralParser(s, "\"title\":\"", "\",\"type\":", "\"title\":null"));
                 }
             }
         }
