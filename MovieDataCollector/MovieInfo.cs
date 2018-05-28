@@ -40,6 +40,7 @@ namespace MovieDataCollector
             "FormattedTitle",
             "Genres",
             "IMDB_ID",
+            "TMDB_ID",
             "MPAA_Rating",
             "OriginalTitle",
             "Plot",
@@ -60,7 +61,7 @@ namespace MovieDataCollector
                                           /// <summary>
                                           /// Constructor - Accepts IMDB Number
                                           /// </summary>
-        public MovieInfo(string IMDBID, string APIKey)
+        public MovieInfo(string TMDBID, string APIKey)
         {
             listProperties = new Dictionary<string, List<string>>(); //Instantiate Dictionary
             for (int i = 0; i < ListDictKeyList.Count ; i++)
@@ -75,19 +76,19 @@ namespace MovieDataCollector
             }
 
             //Fill dictionary with passed in values
-            staticProperties["IMDB_ID"] = IMDBID;
+            staticProperties["TMDB_ID"] = TMDBID;
             staticProperties["API_Key"] = APIKey;
 
         }
         /// <summary>
         /// Returns MPAA rating for movies
         /// </summary>
-        /// <param name="staticProperties["IMDB_ID"]"></param>
+        /// <param name="staticProperties["TMDB_ID"]"></param>
         public void getRating()
         {
             string responseContent;
-            string URL = "https://api.themoviedb.org/3/movie/" + staticProperties["IMDB_ID"] + "/releases?api_key=" + staticProperties["API_Key"];
-            responseContent = MyWebRequest(URL);
+            string URL = "https://api.themoviedb.org/3/movie/" + staticProperties["TMDB_ID"] + "/releases?api_key=" + staticProperties["API_Key"];
+            responseContent = MyWebRequest(URL,"getRating");
 
             //With a null response there is nothing to parse so escape the method on set staticProperties["MPAA_Rating"] to Error
             if (string.IsNullOrEmpty(responseContent)) { staticProperties["MPAA_Rating"] = "Error"; return; }
@@ -151,13 +152,13 @@ namespace MovieDataCollector
         /// Production Country, Vote Average, Vote Count, Budget,
         /// Poster Path, Background Path
         /// </summary>
-        /// <param name="staticProperties["IMDB_ID"]"></param>
+        /// <param name="staticProperties["TMDB_ID"]"></param>
         public void getBasicInfo()
         {
 
             string responseContent;
-            string URL = "https://api.themoviedb.org/3/movie/" + staticProperties["IMDB_ID"] + "?api_key=" + staticProperties["API_Key"];
-            responseContent = MyWebRequest(URL);
+            string URL = "https://api.themoviedb.org/3/movie/" + staticProperties["TMDB_ID"] + "?api_key=" + staticProperties["API_Key"];
+            responseContent = MyWebRequest(URL,"getBasicInfo");
 
             //set defaults if response is null
             if (string.IsNullOrEmpty(responseContent))
@@ -170,6 +171,7 @@ namespace MovieDataCollector
                 staticProperties["FormattedTitle"] = "";
                 staticProperties["Plot"] = "Plot Not Found";
                 staticProperties["IMDB_ID"] = "";
+                staticProperties["TMDB_ID"] = "";
                 staticProperties["Popularity"] = "";
                 staticProperties["Revenue"] = "";
                 staticProperties["RunTime"] = "0";
@@ -364,10 +366,8 @@ namespace MovieDataCollector
 
             //Creating Web Request
             string responseContent;
-            string URL = "https://api.themoviedb.org/3/movie/" + staticProperties["IMDB_ID"] + "/credits?api_key=" + staticProperties["API_Key"] + "&language=en&include_image_language=en,null";
-            responseContent = MyWebRequest(URL);
-
-
+            string URL = "https://api.themoviedb.org/3/movie/" + staticProperties["TMDB_ID"] + "/credits?api_key=" + staticProperties["API_Key"] + "&language=en&include_image_language=en,null";
+            responseContent = MyWebRequest(URL,"getCredits");
 
             //Create castJson string using parser
             castJson = GeneralParser(responseContent, "\"cast\":[", "]", "\"cast\":null");
@@ -427,13 +427,13 @@ namespace MovieDataCollector
         /// <summary>
         /// Creates list of titles for the film unique to the US only
         /// </summary>
-        /// <param name="staticProperties["IMDB_ID"]"></param>
+        /// <param name="staticProperties["TMDB_ID"]"></param>
         public void GetUSTitles()
         {
             listProperties["USTitles"] = new List<string>(); //instantiates list
             string responseContent;
-            string URL = "https://api.themoviedb.org/3/movie/" + staticProperties["IMDB_ID"] + "/alternative_titles?api_key=" + staticProperties["API_Key"];
-            responseContent = MyWebRequest(URL);
+            string URL = "https://api.themoviedb.org/3/movie/" + staticProperties["TMDB_ID"] + "/alternative_titles?api_key=" + staticProperties["API_Key"];
+            responseContent = MyWebRequest(URL, "GetUSTitles");
             if (string.IsNullOrEmpty(responseContent)) { return; }
 
             //Split reponse string into array to prepare for parsing
@@ -461,9 +461,9 @@ namespace MovieDataCollector
             string posters = ""; //string to hold the poster portion of the string
 
             string responseContent;
-            //string URL = "https://api.themoviedb.org/3/movie/" + staticProperties["IMDB_ID"] + "/images?staticProperties["API_Key"]=" + APIKey;
-            string URL = "https://api.themoviedb.org/3/movie/" + staticProperties["IMDB_ID"] + "/images?api_key=" + staticProperties["API_Key"] + "&language=en&include_image_language=en,null";
-            responseContent = MyWebRequest(URL);
+            //string URL = "https://api.themoviedb.org/3/movie/" + staticProperties["TMDB_ID"] + "/images?staticProperties["API_Key"]=" + APIKey;
+            string URL = "https://api.themoviedb.org/3/movie/" + staticProperties["TMDB_ID"] + "/images?api_key=" + staticProperties["API_Key"] + "&language=en&include_image_language=en,null";
+            responseContent = MyWebRequest(URL,"getFilmImages");
             if (string.IsNullOrEmpty(responseContent)) { return; }
 
             //Split backdrop and poster images out from string
@@ -497,7 +497,7 @@ namespace MovieDataCollector
         /// </summary>
         /// <param name="URL"></param>
         /// <returns></returns>
-        private string MyWebRequest(string URL)
+        private string MyWebRequest(string URL, string callingMethod)
         {
             if (string.IsNullOrEmpty(URL)) { return ""; }
 
@@ -505,30 +505,45 @@ namespace MovieDataCollector
             request.Method = "GET";
             request.Accept = "application/json";
             request.ContentLength = 0;
-            string responseContent;
+            string responseContent = "";
+            int retries = 10;
+            string exception = "";
 
-            try
+            for (int i = 0; i < retries; i++)
             {
-                using (var response = request.GetResponse() as System.Net.HttpWebResponse)
+                try
                 {
-                    using (var reader = new System.IO.StreamReader(response.GetResponseStream()))
+                    using (var response = request.GetResponse() as System.Net.HttpWebResponse)
                     {
-                        responseContent = reader.ReadToEnd();
+                        using (var reader = new System.IO.StreamReader(response.GetResponseStream()))
+                        {
+                            responseContent = reader.ReadToEnd();
+                            if (!string.IsNullOrEmpty(exception)) //skips removal of error if it wasn't caused by most recent request.
+                            {
+                                listProperties["Errors"].RemoveAt(listProperties.Count() - 1); //Remove last error added since it was finally sucessfull.
+                            }
+                        }
                     }
+                    retries = i; //Forces out of loop
                 }
-                return responseContent;
-            }
-
-            catch (Exception e)
-            {
-                if (e.ToString().Contains("404") && !listProperties["Errors"].Contains("Request to TMDB.org Failed"))
+                catch (Exception e)
                 {
-                    listProperties["Errors"].Add("Request to TMDB.org Failed");
-                    return "";
+                    if (exception == "")
+                    {
+                        exception = callingMethod + " ----- " + URL;
+                        listProperties["Errors"].Add(exception);
+                        /*if (exception.ToString().Contains("404") && !listProperties["Errors"].Contains("Request to TMDB.org Failed"))
+                        {
+                            listProperties["Errors"].Add("Request to TMDB.org Failed");
+                        }
+                        if (!listProperties["Errors"].Contains(exception.ToString())) { listProperties["Errors"].Add(exception.ToString()); }*/
+                    }
+                    //Wait 1 second when encoutering error
+                    System.Threading.Thread.Sleep(1000);
                 }
-                if (!listProperties["Errors"].Contains(e.ToString())) { listProperties["Errors"].Add(e.ToString()); }
-                return "";
             }
+            return responseContent;
+            
 
         }
 

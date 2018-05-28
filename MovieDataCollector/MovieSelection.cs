@@ -82,6 +82,7 @@ namespace MovieDataCollector
             //Split Strings by }
             char[] delim = { '}' };
             string[] Tokens = InputString.Split(delim);
+            string popularity ="";
 
             foreach (string s in Tokens)
             {
@@ -119,7 +120,10 @@ namespace MovieDataCollector
                     else { Movie.Add("Poster_Path", ""); }
 
                     //Popularity
-                    if (s.Contains("\"popularity\":")) { Movie.Add("Popularity", "http://image.tmdb.org/t/p/w154" + GeneralParser(s, "\"popularity\":", ",")); }
+                    popularity = Math.Round(Decimal.Parse(GeneralParser(s, "\"popularity\":", ",")), 0).ToString();
+                    if (popularity.Length == 1) { popularity = "0" + popularity; }
+
+                    if (s.Contains("\"popularity\":")) { Movie.Add("Popularity", popularity); }
                     else { Movie.Add("Popularity", ""); }
 
                     //overview
@@ -136,6 +140,7 @@ namespace MovieDataCollector
             moviesLB.Items.Clear();
             for (int i = 0; i < movieList.Count; i++)
             {
+
                 if (!string.IsNullOrEmpty(movieList[i]["Release_Date"]) & movieList[i]["Release_Date"].Length == 10)
                 {
                     moviesLB.Items.Add(movieList[i]["Title"] + " (" + movieList[i]["Release_Date"].Remove(movieList[i]["Release_Date"].Length - 6, 6) + ")");
@@ -204,8 +209,9 @@ namespace MovieDataCollector
 
             if (PopularityRBtn.Checked)
             {
+
                 movieList = (from x in movieList
-                             orderby x["Popularity"] descending, x["Release_Year"] descending
+                             orderby x["Popularity"] descending
                              select x).ToList();
             }
             if (releaseYearRBtn.Checked)

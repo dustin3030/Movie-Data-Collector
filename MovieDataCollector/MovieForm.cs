@@ -1125,17 +1125,18 @@ namespace MovieDataCollector
 
             Movie.getRating(); //Returns the MPAA Rating 
 
-            nLabelUpdate("Gathering Plot, Title, Genre, etc");
-
-            Movie.getBasicInfo(); //Returns basic film info
-            imdbIDTextBox.Text = Movie.staticProperties["IMDB_ID"]; //adds the IMDBID back to the form
-
             nLabelUpdate("Retrieving Alternate US Titles");
 
             Movie.GetUSTitles(); //Builds list of US versions of the film title
 
             nLabelUpdate("Gathering US and Non-Region Coded Film Images");
             Movie.getFilmImages(); //Gathers film image URLs
+
+            nLabelUpdate("Gathering Plot, Title, Genre, etc");
+
+            Movie.getBasicInfo(); //Returns basic film info
+            imdbIDTextBox.Text = Movie.staticProperties["IMDB_ID"]; //adds the IMDBID back to the form
+
 
             nLabelUpdate("Adding Alternate Titles");
 
