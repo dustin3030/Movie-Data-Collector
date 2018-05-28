@@ -100,7 +100,7 @@ namespace MovieDataCollector
                     else { Movie.Add("ID", ""); }
 
                     //release_date
-                    if (s.Contains("\"release_date\":\"")) { Movie.Add("Release_Date", GeneralParser(s, "\"release_date\":\"", "\",")); }
+                    if (s.Contains("\"release_date\":\"")) { Movie.Add("Release_Date", GeneralParser(s, "\"release_date\":\"", "\"")); }
                     else { Movie.Add("Release_Date", ""); }
 
                     //Release_Year
