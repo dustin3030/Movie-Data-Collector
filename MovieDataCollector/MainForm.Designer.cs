@@ -73,7 +73,7 @@
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.exitToolStripMenuItem.Text = "Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.invisibleCloseButton_Click);
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.InvisibleCloseButton_Click);
             // 
             // goToToolStripMenuItem
             // 
@@ -93,7 +93,7 @@
             this.iMDBcomToolStripMenuItem.Name = "iMDBcomToolStripMenuItem";
             this.iMDBcomToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.iMDBcomToolStripMenuItem.Text = "IMDB.com";
-            this.iMDBcomToolStripMenuItem.Click += new System.EventHandler(this.iMDBcomToolStripMenuItem_Click);
+            this.iMDBcomToolStripMenuItem.Click += new System.EventHandler(this.IMDBcomToolStripMenuItem_Click);
             // 
             // theTVDBcomToolStripMenuItem
             // 
@@ -102,7 +102,7 @@
             this.theTVDBcomToolStripMenuItem.Name = "theTVDBcomToolStripMenuItem";
             this.theTVDBcomToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.theTVDBcomToolStripMenuItem.Text = "TheTVDB.com";
-            this.theTVDBcomToolStripMenuItem.Click += new System.EventHandler(this.theTVDBcomToolStripMenuItem_Click);
+            this.theTVDBcomToolStripMenuItem.Click += new System.EventHandler(this.TheTVDBcomToolStripMenuItem_Click);
             // 
             // theMovieDBorgToolStripMenuItem
             // 
@@ -111,7 +111,7 @@
             this.theMovieDBorgToolStripMenuItem.Name = "theMovieDBorgToolStripMenuItem";
             this.theMovieDBorgToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.theMovieDBorgToolStripMenuItem.Text = "TheMovieDB.org";
-            this.theMovieDBorgToolStripMenuItem.Click += new System.EventHandler(this.theMovieDBorgToolStripMenuItem_Click);
+            this.theMovieDBorgToolStripMenuItem.Click += new System.EventHandler(this.TheMovieDBorgToolStripMenuItem_Click);
             // 
             // tvButton
             // 
@@ -125,7 +125,7 @@
             this.tvButton.TabIndex = 1;
             this.tvButton.Text = "&TV Shows";
             this.tvButton.UseVisualStyleBackColor = false;
-            this.tvButton.Click += new System.EventHandler(this.tvButton_Click);
+            this.tvButton.Click += new System.EventHandler(this.TvButton_Click);
             // 
             // movieButton
             // 
@@ -139,7 +139,7 @@
             this.movieButton.TabIndex = 1;
             this.movieButton.Text = "&Movies";
             this.movieButton.UseVisualStyleBackColor = false;
-            this.movieButton.Click += new System.EventHandler(this.movieButton_Click);
+            this.movieButton.Click += new System.EventHandler(this.MovieButton_Click);
             // 
             // CompatibilityCheckerButton
             // 
@@ -165,7 +165,7 @@
             this.invisibleCloseButton.Size = new System.Drawing.Size(10, 10);
             this.invisibleCloseButton.TabIndex = 2;
             this.invisibleCloseButton.UseVisualStyleBackColor = false;
-            this.invisibleCloseButton.Click += new System.EventHandler(this.invisibleCloseButton_Click);
+            this.invisibleCloseButton.Click += new System.EventHandler(this.InvisibleCloseButton_Click);
             // 
             // MainForm
             // 

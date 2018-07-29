@@ -115,7 +115,7 @@
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.Size = new System.Drawing.Size(104, 22);
             this.openToolStripMenuItem.Text = "Open";
-            this.openToolStripMenuItem.Click += new System.EventHandler(this.openVideoFileButton_Click);
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.OpenVideoFileButton_Click);
             // 
             // closeToolStripMenuItem
             // 
@@ -143,7 +143,7 @@
             this.iMDBcomToolStripMenuItem.Name = "iMDBcomToolStripMenuItem";
             this.iMDBcomToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.iMDBcomToolStripMenuItem.Text = "IMDB.com";
-            this.iMDBcomToolStripMenuItem.Click += new System.EventHandler(this.iMDBcomToolStripMenuItem_Click);
+            this.iMDBcomToolStripMenuItem.Click += new System.EventHandler(this.IMDBcomToolStripMenuItem_Click);
             // 
             // theMovieDBorgToolStripMenuItem
             // 
@@ -152,7 +152,7 @@
             this.theMovieDBorgToolStripMenuItem.Name = "theMovieDBorgToolStripMenuItem";
             this.theMovieDBorgToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.theMovieDBorgToolStripMenuItem.Text = "TheMovieDB.org";
-            this.theMovieDBorgToolStripMenuItem.Click += new System.EventHandler(this.theMovieDBorgToolStripMenuItem_Click);
+            this.theMovieDBorgToolStripMenuItem.Click += new System.EventHandler(this.TheMovieDBorgToolStripMenuItem_Click);
             // 
             // panel1
             // 
@@ -198,7 +198,7 @@
             0,
             0,
             0});
-            this.backdropNumericUpDown.ValueChanged += new System.EventHandler(this.backdropNumericUpDown_ValueChanged);
+            this.backdropNumericUpDown.ValueChanged += new System.EventHandler(this.BackdropNumericUpDown_ValueChanged);
             // 
             // openVideoFileButton
             // 
@@ -210,7 +210,7 @@
             this.openVideoFileButton.TabIndex = 4;
             this.openVideoFileButton.Text = "Select &File";
             this.openVideoFileButton.UseVisualStyleBackColor = false;
-            this.openVideoFileButton.Click += new System.EventHandler(this.openVideoFileButton_Click);
+            this.openVideoFileButton.Click += new System.EventHandler(this.OpenVideoFileButton_Click);
             // 
             // videoPathLabel
             // 
@@ -282,7 +282,7 @@
             this.formatComboBox.Name = "formatComboBox";
             this.formatComboBox.Size = new System.Drawing.Size(100, 21);
             this.formatComboBox.TabIndex = 12;
-            this.formatComboBox.SelectedIndexChanged += new System.EventHandler(this.formatComboBox_SelectedIndexChanged);
+            this.formatComboBox.SelectedIndexChanged += new System.EventHandler(this.FormatComboBox_SelectedIndexChanged);
             // 
             // createFilesButton
             // 
@@ -294,7 +294,7 @@
             this.createFilesButton.TabIndex = 14;
             this.createFilesButton.Text = "Create / &Rename Files";
             this.createFilesButton.UseVisualStyleBackColor = false;
-            this.createFilesButton.Click += new System.EventHandler(this.createFilesButton_Click);
+            this.createFilesButton.Click += new System.EventHandler(this.CreateFilesButton_Click);
             // 
             // clearButton
             // 
@@ -306,7 +306,7 @@
             this.clearButton.TabIndex = 15;
             this.clearButton.Text = "C&lear All";
             this.clearButton.UseVisualStyleBackColor = false;
-            this.clearButton.Click += new System.EventHandler(this.clearButton_Click);
+            this.clearButton.Click += new System.EventHandler(this.ClearButton_Click);
             // 
             // posterNumericUpDown
             // 
@@ -333,7 +333,7 @@
             0,
             0,
             0});
-            this.posterNumericUpDown.ValueChanged += new System.EventHandler(this.posterNumericUpDown_ValueChanged);
+            this.posterNumericUpDown.ValueChanged += new System.EventHandler(this.PosterNumericUpDown_ValueChanged);
             // 
             // panel2
             // 

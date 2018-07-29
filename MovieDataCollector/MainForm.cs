@@ -12,11 +12,11 @@ namespace MovieDataCollector
             Activate(); //Opens form on top of others but doesn't force topmost always
             ConfigFile cf = new ConfigFile();
         }
-        private void invisibleCloseButton_Click(object sender, EventArgs e)
+        private void InvisibleCloseButton_Click(object sender, EventArgs e)
         {
             this.Close(); //Located behind the bottom button
         }
-        private void tvButton_Click(object sender, EventArgs e)
+        private void TvButton_Click(object sender, EventArgs e)
         {
             // calls the form’s constructor
             TVForm TV = new TVForm();
@@ -35,7 +35,7 @@ namespace MovieDataCollector
             this.Show();
         }
 
-        private void movieButton_Click(object sender, EventArgs e)
+        private void MovieButton_Click(object sender, EventArgs e)
         {
             // calls the form’s constructor
             MovieForm M = new MovieForm();
@@ -45,17 +45,17 @@ namespace MovieDataCollector
             this.Show();
         }
 
-        private void iMDBcomToolStripMenuItem_Click(object sender, EventArgs e)
+        private void IMDBcomToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Process.Start("http://www.imdb.com");
         }
 
-        private void theTVDBcomToolStripMenuItem_Click(object sender, EventArgs e)
+        private void TheTVDBcomToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Process.Start("http://www.thetvdb.com");
         }
 
-        private void theMovieDBorgToolStripMenuItem_Click(object sender, EventArgs e)
+        private void TheMovieDBorgToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Process.Start("http://www.themoviedb.org");
         }

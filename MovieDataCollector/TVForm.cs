@@ -42,10 +42,9 @@ namespace MovieDataCollector
         {
             InitializeComponent();
         }
-        private void getHTML()
+        private void GetHTML()
         {
 
-            int ID = 0;
             string TitleBox = seriesIDTitleTextbox.Text;
 
             notificationLabel.Visible = true;
@@ -59,7 +58,7 @@ namespace MovieDataCollector
             SynologyEpisodeName.Clear();
 
             //Scan for Series ID, if no ID found scan for series title and retrieve list of possible series to choose from then parse out the correct id.
-            if (int.TryParse(TitleBox, out ID) && ID != 0)
+            if (int.TryParse(TitleBox, out int ID) && ID != 0)
             {
                 try
                 { 
@@ -215,8 +214,8 @@ namespace MovieDataCollector
             notificationLabel.Invalidate();
             notificationLabel.Update();
         }
-        private void getHTMLButton_Click(object sender, EventArgs e) { getHTML(); }
-        private void getFileNames()
+        private void GetHTMLButton_Click(object sender, EventArgs e) { GetHTML(); }
+        private void GetFileNames()
         {
 
             notificationLabel.Visible = true;
@@ -266,11 +265,11 @@ namespace MovieDataCollector
             }
             notificationLabel.Visible = false;
         }
-        private void getFileNamesButton_Click(object sender, EventArgs e)
+        private void GetFileNamesButton_Click(object sender, EventArgs e)
         {
-            getFileNames();
+            GetFileNames();
         }
-        private void previewChanges()
+        private void PreviewChanges()
         {
             notificationLabel.Visible = true;
             notificationLabel.Text = "";
@@ -285,7 +284,7 @@ namespace MovieDataCollector
                 notificationLabel.Invalidate();
                 notificationLabel.Update();
 
-                determineEpisodeFromFileName(); //sets season and episode from filename
+                DetermineEpisodeFromFileName(); //sets season and episode from filename
             }
             else
             {
@@ -293,9 +292,9 @@ namespace MovieDataCollector
             }
             notificationLabel.Visible = false;
         }
-        private void previewChangesButton_Click(object sender, EventArgs e)
+        private void PreviewChangesButton_Click(object sender, EventArgs e)
         {
-            previewChanges();
+            PreviewChanges();
             if (changedFileNamesListbox.Items.Count > 0 & fileNamesListbox.Items.Count > 0)
             {
                 if (fileNamesListbox.SelectedIndex > -1)
@@ -304,7 +303,7 @@ namespace MovieDataCollector
                 }
             }
         }
-        private void determineEpisodeFromFileName()
+        private void DetermineEpisodeFromFileName()
         {
             season = "";
             episode = "";
@@ -360,8 +359,8 @@ namespace MovieDataCollector
                         }
                         if(isSelected)
                         {
-                            season = checkSeason(fileNamesListbox.Items[i].ToString().ToUpper(), maxSeason); //tries to parse season info from filename
-                            episode = checkEpisode(fileNamesListbox.Items[i].ToString().ToUpper(), maxEpisode); //tries to parse episode info from filename
+                            season = CheckSeason(fileNamesListbox.Items[i].ToString().ToUpper(), maxSeason); //tries to parse season info from filename
+                            episode = CheckEpisode(fileNamesListbox.Items[i].ToString().ToUpper(), maxEpisode); //tries to parse episode info from filename
                         }
                         else
                         {
@@ -371,8 +370,8 @@ namespace MovieDataCollector
                     }
                     else //None selected, perform check on the entire list.
                     {
-                        season = checkSeason(fileNamesListbox.Items[i].ToString().ToUpper(), maxSeason); //tries to parse season info from filename
-                        episode = checkEpisode(fileNamesListbox.Items[i].ToString().ToUpper(), maxEpisode); //tries to parse episode info from filename
+                        season = CheckSeason(fileNamesListbox.Items[i].ToString().ToUpper(), maxSeason); //tries to parse season info from filename
+                        episode = CheckEpisode(fileNamesListbox.Items[i].ToString().ToUpper(), maxEpisode); //tries to parse episode info from filename
                     }
                     
 
@@ -447,7 +446,7 @@ namespace MovieDataCollector
                     if ((string.IsNullOrEmpty(season) | string.IsNullOrEmpty(episode)) & absoluteCb.Checked)
                     {
                         // Add filter for absolute episode numbers here
-                        newTitle = checkAbsolutNumber(fileNamesListbox.Items[i].ToString());
+                        newTitle = CheckAbsolutNumber(fileNamesListbox.Items[i].ToString());
                         if (string.IsNullOrEmpty(newTitle)) { newTitle = "EPISODE COULD NOT BE DETERMINED"; }
                     }
 
@@ -507,14 +506,14 @@ namespace MovieDataCollector
                     if (newTitle == "SKIPPED") { newTitle = ""; }
                     else
                     {
-                        newTitle = formatFileName(newTitle); //removes invalid characters from the filename.
+                        newTitle = FormatFileName(newTitle); //removes invalid characters from the filename.
                     }
                     changedFileNamesListbox.Items.Add(newTitle);
                 }
             }
             episodeNames.Clear();
         }
-        private string checkSeason(string FileName, int maxSeason)
+        private string CheckSeason(string FileName, int maxSeason)
         {
             int seasonNumber = -1;
 
@@ -604,7 +603,7 @@ namespace MovieDataCollector
             return "";
 
         }
-        private string checkEpisode(string FileName, int maxEpisode)
+        private string CheckEpisode(string FileName, int maxEpisode)
         {
             /*Remove items from string that might confuse the program.
              List is stored in string array lineStringFilter*/
@@ -721,7 +720,7 @@ namespace MovieDataCollector
             Array.Clear(characterBlocks, 0, characterBlocks.Length);
             return "";
         }
-        private string checkAbsolutNumber(string FileName)
+        private string CheckAbsolutNumber(string FileName)
         {
             characterBlocks = FileName.Split(separators, StringSplitOptions.RemoveEmptyEntries);
             foreach (string block in characterBlocks)
@@ -786,7 +785,7 @@ namespace MovieDataCollector
             Array.Clear(characterBlocks, 0, characterBlocks.Length);
             return "";
         }
-        private void fileNamesListbox_SelectedIndexChanged(object sender, EventArgs e)
+        private void FileNamesListbox_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
             {
@@ -802,7 +801,7 @@ namespace MovieDataCollector
             }
 
         }
-        private void changedFileNamesListbox_SelectedIndexChanged(object sender, EventArgs e)
+        private void ChangedFileNamesListbox_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
             {
@@ -817,7 +816,7 @@ namespace MovieDataCollector
 
             }
         }
-        private string formatFileName(string fileName)
+        private string FormatFileName(string fileName)
         {
             // Replaces invalid characters /\:*?<>|
             if (fileName.Contains("/"))
@@ -862,7 +861,7 @@ namespace MovieDataCollector
 
             return fileName;
         }
-        private void changeFileNamesButton_Click(object sender, EventArgs e)
+        private void ChangeFileNamesButton_Click(object sender, EventArgs e)
         {
             notificationLabel.Visible = true;
             notificationLabel.Text = "Processing File Names";
@@ -946,12 +945,12 @@ namespace MovieDataCollector
             }
             notificationLabel.Visible = false;
         }
-        private void clearButton_Click(object sender, EventArgs e)
+        private void ClearButton_Click(object sender, EventArgs e)
         {
-            clearAll();
+            ClearAll();
             DialogResult = DialogResult.None; //prevent form from closing
         }
-        private void clearAll()
+        private void ClearAll()
         {
             seriesIDTitleTextbox.Clear();
             favoritesCombo.Text = "";
@@ -961,7 +960,7 @@ namespace MovieDataCollector
             changedFileNamesListbox.Items.Clear();
 
         }
-        private void fileNamesListbox_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void FileNamesListbox_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             int value = 0;
 
@@ -981,7 +980,7 @@ namespace MovieDataCollector
             }
 
         }
-        private void changedFileNamesListbox_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void ChangedFileNamesListbox_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             ListOfEpisodeNames.Clear();
             if (changedFileNamesListbox.Items.Count > 0)
@@ -1081,7 +1080,7 @@ namespace MovieDataCollector
                     break;
             }
         }
-        private void addFavoriteButton_Click(object sender, EventArgs e)
+        private void AddFavoriteButton_Click(object sender, EventArgs e)
         {
 
             if (!string.IsNullOrEmpty(favoritesCombo.Text) & !string.IsNullOrEmpty(seriesIDTitleTextbox.Text))
@@ -1107,18 +1106,18 @@ namespace MovieDataCollector
 
             DialogResult = DialogResult.None; //Prevents form from closing...
         }
-        private void favoritesCombo_SelectionChangeCommitted(object sender, EventArgs e)
+        private void FavoritesCombo_SelectionChangeCommitted(object sender, EventArgs e)
         {
 
             seriesIDTitleTextbox.Text = cf.favoriteIDs[favoritesCombo.SelectedIndex]; //Matches the favorite name with the correct URL
 
             if (!string.IsNullOrEmpty(favoritesCombo.SelectedItem.ToString()))
             {
-                getHTML(); //Prevents you from having to click the GetHTML button since that will be your next move anyway
+                GetHTML(); //Prevents you from having to click the GetHTML button since that will be your next move anyway
             }
 
         }
-        private void deleteFavoriteButton_Click(object sender, EventArgs e)
+        private void DeleteFavoriteButton_Click(object sender, EventArgs e)
         {
             cf.removeFavorite(favoritesCombo.SelectedIndex);
             favoritesCombo.Text = "";
@@ -1136,11 +1135,11 @@ namespace MovieDataCollector
         {
             this.Close(); //Located behind the Make Changes button
         }
-        private void formatCombo_SelectedIndexChanged(object sender, EventArgs e)
+        private void FormatCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             if(fileNamesListbox.Items.Count > 0) //ensures that this doesnt fire when there is nothing for it to do but error
             {
-                previewChanges(); //updates titles for seletion
+                PreviewChanges(); //updates titles for seletion
 
                 if (changedFileNamesListbox.Items.Count > 0 & fileNamesListbox.Items.Count > 0)
                 {
@@ -1153,20 +1152,20 @@ namespace MovieDataCollector
             cf.DefaultSettings["DefaultFormat"] = formatCombo.SelectedItem.ToString();
             cf.updateDefaults();
         }
-        private void theTVDBcomToolStripMenuItem_Click(object sender, EventArgs e)
+        private void TheTVDBcomToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Process.Start("http://www.thetvdb.com");
         }
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
         }
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //Get File Names
-            getFileNames();
+            GetFileNames();
         }
-        private void absoluteCb_CheckedChanged(object sender, EventArgs e)
+        private void AbsoluteCb_CheckedChanged(object sender, EventArgs e)
         {
             switch(absoluteCb.Checked)
             {
@@ -1185,7 +1184,7 @@ namespace MovieDataCollector
             }
         }
 
-        private void titleCb_CheckedChanged(object sender, EventArgs e)
+        private void TitleCb_CheckedChanged(object sender, EventArgs e)
         {
             switch(titleCb.Checked)
             {

@@ -93,7 +93,7 @@
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.Size = new System.Drawing.Size(104, 22);
             this.openToolStripMenuItem.Text = "Open";
-            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.OpenToolStripMenuItem_Click);
             // 
             // closeToolStripMenuItem
             // 
@@ -102,7 +102,7 @@
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
             this.closeToolStripMenuItem.Size = new System.Drawing.Size(104, 22);
             this.closeToolStripMenuItem.Text = "Close";
-            this.closeToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            this.closeToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
             // goToToolStripMenuItem
             // 
@@ -119,7 +119,7 @@
             this.theTVDBcomToolStripMenuItem.Name = "theTVDBcomToolStripMenuItem";
             this.theTVDBcomToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.theTVDBcomToolStripMenuItem.Text = "TheTVDB.com";
-            this.theTVDBcomToolStripMenuItem.Click += new System.EventHandler(this.theTVDBcomToolStripMenuItem_Click);
+            this.theTVDBcomToolStripMenuItem.Click += new System.EventHandler(this.TheTVDBcomToolStripMenuItem_Click);
             // 
             // favoritesCombo
             // 
@@ -131,7 +131,7 @@
             this.favoritesCombo.Name = "favoritesCombo";
             this.favoritesCombo.Size = new System.Drawing.Size(279, 21);
             this.favoritesCombo.TabIndex = 1;
-            this.favoritesCombo.SelectedValueChanged += new System.EventHandler(this.favoritesCombo_SelectionChangeCommitted);
+            this.favoritesCombo.SelectedValueChanged += new System.EventHandler(this.FavoritesCombo_SelectionChangeCommitted);
             // 
             // favoritesLabel
             // 
@@ -176,7 +176,7 @@
             this.getHTMLButton.TabIndex = 6;
             this.getHTMLButton.Text = "&Search";
             this.getHTMLButton.UseVisualStyleBackColor = false;
-            this.getHTMLButton.Click += new System.EventHandler(this.getHTMLButton_Click);
+            this.getHTMLButton.Click += new System.EventHandler(this.GetHTMLButton_Click);
             // 
             // addFavoriteButton
             // 
@@ -189,7 +189,7 @@
             this.addFavoriteButton.TabIndex = 7;
             this.addFavoriteButton.Text = "&Add Fav";
             this.addFavoriteButton.UseVisualStyleBackColor = false;
-            this.addFavoriteButton.Click += new System.EventHandler(this.addFavoriteButton_Click);
+            this.addFavoriteButton.Click += new System.EventHandler(this.AddFavoriteButton_Click);
             // 
             // deleteFavoriteButton
             // 
@@ -202,7 +202,7 @@
             this.deleteFavoriteButton.TabIndex = 8;
             this.deleteFavoriteButton.Text = "&Delete Fav";
             this.deleteFavoriteButton.UseVisualStyleBackColor = false;
-            this.deleteFavoriteButton.Click += new System.EventHandler(this.deleteFavoriteButton_Click);
+            this.deleteFavoriteButton.Click += new System.EventHandler(this.DeleteFavoriteButton_Click);
             // 
             // clearButton
             // 
@@ -216,7 +216,7 @@
             this.clearButton.TabIndex = 9;
             this.clearButton.Text = "&Clear All";
             this.clearButton.UseVisualStyleBackColor = false;
-            this.clearButton.Click += new System.EventHandler(this.clearButton_Click);
+            this.clearButton.Click += new System.EventHandler(this.ClearButton_Click);
             // 
             // getFileNamesButton
             // 
@@ -229,7 +229,7 @@
             this.getFileNamesButton.TabIndex = 10;
             this.getFileNamesButton.Text = "&Open Folder";
             this.getFileNamesButton.UseVisualStyleBackColor = false;
-            this.getFileNamesButton.Click += new System.EventHandler(this.getFileNamesButton_Click);
+            this.getFileNamesButton.Click += new System.EventHandler(this.GetFileNamesButton_Click);
             // 
             // parentPathLabel
             // 
@@ -268,7 +268,7 @@
             this.formatCombo.Size = new System.Drawing.Size(78, 21);
             this.formatCombo.TabIndex = 13;
             this.formatCombo.Text = "Synology";
-            this.formatCombo.SelectedIndexChanged += new System.EventHandler(this.formatCombo_SelectedIndexChanged);
+            this.formatCombo.SelectedIndexChanged += new System.EventHandler(this.FormatCombo_SelectedIndexChanged);
             // 
             // currentFileNamesLabel
             // 
@@ -303,8 +303,8 @@
             this.fileNamesListbox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.fileNamesListbox.Size = new System.Drawing.Size(401, 199);
             this.fileNamesListbox.TabIndex = 16;
-            this.fileNamesListbox.SelectedIndexChanged += new System.EventHandler(this.fileNamesListbox_SelectedIndexChanged);
-            this.fileNamesListbox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.fileNamesListbox_MouseDoubleClick);
+            this.fileNamesListbox.SelectedIndexChanged += new System.EventHandler(this.FileNamesListbox_SelectedIndexChanged);
+            this.fileNamesListbox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.FileNamesListbox_MouseDoubleClick);
             // 
             // changedFileNamesListbox
             // 
@@ -316,8 +316,8 @@
             this.changedFileNamesListbox.Name = "changedFileNamesListbox";
             this.changedFileNamesListbox.Size = new System.Drawing.Size(401, 199);
             this.changedFileNamesListbox.TabIndex = 17;
-            this.changedFileNamesListbox.SelectedIndexChanged += new System.EventHandler(this.changedFileNamesListbox_SelectedIndexChanged);
-            this.changedFileNamesListbox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.changedFileNamesListbox_MouseDoubleClick);
+            this.changedFileNamesListbox.SelectedIndexChanged += new System.EventHandler(this.ChangedFileNamesListbox_SelectedIndexChanged);
+            this.changedFileNamesListbox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ChangedFileNamesListbox_MouseDoubleClick);
             // 
             // removeItemLabel
             // 
@@ -352,7 +352,7 @@
             this.previewChangesButton.TabIndex = 20;
             this.previewChangesButton.Text = "Preview Changes";
             this.previewChangesButton.UseVisualStyleBackColor = false;
-            this.previewChangesButton.Click += new System.EventHandler(this.previewChangesButton_Click);
+            this.previewChangesButton.Click += new System.EventHandler(this.PreviewChangesButton_Click);
             // 
             // absoluteCb
             // 
@@ -365,7 +365,7 @@
             this.absoluteCb.TabIndex = 21;
             this.absoluteCb.Text = "Absolute Episode Numbers";
             this.absoluteCb.UseVisualStyleBackColor = true;
-            this.absoluteCb.CheckedChanged += new System.EventHandler(this.absoluteCb_CheckedChanged);
+            this.absoluteCb.CheckedChanged += new System.EventHandler(this.AbsoluteCb_CheckedChanged);
             // 
             // titleCb
             // 
@@ -378,7 +378,7 @@
             this.titleCb.TabIndex = 22;
             this.titleCb.Text = "Title in Filename";
             this.titleCb.UseVisualStyleBackColor = true;
-            this.titleCb.CheckedChanged += new System.EventHandler(this.titleCb_CheckedChanged);
+            this.titleCb.CheckedChanged += new System.EventHandler(this.TitleCb_CheckedChanged);
             // 
             // notificationLabel
             // 
@@ -411,7 +411,7 @@
             this.changeFileNamesButton.TabIndex = 24;
             this.changeFileNamesButton.Text = "&Make Changes";
             this.changeFileNamesButton.UseVisualStyleBackColor = false;
-            this.changeFileNamesButton.Click += new System.EventHandler(this.changeFileNamesButton_Click);
+            this.changeFileNamesButton.Click += new System.EventHandler(this.ChangeFileNamesButton_Click);
             // 
             // InvisibleCloseButton
             // 

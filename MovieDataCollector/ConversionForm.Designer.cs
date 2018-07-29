@@ -33,7 +33,7 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.selectDirectoryButton = new System.Windows.Forms.Button();
+            this.SelectDirectoryButton = new System.Windows.Forms.Button();
             this.filenameTextBox = new System.Windows.Forms.TextBox();
             this.compatibilityCombo = new System.Windows.Forms.ComboBox();
             this.selectionPicturebox = new System.Windows.Forms.PictureBox();
@@ -146,7 +146,7 @@
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.Size = new System.Drawing.Size(104, 22);
             this.openToolStripMenuItem.Text = "&Open";
-            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.OpenToolStripMenuItem_Click);
             // 
             // closeToolStripMenuItem
             // 
@@ -155,20 +155,20 @@
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
             this.closeToolStripMenuItem.Size = new System.Drawing.Size(104, 22);
             this.closeToolStripMenuItem.Text = "&Close";
-            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
+            this.closeToolStripMenuItem.Click += new System.EventHandler(this.CloseToolStripMenuItem_Click);
             // 
-            // selectDirectoryButton
+            // SelectDirectoryButton
             // 
-            this.selectDirectoryButton.BackColor = System.Drawing.Color.GreenYellow;
-            this.selectDirectoryButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.selectDirectoryButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.selectDirectoryButton.Location = new System.Drawing.Point(12, 31);
-            this.selectDirectoryButton.Name = "selectDirectoryButton";
-            this.selectDirectoryButton.Size = new System.Drawing.Size(113, 32);
-            this.selectDirectoryButton.TabIndex = 1;
-            this.selectDirectoryButton.Text = "&Select Directory";
-            this.selectDirectoryButton.UseVisualStyleBackColor = false;
-            this.selectDirectoryButton.Click += new System.EventHandler(this.selectDirectoryButton_Click);
+            this.SelectDirectoryButton.BackColor = System.Drawing.Color.GreenYellow;
+            this.SelectDirectoryButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SelectDirectoryButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.SelectDirectoryButton.Location = new System.Drawing.Point(12, 31);
+            this.SelectDirectoryButton.Name = "SelectDirectoryButton";
+            this.SelectDirectoryButton.Size = new System.Drawing.Size(113, 32);
+            this.SelectDirectoryButton.TabIndex = 1;
+            this.SelectDirectoryButton.Text = "&Select Directory";
+            this.SelectDirectoryButton.UseVisualStyleBackColor = false;
+            this.SelectDirectoryButton.Click += new System.EventHandler(this.SelectDirectoryButton_Click);
             // 
             // filenameTextBox
             // 
@@ -194,7 +194,7 @@
             this.compatibilityCombo.Size = new System.Drawing.Size(64, 21);
             this.compatibilityCombo.TabIndex = 3;
             this.compatibilityCombo.Text = "Roku";
-            this.compatibilityCombo.SelectedIndexChanged += new System.EventHandler(this.compatibilityCombo_SelectedIndexChanged);
+            this.compatibilityCombo.SelectedIndexChanged += new System.EventHandler(this.CompatibilityCombo_SelectedIndexChanged);
             // 
             // selectionPicturebox
             // 
@@ -217,7 +217,7 @@
             this.listAllVideosButton.TabIndex = 5;
             this.listAllVideosButton.Text = "&List All Videos";
             this.listAllVideosButton.UseVisualStyleBackColor = false;
-            this.listAllVideosButton.Click += new System.EventHandler(this.listAllVideosButton_Click);
+            this.listAllVideosButton.Click += new System.EventHandler(this.ListAllVideosButton_Click);
             // 
             // listIncompatibleButton
             // 
@@ -230,7 +230,7 @@
             this.listIncompatibleButton.TabIndex = 6;
             this.listIncompatibleButton.Text = "List &Incompatible";
             this.listIncompatibleButton.UseVisualStyleBackColor = false;
-            this.listIncompatibleButton.Click += new System.EventHandler(this.listIncompatibleButton_Click);
+            this.listIncompatibleButton.Click += new System.EventHandler(this.ListIncompatibleButton_Click);
             // 
             // exportButton
             // 
@@ -269,7 +269,7 @@
             this.detailInfoButton.TabIndex = 9;
             this.detailInfoButton.Text = "&Detailed Info";
             this.detailInfoButton.UseVisualStyleBackColor = false;
-            this.detailInfoButton.Click += new System.EventHandler(this.detailInfoButton_Click);
+            this.detailInfoButton.Click += new System.EventHandler(this.DetailInfoButton_Click);
             // 
             // listboxLabel
             // 
@@ -292,7 +292,7 @@
             this.filesListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.filesListBox.Size = new System.Drawing.Size(548, 381);
             this.filesListBox.TabIndex = 11;
-            this.filesListBox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.filesListBox_MouseDoubleClick);
+            this.filesListBox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.FilesListBox_MouseDoubleClick);
             // 
             // notificationLabel
             // 
@@ -347,7 +347,7 @@
             this.exportInfoButton.TabIndex = 1;
             this.exportInfoButton.Text = "Export Media Info";
             this.exportInfoButton.UseVisualStyleBackColor = false;
-            this.exportInfoButton.Click += new System.EventHandler(this.saveInfoButton_Click);
+            this.exportInfoButton.Click += new System.EventHandler(this.SaveInfoButton_Click);
             // 
             // conversionSettingsPage
             // 
@@ -386,7 +386,7 @@
             this.removePresetButton.TabIndex = 18;
             this.removePresetButton.Text = "Remove";
             this.removePresetButton.UseVisualStyleBackColor = false;
-            this.removePresetButton.Click += new System.EventHandler(this.removePresetButton_Click);
+            this.removePresetButton.Click += new System.EventHandler(this.RemovePresetButton_Click);
             // 
             // addPresetButton
             // 
@@ -398,7 +398,7 @@
             this.addPresetButton.TabIndex = 18;
             this.addPresetButton.Text = "Add";
             this.addPresetButton.UseVisualStyleBackColor = false;
-            this.addPresetButton.Click += new System.EventHandler(this.addPresetButton_Click);
+            this.addPresetButton.Click += new System.EventHandler(this.AddPresetButton_Click);
             // 
             // presetComboBox
             // 
@@ -409,8 +409,8 @@
             this.presetComboBox.Name = "presetComboBox";
             this.presetComboBox.Size = new System.Drawing.Size(121, 21);
             this.presetComboBox.TabIndex = 17;
-            this.presetComboBox.SelectedIndexChanged += new System.EventHandler(this.presetComboBox_SelectedIndexChanged);
-            this.presetComboBox.Leave += new System.EventHandler(this.presetComboBox_Leave);
+            this.presetComboBox.SelectedIndexChanged += new System.EventHandler(this.PresetComboBox_SelectedIndexChanged);
+            this.presetComboBox.Leave += new System.EventHandler(this.PresetComboBox_Leave);
             // 
             // presetLabel
             // 
@@ -430,7 +430,7 @@
             this.sendToBox.Size = new System.Drawing.Size(158, 20);
             this.sendToBox.TabIndex = 16;
             this.sendToBox.Visible = false;
-            this.sendToBox.Leave += new System.EventHandler(this.sendToBox_Leave);
+            this.sendToBox.Leave += new System.EventHandler(this.SendToBox_Leave);
             // 
             // passwordBox
             // 
@@ -452,7 +452,7 @@
             this.usernameBox.Size = new System.Drawing.Size(158, 20);
             this.usernameBox.TabIndex = 14;
             this.usernameBox.Visible = false;
-            this.usernameBox.Leave += new System.EventHandler(this.usernameBox_Leave);
+            this.usernameBox.Leave += new System.EventHandler(this.UsernameBox_Leave);
             // 
             // sendToLabel
             // 
@@ -498,7 +498,7 @@
             this.notificationCheck.TabIndex = 10;
             this.notificationCheck.Text = "Notification Toggle";
             this.notificationCheck.UseVisualStyleBackColor = false;
-            this.notificationCheck.CheckedChanged += new System.EventHandler(this.notificationCheck_CheckedChanged);
+            this.notificationCheck.CheckedChanged += new System.EventHandler(this.NotificationCheck_CheckedChanged);
             // 
             // testNotificationButton
             // 
@@ -511,7 +511,7 @@
             this.testNotificationButton.Text = "Test Notification";
             this.testNotificationButton.UseVisualStyleBackColor = false;
             this.testNotificationButton.Visible = false;
-            this.testNotificationButton.Click += new System.EventHandler(this.testNotificationButton_Click);
+            this.testNotificationButton.Click += new System.EventHandler(this.TestNotificationButton_Click);
             // 
             // convertAllButton
             // 
@@ -591,7 +591,7 @@
             this.burnInSubtitlesCheck.TabIndex = 17;
             this.burnInSubtitlesCheck.Text = "Burn In Forced Subtitles";
             this.burnInSubtitlesCheck.UseVisualStyleBackColor = true;
-            this.burnInSubtitlesCheck.CheckedChanged += new System.EventHandler(this.burnInSubtitlesCheck_CheckedChanged);
+            this.burnInSubtitlesCheck.CheckedChanged += new System.EventHandler(this.BurnInSubtitlesCheck_CheckedChanged);
             // 
             // subtitleLabel
             // 
@@ -629,9 +629,9 @@
             this.subtitleCombo.Name = "subtitleCombo";
             this.subtitleCombo.Size = new System.Drawing.Size(150, 21);
             this.subtitleCombo.TabIndex = 12;
-            this.subtitleCombo.SelectedIndexChanged += new System.EventHandler(this.subtitleCombo_SelectedIndexChanged);
-            this.subtitleCombo.TextChanged += new System.EventHandler(this.subtitleCombo_TextChanged);
-            this.subtitleCombo.Leave += new System.EventHandler(this.subtitleCombo_Leave_1);
+            this.subtitleCombo.SelectedIndexChanged += new System.EventHandler(this.SubtitleCombo_SelectedIndexChanged);
+            this.subtitleCombo.TextChanged += new System.EventHandler(this.SubtitleCombo_TextChanged);
+            this.subtitleCombo.Leave += new System.EventHandler(this.SubtitleCombo_Leave_1);
             // 
             // frameRateModeCombo
             // 
@@ -646,9 +646,9 @@
             this.frameRateModeCombo.Name = "frameRateModeCombo";
             this.frameRateModeCombo.Size = new System.Drawing.Size(85, 21);
             this.frameRateModeCombo.TabIndex = 15;
-            this.frameRateModeCombo.SelectedIndexChanged += new System.EventHandler(this.frameRateModeCombo_SelectedIndexChanged);
-            this.frameRateModeCombo.TextChanged += new System.EventHandler(this.frameRateModeCombo_TextChanged);
-            this.frameRateModeCombo.Leave += new System.EventHandler(this.frameRateModeCombo_Leave);
+            this.frameRateModeCombo.SelectedIndexChanged += new System.EventHandler(this.FrameRateModeCombo_SelectedIndexChanged);
+            this.frameRateModeCombo.TextChanged += new System.EventHandler(this.FrameRateModeCombo_TextChanged);
+            this.frameRateModeCombo.Leave += new System.EventHandler(this.FrameRateModeCombo_Leave);
             // 
             // framerateCombo
             // 
@@ -674,9 +674,9 @@
             this.framerateCombo.Name = "framerateCombo";
             this.framerateCombo.Size = new System.Drawing.Size(120, 21);
             this.framerateCombo.TabIndex = 14;
-            this.framerateCombo.SelectedIndexChanged += new System.EventHandler(this.framerateCombo_SelectedIndexChanged);
-            this.framerateCombo.TextChanged += new System.EventHandler(this.framerateCombo_TextChanged);
-            this.framerateCombo.Leave += new System.EventHandler(this.framerateCombo_Leave);
+            this.framerateCombo.SelectedIndexChanged += new System.EventHandler(this.FramerateCombo_SelectedIndexChanged);
+            this.framerateCombo.TextChanged += new System.EventHandler(this.FramerateCombo_TextChanged);
+            this.framerateCombo.Leave += new System.EventHandler(this.FramerateCombo_Leave);
             // 
             // avgBitrateCombo
             // 
@@ -708,9 +708,9 @@
             this.avgBitrateCombo.Name = "avgBitrateCombo";
             this.avgBitrateCombo.Size = new System.Drawing.Size(51, 21);
             this.avgBitrateCombo.TabIndex = 13;
-            this.avgBitrateCombo.SelectedIndexChanged += new System.EventHandler(this.avgBitrateCombo_SelectedIndexChanged);
-            this.avgBitrateCombo.TextChanged += new System.EventHandler(this.avgBitrateCombo_TextChanged);
-            this.avgBitrateCombo.Leave += new System.EventHandler(this.avgBitrateCombo_Leave);
+            this.avgBitrateCombo.SelectedIndexChanged += new System.EventHandler(this.AvgBitrateCombo_SelectedIndexChanged);
+            this.avgBitrateCombo.TextChanged += new System.EventHandler(this.AvgBitrateCombo_TextChanged);
+            this.avgBitrateCombo.Leave += new System.EventHandler(this.AvgBitrateCombo_Leave);
             // 
             // encoderLevelComboBox
             // 
@@ -736,9 +736,9 @@
             this.encoderLevelComboBox.Name = "encoderLevelComboBox";
             this.encoderLevelComboBox.Size = new System.Drawing.Size(52, 21);
             this.encoderLevelComboBox.TabIndex = 12;
-            this.encoderLevelComboBox.SelectedIndexChanged += new System.EventHandler(this.encoderLevelComboBox_SelectedIndexChanged);
-            this.encoderLevelComboBox.TextChanged += new System.EventHandler(this.encoderLevelComboBox_TextChanged);
-            this.encoderLevelComboBox.Leave += new System.EventHandler(this.encoderLevelComboBox_Leave);
+            this.encoderLevelComboBox.SelectedIndexChanged += new System.EventHandler(this.EncoderLevelComboBox_SelectedIndexChanged);
+            this.encoderLevelComboBox.TextChanged += new System.EventHandler(this.EncoderLevelComboBox_TextChanged);
+            this.encoderLevelComboBox.Leave += new System.EventHandler(this.EncoderLevelComboBox_Leave);
             // 
             // encoderProfileComboBox
             // 
@@ -753,9 +753,9 @@
             this.encoderProfileComboBox.Name = "encoderProfileComboBox";
             this.encoderProfileComboBox.Size = new System.Drawing.Size(76, 21);
             this.encoderProfileComboBox.TabIndex = 11;
-            this.encoderProfileComboBox.SelectedIndexChanged += new System.EventHandler(this.encoderProfileComboBox_SelectedIndexChanged);
-            this.encoderProfileComboBox.TextChanged += new System.EventHandler(this.encoderProfileComboBox_TextChanged);
-            this.encoderProfileComboBox.Leave += new System.EventHandler(this.encoderProfileComboBox_Leave);
+            this.encoderProfileComboBox.SelectedIndexChanged += new System.EventHandler(this.EncoderProfileComboBox_SelectedIndexChanged);
+            this.encoderProfileComboBox.TextChanged += new System.EventHandler(this.EncoderProfileComboBox_TextChanged);
+            this.encoderProfileComboBox.Leave += new System.EventHandler(this.EncoderProfileComboBox_Leave);
             // 
             // encoderTuneComboBox
             // 
@@ -774,9 +774,9 @@
             this.encoderTuneComboBox.Name = "encoderTuneComboBox";
             this.encoderTuneComboBox.Size = new System.Drawing.Size(105, 21);
             this.encoderTuneComboBox.TabIndex = 10;
-            this.encoderTuneComboBox.SelectedIndexChanged += new System.EventHandler(this.encoderTuneComboBox_SelectedIndexChanged);
-            this.encoderTuneComboBox.TextChanged += new System.EventHandler(this.encoderTuneComboBox_TextChanged);
-            this.encoderTuneComboBox.Leave += new System.EventHandler(this.encoderTuneComboBox_Leave);
+            this.encoderTuneComboBox.SelectedIndexChanged += new System.EventHandler(this.EncoderTuneComboBox_SelectedIndexChanged);
+            this.encoderTuneComboBox.TextChanged += new System.EventHandler(this.EncoderTuneComboBox_TextChanged);
+            this.encoderTuneComboBox.Leave += new System.EventHandler(this.EncoderTuneComboBox_Leave);
             // 
             // encoderSpeedCombo
             // 
@@ -798,9 +798,9 @@
             this.encoderSpeedCombo.Name = "encoderSpeedCombo";
             this.encoderSpeedCombo.Size = new System.Drawing.Size(105, 21);
             this.encoderSpeedCombo.TabIndex = 9;
-            this.encoderSpeedCombo.SelectedIndexChanged += new System.EventHandler(this.encoderSpeedCombo_SelectedIndexChanged);
-            this.encoderSpeedCombo.TextUpdate += new System.EventHandler(this.encoderSpeedCombo_TextUpdate);
-            this.encoderSpeedCombo.Leave += new System.EventHandler(this.encoderSpeedCombo_Leave);
+            this.encoderSpeedCombo.SelectedIndexChanged += new System.EventHandler(this.EncoderSpeedCombo_SelectedIndexChanged);
+            this.encoderSpeedCombo.TextUpdate += new System.EventHandler(this.EncoderSpeedCombo_TextUpdate);
+            this.encoderSpeedCombo.Leave += new System.EventHandler(this.EncoderSpeedCombo_Leave);
             // 
             // turboCheckBox
             // 
@@ -814,7 +814,7 @@
             this.turboCheckBox.TabIndex = 8;
             this.turboCheckBox.Text = "Turbo First Pass";
             this.turboCheckBox.UseVisualStyleBackColor = true;
-            this.turboCheckBox.CheckedChanged += new System.EventHandler(this.turboCheckBox_CheckedChanged);
+            this.turboCheckBox.CheckedChanged += new System.EventHandler(this.TurboCheckBox_CheckedChanged);
             // 
             // twoPassCheckbox
             // 
@@ -828,7 +828,7 @@
             this.twoPassCheckbox.TabIndex = 8;
             this.twoPassCheckbox.Text = "2 Pass Encode";
             this.twoPassCheckbox.UseVisualStyleBackColor = true;
-            this.twoPassCheckbox.CheckStateChanged += new System.EventHandler(this.twoPassCheckbox_CheckStateChanged);
+            this.twoPassCheckbox.CheckStateChanged += new System.EventHandler(this.TwoPassCheckbox_CheckStateChanged);
             // 
             // optimizeStreamingCheckBox
             // 
@@ -842,7 +842,7 @@
             this.optimizeStreamingCheckBox.TabIndex = 7;
             this.optimizeStreamingCheckBox.Text = "Optimize For Streaming";
             this.optimizeStreamingCheckBox.UseVisualStyleBackColor = true;
-            this.optimizeStreamingCheckBox.CheckedChanged += new System.EventHandler(this.optimizeStreamingCheckBox_CheckedChanged);
+            this.optimizeStreamingCheckBox.CheckedChanged += new System.EventHandler(this.OptimizeStreamingCheckBox_CheckedChanged);
             // 
             // mbpsLabel
             // 
@@ -956,7 +956,7 @@
             this.filteredDTSCheck.Text = "Dolby DTS";
             this.filteredDTSCheck.UseVisualStyleBackColor = true;
             this.filteredDTSCheck.Visible = false;
-            this.filteredDTSCheck.CheckedChanged += new System.EventHandler(this.filteredDTSCheck_CheckedChanged);
+            this.filteredDTSCheck.CheckedChanged += new System.EventHandler(this.FilteredDTSCheck_CheckedChanged);
             // 
             // filteredAC3Check
             // 
@@ -968,7 +968,7 @@
             this.filteredAC3Check.Text = "AC3";
             this.filteredAC3Check.UseVisualStyleBackColor = true;
             this.filteredAC3Check.Visible = false;
-            this.filteredAC3Check.CheckedChanged += new System.EventHandler(this.filteredAC3Check_CheckedChanged);
+            this.filteredAC3Check.CheckedChanged += new System.EventHandler(this.FilteredAC3Check_CheckedChanged);
             // 
             // filteredAACCheck
             // 
@@ -980,7 +980,7 @@
             this.filteredAACCheck.Text = "AAC";
             this.filteredAACCheck.UseVisualStyleBackColor = true;
             this.filteredAACCheck.Visible = false;
-            this.filteredAACCheck.CheckedChanged += new System.EventHandler(this.filteredAACCheck_CheckedChanged);
+            this.filteredAACCheck.CheckedChanged += new System.EventHandler(this.FilteredAACCheck_CheckedChanged);
             // 
             // kbpsLabel
             // 
@@ -1014,8 +1014,8 @@
             this.audioBitrateCombo.Name = "audioBitrateCombo";
             this.audioBitrateCombo.Size = new System.Drawing.Size(47, 21);
             this.audioBitrateCombo.TabIndex = 6;
-            this.audioBitrateCombo.SelectedIndexChanged += new System.EventHandler(this.audioBitrateCombo_SelectedIndexChanged);
-            this.audioBitrateCombo.TextChanged += new System.EventHandler(this.audioBitrateCombo_TextChanged);
+            this.audioBitrateCombo.SelectedIndexChanged += new System.EventHandler(this.AudioBitrateCombo_SelectedIndexChanged);
+            this.audioBitrateCombo.TextChanged += new System.EventHandler(this.AudioBitrateCombo_TextChanged);
             this.audioBitrateCombo.Leave += new System.EventHandler(this.AudioCodecComboBox_Leave);
             // 
             // passthruFilterLabel
@@ -1040,9 +1040,9 @@
             this.sampleRateCombo.Name = "sampleRateCombo";
             this.sampleRateCombo.Size = new System.Drawing.Size(54, 21);
             this.sampleRateCombo.TabIndex = 0;
-            this.sampleRateCombo.SelectedIndexChanged += new System.EventHandler(this.sampleRateCombo_SelectedIndexChanged);
-            this.sampleRateCombo.TextChanged += new System.EventHandler(this.sampleRateCombo_TextChanged);
-            this.sampleRateCombo.Leave += new System.EventHandler(this.sampleRateCombo_Leave);
+            this.sampleRateCombo.SelectedIndexChanged += new System.EventHandler(this.SampleRateCombo_SelectedIndexChanged);
+            this.sampleRateCombo.TextChanged += new System.EventHandler(this.SampleRateCombo_TextChanged);
+            this.sampleRateCombo.Leave += new System.EventHandler(this.SampleRateCombo_Leave);
             // 
             // mixdownComboBox
             // 
@@ -1057,7 +1057,7 @@
             this.mixdownComboBox.Size = new System.Drawing.Size(133, 21);
             this.mixdownComboBox.TabIndex = 0;
             this.mixdownComboBox.SelectedIndexChanged += new System.EventHandler(this.MixdownComboBox_SelectedIndexChanged);
-            this.mixdownComboBox.TextChanged += new System.EventHandler(this.mixdownComboBox_TextChanged);
+            this.mixdownComboBox.TextChanged += new System.EventHandler(this.MixdownComboBox_TextChanged);
             // 
             // sampleRateLabel
             // 
@@ -1082,7 +1082,7 @@
             this.audioCodecComboBox.Size = new System.Drawing.Size(133, 21);
             this.audioCodecComboBox.TabIndex = 0;
             this.audioCodecComboBox.SelectedIndexChanged += new System.EventHandler(this.AudioCodecComboBox_SelectedIndexChanged);
-            this.audioCodecComboBox.TextChanged += new System.EventHandler(this.audioCodecComboBox_TextChanged);
+            this.audioCodecComboBox.TextChanged += new System.EventHandler(this.AudioCodecComboBox_TextChanged);
             // 
             // ABitrateLabel
             // 
@@ -1140,7 +1140,7 @@
             this.invisibleCloseButton.TabIndex = 16;
             this.invisibleCloseButton.Text = "button1";
             this.invisibleCloseButton.UseVisualStyleBackColor = true;
-            this.invisibleCloseButton.Click += new System.EventHandler(this.invisibleCloseButton_Click);
+            this.invisibleCloseButton.Click += new System.EventHandler(this.InvisibleCloseButton_Click);
             // 
             // ConversionForm
             // 
@@ -1163,7 +1163,7 @@
             this.Controls.Add(this.selectionPicturebox);
             this.Controls.Add(this.compatibilityCombo);
             this.Controls.Add(this.filenameTextBox);
-            this.Controls.Add(this.selectDirectoryButton);
+            this.Controls.Add(this.SelectDirectoryButton);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.invisibleCloseButton);
             this.ForeColor = System.Drawing.Color.GreenYellow;
@@ -1195,7 +1195,7 @@
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
-        private System.Windows.Forms.Button selectDirectoryButton;
+        private System.Windows.Forms.Button SelectDirectoryButton;
         private System.Windows.Forms.TextBox filenameTextBox;
         private System.Windows.Forms.ComboBox compatibilityCombo;
         private System.Windows.Forms.PictureBox selectionPicturebox;
