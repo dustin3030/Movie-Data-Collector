@@ -1074,7 +1074,7 @@
             this.audioCodecComboBox.ForeColor = System.Drawing.Color.GreenYellow;
             this.audioCodecComboBox.FormattingEnabled = true;
             this.audioCodecComboBox.Items.AddRange(new object[] {
-            "AAC (AVC)",
+            "AAC (FDK)",
             "AC3",
             "Filtered Passthru"});
             this.audioCodecComboBox.Location = new System.Drawing.Point(89, 28);

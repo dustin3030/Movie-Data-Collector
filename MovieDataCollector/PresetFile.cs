@@ -20,7 +20,7 @@ namespace MovieDataCollector
 
         public List<string> keyList = new List<string>()
         {
-            "AudioCodec", //AAC (AVC)
+            "AudioCodec", //AAC (FDK)
             "AudioMixdown", //Dolby ProLogic 2
             "AudioSampleRate", //48
             "FilteredAACCheck", //false
@@ -43,7 +43,7 @@ namespace MovieDataCollector
 
         List<string> TVPresetValueList = new List<string>()
         {
-            "AAC (AVC)", //AudioCodecAAC
+            "AAC (FDK)", //AudioCodecAAC
             "Dolby ProLogic 2", //AudioMixdown,
             "48", //AudioSampleRate
             "false", //FilteredAACCheck
@@ -66,7 +66,7 @@ namespace MovieDataCollector
 
         List<string> MoviePresetValueList = new List<string>()
         {
-            "AAC (AVC)", //AudioCodecAAC
+            "AAC (FDK)", //AudioCodecAAC
             "Dolby ProLogic 2", //AudioMixdown,
             "48", //AudioSampleRate
             "false", //FilteredAACCheck
@@ -80,6 +80,52 @@ namespace MovieDataCollector
             "5.5", //VideoBitrate
             "Main", //EncoderProfile
             "4.0", //EncoderLevel
+            "true", //Optimize
+            "true", //TwoPass
+            "true", //TurboFirstPass
+            "All", //SubtitleSelection
+            "True" //ForcedSubtitlesBurnIn
+        };
+
+        List<string> TabletPresetValueList = new List<string>()
+        {
+            "AAC (FDK)", //AudioCodecAAC
+            "Dolby ProLogic 2", //AudioMixdown,
+            "48", //AudioSampleRate
+            "false", //FilteredAACCheck
+            "false", //FilteredAC3Check
+            "false", //FilteredDTSCheck
+            "160", //AudioBitrate
+            "Faster", //EncoderSpeed
+            "Peak", //FrameRateMode
+            "23.976", //FrameRate
+            "Fast Decode", //EncoderTune
+            "3", //VideoBitrate
+            "Main", //EncoderProfile
+            "4.0", //EncoderLevel
+            "false", //Optimize
+            "false", //TwoPass
+            "false", //TurboFirstPass
+            "All", //SubtitleSelection
+            "True" //ForcedSubtitlesBurnIn
+        };
+
+        List<string> UHDPresetValueList = new List<string>()
+        {
+            "AAC (FDK)", //AudioCodecAAC
+            "Dolby ProLogic 2", //AudioMixdown,
+            "48", //AudioSampleRate
+            "false", //FilteredAACCheck
+            "false", //FilteredAC3Check
+            "false", //FilteredDTSCheck
+            "160", //AudioBitrate
+            "Medium", //EncoderSpeed
+            "Peak", //FrameRateMode
+            "23.976", //FrameRate
+            "Fast Decode", //EncoderTune
+            "10", //VideoBitrate
+            "High", //EncoderProfile
+            "4.1", //EncoderLevel
             "true", //Optimize
             "true", //TwoPass
             "true", //TurboFirstPass
@@ -229,6 +275,23 @@ namespace MovieDataCollector
                 presetFileString.Append("\t<" + keyList[i] + ">" + MoviePresetValueList[i] + "</" + keyList[i] + ">\r\n");
             }
             presetFileString.Append("</Preset_Movie>\r\n");
+
+            //Tablet Presets
+            presetFileString.Append("<Preset_Tablet>\r\n");
+            for (int i = 0; i < keyList.Count(); i++)
+            {
+                presetFileString.Append("\t<" + keyList[i] + ">" + TVPresetValueList[i] + "</" + keyList[i] + ">\r\n");
+            }
+            presetFileString.Append("</Preset_Tablet>\r\n");
+
+            //UHD Presets
+            presetFileString.Append("<Preset_UHD>\r\n");
+            for (int i = 0; i < keyList.Count(); i++)
+            {
+                presetFileString.Append("\t<" + keyList[i] + ">" + TVPresetValueList[i] + "</" + keyList[i] + ">\r\n");
+            }
+            presetFileString.Append("</Preset_UHD>\r\n");
+
 
             return presetFileString.ToString();
         }

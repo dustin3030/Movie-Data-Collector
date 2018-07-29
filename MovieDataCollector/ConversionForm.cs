@@ -113,7 +113,7 @@ namespace MovieDataCollector
         /*Values available for conversion*/
         List<string> codecList = new List<string>()
         {
-            "AAC (AVC)", //Default
+            "AAC (FDK)", //Default
             "Filtered Passthru",
             "AC3"
         };
@@ -2433,19 +2433,22 @@ namespace MovieDataCollector
                                     outputFallBack = "--audio-fallback ac3 ";
                                     break;
                                 case "AAC":
-                                    outputFallBack = "--audio-fallback av_aac ";
+                                    //outputFallBack = "--audio-fallback av_aac "; - Use the FDK encoder it's much better, requires handbrake to be compiled separateley.
+                                    outputFallBack = "--audio-fallback fdk_aac ";
                                     break;
                                 default:
                                     break;
                             }
                         }
-                        else //Default fallback is av_aac
+                        else //Default fallback is fdk_aac
                         {
-                            outputFallBack = "--audio-fallback av_aac ";
+                            //outputFallBack = "--audio-fallback av_aac "; - Use the FDK encoder it's much better, requires handbrake to be compiled separateley.
+                            outputFallBack = "--audio-fallback fdk_aac ";
                         }
                         break;
                     default:
-                        outputFallBack = "--audio-fallback av_aac ";
+                        //outputFallBack = "--audio-fallback av_aac "; - Use the FDK encoder it's much better, requires handbrake to be compiled separateley.
+                        outputFallBack = "--audio-fallback fdk_aac ";
                         break;
                 }
                 /*Mixdown***********************************************************************************************************************************************************************************************/
@@ -2486,7 +2489,20 @@ namespace MovieDataCollector
                                 break;
                         }
                         break;
-                    case "AAC (AVC)": //only good up to Dolby Pro Logic 2 (2 channel)
+                    /*case "AAC (AVC)": //only good up to Dolby Pro Logic 2 (2 channel)
+                        switch (videoFile.Audio[audioTrackNumber].Channels)
+                        {
+                            case 1:
+                                outputMixdown = "--mixdown mono ";
+                                outputBitrate = "--ab " + (userSelectedBitrate * 1).ToString() + " ";
+                                break;
+                            default:
+                                outputMixdown = "--mixdown dpl2 ";
+                                outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
+                                break;
+                        }
+                        break;*/
+                    case "AAC (FDK)": //only good up to Dolby Pro Logic 2 (2 channel)
                         switch (videoFile.Audio[audioTrackNumber].Channels)
                         {
                             case 1:
@@ -2563,8 +2579,8 @@ namespace MovieDataCollector
                 outputSampleRate = "--arate " + sampleRateCombo.Text + " ";
 
                 /*Fallback***********************************************************************************************************************************************************************************************/
-
-                outputFallBack = "--audio-fallback av_aac ";
+                //outputFallBack = "--audio-fallback av_aac "; - Use the FDK encoder it's much better, requires handbrake to be compiled separateley.
+                outputFallBack = "--audio-fallback fdk_aac ";
 
             }
             /*Mixdown***********************************************************************************************************************************************************************************************/
@@ -2576,7 +2592,7 @@ namespace MovieDataCollector
                     outputMixdown = "";
                     outputBitrate = "" + (userSelectedBitrate * 2).ToString() + " ";
                     break;
-                case "AAC (AVC)": //only good up to Dolby Pro Logic 2 (2 channel)
+                case "AAC (FDK)": //only good up to Dolby Pro Logic 2 (2 channel)
                     outputMixdown = "--mixdown dpl2 ";
                     outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
                     break;
@@ -2620,8 +2636,9 @@ namespace MovieDataCollector
             /*Encoder***********************************************************************************************************************************************************************************************/
             switch (audioCodecComboBox.Text)
             {
-                case "AAC (AVC)":
-                    outputEncoder = "--aencoder av_aac ";
+                case "AAC (FDK)":
+                    //outputEncoder = "--audio-fallback av_aac "; - Use the FDK encoder it's much better, requires handbrake to be compiled separateley.
+                    outputEncoder = "--aencoder fdk_aac ";
                     break;
                 case "AC3":
                     outputEncoder = "--aencoder ac3 ";
@@ -2630,7 +2647,8 @@ namespace MovieDataCollector
                     outputEncoder = "--aencoder copy ";
                     break;
                 default:
-                    outputEncoder = "--aencoder av_aac ";
+                    //outputEncoder = "--audio-fallback av_aac "; - Use the FDK encoder it's much better, requires handbrake to be compiled separateley.
+                    outputEncoder = "--aencoder fdk_aac ";
                     break;
             }
 
@@ -3068,7 +3086,7 @@ namespace MovieDataCollector
                     filteredDTSCheck.Visible = true;
                     passthruFilterLabel.Visible = true;
                     break;
-                case "AAC (AVC)":
+                case "AAC (FDK)":
                     filteredAACCheck.Visible = false;
                     filteredAC3Check.Visible = false;
                     filteredDTSCheck.Visible = false;
@@ -3103,9 +3121,9 @@ namespace MovieDataCollector
             //set default in dictionary
             CF.DefaultSettings["Mixdown"] = mixdownComboBox.Text;
 
-            if(audioCodecComboBox.Text == "AAC (AVC)" && mixdownComboBox.Text != "Dolby ProLogic 2")
+            if(audioCodecComboBox.Text == "AAC (FDK)" && mixdownComboBox.Text != "Dolby ProLogic 2")
             {
-                nLabelUpdate("The AAC (AVC) Codec can only mixdown to \"Dolby ProLogic 2\"", Color.Red);
+                nLabelUpdate("The AAC (FDK) Codec can only mixdown to \"Dolby ProLogic 2\"", Color.Red);
                 mixdownComboBox.Text = "Dolby ProLogic 2";
             }
             
