@@ -9,8 +9,8 @@ namespace MovieDataCollector
 {
     class PresetFile
     {
-        public string presetDirectory { get; set; }
-        public string presetPath { get; set; }
+        public string PresetDirectory { get; set; }
+        public string PresetPath { get; set; }
         public List<Dictionary<string, string>> PresetList { get; set; } //Holds values for conversion form presets.
         public List<Dictionary<string, string>> PresetListSorter { get; set; } // Holds sorted presets
         Dictionary<string, string> presets;
@@ -147,7 +147,7 @@ namespace MovieDataCollector
         /// <summary>
         /// Creates preset file if necessary and populates with one preset. Reads in file contents to list of dictionaries
         /// </summary>
-        public void checkPresetFile()
+        public void CheckPresetFile()
         {
             //Check Directory and File, Create if they dont' exist.
             try
@@ -233,7 +233,9 @@ namespace MovieDataCollector
                     presetNames.Add(Pname);
 
                     //Create Dictionary
+#pragma warning disable IDE0028 // Simplify collection initialization
                     presets = new Dictionary<string, string>();
+#pragma warning restore IDE0028 // Simplify collection initialization
 
                     //Add Preset Name to dictionary
                     presets.Add("Name", Pname);
@@ -280,7 +282,7 @@ namespace MovieDataCollector
             presetFileString.Append("<Preset_Tablet>\r\n");
             for (int i = 0; i < keyList.Count(); i++)
             {
-                presetFileString.Append("\t<" + keyList[i] + ">" + TVPresetValueList[i] + "</" + keyList[i] + ">\r\n");
+                presetFileString.Append("\t<" + keyList[i] + ">" + TabletPresetValueList[i] + "</" + keyList[i] + ">\r\n");
             }
             presetFileString.Append("</Preset_Tablet>\r\n");
 
@@ -288,7 +290,7 @@ namespace MovieDataCollector
             presetFileString.Append("<Preset_UHD>\r\n");
             for (int i = 0; i < keyList.Count(); i++)
             {
-                presetFileString.Append("\t<" + keyList[i] + ">" + TVPresetValueList[i] + "</" + keyList[i] + ">\r\n");
+                presetFileString.Append("\t<" + keyList[i] + ">" + UHDPresetValueList[i] + "</" + keyList[i] + ">\r\n");
             }
             presetFileString.Append("</Preset_UHD>\r\n");
 
@@ -359,7 +361,7 @@ namespace MovieDataCollector
             UpdatePresets();
 
         }
-        public void sortPresets()
+        public void SortPresets()
         {
             PresetListSorter.Clear();
             //take name list, sort it
