@@ -25,8 +25,8 @@ namespace MovieDataCollector
         string separator2 = "\n.........................................................................................................................\r\n \r\n";
         List<string> IncompatibilityInfo = new List<string>(); //Contains Incompatibility info for each file listed in VideoFilesList
 
-        //string configDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector"; //Writable folder location for config file.
-        //string configPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector\\Config.txt"; //Writable file location for config file.
+        //string ConfigDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector"; //Writable folder location for config file.
+        //string ConfigPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector\\Config.txt"; //Writable file location for config file.
 
         //Ending audio bitrate string used in encoder and setting video bitrate buffer and maxrate size.
         string[,] subLanguageCodes = new string[,] //Holds common subtitle language codes
@@ -371,7 +371,7 @@ namespace MovieDataCollector
             if (FBD.ShowDialog() == DialogResult.OK) //shows folderbrowserdialog, runs addtional code if not cancelled out
             {
                 CF.DefaultSettings["InputFilePath"] = FBD.SelectedPath;
-                CF.updateDefaults();
+                CF.UpdateDefaults();
                 filenameTextBox.Text = CF.DefaultSettings["InputFilePath"];
                 ReturnAllVideoFiles();
             }
@@ -472,7 +472,7 @@ namespace MovieDataCollector
                             CF.DefaultSettings["ExportFilePath"] += Tokens[i].ToString() + "\\"; //Sets the default directory for exporting text file.
                         }
 
-                        CF.updateDefaults();
+                        CF.UpdateDefaults();
 
                         //Create text file
                         using (StreamWriter sw = System.IO.File.CreateText(fileLocation))
@@ -516,7 +516,7 @@ namespace MovieDataCollector
                             CF.DefaultSettings["ExportFilePath"] += Tokens[i].ToString() + "\\"; //Sets the default directory for exporting text file.
                         }
 
-                        CF.updateDefaults();
+                        CF.UpdateDefaults();
 
                         //Create text file
                         using (StreamWriter sw = System.IO.File.CreateText(fileLocation))
@@ -874,7 +874,7 @@ namespace MovieDataCollector
         /*The following methods are for converting video files*/
         private void ConvertAllButton_Click(object sender, EventArgs e)
         {
-            CF.updateDefaults();
+            CF.UpdateDefaults();
 
             //Check for location of HandbrakeCLI
             string handBrakeCLILocation = CheckForHandbrakeCLI();
@@ -4035,12 +4035,12 @@ namespace MovieDataCollector
         {
             ApplyPreset();
             CF.DefaultSettings["ConversionPreset"] = presetComboBox.Text;
-            CF.updateDefaults();
+            CF.UpdateDefaults();
         }
         private void PresetComboBox_Leave(object sender, EventArgs e)
         {
             CF.DefaultSettings["ConversionPreset"] = presetComboBox.Text;
-            CF.updateDefaults();
+            CF.UpdateDefaults();
         }
         private void AddPresetButton_Click(object sender, EventArgs e)
         {

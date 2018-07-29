@@ -30,16 +30,16 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TVSeriesSelection));
             this.label1 = new System.Windows.Forms.Label();
-            this.seriesPosterPictureBox = new System.Windows.Forms.PictureBox();
+            this.SeriesPosterPictureBox = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.yearRbtn = new System.Windows.Forms.RadioButton();
             this.titleRbtn = new System.Windows.Forms.RadioButton();
             this.label2 = new System.Windows.Forms.Label();
-            this.seriesNameListBox = new System.Windows.Forms.ListBox();
+            this.SeriesNameListBox = new System.Windows.Forms.ListBox();
             this.overviewTextBox = new System.Windows.Forms.TextBox();
             this.exitButton = new System.Windows.Forms.Button();
             this.AcceptBtn = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.seriesPosterPictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SeriesPosterPictureBox)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -53,15 +53,15 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Please Select Correct Series From the List Below";
             // 
-            // seriesPosterPictureBox
+            // SeriesPosterPictureBox
             // 
-            this.seriesPosterPictureBox.BackColor = System.Drawing.Color.Transparent;
-            this.seriesPosterPictureBox.Location = new System.Drawing.Point(12, 52);
-            this.seriesPosterPictureBox.Name = "seriesPosterPictureBox";
-            this.seriesPosterPictureBox.Size = new System.Drawing.Size(661, 167);
-            this.seriesPosterPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.seriesPosterPictureBox.TabIndex = 1;
-            this.seriesPosterPictureBox.TabStop = false;
+            this.SeriesPosterPictureBox.BackColor = System.Drawing.Color.Transparent;
+            this.SeriesPosterPictureBox.Location = new System.Drawing.Point(12, 52);
+            this.SeriesPosterPictureBox.Name = "SeriesPosterPictureBox";
+            this.SeriesPosterPictureBox.Size = new System.Drawing.Size(661, 167);
+            this.SeriesPosterPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.SeriesPosterPictureBox.TabIndex = 1;
+            this.SeriesPosterPictureBox.TabStop = false;
             // 
             // groupBox1
             // 
@@ -87,7 +87,7 @@
             this.yearRbtn.TabIndex = 3;
             this.yearRbtn.Text = "Year";
             this.yearRbtn.UseVisualStyleBackColor = true;
-            this.yearRbtn.Click += new System.EventHandler(this.yearRbtn_Click);
+            this.yearRbtn.Click += new System.EventHandler(this.YearRbtn_Click);
             // 
             // titleRbtn
             // 
@@ -102,7 +102,7 @@
             this.titleRbtn.TabStop = true;
             this.titleRbtn.Text = "Title";
             this.titleRbtn.UseVisualStyleBackColor = true;
-            this.titleRbtn.Click += new System.EventHandler(this.defaultRbtn_Click);
+            this.titleRbtn.Click += new System.EventHandler(this.DefaultRbtn_Click);
             // 
             // label2
             // 
@@ -114,16 +114,16 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Sort By:";
             // 
-            // seriesNameListBox
+            // SeriesNameListBox
             // 
-            this.seriesNameListBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.seriesNameListBox.ForeColor = System.Drawing.Color.GreenYellow;
-            this.seriesNameListBox.FormattingEnabled = true;
-            this.seriesNameListBox.Location = new System.Drawing.Point(12, 259);
-            this.seriesNameListBox.Name = "seriesNameListBox";
-            this.seriesNameListBox.Size = new System.Drawing.Size(336, 160);
-            this.seriesNameListBox.TabIndex = 3;
-            this.seriesNameListBox.SelectedIndexChanged += new System.EventHandler(this.seriesNameListBox_SelectedIndexChanged);
+            this.SeriesNameListBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.SeriesNameListBox.ForeColor = System.Drawing.Color.GreenYellow;
+            this.SeriesNameListBox.FormattingEnabled = true;
+            this.SeriesNameListBox.Location = new System.Drawing.Point(12, 259);
+            this.SeriesNameListBox.Name = "SeriesNameListBox";
+            this.SeriesNameListBox.Size = new System.Drawing.Size(336, 160);
+            this.SeriesNameListBox.TabIndex = 3;
+            this.SeriesNameListBox.SelectedIndexChanged += new System.EventHandler(this.SeriesNameListBox_SelectedIndexChanged);
             // 
             // overviewTextBox
             // 
@@ -172,16 +172,16 @@
             this.Controls.Add(this.AcceptBtn);
             this.Controls.Add(this.exitButton);
             this.Controls.Add(this.overviewTextBox);
-            this.Controls.Add(this.seriesNameListBox);
+            this.Controls.Add(this.SeriesNameListBox);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.seriesPosterPictureBox);
+            this.Controls.Add(this.SeriesPosterPictureBox);
             this.Controls.Add(this.label1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ForeColor = System.Drawing.Color.GreenYellow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "TVSeriesSelection";
             this.Text = "TV Series Selection";
-            ((System.ComponentModel.ISupportInitialize)(this.seriesPosterPictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SeriesPosterPictureBox)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
@@ -192,12 +192,12 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.PictureBox seriesPosterPictureBox;
+        private System.Windows.Forms.PictureBox SeriesPosterPictureBox;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.RadioButton yearRbtn;
         private System.Windows.Forms.RadioButton titleRbtn;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ListBox seriesNameListBox;
+        private System.Windows.Forms.ListBox SeriesNameListBox;
         private System.Windows.Forms.TextBox overviewTextBox;
         private System.Windows.Forms.Button exitButton;
         private System.Windows.Forms.Button AcceptBtn;

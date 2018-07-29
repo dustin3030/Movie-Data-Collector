@@ -81,8 +81,8 @@ namespace MovieDataCollector
         string videoFileName = ""; //without extension
         string newDirectoryName = ""; //holds name of new directory video and other files get put into.
 
-        //string configDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector";
-        //string configPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector\\Config.txt";
+        //string ConfigDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector";
+        //string ConfigPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector\\Config.txt";
 
         //Filter for opening video files
         const string videoTypeFilter = "Video Files|*.mpg;*.mpeg;*.vob;*.mod;*.ts;*.m2ts;*.mp4;*.m4v;*.mov;*.avi;*.divx;*.wmv;"
@@ -154,7 +154,7 @@ namespace MovieDataCollector
                     videoExtension = "." + Tokens[Tokens.Count() - 1]; //Last Token in the array - the file extension
                     videoFileName = videoPath.Replace(CF.DefaultSettings["MFPath"], "");
                     videoFileName = videoFileName.Replace(Tokens[Tokens.Count() - 1], "");
-                    CF.updateDefaults();
+                    CF.UpdateDefaults();
                 }
             }
             catch //displays messagebox if error occurs while opening file
@@ -1075,21 +1075,21 @@ namespace MovieDataCollector
                     NLabelUpdate("Performing Search");
                     MovieSelection M = new MovieSelection(APIKey, imdbIDTextBox.Text);
 
-                    if (M.movieList.Count > 1)
+                    if (M.MovieList.Count > 1)
                     {
                         M.ShowDialog();
                         if (M.DialogResult == DialogResult.OK)
                         {
                             NLabelUpdate("Building Movie Objects");
-                            Movie = new MovieInfo(M.selectedID, APIKey); //Create Movie Object using IMDBID number from textbox
+                            Movie = new MovieInfo(M.SelectedID, APIKey); //Create Movie Object using IMDBID number from textbox
                         }
                         if (M.DialogResult == DialogResult.Cancel) { ClearAll(); notificationLabel.Visible = false; return; }
                         if (M.DialogResult == DialogResult.Abort) { ClearAll(); notificationLabel.Visible = false; return; }
                     }
-                    else if (M.movieList.Count == 1)
+                    else if (M.MovieList.Count == 1)
                     {
                         NLabelUpdate("Building Movie Objects");
-                        Movie = new MovieInfo(M.movieList[0]["ID"], APIKey); //Create Movie Object using IMDBID number from textbox
+                        Movie = new MovieInfo(M.MovieList[0]["ID"], APIKey); //Create Movie Object using IMDBID number from textbox
                     }
                     else
                     {
@@ -1709,22 +1709,22 @@ namespace MovieDataCollector
                 case 0: //PLEX
                     formatPicturebox.Image = MovieDataCollector.Properties.Resources.PlexLogo;
                     CF.DefaultSettings["DefaultFormat"] = "PLEX";
-                    CF.updateDefaults();
+                    CF.UpdateDefaults();
                     break;
                 case 1: //KODI
                     formatPicturebox.Image = MovieDataCollector.Properties.Resources.kodi;
                     CF.DefaultSettings["DefaultFormat"] = "KODI";
-                    CF.updateDefaults();
+                    CF.UpdateDefaults();
                     break;
                 case 2: //Synology
                     formatPicturebox.Image = MovieDataCollector.Properties.Resources.Synology;
                     CF.DefaultSettings["DefaultFormat"] = "Synology";
-                    CF.updateDefaults();
+                    CF.UpdateDefaults();
                     break;
                 default:
                     formatPicturebox.Image = Properties.Resources.Synology;
                     CF.DefaultSettings["DefaultFormat"] = "Synology";
-                    CF.updateDefaults();
+                    CF.UpdateDefaults();
                     break;
             }
         }

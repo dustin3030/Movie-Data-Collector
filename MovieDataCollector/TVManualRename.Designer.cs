@@ -86,7 +86,7 @@
             this.cancelBtn.TabIndex = 4;
             this.cancelBtn.Text = "&Exit";
             this.cancelBtn.UseVisualStyleBackColor = false;
-            this.cancelBtn.Click += new System.EventHandler(this.cancelBtn_Click_1);
+            this.cancelBtn.Click += new System.EventHandler(this.CancelBtn_Click_1);
             // 
             // filterBtn
             // 
@@ -98,7 +98,7 @@
             this.filterBtn.TabIndex = 5;
             this.filterBtn.Text = "Filter";
             this.filterBtn.UseVisualStyleBackColor = false;
-            this.filterBtn.Click += new System.EventHandler(this.filterBtn_Click_1);
+            this.filterBtn.Click += new System.EventHandler(this.FilterBtn_Click_1);
             // 
             // acceptBtn
             // 
@@ -110,7 +110,7 @@
             this.acceptBtn.TabIndex = 6;
             this.acceptBtn.Text = "&Accept";
             this.acceptBtn.UseVisualStyleBackColor = false;
-            this.acceptBtn.Click += new System.EventHandler(this.acceptBtn_Click_1);
+            this.acceptBtn.Click += new System.EventHandler(this.AcceptBtn_Click_1);
             // 
             // TVManualRename
             // 

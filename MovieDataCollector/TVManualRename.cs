@@ -12,7 +12,7 @@ namespace MovieDataCollector
 {
     public partial class TVManualRename : Form
     {
-        public string changedFileName { get; set; }
+        public string ChangedFileName { get; set; }
         List<string> listOfEpisodeNames;
         string ext = "";
 
@@ -20,15 +20,15 @@ namespace MovieDataCollector
         {
             InitializeComponent();
             listOfEpisodeNames = listOfEpisodes;
-            changedFileName = fileForEdit;
+            ChangedFileName = fileForEdit;
             originalTB.Text = file1;
             renameCB.Text = fileForEdit;
             string[] Tokens = file1.Split('.');
             ext = Tokens[Tokens.Length - 1].ToString(); //should be extension
 
-            populateComboBox(listOfEpisodeNames);
+            PopulateComboBox(listOfEpisodeNames);
         }
-        private string checkFileName(string filename)
+        private string CheckFileName(string filename)
         {
             StringBuilder SB = new StringBuilder();
 
@@ -51,7 +51,7 @@ namespace MovieDataCollector
             }
             return filename;
         }
-        private void populateComboBox(List<string> inputList)
+        private void PopulateComboBox(List<string> inputList)
         {
             renameCB.Items.Clear();
             foreach (string S in inputList)
@@ -59,7 +59,7 @@ namespace MovieDataCollector
                 renameCB.Items.Add(S + "." + ext);
             }
         }
-        private void filterComboBox()
+        private void FilterComboBox()
         {
             if (!string.IsNullOrEmpty(renameCB.Text))
             {
@@ -72,27 +72,27 @@ namespace MovieDataCollector
                         filteredList.Add(listOfEpisodeNames[i]);
                     }
                 }
-                populateComboBox(filteredList);
+                PopulateComboBox(filteredList);
             }
             else
             {
-                populateComboBox(listOfEpisodeNames);
+                PopulateComboBox(listOfEpisodeNames);
             }
         }
-        private void cancelBtn_Click_1(object sender, EventArgs e)
+        private void CancelBtn_Click_1(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
             this.Close();
         }
-        private void filterBtn_Click_1(object sender, EventArgs e)
+        private void FilterBtn_Click_1(object sender, EventArgs e)
         {
-            filterComboBox();
+            FilterComboBox();
             if (renameCB.Items.Count == 1)
             {
                 renameCB.Text = renameCB.Items[0].ToString();
             }
         }
-        private void acceptBtn_Click_1(object sender, EventArgs e)
+        private void AcceptBtn_Click_1(object sender, EventArgs e)
         {
             if (renameCB.Text.Contains("/") ||
                           renameCB.Text.Contains("\\") ||
@@ -103,15 +103,15 @@ namespace MovieDataCollector
                           renameCB.Text.Contains(">") ||
                           renameCB.Text.Contains("|"))
             {
-                changedFileName = checkFileName(renameCB.Text);
-                renameCB.Text = changedFileName;
+                ChangedFileName = CheckFileName(renameCB.Text);
+                renameCB.Text = ChangedFileName;
                 DialogResult = DialogResult.None;
                 return;
             }
             else
             {
                 DialogResult = DialogResult.OK;
-                changedFileName = renameCB.Text;
+                ChangedFileName = renameCB.Text;
                 this.Close();
             }
         }

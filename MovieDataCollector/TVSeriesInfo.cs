@@ -10,12 +10,12 @@ namespace MovieDataCollector
     {
         public string API_Key { get; set; }
         public string Series_ID { get; set; }
-        public Dictionary<string, string> series { get; set; }
-        public List<Dictionary<string,string>> episodes { get; set; }
+        public Dictionary<string, string> Series { get; set; }
+        public List<Dictionary<string,string>> Episodes { get; set; }
         public TVSeriesInfo(string APIKey, string SeriesID)
         {
-            episodes = new List<Dictionary<string, string>>();
-            series = new Dictionary<string, string>();
+            Episodes = new List<Dictionary<string, string>>();
+            Series = new Dictionary<string, string>();
 
             API_Key = APIKey;
             Series_ID = SeriesID;
@@ -27,7 +27,7 @@ namespace MovieDataCollector
             
 
             string responseContent; //stores response from web request
-            string URL = "http://thetvdb.com/api/" + API_Key + "/series/" + Series_ID + "/all";
+            string URL = "http://thetvdb.com/api/" + API_Key + "/Series/" + Series_ID + "/all";
 
             responseContent = MyWebRequest(URL);
             //Replace xml escape characters
@@ -121,7 +121,7 @@ namespace MovieDataCollector
         {
             string[] tokens = InputString.Split(new[] { "</Series>", "</Episode>" }, StringSplitOptions.None);
 
-            //use this to create a list of dictionaries containing the information for each episode and series.
+            //use this to create a list of dictionaries containing the information for each episode and Series.
 
             foreach (string s in tokens)
             {
@@ -164,7 +164,7 @@ namespace MovieDataCollector
             {
                 if (!string.IsNullOrEmpty(Program.GeneralParser(inputString, "<" + tags[i] + ">", "</" + tags[i] + ">")))
                 {
-                    series.Add(tags[i], Program.GeneralParser(inputString, "<" + tags[i] + ">", "</" + tags[i] + ">"));
+                    Series.Add(tags[i], Program.GeneralParser(inputString, "<" + tags[i] + ">", "</" + tags[i] + ">"));
                 }
             }
 
@@ -205,7 +205,7 @@ namespace MovieDataCollector
                 "filename",
                 "lastupdated",
                 "seasonid",
-                "seriesid",
+                "Seriesid",
             };
 
             for (int i = 0; i < tags.Count(); i++)
@@ -217,7 +217,7 @@ namespace MovieDataCollector
                 }  
             }
 
-            episodes.Add(episodeDictionary); //add dictionary to list
+            Episodes.Add(episodeDictionary); //add dictionary to list
             tags.Clear();
         }
     }

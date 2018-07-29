@@ -57,7 +57,7 @@
             this.moviesLB.Name = "moviesLB";
             this.moviesLB.Size = new System.Drawing.Size(369, 225);
             this.moviesLB.TabIndex = 3;
-            this.moviesLB.SelectedIndexChanged += new System.EventHandler(this.moviesLB_SelectedIndexChanged);
+            this.moviesLB.SelectedIndexChanged += new System.EventHandler(this.MoviesLB_SelectedIndexChanged);
             // 
             // overviewTB
             // 
@@ -82,7 +82,7 @@
             this.exitBtn.TabIndex = 4;
             this.exitBtn.Text = "Exit";
             this.exitBtn.UseVisualStyleBackColor = false;
-            this.exitBtn.Click += new System.EventHandler(this.exitBtn_Click);
+            this.exitBtn.Click += new System.EventHandler(this.ExitBtn_Click);
             // 
             // acceptBtn
             // 
@@ -95,7 +95,7 @@
             this.acceptBtn.TabIndex = 5;
             this.acceptBtn.Text = "Accept";
             this.acceptBtn.UseVisualStyleBackColor = false;
-            this.acceptBtn.Click += new System.EventHandler(this.acceptBtn_Click);
+            this.acceptBtn.Click += new System.EventHandler(this.AcceptBtn_Click);
             // 
             // infoLabel
             // 
@@ -183,7 +183,7 @@
             this.releaseYearRBtn.Text = "Release Year";
             this.releaseYearRBtn.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.releaseYearRBtn.UseVisualStyleBackColor = true;
-            this.releaseYearRBtn.Click += new System.EventHandler(this.releaseYearRBtn_Click);
+            this.releaseYearRBtn.Click += new System.EventHandler(this.ReleaseYearRBtn_Click);
             // 
             // groupBox1
             // 

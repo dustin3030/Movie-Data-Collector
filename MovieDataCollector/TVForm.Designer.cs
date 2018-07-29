@@ -37,8 +37,8 @@
             this.theTVDBcomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.favoritesCombo = new System.Windows.Forms.ComboBox();
             this.favoritesLabel = new System.Windows.Forms.Label();
-            this.seriesIDTitleTextbox = new System.Windows.Forms.TextBox();
-            this.seriesIDTitleLabel = new System.Windows.Forms.Label();
+            this.SeriesIDTitleTextbox = new System.Windows.Forms.TextBox();
+            this.SeriesIDTitleLabel = new System.Windows.Forms.Label();
             this.getHTMLButton = new System.Windows.Forms.Button();
             this.addFavoriteButton = new System.Windows.Forms.Button();
             this.deleteFavoriteButton = new System.Windows.Forms.Button();
@@ -57,11 +57,11 @@
             this.absoluteCb = new System.Windows.Forms.CheckBox();
             this.titleCb = new System.Windows.Forms.CheckBox();
             this.notificationLabel = new System.Windows.Forms.Label();
-            this.seriesImagePicturebox = new System.Windows.Forms.PictureBox();
+            this.SeriesImagePicturebox = new System.Windows.Forms.PictureBox();
             this.changeFileNamesButton = new System.Windows.Forms.Button();
             this.InvisibleCloseButton = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.seriesImagePicturebox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SeriesImagePicturebox)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -144,26 +144,26 @@
             this.favoritesLabel.TabIndex = 2;
             this.favoritesLabel.Text = "Favorites";
             // 
-            // seriesIDTitleTextbox
+            // SeriesIDTitleTextbox
             // 
-            this.seriesIDTitleTextbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.seriesIDTitleTextbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.seriesIDTitleTextbox.ForeColor = System.Drawing.Color.GreenYellow;
-            this.seriesIDTitleTextbox.Location = new System.Drawing.Point(302, 48);
-            this.seriesIDTitleTextbox.Name = "seriesIDTitleTextbox";
-            this.seriesIDTitleTextbox.Size = new System.Drawing.Size(270, 20);
-            this.seriesIDTitleTextbox.TabIndex = 3;
+            this.SeriesIDTitleTextbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.SeriesIDTitleTextbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SeriesIDTitleTextbox.ForeColor = System.Drawing.Color.GreenYellow;
+            this.SeriesIDTitleTextbox.Location = new System.Drawing.Point(302, 48);
+            this.SeriesIDTitleTextbox.Name = "SeriesIDTitleTextbox";
+            this.SeriesIDTitleTextbox.Size = new System.Drawing.Size(270, 20);
+            this.SeriesIDTitleTextbox.TabIndex = 3;
             // 
-            // seriesIDTitleLabel
+            // SeriesIDTitleLabel
             // 
-            this.seriesIDTitleLabel.AutoSize = true;
-            this.seriesIDTitleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.seriesIDTitleLabel.ForeColor = System.Drawing.Color.GreenYellow;
-            this.seriesIDTitleLabel.Location = new System.Drawing.Point(299, 31);
-            this.seriesIDTitleLabel.Name = "seriesIDTitleLabel";
-            this.seriesIDTitleLabel.Size = new System.Drawing.Size(107, 13);
-            this.seriesIDTitleLabel.TabIndex = 4;
-            this.seriesIDTitleLabel.Text = " Series ID or Title";
+            this.SeriesIDTitleLabel.AutoSize = true;
+            this.SeriesIDTitleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SeriesIDTitleLabel.ForeColor = System.Drawing.Color.GreenYellow;
+            this.SeriesIDTitleLabel.Location = new System.Drawing.Point(299, 31);
+            this.SeriesIDTitleLabel.Name = "SeriesIDTitleLabel";
+            this.SeriesIDTitleLabel.Size = new System.Drawing.Size(107, 13);
+            this.SeriesIDTitleLabel.TabIndex = 4;
+            this.SeriesIDTitleLabel.Text = " Series ID or Title";
             // 
             // getHTMLButton
             // 
@@ -390,15 +390,15 @@
             this.notificationLabel.TabIndex = 23;
             this.notificationLabel.Text = "notificationLabel";
             // 
-            // seriesImagePicturebox
+            // SeriesImagePicturebox
             // 
-            this.seriesImagePicturebox.BackColor = System.Drawing.Color.Transparent;
-            this.seriesImagePicturebox.Location = new System.Drawing.Point(82, 75);
-            this.seriesImagePicturebox.Name = "seriesImagePicturebox";
-            this.seriesImagePicturebox.Size = new System.Drawing.Size(668, 109);
-            this.seriesImagePicturebox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.seriesImagePicturebox.TabIndex = 5;
-            this.seriesImagePicturebox.TabStop = false;
+            this.SeriesImagePicturebox.BackColor = System.Drawing.Color.Transparent;
+            this.SeriesImagePicturebox.Location = new System.Drawing.Point(82, 75);
+            this.SeriesImagePicturebox.Name = "SeriesImagePicturebox";
+            this.SeriesImagePicturebox.Size = new System.Drawing.Size(668, 109);
+            this.SeriesImagePicturebox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.SeriesImagePicturebox.TabIndex = 5;
+            this.SeriesImagePicturebox.TabStop = false;
             // 
             // changeFileNamesButton
             // 
@@ -451,9 +451,9 @@
             this.Controls.Add(this.deleteFavoriteButton);
             this.Controls.Add(this.addFavoriteButton);
             this.Controls.Add(this.getHTMLButton);
-            this.Controls.Add(this.seriesImagePicturebox);
-            this.Controls.Add(this.seriesIDTitleLabel);
-            this.Controls.Add(this.seriesIDTitleTextbox);
+            this.Controls.Add(this.SeriesImagePicturebox);
+            this.Controls.Add(this.SeriesIDTitleLabel);
+            this.Controls.Add(this.SeriesIDTitleTextbox);
             this.Controls.Add(this.favoritesLabel);
             this.Controls.Add(this.favoritesCombo);
             this.Controls.Add(this.menuStrip1);
@@ -465,7 +465,7 @@
             this.Load += new System.EventHandler(this.TVForm_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.seriesImagePicturebox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SeriesImagePicturebox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -481,9 +481,9 @@
         private System.Windows.Forms.ToolStripMenuItem theTVDBcomToolStripMenuItem;
         private System.Windows.Forms.ComboBox favoritesCombo;
         private System.Windows.Forms.Label favoritesLabel;
-        private System.Windows.Forms.TextBox seriesIDTitleTextbox;
-        private System.Windows.Forms.Label seriesIDTitleLabel;
-        private System.Windows.Forms.PictureBox seriesImagePicturebox;
+        private System.Windows.Forms.TextBox SeriesIDTitleTextbox;
+        private System.Windows.Forms.Label SeriesIDTitleLabel;
+        private System.Windows.Forms.PictureBox SeriesImagePicturebox;
         private System.Windows.Forms.Button getHTMLButton;
         private System.Windows.Forms.Button addFavoriteButton;
         private System.Windows.Forms.Button deleteFavoriteButton;

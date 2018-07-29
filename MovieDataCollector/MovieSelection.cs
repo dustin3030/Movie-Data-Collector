@@ -12,13 +12,13 @@ namespace MovieDataCollector
 {
     public partial class MovieSelection : Form
     {
-        public List<Dictionary<string, string>> movieList { get; set; }
-        public string selectedID { get; set; }
+        public List<Dictionary<string, string>> MovieList { get; set; }
+        public string SelectedID { get; set; }
 
         public MovieSelection(string apiKey, string searchString)
         {
             InitializeComponent();
-            movieList = new List<Dictionary<string, string>>();
+            MovieList = new List<Dictionary<string, string>>();
             //parse information from search into the result list
 
             /*Parameters for search
@@ -29,15 +29,15 @@ namespace MovieDataCollector
             search_type - phrase (everyday searches) ngram (autocomplete searches)*/
 
             string URL = "http://api.themoviedb.org/3/search/movie?api_key=" + apiKey + "&search_type=phrase&include_adult=false&language=en&query=" + searchString;
-            buildList(MyWebRequest(URL));
+            BuildList(MyWebRequest(URL));
 
-            if (movieList.Count > 0)
+            if (MovieList.Count > 0)
             {
                 posterPB.ImageLocation = "";
                 backdropPB.ImageLocation = "";
-                //sort movieList by date descending
-                sortList();
-                populateForm();
+                //sort MovieList by date descending
+                SortList();
+                PopulateForm();
             }
         }
         private string MyWebRequest(string URL)
@@ -74,7 +74,7 @@ namespace MovieDataCollector
             }
 
         }
-        private void buildList(string InputString)
+        private void BuildList(string InputString)
         {
             Dictionary<string, string> Movie;
             //parse out movie info from list and add it to the resultList
@@ -131,29 +131,29 @@ namespace MovieDataCollector
                     else { Movie.Add("Overview", ""); }
 
                     //after all items are added to the dictionary, add the dictionary to the list.
-                    movieList.Add(Movie);
+                    MovieList.Add(Movie);
                 }
             }
         }
-        private void populateForm()
+        private void PopulateForm()
         {
             moviesLB.Items.Clear();
-            for (int i = 0; i < movieList.Count; i++)
+            for (int i = 0; i < MovieList.Count; i++)
             {
 
-                if (!string.IsNullOrEmpty(movieList[i]["Release_Date"]) & movieList[i]["Release_Date"].Length == 10)
+                if (!string.IsNullOrEmpty(MovieList[i]["Release_Date"]) & MovieList[i]["Release_Date"].Length == 10)
                 {
-                    moviesLB.Items.Add(movieList[i]["Title"] + " (" + movieList[i]["Release_Date"].Remove(movieList[i]["Release_Date"].Length - 6, 6) + ")");
+                    moviesLB.Items.Add(MovieList[i]["Title"] + " (" + MovieList[i]["Release_Date"].Remove(MovieList[i]["Release_Date"].Length - 6, 6) + ")");
                 }
                 else
                 {
-                    moviesLB.Items.Add(movieList[i]["Title"] + " (NA)");
+                    moviesLB.Items.Add(MovieList[i]["Title"] + " (NA)");
                 }
             }
 
-            posterPB.ImageLocation = movieList[0]["Poster_Path"];
-            backdropPB.ImageLocation = movieList[0]["Backdrop_Path"];
-            overviewTB.Text = movieList[0]["Overview"];
+            posterPB.ImageLocation = MovieList[0]["Poster_Path"];
+            backdropPB.ImageLocation = MovieList[0]["Backdrop_Path"];
+            overviewTB.Text = MovieList[0]["Overview"];
             moviesLB.SelectedIndex = 0;
         }
         private string GeneralParser(string InputString, string start, string end)
@@ -186,50 +186,50 @@ namespace MovieDataCollector
                 return "";
             }
         }
-        private void acceptBtn_Click(object sender, EventArgs e)
+        private void AcceptBtn_Click(object sender, EventArgs e)
         {
             //search movie and return IMDBID number
-            selectedID = movieList[moviesLB.SelectedIndex]["ID"];
+            SelectedID = MovieList[moviesLB.SelectedIndex]["ID"];
             this.DialogResult = DialogResult.OK;
         }
-        private void exitBtn_Click(object sender, EventArgs e)
+        private void ExitBtn_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
-        private void moviesLB_SelectedIndexChanged(object sender, EventArgs e)
+        private void MoviesLB_SelectedIndexChanged(object sender, EventArgs e)
         {
-            posterPB.ImageLocation = movieList[moviesLB.SelectedIndex]["Poster_Path"];
-            backdropPB.ImageLocation = movieList[moviesLB.SelectedIndex]["Backdrop_Path"];
-            overviewTB.Text = movieList[moviesLB.SelectedIndex]["Overview"];
+            posterPB.ImageLocation = MovieList[moviesLB.SelectedIndex]["Poster_Path"];
+            backdropPB.ImageLocation = MovieList[moviesLB.SelectedIndex]["Backdrop_Path"];
+            overviewTB.Text = MovieList[moviesLB.SelectedIndex]["Overview"];
         }
-        private void sortList()
+        private void SortList()
         {
-            //movieList = movieList.OrderByDescending(d => d["Release_Year"]).ToList();
+            //MovieList = MovieList.OrderByDescending(d => d["Release_Year"]).ToList();
 
             if (PopularityRBtn.Checked)
             {
 
-                movieList = (from x in movieList
+                MovieList = (from x in MovieList
                              orderby x["Popularity"] descending
                              select x).ToList();
             }
             if (releaseYearRBtn.Checked)
             {
-                movieList = (from x in movieList
+                MovieList = (from x in MovieList
                              orderby x["Release_Year"] descending
                              select x).ToList();
             }
 
-            populateForm();
+            PopulateForm();
         }
         private void PopularityRBtn_Click(object sender, EventArgs e)
         {
-            sortList();
+            SortList();
         }
-        private void releaseYearRBtn_Click(object sender, EventArgs e)
+        private void ReleaseYearRBtn_Click(object sender, EventArgs e)
         {
-            sortList();
+            SortList();
         }
     }
 }
