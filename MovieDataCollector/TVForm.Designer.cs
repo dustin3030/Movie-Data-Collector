@@ -384,12 +384,14 @@
             // notificationLabel
             // 
             this.notificationLabel.AutoSize = true;
+            this.notificationLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.notificationLabel.ForeColor = System.Drawing.Color.GreenYellow;
             this.notificationLabel.Location = new System.Drawing.Point(12, 500);
             this.notificationLabel.Name = "notificationLabel";
-            this.notificationLabel.Size = new System.Drawing.Size(84, 13);
+            this.notificationLabel.Size = new System.Drawing.Size(101, 13);
             this.notificationLabel.TabIndex = 23;
             this.notificationLabel.Text = "notificationLabel";
+            this.notificationLabel.Visible = false;
             // 
             // SeriesImagePicturebox
             // 
@@ -476,7 +478,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "TVForm";
-            this.Text = "TVForm";
+            this.Text = "TV Form";
             this.Load += new System.EventHandler(this.TVForm_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();

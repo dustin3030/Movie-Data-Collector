@@ -1377,38 +1377,38 @@ namespace MovieDataCollector
                 //Start Loop
                 for (int i = 0; i < fileNamesListbox.Items.Count ; i++) //Loop through filenamesListBox
                 {
-                    fileNameString = fileNamesListbox.Items[i].ToString().ToUpper(); //Store filename from listbox, make uppercase to eliminae possibilities
+                    fileNameString = fileNamesListbox.Items[i].ToString(); //Store filename from listbox, make uppercase to eliminae possibilities
                     Titles.Insert(i, ""); //increases list size as fileNameString increases
 
                     for (int b = 0; b < cf.FavoriteTitles.Count ; b++) //Loop through each name in listbox to see if it matchs the filename in the listbox.
                     {
-                        testString = cf.FavoriteTitles[b].ToUpper(); //make uppercase to eliminate possibilities
+                        testString = cf.FavoriteTitles[b]; //make uppercase to eliminate possibilities
 
-                        if(fileNameString.Contains(testString)) //Exact Match
+                        if(fileNameString.ToUpper().Contains(testString.ToUpper())) //Exact Match
                         {
                             favoriteMatchFound = true;
                         }
 
                         if(!favoriteMatchFound) //Remove spaces and apostrophes
                         {
-                            testString = cf.FavoriteTitles[b].Replace(" ", ".").ToUpper();
-                            testString = testString.Replace("'", "").ToUpper();
+                            testString = cf.FavoriteTitles[b].Replace(" ", ".");
+                            testString = testString.Replace("'", "");
 
-                            if (fileNameString.Contains(testString))
+                            if (fileNameString.ToUpper().Contains(testString.ToUpper()))
                             {
                                 favoriteMatchFound = true;
                             }
 
-                            testString = testString.Replace("&", "AND").ToUpper();
+                            testString = testString.Replace("&", "and");
 
-                            if (fileNameString.Contains(testString))
+                            if (fileNameString.ToUpper().Contains(testString.ToUpper()))
                             {
                                 favoriteMatchFound = true;
                             }
 
-                            testString = testString.Replace("AND", "&").ToUpper();
+                            testString = testString.Replace("AND", "&");
 
-                            if (fileNameString.Contains(testString))
+                            if (fileNameString.ToUpper().Contains(testString.ToUpper()))
                             {
                                 favoriteMatchFound = true;
                             }
@@ -1417,10 +1417,10 @@ namespace MovieDataCollector
 
                         if (!favoriteMatchFound) //Change and to & and vice versa
                         {
-                            testString = cf.FavoriteTitles[b].Replace(" ", ".").ToUpper();
-                            testString = testString.Replace("'", "").ToUpper();
+                            testString = cf.FavoriteTitles[b].Replace(" ", ".");
+                            testString = testString.Replace("'", "");
 
-                            if (fileNameString.Contains(testString))
+                            if (fileNameString.ToUpper().Contains(testString.ToUpper()))
                             {
                                 favoriteMatchFound = true;
                             }

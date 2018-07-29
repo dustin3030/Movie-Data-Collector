@@ -423,12 +423,13 @@
             // notificationLabel
             // 
             this.notificationLabel.AutoSize = true;
-            this.notificationLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.notificationLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
             this.notificationLabel.Location = new System.Drawing.Point(12, 660);
             this.notificationLabel.Name = "notificationLabel";
-            this.notificationLabel.Size = new System.Drawing.Size(51, 24);
+            this.notificationLabel.Size = new System.Drawing.Size(34, 13);
             this.notificationLabel.TabIndex = 26;
             this.notificationLabel.Text = "Start";
+            this.notificationLabel.Visible = false;
             // 
             // titleLabel
             // 
@@ -601,7 +602,7 @@
             this.Location = new System.Drawing.Point(453, 43);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MovieForm";
-            this.Text = "Movie Data Collector";
+            this.Text = "Movie Form";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.panel1.ResumeLayout(false);

@@ -298,10 +298,11 @@
             // 
             this.notificationLabel.AutoSize = true;
             this.notificationLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.notificationLabel.Location = new System.Drawing.Point(9, 589);
+            this.notificationLabel.Location = new System.Drawing.Point(12, 590);
             this.notificationLabel.Name = "notificationLabel";
-            this.notificationLabel.Size = new System.Drawing.Size(0, 13);
+            this.notificationLabel.Size = new System.Drawing.Size(107, 13);
             this.notificationLabel.TabIndex = 12;
+            this.notificationLabel.Text = "Notification Label";
             this.notificationLabel.Visible = false;
             // 
             // tabControl1
@@ -1148,7 +1149,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.CancelButton = this.invisibleCloseButton;
-            this.ClientSize = new System.Drawing.Size(1125, 607);
+            this.ClientSize = new System.Drawing.Size(1125, 612);
             this.Controls.Add(this.compatibilitySelectionLabel);
             this.Controls.Add(this.conversionSettingsLabel);
             this.Controls.Add(this.tabControl1);
