@@ -138,10 +138,10 @@ namespace MovieDataCollector
             PresetList = new List<Dictionary<string, string>>(); //Instantiate List
             PresetListSorter = new List<Dictionary<string, string>>(); //Instantiate List
 
-            presetDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector";//Writable folder location for config file.
-            presetPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector\\Presets.txt"; //Writable file location for config file.
+            PresetDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector";//Writable folder location for config file.
+            PresetPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector\\Presets.txt"; //Writable file location for config file.
 
-            checkPresetFile();
+            CheckPresetFile();
 
         }
         /// <summary>
@@ -152,13 +152,13 @@ namespace MovieDataCollector
             //Check Directory and File, Create if they dont' exist.
             try
             {
-                new FileInfo(presetDirectory).Directory.Create();
-                if (!File.Exists(presetPath))
+                new FileInfo(PresetDirectory).Directory.Create();
+                if (!File.Exists(PresetPath))
                 {
-                    using (StreamWriter sw = File.CreateText(presetPath)) { }
+                    using (StreamWriter sw = File.CreateText(PresetPath)) { }
 
                     //Write default presets to file since it is empty
-                    using (StreamWriter sw = new StreamWriter(presetPath))
+                    using (StreamWriter sw = new StreamWriter(PresetPath))
                     {
                         sw.WriteLine(CreateDefaultPresetText());
                         sw.Close();
@@ -167,7 +167,7 @@ namespace MovieDataCollector
                 }
                 else //File does exist, check contents
                 {
-                    using (StreamReader sr = new StreamReader(presetPath))
+                    using (StreamReader sr = new StreamReader(PresetPath))
                     {
                         presetString = sr.ReadToEnd();
                         sr.Close();
@@ -187,7 +187,7 @@ namespace MovieDataCollector
                     }
                     if(valueMissing) //if a value is missing create new file with defaults.
                     {
-                        using (StreamWriter sw = new StreamWriter(presetPath))
+                        using (StreamWriter sw = new StreamWriter(PresetPath))
                         {
                             sw.WriteLine(CreateDefaultPresetText());
                             sw.Close();
@@ -197,7 +197,7 @@ namespace MovieDataCollector
                 }
 
                 //Extract File Text
-                using (StreamReader sr = new StreamReader(presetPath))
+                using (StreamReader sr = new StreamReader(PresetPath))
                 {
                     presetString = sr.ReadToEnd();
                     sr.Close();
@@ -301,7 +301,7 @@ namespace MovieDataCollector
         {
             StringBuilder presetFileString = new StringBuilder();
 
-            sortPresets();
+            SortPresets();
             //Create String to write to file
             for (int i = 0; i < PresetList.Count(); i++)
             {
@@ -314,7 +314,7 @@ namespace MovieDataCollector
             }
 
             //Write text file with new text
-            using (StreamWriter sw = new StreamWriter(presetPath))
+            using (StreamWriter sw = new StreamWriter(PresetPath))
             {
                 sw.WriteLine(presetFileString);
                 sw.Close();
