@@ -27,7 +27,7 @@ namespace MovieDataCollector
         }
         private void AcceptBtn_Click(object sender, EventArgs e)
         {
-            SelectedID = Series_List[SeriesNameListBox.SelectedIndex]["Seriesid"];
+            SelectedID = Series_List[SeriesNameListBox.SelectedIndex]["seriesid"];
             DialogResult = DialogResult.OK;
             this.Close();
         }
@@ -56,7 +56,7 @@ namespace MovieDataCollector
             for (int i = 0; i < Series_List.Count(); i++)
             {
 
-                if (Series_List[i].ContainsKey("SeriesName") & Series_List[i].ContainsKey("Seriesid"))
+                if (Series_List[i].ContainsKey("SeriesName") & Series_List[i].ContainsKey("seriesid"))
                 {
                     if (Series_List[i].ContainsKey("FirstAired") & !string.IsNullOrEmpty(Series_List[i]["FirstAired"]))
                     {
@@ -76,12 +76,12 @@ namespace MovieDataCollector
                 else { overviewTextBox.Text = "No Overview provided"; }
             }
         }
-        private void YearRbtn_Click(object sender, EventArgs e)
+        private void yearRbtn_Click(object sender, EventArgs e)
         {
 
             GenerateList();
         }
-        private void DefaultRbtn_Click(object sender, EventArgs e)
+        private void defaultRbtn_Click(object sender, EventArgs e)
         {
             GenerateList();
         }

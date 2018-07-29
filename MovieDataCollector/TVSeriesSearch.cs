@@ -17,8 +17,8 @@ namespace MovieDataCollector
         private void ReturnSeriesInfo()
         {
             string responseContent;
-            //http://thetvdb.com/api/GetSeries.php?Seriesname=
-            string URL = "http://thetvdb.com/api/GetSeries.php?Seriesname=" + InputString;
+            //http://thetvdb.com/api/GetSeries.php?seriesname=
+            string URL = "http://thetvdb.com/api/GetSeries.php?seriesname=" + InputString;
 
             responseContent = MyWebRequest(URL);
             //Replace xml escape characters
@@ -69,7 +69,7 @@ namespace MovieDataCollector
 
             SeriesList = new List<Dictionary<string, string>>();
             List<string> tags = new List<string>()
-            { "Seriesid",
+            { "seriesid",
                 "language",
                 "SeriesName",
                 "Overview",
@@ -84,7 +84,7 @@ namespace MovieDataCollector
 
             foreach (string s in tokens)
             {
-                if (s.Contains("<Seriesid>"))
+                if (s.Contains("<seriesid>"))
                 {
                     Dictionary<string, string> SeriesDictionary = new Dictionary<string, string>();
 

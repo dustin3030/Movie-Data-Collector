@@ -87,7 +87,7 @@
             this.yearRbtn.TabIndex = 3;
             this.yearRbtn.Text = "Year";
             this.yearRbtn.UseVisualStyleBackColor = true;
-            this.yearRbtn.Click += new System.EventHandler(this.YearRbtn_Click);
+            this.yearRbtn.Click += new System.EventHandler(this.yearRbtn_Click);
             // 
             // titleRbtn
             // 
@@ -102,7 +102,7 @@
             this.titleRbtn.TabStop = true;
             this.titleRbtn.Text = "Title";
             this.titleRbtn.UseVisualStyleBackColor = true;
-            this.titleRbtn.Click += new System.EventHandler(this.DefaultRbtn_Click);
+            this.titleRbtn.Click += new System.EventHandler(this.defaultRbtn_Click);
             // 
             // label2
             // 
