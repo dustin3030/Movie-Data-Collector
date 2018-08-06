@@ -2323,6 +2323,15 @@ namespace MovieDataCollector
                                     maxBitrate = videoFile.Audio[i].Bitrate / 8; //7.1 audio has 8 channels, ATMOS is at least 7.1 always.
                                     audioTrackNumber = i; //Mark the audio track that has the highest bitrate
                                 }
+                                //Dolby TrueHD tracks are object based and show 0 channels
+                                else if (videoFile.Audio[audioTrackNumber].Properties.ContainsKey("Channel(s)"))
+                                {
+                                    if (videoFile.Audio[audioTrackNumber].Properties["Channel(s)"].Contains("Object Based"))
+                                    {
+                                        maxBitrate = videoFile.Audio[i].Bitrate / 8; //7.1 audio has 8 channels, ATMOS is at least 7.1 always.
+                                        audioTrackNumber = i; //Mark the audio track that has the highest bitrate
+                                    }
+                                }
                                 else if ((videoFile.Audio[i].Bitrate / 2) > maxBitrate) // Assume at least stereo
                                 {
                                     maxBitrate = videoFile.Audio[i].Bitrate / 2; //Get the per channel bitrate
@@ -2350,6 +2359,15 @@ namespace MovieDataCollector
                             {
                                 maxBitrate = videoFile.Audio[i].Bitrate / 8; //7.1 audio has 8 channels, ATMOS is at least 7.1 always.
                                 audioTrackNumber = i; //Mark the audio track that has the highest bitrate
+                            }
+                            //Dolby TrueHD tracks are object based and show 0 channels
+                            else if (videoFile.Audio[audioTrackNumber].Properties.ContainsKey("Channel(s)"))
+                            {
+                                if (videoFile.Audio[audioTrackNumber].Properties["Channel(s)"].Contains("Object Based"))
+                                {
+                                    maxBitrate = videoFile.Audio[i].Bitrate / 8; //7.1 audio has 8 channels, ATMOS is at least 7.1 always.
+                                    audioTrackNumber = i; //Mark the audio track that has the highest bitrate
+                                }
                             }
                             else if ((videoFile.Audio[i].Bitrate / 2) > maxBitrate) // Assume at least stereo
                             {
@@ -2389,16 +2407,40 @@ namespace MovieDataCollector
 
                 if (videoFile.Audio[audioTrackNumber].Bitrate != 0)
                 {
-                    //ATOMS tracks are object oriented and show 0 channels
-                    if (videoFile.Audio[audioTrackNumber].Description.Contains("ATMOS"))
+                    
+                    if(videoFile.Audio[audioTrackNumber].Channels == 0)
                     {
-                        bitrateOfFile = videoFile.Audio[audioTrackNumber].Bitrate / 8; //7.1 audio has 8 channels, ATMOS is at least 7.1 always.
+                        //ATOMS tracks are object based and show 0 channels
+                        if (videoFile.Audio[audioTrackNumber].Description.Contains("ATMOS"))
+                        {
+                            bitrateOfFile = videoFile.Audio[audioTrackNumber].Bitrate / 8; //7.1 audio has 8 channels, ATMOS is at least 7.1 always.
+                        }
+                        //Dolby TrueHD tracks are object based and show 0 channels
+                        else if (videoFile.Audio[audioTrackNumber].Properties.ContainsKey("Channel(s)"))
+                        {
+                            if (videoFile.Audio[audioTrackNumber].Properties["Channel(s)"].Contains("Object Based"))
+                            {
+                                bitrateOfFile = videoFile.Audio[audioTrackNumber].Bitrate / 8; //The Dolby TrueHD  detected, 7.1 audio has 8 channels.
+                            }
+                        }
+                        //0 chanels identified, assume at least 5.1 (6) and 256 bitrate
+                        else if ((videoFile.Audio[audioTrackNumber].Bitrate / 256) >= 6)
+                        {
+                            bitrateOfFile = videoFile.Audio[audioTrackNumber].Bitrate / 6;
+                        }
+                        else
+                        {
+                            bitrateOfFile = videoFile.Audio[audioTrackNumber].Bitrate / 2; //assume at least stereo.
+                        }
+
                     }
+                    //Valid Bitrate Identified, Valid Channel count identified
                     else
                     {
                         //Determine per channel Bitrate of file
                         bitrateOfFile = videoFile.Audio[audioTrackNumber].Bitrate / videoFile.Audio[audioTrackNumber].Channels;
                     }
+                    
                 }
                 else if (videoFile.Audio[audioTrackNumber].Properties.ContainsKey("Bit rate"))
                 {

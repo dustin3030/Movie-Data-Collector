@@ -472,12 +472,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_5981E2E624226956E70DA55D679C7B0F"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_06C1772D3E24412CAC40A51E2054B961"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -809,6 +803,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_7F189B6059B95B8FA5EB999EE58273E4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_5981E2E624226956E70DA55D679C7B0F"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -2993,15 +2993,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Movie Data Collector"
-        "ProductCode" = "8:{6795C81A-FC42-4E15-A60B-F3F470805B9E}"
-        "PackageCode" = "8:{E0B0E955-D0BE-4405-973B-7F527064ED7F}"
+        "ProductCode" = "8:{215C54D4-9AE1-4B5E-A457-684A9C623388}"
+        "PackageCode" = "8:{823F29B6-8F6C-4841-A475-74A35C0F68EE}"
         "UpgradeCode" = "8:{A0ECBEB5-1F6F-430E-83C7-09CCE4E392C2}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:10.1"
+        "ProductVersion" = "8:10.2"
         "Manufacturer" = "8:OldroydIT"
         "ARPHELPTELEPHONE" = "8:1-801-473-4543"
         "ARPHELPLINK" = "8:https://github.com/dustin3030/Movie-Data-Collector"
@@ -3018,7 +3018,7 @@
         "TargetPlatform" = "3:1"
         "PreBuildEvent" = "8:"
         "PostBuildEvent" = "8:"
-        "RunPostBuildEvent" = "3:0"
+        "RunPostBuildEvent" = "3:1"
         }
         "Registry"
         {
@@ -3116,7 +3116,7 @@
         {
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_4F12853D24AE4EB299FD1DEC98E437E8"
             {
-            "Name" = "8:Movie Data Collector 10.1"
+            "Name" = "8:Movie Data Collector 10.2"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
@@ -3130,7 +3130,7 @@
             }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_6960ED9A557C475394E44E0A95BF324B"
             {
-            "Name" = "8:Movie Data Collector 10.1"
+            "Name" = "8:Movie Data Collector 10.2"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
@@ -3144,7 +3144,7 @@
             }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_76C26E3725A243F59F0DB662B79960F7"
             {
-            "Name" = "8:Movie Data Collector 10.1"
+            "Name" = "8:Movie Data Collector 10.2"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
@@ -3557,7 +3557,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_06C1772D3E24412CAC40A51E2054B961"
             {
-            "SourcePath" = "8:..\\MovieDataCollector\\obj\\Debug\\MovieDataCollector.exe"
+            "SourcePath" = "8:..\\MovieDataCollector\\obj\\Release\\MovieDataCollector.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_E68730F5D9744C16913FA111012DE717"

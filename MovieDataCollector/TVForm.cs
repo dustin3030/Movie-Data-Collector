@@ -1374,6 +1374,12 @@ namespace MovieDataCollector
             //Make sure there are files populated in the list else error out.
             if((fileNamesListbox.Items.Count > 0) & (cf.FavoriteTitles.Count > 0)) //Check that file list is populated, and the Favorites list is populated
             {
+                notificationLabel.Visible = true;
+                notificationLabel.Text = "Matching files to favorites list.";
+                notificationLabel.Invalidate();
+                notificationLabel.Update();
+
+                changedFileNamesListbox.Items.Clear(); //clear out the preview listbox.
                 //Start Loop
                 for (int i = 0; i < fileNamesListbox.Items.Count ; i++) //Loop through filenamesListBox
                 {
@@ -1386,6 +1392,10 @@ namespace MovieDataCollector
 
                         if(fileNameString.ToUpper().Contains(testString.ToUpper())) //Exact Match
                         {
+                            notificationLabel.Text = "Match found, " + cf.FavoriteTitles[b].ToString() + ".";
+                            notificationLabel.Invalidate();
+                            notificationLabel.Update();
+
                             favoriteMatchFound = true;
                         }
 
@@ -1396,6 +1406,10 @@ namespace MovieDataCollector
 
                             if (fileNameString.ToUpper().Contains(testString.ToUpper()))
                             {
+                                notificationLabel.Text = "Match found, " + cf.FavoriteTitles[b].ToString() + ".";
+                                notificationLabel.Invalidate();
+                                notificationLabel.Update();
+
                                 favoriteMatchFound = true;
                             }
 
@@ -1403,6 +1417,10 @@ namespace MovieDataCollector
 
                             if (fileNameString.ToUpper().Contains(testString.ToUpper()))
                             {
+                                notificationLabel.Text = "Match found, " + cf.FavoriteTitles[b].ToString() + ".";
+                                notificationLabel.Invalidate();
+                                notificationLabel.Update();
+
                                 favoriteMatchFound = true;
                             }
 
@@ -1410,6 +1428,10 @@ namespace MovieDataCollector
 
                             if (fileNameString.ToUpper().Contains(testString.ToUpper()))
                             {
+                                notificationLabel.Text = "Match found, " + cf.FavoriteTitles[b].ToString() + ".";
+                                notificationLabel.Invalidate();
+                                notificationLabel.Update();
+
                                 favoriteMatchFound = true;
                             }
 
@@ -1422,23 +1444,40 @@ namespace MovieDataCollector
 
                             if (fileNameString.ToUpper().Contains(testString.ToUpper()))
                             {
+                                notificationLabel.Text = "Match found, " + cf.FavoriteTitles[b].ToString() + ".";
+                                notificationLabel.Invalidate();
+                                notificationLabel.Update();
+
                                 favoriteMatchFound = true;
                             }
-
                         }
 
                         if (favoriteMatchFound) //Match found, proceed looking up info and populating form with suggested name
                         {
+                            notificationLabel.Text = "Match found! Identifyting episode.";
+                            notificationLabel.Invalidate();
+                            notificationLabel.Update();
+
                             TVSeriesInfo SI = new TVSeriesInfo(APIKey, cf.FavoriteIDs[b].ToString());
                             SeriesInfo = SI; //Makes the seriesinfo global
                             title = AutoDetermineEpisodeFromFileName(fileNameString);
-                            if(!string.IsNullOrEmpty(title))
+                            //Scrub incompatible characters from file name
+                            title = FormatFileName(title);
+
+                            notificationLabel.Text = "Match found, " + title;
+                            notificationLabel.Invalidate();
+                            notificationLabel.Update();
+
+                            if (!string.IsNullOrEmpty(title))
                             {
+                                notificationLabel.Text = "Match Found!";
+                                notificationLabel.Invalidate();
+                                notificationLabel.Update();
+
                                 Titles.Insert(i, title); //insert the title in the appropriate spot in the list
                             }
                         }
 
-                        
                         favoriteMatchFound = false;
                     }
 
@@ -1451,6 +1490,7 @@ namespace MovieDataCollector
 
                 title = "";
                 Titles.Clear();
+                notificationLabel.Visible = false;
 
             }
 
