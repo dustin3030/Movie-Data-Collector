@@ -2357,16 +2357,25 @@ namespace MovieDataCollector
                             //ATOMS tracks are object oriented and show 0 channels
                             if(videoFile.Audio[i].Description.Contains("ATMOS"))
                             {
-                                maxBitrate = videoFile.Audio[i].Bitrate / 8; //7.1 audio has 8 channels, ATMOS is at least 7.1 always.
-                                audioTrackNumber = i; //Mark the audio track that has the highest bitrate
+                                //Identified as ATMOS 8 channels
+                                if ((videoFile.Audio[i].Bitrate / 8) > maxBitrate)
+                                {
+                                    maxBitrate = videoFile.Audio[i].Bitrate / 8; //7.1 audio has 8 channels, ATMOS is at least 7.1 always.
+                                    audioTrackNumber = i; //Mark the audio track that has the highest bitrate
+                                }
+                                   
                             }
                             //Dolby TrueHD tracks are object based and show 0 channels
                             else if (videoFile.Audio[audioTrackNumber].Properties.ContainsKey("Channel(s)"))
                             {
                                 if (videoFile.Audio[audioTrackNumber].Properties["Channel(s)"].Contains("Object Based"))
                                 {
-                                    maxBitrate = videoFile.Audio[i].Bitrate / 8; //7.1 audio has 8 channels, ATMOS is at least 7.1 always.
-                                    audioTrackNumber = i; //Mark the audio track that has the highest bitrate
+                                    //Identified as TrueHD 8 channels
+                                    if ((videoFile.Audio[i].Bitrate / 8) > maxBitrate)
+                                    {
+                                        maxBitrate = videoFile.Audio[i].Bitrate / 8; //7.1 audio has 8 channels, ATMOS is at least 7.1 always.
+                                        audioTrackNumber = i; //Mark the audio track that has the highest bitrate
+                                    }
                                 }
                             }
                             else if ((videoFile.Audio[i].Bitrate / 2) > maxBitrate) // Assume at least stereo
@@ -2423,11 +2432,6 @@ namespace MovieDataCollector
                                 bitrateOfFile = videoFile.Audio[audioTrackNumber].Bitrate / 8; //The Dolby TrueHD  detected, 7.1 audio has 8 channels.
                             }
                         }
-                        //0 chanels identified, assume at least 5.1 (6) and 256 bitrate
-                        else if ((videoFile.Audio[audioTrackNumber].Bitrate / 256) >= 6)
-                        {
-                            bitrateOfFile = videoFile.Audio[audioTrackNumber].Bitrate / 6;
-                        }
                         else
                         {
                             bitrateOfFile = videoFile.Audio[audioTrackNumber].Bitrate / 2; //assume at least stereo.
@@ -2449,7 +2453,15 @@ namespace MovieDataCollector
 
                     if(videoFile.Audio[audioTrackNumber].Description.Contains("ATMOS"))
                     {
-                        bitrateOfFile = bitrateOfFile / 8;
+                        bitrateOfFile = bitrateOfFile / 8; //ATMOS tracks are object based and are 7.1 (8) channel audio
+                    }
+                    //Dolby TrueHD tracks are object based and show 0 channels
+                    else if (videoFile.Audio[audioTrackNumber].Properties.ContainsKey("Channel(s)"))
+                    {
+                        if (videoFile.Audio[audioTrackNumber].Properties["Channel(s)"].Contains("Object Based"))
+                        {
+                            bitrateOfFile = bitrateOfFile / 8; //The Dolby TrueHD detected, 7.1 audio has 8 channels.
+                        }
                     }
                     else
                     {
