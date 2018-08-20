@@ -1401,7 +1401,8 @@ namespace MovieDataCollector
 
                         if(!favoriteMatchFound) //Remove spaces and apostrophes
                         {
-                            testString = cf.FavoriteTitles[b].Replace(" ", ".");
+                            testString = FormatFileName(cf.FavoriteTitles[b]);
+                            testString = testString.Replace(" ", ".");
                             testString = testString.Replace("'", "");
 
                             if (fileNameString.ToUpper().Contains(testString.ToUpper()))
@@ -1439,7 +1440,8 @@ namespace MovieDataCollector
 
                         if (!favoriteMatchFound) //Change and to & and vice versa
                         {
-                            testString = cf.FavoriteTitles[b].Replace(" ", ".");
+                            testString = FormatFileName(cf.FavoriteTitles[b]);
+                            testString = testString.Replace(" ", ".");
                             testString = testString.Replace("'", "");
 
                             if (fileNameString.ToUpper().Contains(testString.ToUpper()))
