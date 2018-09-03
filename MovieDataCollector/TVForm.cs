@@ -6,6 +6,7 @@ using System.Net; //Allows for WebClient usage
 using System.Diagnostics; //Allows for using Process.Start codes lines
 using System.Linq;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace MovieDataCollector
 {
@@ -23,6 +24,7 @@ namespace MovieDataCollector
         string[] lineStringFilter = { "X264","X.264","H264","H.264","MP4","M4V","MT2S","3GP",
                                     "MPEG2","MPEG-2","MPEG4","MPEG-4","RV40","VP8","VP9",
                                     "1080P","720P","480P"};
+        
 
         string episode = ""; //contains the episode number  (E + episodeNumber)
         string season = ""; //contains season number (S + seasonNumber
@@ -31,7 +33,9 @@ namespace MovieDataCollector
         string ConfigDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector"; //Direcory to store configuration files on host
         string ConfigPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Movie Data Collector\\Config.txt"; //configuration file location on host
 
+
         TVSeriesInfo SeriesInfo;
+        List<string> EpisodePathList= new List<string>(); //Stores File Location for episode list
         List<string> ListOfEpisodeNames = new List<string>();
         List<string> KODIEpisodeNames = new List<string>();
         List<string> SynologyEpisodeName = new List<string>();
@@ -217,6 +221,7 @@ namespace MovieDataCollector
         private void GetHTMLButton_Click(object sender, EventArgs e) { GetHTML(); }
         private void GetFileNames()
         {
+            EpisodePathList.Clear();
 
             notificationLabel.Visible = true;
             notificationLabel.Text = "Querying Files";
@@ -244,24 +249,104 @@ namespace MovieDataCollector
                 /*"Video Files|*.mpg;*.mpeg;*.vob;*.mod;*.ts;*.m2ts;*.mp4;*.m4v;*.mov;*.avi;*.divx;*.wmv;"
                 +"*.asf;*.mkv;*.flv;*.f4v;*.dvr;*.dvr-ms;*.wtv;*.ogv;*.ogm;*.3gp;*.rm;*.rmvb;";*/
 
-                string[] fileNames = Directory
-                    .GetFiles(cf.DefaultSettings["TFPath"], "*.*")
-                    .Where(file => file.ToLower().EndsWith(".mpg") || file.ToLower().EndsWith(".mpeg") || file.ToLower().EndsWith(".vob") || file.ToLower().EndsWith(".mod") || file.ToLower().EndsWith(".ts") || file.ToLower().EndsWith(".m2ts")
-                    || file.ToLower().EndsWith(".mp4") || file.ToLower().EndsWith(".m4v") || file.ToLower().EndsWith(".mov") || file.ToLower().EndsWith("avi") || file.ToLower().EndsWith(".divx")
-                    || file.ToLower().EndsWith(".wmv") || file.ToLower().EndsWith(".asf") || file.ToLower().EndsWith(".mkv") || file.ToLower().EndsWith(".flv") || file.ToLower().EndsWith(".f4v")
-                    || file.ToLower().EndsWith(".dvr") || file.ToLower().EndsWith(".dvr-ms") || file.ToLower().EndsWith(".wtv") || file.ToLower().EndsWith(".ogv") || file.ToLower().EndsWith(".ogm")
-                    || file.ToLower().EndsWith(".3gp") || file.ToLower().EndsWith(".rm") || file.ToLower().EndsWith(".rmvb"))
-                    .ToArray();
+                /*Subtitle FIles| .srt, .sub, .idx, .ssa, .ass, .smi, .vtt*/
 
-                foreach (string file in fileNames) //loops through files, pulls out file names and adds them to filenameslistbox
+                if(recursiveCB.Checked)
                 {
-                    fileName = file.Replace(cf.DefaultSettings["TFPath"] + "\\", "");
+                    string[]fileNames = Directory
+                    .GetFiles(cf.DefaultSettings["TFPath"], "*.*", SearchOption.AllDirectories)
+                    .Where(file => file.ToLower().EndsWith(".mpg")
+                    || file.ToLower().EndsWith(".mpeg")
+                    || file.ToLower().EndsWith(".vob")
+                    || file.ToLower().EndsWith(".mod")
+                    || file.ToLower().EndsWith(".ts")
+                    || file.ToLower().EndsWith(".m2ts")
+                    || file.ToLower().EndsWith(".mp4")
+                    || file.ToLower().EndsWith(".m4v")
+                    || file.ToLower().EndsWith(".mov")
+                    || file.ToLower().EndsWith("avi")
+                    || file.ToLower().EndsWith(".divx")
+                    || file.ToLower().EndsWith(".wmv")
+                    || file.ToLower().EndsWith(".asf")
+                    || file.ToLower().EndsWith(".mkv")
+                    || file.ToLower().EndsWith(".flv")
+                    || file.ToLower().EndsWith(".f4v")
+                    || file.ToLower().EndsWith(".dvr")
+                    || file.ToLower().EndsWith(".dvr-ms")
+                    || file.ToLower().EndsWith(".wtv")
+                    || file.ToLower().EndsWith(".ogv")
+                    || file.ToLower().EndsWith(".ogm")
+                    || file.ToLower().EndsWith(".3gp")
+                    || file.ToLower().EndsWith(".rm")
+                    || file.ToLower().EndsWith(".rmvb")
+                    || file.ToLower().EndsWith(".srt")  //Add Subtitle File Extensions also
+                    || file.ToLower().EndsWith(".sub")
+                    || file.ToLower().EndsWith(".idx")
+                    || file.ToLower().EndsWith(".ssa")
+                    || file.ToLower().EndsWith(".ass")
+                    || file.ToLower().EndsWith(".smi")
+                    || file.ToLower().EndsWith(".vtt")).ToArray();
 
-                    if (!fileName.StartsWith("._"))
+                    foreach (string file in fileNames) //loops through files, pulls out file names and adds them to filenameslistbox
                     {
-                        fileNamesListbox.Items.Add(fileName);
+                        EpisodePathList.Add(file);
+
+                        fileName = file.Replace(cf.DefaultSettings["TFPath"] + "\\", "");
+
+                        if (!fileName.StartsWith("._"))
+                        {
+                            fileNamesListbox.Items.Add(fileName);
+                        }
                     }
                 }
+                else
+                {
+                    string[]fileNames = Directory
+                    .GetFiles(cf.DefaultSettings["TFPath"], "*.*")
+                    .Where(file => file.ToLower().EndsWith(".mpg")
+                    || file.ToLower().EndsWith(".mpeg")
+                    || file.ToLower().EndsWith(".vob")
+                    || file.ToLower().EndsWith(".mod")
+                    || file.ToLower().EndsWith(".ts")
+                    || file.ToLower().EndsWith(".m2ts")
+                    || file.ToLower().EndsWith(".mp4")
+                    || file.ToLower().EndsWith(".m4v")
+                    || file.ToLower().EndsWith(".mov")
+                    || file.ToLower().EndsWith("avi")
+                    || file.ToLower().EndsWith(".divx")
+                    || file.ToLower().EndsWith(".wmv")
+                    || file.ToLower().EndsWith(".asf")
+                    || file.ToLower().EndsWith(".mkv")
+                    || file.ToLower().EndsWith(".flv")
+                    || file.ToLower().EndsWith(".f4v")
+                    || file.ToLower().EndsWith(".dvr")
+                    || file.ToLower().EndsWith(".dvr-ms")
+                    || file.ToLower().EndsWith(".wtv")
+                    || file.ToLower().EndsWith(".ogv")
+                    || file.ToLower().EndsWith(".ogm")
+                    || file.ToLower().EndsWith(".3gp")
+                    || file.ToLower().EndsWith(".rm")
+                    || file.ToLower().EndsWith(".rmvb")
+                    || file.ToLower().EndsWith(".srt")  //Add Subtitle File Extensions also
+                    || file.ToLower().EndsWith(".sub")
+                    || file.ToLower().EndsWith(".idx")
+                    || file.ToLower().EndsWith(".ssa")
+                    || file.ToLower().EndsWith(".ass")
+                    || file.ToLower().EndsWith(".smi")
+                    || file.ToLower().EndsWith(".vtt")).ToArray();
+
+                    foreach (string file in fileNames) //loops through files, pulls out file names and adds them to filenameslistbox
+                    {
+                        EpisodePathList.Add(file);
+                        fileName = file.Replace(cf.DefaultSettings["TFPath"] + "\\", "");
+
+                        if (!fileName.StartsWith("._"))
+                        {
+                            fileNamesListbox.Items.Add(fileName);
+                        }
+                    }
+                }
+                
             }
             notificationLabel.Visible = false;
         }
@@ -877,36 +962,131 @@ namespace MovieDataCollector
 
                 for (int i = 0; i < fileNamesListbox.Items.Count; i++)
                 {
-                    //If the names are the same, don't bother doing anything else.
-                    if (fileNamesListbox.Items[i].ToString() != changedFileNamesListbox.Items[i].ToString())
+                    if(fileNamesListbox.SelectedIndices.Count > 0)
                     {
-                        notificationLabel.Text = "Re-Naming File - " + fileNamesListbox.Items[i].ToString();
-                        notificationLabel.Invalidate();
-                        notificationLabel.Update();
-
-                        if (changedFileNamesListbox.Items[i].ToString().Contains("EPISODE COULD NOT BE DETERMINED") ||
-                            changedFileNamesListbox.Items[i].ToString().Contains("NO SUCH EPISODE FOUND"))
+                        for (int a = 0; a < fileNamesListbox.SelectedIndices.Count; a++)
                         {
-                            errorList += fileNamesListbox.Items[i].ToString() + " - " + changedFileNamesListbox.Items[i].ToString() + "\n";
-                        }
-                        /*Don't attempt to change the filename if a file with the new name already exists.
-                        This would be the case if there were multiple files with the same name in the chosen
-                            directory*/
+                            //If its found to exist in the selected indices
+                            if (fileNamesListbox.SelectedIndices[a] == i)
+                            {
+                                //Get Extension
+                                char[] delim = { '.' };
+                                string[] Tokens = EpisodePathList[i].Split(delim);
+                                ext = "." + Tokens[Tokens.Count() - 1]; //should be extension
 
-                        else if(changedFileNamesListbox.Items[i].ToString() !="")
-                        {
-                            if (!File.Exists(parentPathLabel.Text + changedFileNamesListbox.Items[i].ToString()))
-                            {
-                                //Using File.Move to change the fileNames.
-                                System.IO.File.Move(parentPathLabel.Text + fileNamesListbox.Items[i].ToString(), parentPathLabel.Text + changedFileNamesListbox.Items[i].ToString());
-                            }
-                            else if (File.Exists(parentPathLabel.Text + changedFileNamesListbox.Items[i].ToString()))
-                            {
-                                errorList += fileNamesListbox.Items[i].ToString() + " - Duplicate Episode\n";
+                                //Get Parent Path
+                                string s = EpisodePathList[i];
+                                string EpisodeParentPath = "";
+                                int c = s.LastIndexOf('\\');
+
+                                if (c != -1)
+                                {
+                                    EpisodeParentPath = s.Substring(c + 1).Replace(ext, "");
+                                    EpisodeParentPath = EpisodePathList[i].Replace(EpisodeParentPath, "").Replace(ext, "");
+                                }
+
+                                //If the names are the same, don't bother doing anything else.
+                                if (EpisodePathList[i].ToString().Replace(EpisodeParentPath, "") != changedFileNamesListbox.Items[i].ToString())
+                                {
+                                    notificationLabel.Text = "Re-Naming File - " + fileNamesListbox.Items[i].ToString();
+                                    notificationLabel.Invalidate();
+                                    notificationLabel.Update();
+
+                                    if (changedFileNamesListbox.Items[i].ToString().Contains("EPISODE COULD NOT BE DETERMINED") ||
+                                        changedFileNamesListbox.Items[i].ToString().Contains("NO SUCH EPISODE FOUND"))
+                                    {
+                                        errorList += fileNamesListbox.Items[i].ToString() + " - " + changedFileNamesListbox.Items[i].ToString() + "\n";
+                                    }
+                                    /*Don't attempt to change the filename if a file with the new name already exists.
+                                    This would be the case if there were multiple files with the same name in the chosen
+                                        directory*/
+
+                                    else if (changedFileNamesListbox.Items[i].ToString() != "")
+                                    {
+                                        /*if (!File.Exists(parentPathLabel.Text + changedFileNamesListbox.Items[i].ToString()))
+                                        {
+                                            //Using File.Move to change the fileNames.
+                                            System.IO.File.Move(parentPathLabel.Text + fileNamesListbox.Items[i].ToString(), parentPathLabel.Text + changedFileNamesListbox.Items[i].ToString());
+                                        }
+                                        else if (File.Exists(parentPathLabel.Text + changedFileNamesListbox.Items[i].ToString()))
+                                        {
+                                            errorList += fileNamesListbox.Items[i].ToString() + " - Duplicate Episode\n";
+                                        }*/
+
+                                        if (!File.Exists(EpisodeParentPath + changedFileNamesListbox.Items[i].ToString()))
+                                        {
+                                            //Using File.Move to change the fileNames.
+                                            System.IO.File.Move(EpisodePathList[i].ToString(), EpisodeParentPath + changedFileNamesListbox.Items[i].ToString());
+                                        }
+                                        else if (File.Exists(EpisodeParentPath + changedFileNamesListbox.Items[i].ToString()))
+                                        {
+                                            errorList += fileNamesListbox.Items[i].ToString() + " - Duplicate Episode\n";
+                                        }
+                                    }
+                                }
+
                             }
                         }
                     }
+                    else
+                    {
+                        //Get Extension
+                        char[] delim = { '.' };
+                        string[] Tokens = EpisodePathList[i].Split(delim);
+                        ext = "." + Tokens[Tokens.Count() - 1]; //should be extension
 
+                        //Get Parent Path
+                        string s = EpisodePathList[i];
+                        string EpisodeParentPath = "";
+                        int c = s.LastIndexOf('\\');
+
+                        if (c != -1)
+                        {
+                            EpisodeParentPath = s.Substring(c + 1).Replace(ext, "");
+                            EpisodeParentPath = EpisodePathList[i].Replace(EpisodeParentPath, "").Replace(ext, "");
+                        }
+
+                        //If the names are the same, don't bother doing anything else.
+                        if (EpisodePathList[i].ToString().Replace(EpisodeParentPath, "") != changedFileNamesListbox.Items[i].ToString())
+                        {
+                            notificationLabel.Text = "Re-Naming File - " + fileNamesListbox.Items[i].ToString();
+                            notificationLabel.Invalidate();
+                            notificationLabel.Update();
+
+                            if (changedFileNamesListbox.Items[i].ToString().Contains("EPISODE COULD NOT BE DETERMINED") ||
+                                changedFileNamesListbox.Items[i].ToString().Contains("NO SUCH EPISODE FOUND"))
+                            {
+                                errorList += fileNamesListbox.Items[i].ToString() + " - " + changedFileNamesListbox.Items[i].ToString() + "\n";
+                            }
+                            /*Don't attempt to change the filename if a file with the new name already exists.
+                            This would be the case if there were multiple files with the same name in the chosen
+                                directory*/
+
+                            else if (changedFileNamesListbox.Items[i].ToString() != "")
+                            {
+                                /*if (!File.Exists(parentPathLabel.Text + changedFileNamesListbox.Items[i].ToString()))
+                                {
+                                    //Using File.Move to change the fileNames.
+                                    System.IO.File.Move(parentPathLabel.Text + fileNamesListbox.Items[i].ToString(), parentPathLabel.Text + changedFileNamesListbox.Items[i].ToString());
+                                }
+                                else if (File.Exists(parentPathLabel.Text + changedFileNamesListbox.Items[i].ToString()))
+                                {
+                                    errorList += fileNamesListbox.Items[i].ToString() + " - Duplicate Episode\n";
+                                }*/
+
+                                if (!File.Exists(EpisodeParentPath + changedFileNamesListbox.Items[i].ToString()))
+                                {
+                                    //Using File.Move to change the fileNames.
+                                    System.IO.File.Move(EpisodePathList[i].ToString(), EpisodeParentPath + changedFileNamesListbox.Items[i].ToString());
+                                }
+                                else if (File.Exists(EpisodeParentPath + changedFileNamesListbox.Items[i].ToString()))
+                                {
+                                    errorList += fileNamesListbox.Items[i].ToString() + " - Duplicate Episode\n";
+                                }
+                            }
+                        }
+                    }
+                    
                 }
 
                 if (!string.IsNullOrEmpty(errorList))
@@ -923,18 +1103,103 @@ namespace MovieDataCollector
 
                 /*pulls in the video files located in the folderPath directory
                  These files are the newly renamed files*/
-                string[] fileNames = Directory
-                        .GetFiles(folderPath, "*.*")
-                        .Where(file => file.ToLower().EndsWith(".mpg") || file.ToLower().EndsWith(".mpeg") || file.ToLower().EndsWith(".vob") || file.ToLower().EndsWith(".mod") || file.ToLower().EndsWith(".ts") || file.ToLower().EndsWith(".m2ts")
-                        || file.ToLower().EndsWith(".mp4") || file.ToLower().EndsWith(".m4v") || file.ToLower().EndsWith(".mov") || file.ToLower().EndsWith(".avi") || file.ToLower().EndsWith(".divx")
-                        || file.ToLower().EndsWith(".wmv") || file.ToLower().EndsWith(".asf") || file.ToLower().EndsWith(".mkv") || file.ToLower().EndsWith(".flv") || file.ToLower().EndsWith(".f4v")
-                        || file.ToLower().EndsWith(".dvr") || file.ToLower().EndsWith(".dvr-ms") || file.ToLower().EndsWith(".wtv") || file.ToLower().EndsWith(".ogv") || file.ToLower().EndsWith(".ogm")
-                        || file.ToLower().EndsWith(".3gp") || file.ToLower().EndsWith(".rm") || file.ToLower().EndsWith(".rmvb"))
-                        .ToArray();
-                foreach (string file in fileNames)
+
+                EpisodePathList.Clear();
+
+                if (recursiveCB.Checked)
                 {
-                    fileName = file.Replace(folderPath, ""); //ensures you only return the filename and not the rest of the path
-                    fileNamesListbox.Items.Add(fileName); //adds file names to the listbox
+                    string[] fileNames = Directory
+                    .GetFiles(cf.DefaultSettings["TFPath"], "*.*", SearchOption.AllDirectories)
+                    .Where(file => file.ToLower().EndsWith(".mpg")
+                    || file.ToLower().EndsWith(".mpeg")
+                    || file.ToLower().EndsWith(".vob")
+                    || file.ToLower().EndsWith(".mod")
+                    || file.ToLower().EndsWith(".ts")
+                    || file.ToLower().EndsWith(".m2ts")
+                    || file.ToLower().EndsWith(".mp4")
+                    || file.ToLower().EndsWith(".m4v")
+                    || file.ToLower().EndsWith(".mov")
+                    || file.ToLower().EndsWith("avi")
+                    || file.ToLower().EndsWith(".divx")
+                    || file.ToLower().EndsWith(".wmv")
+                    || file.ToLower().EndsWith(".asf")
+                    || file.ToLower().EndsWith(".mkv")
+                    || file.ToLower().EndsWith(".flv")
+                    || file.ToLower().EndsWith(".f4v")
+                    || file.ToLower().EndsWith(".dvr")
+                    || file.ToLower().EndsWith(".dvr-ms")
+                    || file.ToLower().EndsWith(".wtv")
+                    || file.ToLower().EndsWith(".ogv")
+                    || file.ToLower().EndsWith(".ogm")
+                    || file.ToLower().EndsWith(".3gp")
+                    || file.ToLower().EndsWith(".rm")
+                    || file.ToLower().EndsWith(".rmvb")
+                    || file.ToLower().EndsWith(".srt")  //Add Subtitle File Extensions also
+                    || file.ToLower().EndsWith(".sub")
+                    || file.ToLower().EndsWith(".idx")
+                    || file.ToLower().EndsWith(".ssa")
+                    || file.ToLower().EndsWith(".ass")
+                    || file.ToLower().EndsWith(".smi")
+                    || file.ToLower().EndsWith(".vtt")).ToArray();
+
+                    foreach (string file in fileNames) //loops through files, pulls out file names and adds them to filenameslistbox
+                    {
+                        EpisodePathList.Add(file);
+
+                        fileName = file.Replace(cf.DefaultSettings["TFPath"] + "\\", "");
+
+                        if (!fileName.StartsWith("._"))
+                        {
+                            fileNamesListbox.Items.Add(fileName);
+                        }
+                    }
+                }
+                else
+                {
+                    string[] fileNames = Directory
+                    .GetFiles(cf.DefaultSettings["TFPath"], "*.*")
+                    .Where(file => file.ToLower().EndsWith(".mpg")
+                    || file.ToLower().EndsWith(".mpeg")
+                    || file.ToLower().EndsWith(".vob")
+                    || file.ToLower().EndsWith(".mod")
+                    || file.ToLower().EndsWith(".ts")
+                    || file.ToLower().EndsWith(".m2ts")
+                    || file.ToLower().EndsWith(".mp4")
+                    || file.ToLower().EndsWith(".m4v")
+                    || file.ToLower().EndsWith(".mov")
+                    || file.ToLower().EndsWith("avi")
+                    || file.ToLower().EndsWith(".divx")
+                    || file.ToLower().EndsWith(".wmv")
+                    || file.ToLower().EndsWith(".asf")
+                    || file.ToLower().EndsWith(".mkv")
+                    || file.ToLower().EndsWith(".flv")
+                    || file.ToLower().EndsWith(".f4v")
+                    || file.ToLower().EndsWith(".dvr")
+                    || file.ToLower().EndsWith(".dvr-ms")
+                    || file.ToLower().EndsWith(".wtv")
+                    || file.ToLower().EndsWith(".ogv")
+                    || file.ToLower().EndsWith(".ogm")
+                    || file.ToLower().EndsWith(".3gp")
+                    || file.ToLower().EndsWith(".rm")
+                    || file.ToLower().EndsWith(".rmvb")
+                    || file.ToLower().EndsWith(".srt")  //Add Subtitle File Extensions also
+                    || file.ToLower().EndsWith(".sub")
+                    || file.ToLower().EndsWith(".idx")
+                    || file.ToLower().EndsWith(".ssa")
+                    || file.ToLower().EndsWith(".ass")
+                    || file.ToLower().EndsWith(".smi")
+                    || file.ToLower().EndsWith(".vtt")).ToArray();
+
+                    foreach (string file in fileNames) //loops through files, pulls out file names and adds them to filenameslistbox
+                    {
+                        EpisodePathList.Add(file);
+                        fileName = file.Replace(cf.DefaultSettings["TFPath"] + "\\", "");
+
+                        if (!fileName.StartsWith("._"))
+                        {
+                            fileNamesListbox.Items.Add(fileName);
+                        }
+                    }
                 }
 
                 changedFileNamesListbox.Items.Clear();
@@ -1235,7 +1500,6 @@ namespace MovieDataCollector
             }
         }
 
-
             string[] Tokens = fileNameToCheck.Split(delim);
             ext = Tokens[Tokens.Count() - 1]; //should be extension
             season = "";
@@ -1496,6 +1760,124 @@ namespace MovieDataCollector
 
             }
 
+        }
+
+        private void recursiveCB_CheckedChanged(object sender, EventArgs e)
+        {
+            string fileName = "";
+
+            if(fileNamesListbox.Items.Count > 0)
+            {
+                fileNamesListbox.Items.Clear();
+                EpisodePathList.Clear();
+            }
+
+            if (recursiveCB.Checked)
+            {
+                if (!string.IsNullOrEmpty(parentPathLabel.Text))
+                {
+                    //Perform Search
+                    string[] fileNames = Directory
+                    .GetFiles(cf.DefaultSettings["TFPath"], "*.*", SearchOption.AllDirectories)
+                    .Where(file => file.ToLower().EndsWith(".mpg")
+                    || file.ToLower().EndsWith(".mpeg")
+                    || file.ToLower().EndsWith(".vob")
+                    || file.ToLower().EndsWith(".mod")
+                    || file.ToLower().EndsWith(".ts")
+                    || file.ToLower().EndsWith(".m2ts")
+                    || file.ToLower().EndsWith(".mp4")
+                    || file.ToLower().EndsWith(".m4v")
+                    || file.ToLower().EndsWith(".mov")
+                    || file.ToLower().EndsWith("avi")
+                    || file.ToLower().EndsWith(".divx")
+                    || file.ToLower().EndsWith(".wmv")
+                    || file.ToLower().EndsWith(".asf")
+                    || file.ToLower().EndsWith(".mkv")
+                    || file.ToLower().EndsWith(".flv")
+                    || file.ToLower().EndsWith(".f4v")
+                    || file.ToLower().EndsWith(".dvr")
+                    || file.ToLower().EndsWith(".dvr-ms")
+                    || file.ToLower().EndsWith(".wtv")
+                    || file.ToLower().EndsWith(".ogv")
+                    || file.ToLower().EndsWith(".ogm")
+                    || file.ToLower().EndsWith(".3gp")
+                    || file.ToLower().EndsWith(".rm")
+                    || file.ToLower().EndsWith(".rmvb")
+                    || file.ToLower().EndsWith(".srt")  //Add Subtitle File Extensions also
+                    || file.ToLower().EndsWith(".sub")
+                    || file.ToLower().EndsWith(".idx")
+                    || file.ToLower().EndsWith(".ssa")
+                    || file.ToLower().EndsWith(".ass")
+                    || file.ToLower().EndsWith(".smi")
+                    || file.ToLower().EndsWith(".vtt")).ToArray();
+
+                    foreach (string file in fileNames) //loops through files, pulls out file names and adds them to filenameslistbox
+                    {
+                        EpisodePathList.Add(file);
+                        fileName = file.Replace(cf.DefaultSettings["TFPath"] + "\\", "");
+
+                        if (!fileName.StartsWith("._"))
+                        {
+                            fileNamesListbox.Items.Add(fileName);
+                        }
+                    }
+                }
+                recursiveCB.BackColor = Color.FromName("YellowGreen");
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(parentPathLabel.Text))
+                {
+                    //Perform Search
+                    string[] fileNames = Directory
+                    .GetFiles(cf.DefaultSettings["TFPath"], "*.*")
+                    .Where(file => file.ToLower().EndsWith(".mpg")
+                    || file.ToLower().EndsWith(".mpeg")
+                    || file.ToLower().EndsWith(".vob")
+                    || file.ToLower().EndsWith(".mod")
+                    || file.ToLower().EndsWith(".ts")
+                    || file.ToLower().EndsWith(".m2ts")
+                    || file.ToLower().EndsWith(".mp4")
+                    || file.ToLower().EndsWith(".m4v")
+                    || file.ToLower().EndsWith(".mov")
+                    || file.ToLower().EndsWith("avi")
+                    || file.ToLower().EndsWith(".divx")
+                    || file.ToLower().EndsWith(".wmv")
+                    || file.ToLower().EndsWith(".asf")
+                    || file.ToLower().EndsWith(".mkv")
+                    || file.ToLower().EndsWith(".flv")
+                    || file.ToLower().EndsWith(".f4v")
+                    || file.ToLower().EndsWith(".dvr")
+                    || file.ToLower().EndsWith(".dvr-ms")
+                    || file.ToLower().EndsWith(".wtv")
+                    || file.ToLower().EndsWith(".ogv")
+                    || file.ToLower().EndsWith(".ogm")
+                    || file.ToLower().EndsWith(".3gp")
+                    || file.ToLower().EndsWith(".rm")
+                    || file.ToLower().EndsWith(".rmvb")
+                    || file.ToLower().EndsWith(".srt")  //Add Subtitle File Extensions also
+                    || file.ToLower().EndsWith(".sub")
+                    || file.ToLower().EndsWith(".idx")
+                    || file.ToLower().EndsWith(".ssa")
+                    || file.ToLower().EndsWith(".ass")
+                    || file.ToLower().EndsWith(".smi")
+                    || file.ToLower().EndsWith(".vtt")).ToArray();
+
+                    foreach (string file in fileNames) //loops through files, pulls out file names and adds them to filenameslistbox
+                    {
+                        EpisodePathList.Add(file);
+                        fileName = file.Replace(cf.DefaultSettings["TFPath"] + "\\", "");
+
+                        if (!fileName.StartsWith("._"))
+                        {
+                            fileNamesListbox.Items.Add(fileName);
+                        }
+                    }
+                }
+
+                recursiveCB.BackColor = Color.FromName("GreenYellow");
+            }
+            
         }
     }
 }

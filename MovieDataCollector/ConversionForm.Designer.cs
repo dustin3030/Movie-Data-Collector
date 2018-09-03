@@ -78,6 +78,7 @@
             this.encoderTuneComboBox = new System.Windows.Forms.ComboBox();
             this.encoderSpeedCombo = new System.Windows.Forms.ComboBox();
             this.turboCheckBox = new System.Windows.Forms.CheckBox();
+            this.autoCropCB = new System.Windows.Forms.CheckBox();
             this.twoPassCheckbox = new System.Windows.Forms.CheckBox();
             this.optimizeStreamingCheckBox = new System.Windows.Forms.CheckBox();
             this.mbpsLabel = new System.Windows.Forms.Label();
@@ -106,7 +107,6 @@
             this.conversionSettingsLabel = new System.Windows.Forms.Label();
             this.compatibilitySelectionLabel = new System.Windows.Forms.Label();
             this.invisibleCloseButton = new System.Windows.Forms.Button();
-            this.autoCropCB = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.selectionPicturebox)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -124,7 +124,7 @@
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1125, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1051, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -178,7 +178,7 @@
             this.filenameTextBox.ForeColor = System.Drawing.Color.GreenYellow;
             this.filenameTextBox.Location = new System.Drawing.Point(131, 38);
             this.filenameTextBox.Name = "filenameTextBox";
-            this.filenameTextBox.Size = new System.Drawing.Size(429, 20);
+            this.filenameTextBox.Size = new System.Drawing.Size(355, 20);
             this.filenameTextBox.TabIndex = 2;
             // 
             // compatibilityCombo
@@ -251,7 +251,7 @@
             this.quickInfoButton.BackColor = System.Drawing.Color.GreenYellow;
             this.quickInfoButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.quickInfoButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.quickInfoButton.Location = new System.Drawing.Point(439, 64);
+            this.quickInfoButton.Location = new System.Drawing.Point(365, 64);
             this.quickInfoButton.Name = "quickInfoButton";
             this.quickInfoButton.Size = new System.Drawing.Size(121, 32);
             this.quickInfoButton.TabIndex = 8;
@@ -264,7 +264,7 @@
             this.detailInfoButton.BackColor = System.Drawing.Color.GreenYellow;
             this.detailInfoButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.detailInfoButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.detailInfoButton.Location = new System.Drawing.Point(439, 102);
+            this.detailInfoButton.Location = new System.Drawing.Point(365, 102);
             this.detailInfoButton.Name = "detailInfoButton";
             this.detailInfoButton.Size = new System.Drawing.Size(121, 32);
             this.detailInfoButton.TabIndex = 9;
@@ -291,7 +291,7 @@
             this.filesListBox.Location = new System.Drawing.Point(12, 204);
             this.filesListBox.Name = "filesListBox";
             this.filesListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.filesListBox.Size = new System.Drawing.Size(548, 381);
+            this.filesListBox.Size = new System.Drawing.Size(474, 381);
             this.filesListBox.TabIndex = 11;
             this.filesListBox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.FilesListBox_MouseDoubleClick);
             // 
@@ -311,7 +311,7 @@
             this.tabControl1.Controls.Add(this.mediaInfoPage);
             this.tabControl1.Controls.Add(this.conversionSettingsPage);
             this.tabControl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tabControl1.Location = new System.Drawing.Point(576, 64);
+            this.tabControl1.Location = new System.Drawing.Point(498, 64);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(542, 521);
@@ -820,6 +820,19 @@
             this.turboCheckBox.UseVisualStyleBackColor = true;
             this.turboCheckBox.CheckedChanged += new System.EventHandler(this.TurboCheckBox_CheckedChanged);
             // 
+            // autoCropCB
+            // 
+            this.autoCropCB.AutoSize = true;
+            this.autoCropCB.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.autoCropCB.Location = new System.Drawing.Point(208, 111);
+            this.autoCropCB.Name = "autoCropCB";
+            this.autoCropCB.Size = new System.Drawing.Size(82, 17);
+            this.autoCropCB.TabIndex = 8;
+            this.autoCropCB.Text = "Auto Crop";
+            this.autoCropCB.UseVisualStyleBackColor = true;
+            this.autoCropCB.CheckedChanged += new System.EventHandler(this.autoCropCB_CheckedChanged_1);
+            this.autoCropCB.CheckStateChanged += new System.EventHandler(this.TwoPassCheckbox_CheckStateChanged);
+            // 
             // twoPassCheckbox
             // 
             this.twoPassCheckbox.AutoSize = true;
@@ -1119,7 +1132,7 @@
             // 
             this.conversionSettingsLabel.AutoSize = true;
             this.conversionSettingsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.conversionSettingsLabel.Location = new System.Drawing.Point(573, 41);
+            this.conversionSettingsLabel.Location = new System.Drawing.Point(495, 41);
             this.conversionSettingsLabel.Name = "conversionSettingsLabel";
             this.conversionSettingsLabel.Size = new System.Drawing.Size(157, 13);
             this.conversionSettingsLabel.TabIndex = 14;
@@ -1138,7 +1151,7 @@
             // invisibleCloseButton
             // 
             this.invisibleCloseButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.invisibleCloseButton.Location = new System.Drawing.Point(1079, 558);
+            this.invisibleCloseButton.Location = new System.Drawing.Point(1001, 558);
             this.invisibleCloseButton.Name = "invisibleCloseButton";
             this.invisibleCloseButton.Size = new System.Drawing.Size(10, 10);
             this.invisibleCloseButton.TabIndex = 16;
@@ -1146,26 +1159,13 @@
             this.invisibleCloseButton.UseVisualStyleBackColor = true;
             this.invisibleCloseButton.Click += new System.EventHandler(this.InvisibleCloseButton_Click);
             // 
-            // autoCropCB
-            // 
-            this.autoCropCB.AutoSize = true;
-            this.autoCropCB.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.autoCropCB.Location = new System.Drawing.Point(208, 111);
-            this.autoCropCB.Name = "autoCropCB";
-            this.autoCropCB.Size = new System.Drawing.Size(82, 17);
-            this.autoCropCB.TabIndex = 8;
-            this.autoCropCB.Text = "Auto Crop";
-            this.autoCropCB.UseVisualStyleBackColor = true;
-            this.autoCropCB.CheckedChanged += new System.EventHandler(this.autoCropCB_CheckedChanged_1);
-            this.autoCropCB.CheckStateChanged += new System.EventHandler(this.TwoPassCheckbox_CheckStateChanged);
-            // 
             // ConversionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.CancelButton = this.invisibleCloseButton;
-            this.ClientSize = new System.Drawing.Size(1125, 612);
+            this.ClientSize = new System.Drawing.Size(1051, 612);
             this.Controls.Add(this.compatibilitySelectionLabel);
             this.Controls.Add(this.conversionSettingsLabel);
             this.Controls.Add(this.tabControl1);

@@ -61,6 +61,7 @@
             this.changeFileNamesButton = new System.Windows.Forms.Button();
             this.InvisibleCloseButton = new System.Windows.Forms.Button();
             this.autoBtn = new System.Windows.Forms.Button();
+            this.recursiveCB = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SeriesImagePicturebox)).BeginInit();
             this.SuspendLayout();
@@ -224,9 +225,9 @@
             this.getFileNamesButton.BackColor = System.Drawing.Color.GreenYellow;
             this.getFileNamesButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.getFileNamesButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.getFileNamesButton.Location = new System.Drawing.Point(12, 187);
+            this.getFileNamesButton.Location = new System.Drawing.Point(85, 187);
             this.getFileNamesButton.Name = "getFileNamesButton";
-            this.getFileNamesButton.Size = new System.Drawing.Size(106, 25);
+            this.getFileNamesButton.Size = new System.Drawing.Size(86, 25);
             this.getFileNamesButton.TabIndex = 10;
             this.getFileNamesButton.Text = "&Open Folder";
             this.getFileNamesButton.UseVisualStyleBackColor = false;
@@ -237,9 +238,9 @@
             this.parentPathLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.parentPathLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.parentPathLabel.ForeColor = System.Drawing.Color.GreenYellow;
-            this.parentPathLabel.Location = new System.Drawing.Point(126, 187);
+            this.parentPathLabel.Location = new System.Drawing.Point(177, 189);
             this.parentPathLabel.Name = "parentPathLabel";
-            this.parentPathLabel.Size = new System.Drawing.Size(623, 20);
+            this.parentPathLabel.Size = new System.Drawing.Size(572, 20);
             this.parentPathLabel.TabIndex = 11;
             this.parentPathLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -248,7 +249,7 @@
             this.formatLabel.AutoSize = true;
             this.formatLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.formatLabel.ForeColor = System.Drawing.Color.GreenYellow;
-            this.formatLabel.Location = new System.Drawing.Point(691, 219);
+            this.formatLabel.Location = new System.Drawing.Point(691, 218);
             this.formatLabel.Name = "formatLabel";
             this.formatLabel.Size = new System.Drawing.Size(45, 13);
             this.formatLabel.TabIndex = 12;
@@ -264,7 +265,7 @@
             "PLEX",
             "KODI",
             "Synology"});
-            this.formatCombo.Location = new System.Drawing.Point(742, 216);
+            this.formatCombo.Location = new System.Drawing.Point(742, 215);
             this.formatCombo.Name = "formatCombo";
             this.formatCombo.Size = new System.Drawing.Size(78, 21);
             this.formatCombo.TabIndex = 13;
@@ -276,7 +277,7 @@
             this.currentFileNamesLabel.AutoSize = true;
             this.currentFileNamesLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.currentFileNamesLabel.ForeColor = System.Drawing.Color.GreenYellow;
-            this.currentFileNamesLabel.Location = new System.Drawing.Point(12, 226);
+            this.currentFileNamesLabel.Location = new System.Drawing.Point(12, 225);
             this.currentFileNamesLabel.Name = "currentFileNamesLabel";
             this.currentFileNamesLabel.Size = new System.Drawing.Size(114, 13);
             this.currentFileNamesLabel.TabIndex = 14;
@@ -287,7 +288,7 @@
             this.proposedFileNamesLabel.AutoSize = true;
             this.proposedFileNamesLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.proposedFileNamesLabel.ForeColor = System.Drawing.Color.GreenYellow;
-            this.proposedFileNamesLabel.Location = new System.Drawing.Point(416, 226);
+            this.proposedFileNamesLabel.Location = new System.Drawing.Point(416, 225);
             this.proposedFileNamesLabel.Name = "proposedFileNamesLabel";
             this.proposedFileNamesLabel.Size = new System.Drawing.Size(126, 13);
             this.proposedFileNamesLabel.TabIndex = 15;
@@ -299,7 +300,7 @@
             this.fileNamesListbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.fileNamesListbox.ForeColor = System.Drawing.Color.GreenYellow;
             this.fileNamesListbox.FormattingEnabled = true;
-            this.fileNamesListbox.Location = new System.Drawing.Point(12, 242);
+            this.fileNamesListbox.Location = new System.Drawing.Point(12, 241);
             this.fileNamesListbox.Name = "fileNamesListbox";
             this.fileNamesListbox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.fileNamesListbox.Size = new System.Drawing.Size(401, 199);
@@ -313,7 +314,7 @@
             this.changedFileNamesListbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.changedFileNamesListbox.ForeColor = System.Drawing.Color.GreenYellow;
             this.changedFileNamesListbox.FormattingEnabled = true;
-            this.changedFileNamesListbox.Location = new System.Drawing.Point(419, 242);
+            this.changedFileNamesListbox.Location = new System.Drawing.Point(419, 241);
             this.changedFileNamesListbox.Name = "changedFileNamesListbox";
             this.changedFileNamesListbox.Size = new System.Drawing.Size(401, 199);
             this.changedFileNamesListbox.TabIndex = 17;
@@ -325,7 +326,7 @@
             this.removeItemLabel.AutoSize = true;
             this.removeItemLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.removeItemLabel.ForeColor = System.Drawing.Color.GreenYellow;
-            this.removeItemLabel.Location = new System.Drawing.Point(12, 444);
+            this.removeItemLabel.Location = new System.Drawing.Point(12, 443);
             this.removeItemLabel.Name = "removeItemLabel";
             this.removeItemLabel.Size = new System.Drawing.Size(231, 13);
             this.removeItemLabel.TabIndex = 18;
@@ -336,7 +337,7 @@
             this.manualRenameLabel.AutoSize = true;
             this.manualRenameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.manualRenameLabel.ForeColor = System.Drawing.Color.GreenYellow;
-            this.manualRenameLabel.Location = new System.Drawing.Point(416, 444);
+            this.manualRenameLabel.Location = new System.Drawing.Point(416, 443);
             this.manualRenameLabel.Name = "manualRenameLabel";
             this.manualRenameLabel.Size = new System.Drawing.Size(230, 13);
             this.manualRenameLabel.TabIndex = 19;
@@ -347,7 +348,7 @@
             this.previewChangesButton.BackColor = System.Drawing.Color.GreenYellow;
             this.previewChangesButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.previewChangesButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.previewChangesButton.Location = new System.Drawing.Point(12, 466);
+            this.previewChangesButton.Location = new System.Drawing.Point(12, 465);
             this.previewChangesButton.Name = "previewChangesButton";
             this.previewChangesButton.Size = new System.Drawing.Size(67, 25);
             this.previewChangesButton.TabIndex = 20;
@@ -360,7 +361,7 @@
             this.absoluteCb.AutoSize = true;
             this.absoluteCb.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.absoluteCb.ForeColor = System.Drawing.Color.GreenYellow;
-            this.absoluteCb.Location = new System.Drawing.Point(154, 461);
+            this.absoluteCb.Location = new System.Drawing.Point(154, 460);
             this.absoluteCb.Name = "absoluteCb";
             this.absoluteCb.Size = new System.Drawing.Size(177, 17);
             this.absoluteCb.TabIndex = 21;
@@ -373,7 +374,7 @@
             this.titleCb.AutoSize = true;
             this.titleCb.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.titleCb.ForeColor = System.Drawing.Color.GreenYellow;
-            this.titleCb.Location = new System.Drawing.Point(154, 480);
+            this.titleCb.Location = new System.Drawing.Point(154, 479);
             this.titleCb.Name = "titleCb";
             this.titleCb.Size = new System.Drawing.Size(119, 17);
             this.titleCb.TabIndex = 22;
@@ -386,7 +387,7 @@
             this.notificationLabel.AutoSize = true;
             this.notificationLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.notificationLabel.ForeColor = System.Drawing.Color.GreenYellow;
-            this.notificationLabel.Location = new System.Drawing.Point(12, 500);
+            this.notificationLabel.Location = new System.Drawing.Point(12, 499);
             this.notificationLabel.Name = "notificationLabel";
             this.notificationLabel.Size = new System.Drawing.Size(101, 13);
             this.notificationLabel.TabIndex = 23;
@@ -408,7 +409,7 @@
             this.changeFileNamesButton.BackColor = System.Drawing.Color.GreenYellow;
             this.changeFileNamesButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.changeFileNamesButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.changeFileNamesButton.Location = new System.Drawing.Point(658, 465);
+            this.changeFileNamesButton.Location = new System.Drawing.Point(658, 464);
             this.changeFileNamesButton.Name = "changeFileNamesButton";
             this.changeFileNamesButton.Size = new System.Drawing.Size(162, 25);
             this.changeFileNamesButton.TabIndex = 24;
@@ -420,7 +421,7 @@
             // 
             this.InvisibleCloseButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.InvisibleCloseButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.InvisibleCloseButton.Location = new System.Drawing.Point(810, 481);
+            this.InvisibleCloseButton.Location = new System.Drawing.Point(810, 480);
             this.InvisibleCloseButton.Name = "InvisibleCloseButton";
             this.InvisibleCloseButton.Size = new System.Drawing.Size(10, 10);
             this.InvisibleCloseButton.TabIndex = 25;
@@ -432,13 +433,27 @@
             this.autoBtn.BackColor = System.Drawing.Color.GreenYellow;
             this.autoBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.autoBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.autoBtn.Location = new System.Drawing.Point(82, 466);
+            this.autoBtn.Location = new System.Drawing.Point(82, 465);
             this.autoBtn.Name = "autoBtn";
             this.autoBtn.Size = new System.Drawing.Size(61, 25);
             this.autoBtn.TabIndex = 10;
             this.autoBtn.Text = "&Auto";
             this.autoBtn.UseVisualStyleBackColor = false;
             this.autoBtn.Click += new System.EventHandler(this.AutoBtn_Click);
+            // 
+            // recursiveCB
+            // 
+            this.recursiveCB.Appearance = System.Windows.Forms.Appearance.Button;
+            this.recursiveCB.BackColor = System.Drawing.Color.GreenYellow;
+            this.recursiveCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.recursiveCB.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.recursiveCB.Location = new System.Drawing.Point(5, 187);
+            this.recursiveCB.Name = "recursiveCB";
+            this.recursiveCB.Size = new System.Drawing.Size(74, 25);
+            this.recursiveCB.TabIndex = 21;
+            this.recursiveCB.Text = "Recursive";
+            this.recursiveCB.UseVisualStyleBackColor = false;
+            this.recursiveCB.CheckedChanged += new System.EventHandler(this.recursiveCB_CheckedChanged);
             // 
             // TVForm
             // 
@@ -447,10 +462,11 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.CancelButton = this.InvisibleCloseButton;
-            this.ClientSize = new System.Drawing.Size(832, 523);
+            this.ClientSize = new System.Drawing.Size(832, 522);
             this.Controls.Add(this.changeFileNamesButton);
             this.Controls.Add(this.notificationLabel);
             this.Controls.Add(this.titleCb);
+            this.Controls.Add(this.recursiveCB);
             this.Controls.Add(this.absoluteCb);
             this.Controls.Add(this.previewChangesButton);
             this.Controls.Add(this.manualRenameLabel);
@@ -522,5 +538,6 @@
         private System.Windows.Forms.Button changeFileNamesButton;
         private System.Windows.Forms.Button InvisibleCloseButton;
         private System.Windows.Forms.Button autoBtn;
+        private System.Windows.Forms.CheckBox recursiveCB;
     }
 }
