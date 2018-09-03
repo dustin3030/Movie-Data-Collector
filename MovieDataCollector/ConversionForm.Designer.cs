@@ -106,6 +106,7 @@
             this.conversionSettingsLabel = new System.Windows.Forms.Label();
             this.compatibilitySelectionLabel = new System.Windows.Forms.Label();
             this.invisibleCloseButton = new System.Windows.Forms.Button();
+            this.autoCropCB = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.selectionPicturebox)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -443,6 +444,7 @@
             this.passwordBox.TabIndex = 15;
             this.passwordBox.UseSystemPasswordChar = true;
             this.passwordBox.Visible = false;
+            this.passwordBox.Leave += new System.EventHandler(this.PasswordBox_Leave);
             // 
             // usernameBox
             // 
@@ -538,6 +540,7 @@
             this.videoSettingsPanel.Controls.Add(this.encoderTuneComboBox);
             this.videoSettingsPanel.Controls.Add(this.encoderSpeedCombo);
             this.videoSettingsPanel.Controls.Add(this.turboCheckBox);
+            this.videoSettingsPanel.Controls.Add(this.autoCropCB);
             this.videoSettingsPanel.Controls.Add(this.twoPassCheckbox);
             this.videoSettingsPanel.Controls.Add(this.optimizeStreamingCheckBox);
             this.videoSettingsPanel.Controls.Add(this.mbpsLabel);
@@ -1143,6 +1146,19 @@
             this.invisibleCloseButton.UseVisualStyleBackColor = true;
             this.invisibleCloseButton.Click += new System.EventHandler(this.InvisibleCloseButton_Click);
             // 
+            // autoCropCB
+            // 
+            this.autoCropCB.AutoSize = true;
+            this.autoCropCB.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.autoCropCB.Location = new System.Drawing.Point(208, 111);
+            this.autoCropCB.Name = "autoCropCB";
+            this.autoCropCB.Size = new System.Drawing.Size(82, 17);
+            this.autoCropCB.TabIndex = 8;
+            this.autoCropCB.Text = "Auto Crop";
+            this.autoCropCB.UseVisualStyleBackColor = true;
+            this.autoCropCB.CheckedChanged += new System.EventHandler(this.autoCropCB_CheckedChanged_1);
+            this.autoCropCB.CheckStateChanged += new System.EventHandler(this.TwoPassCheckbox_CheckStateChanged);
+            // 
             // ConversionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1269,5 +1285,6 @@
         private System.Windows.Forms.ComboBox subtitleCombo;
         private System.Windows.Forms.Label subIncludeLabel;
         private System.Windows.Forms.Label subtitleInfoLabel;
+        private System.Windows.Forms.CheckBox autoCropCB;
     }
 }

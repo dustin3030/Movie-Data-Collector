@@ -35,6 +35,7 @@ namespace MovieDataCollector
             "EncoderProfile", //Main
             "EncoderLevel", //4.0
             "Optimize", //true
+            "AutoCrop", //true
             "TwoPass", //true
             "TurboFirstPass", //true
             "SubtitleSelection", //None for TV, All For Movie
@@ -58,6 +59,7 @@ namespace MovieDataCollector
             "Main", //EncoderProfile
             "4.0", //EncoderLevel
             "true", //Optimize
+            "true", //AutoCrop
             "true", //TwoPass
             "true", //TurboFirstPass
             "English", //SubtitleSelection
@@ -81,6 +83,7 @@ namespace MovieDataCollector
             "Main", //EncoderProfile
             "4.0", //EncoderLevel
             "true", //Optimize
+            "true", //AutoCrop
             "true", //TwoPass
             "true", //TurboFirstPass
             "All", //SubtitleSelection
@@ -104,6 +107,7 @@ namespace MovieDataCollector
             "Main", //EncoderProfile
             "4.0", //EncoderLevel
             "false", //Optimize
+            "true", //AutoCrop
             "false", //TwoPass
             "false", //TurboFirstPass
             "All", //SubtitleSelection
@@ -127,6 +131,7 @@ namespace MovieDataCollector
             "High", //EncoderProfile
             "4.1", //EncoderLevel
             "true", //Optimize
+            "true", //AutoCrop
             "true", //TwoPass
             "true", //TurboFirstPass
             "All", //SubtitleSelection

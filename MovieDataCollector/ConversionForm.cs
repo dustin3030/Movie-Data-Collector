@@ -291,12 +291,14 @@ namespace MovieDataCollector
             subtitleCombo.Text = CF.DefaultSettings["SubtitleSelection"];
 
             if (CF.DefaultSettings["Optimize"] == "True") { optimizeStreamingCheckBox.Checked = true; } else { optimizeStreamingCheckBox.Checked = false; }
+            if (CF.DefaultSettings["AutoCrop"] == "True") { autoCropCB.Checked = true; } else { autoCropCB.Checked = false; }
             if (CF.DefaultSettings["TwoPass"] == "True") { twoPassCheckbox.Checked = true; } else { twoPassCheckbox.Checked = false; }
             if (CF.DefaultSettings["TurboFirstPass"] == "True") { turboCheckBox.Checked = true; } else { turboCheckBox.Checked = false; }
             if(CF.DefaultSettings["ForcedSubtitleBurnIn"] == "True") { burnInSubtitlesCheck.Checked = true; } else { burnInSubtitlesCheck.Checked = false; } 
 
             /*Notification Settings*/
             if (!string.IsNullOrEmpty(CF.DefaultSettings["GmailAccount"])) { usernameBox.Text = CF.DefaultSettings["GmailAccount"]; }
+            if (!string.IsNullOrEmpty(CF.DefaultSettings["Password"])) { passwordBox.Text = CF.DefaultSettings["Password"]; }
             if (!string.IsNullOrEmpty(CF.DefaultSettings["NotifyAddress"])) { sendToBox.Text = CF.DefaultSettings["NotifyAddress"]; }
 
         }
@@ -1210,7 +1212,16 @@ namespace MovieDataCollector
 
             sourceOptions = SourceDestinationOptionsString(filepath, filename, outputPath, outputLargerThan4GB);
             //Stick with source dimensions - no crop, auto anamorphic, modulus 2 (used to be an issue but the code has been fixed so 2 is the best option for preserving source)
-            crop = "--crop 0:0:0:0 --auto-anamorphic --modulus 2 "; //Forces 0 crop, Changed from loose-anamorphic to --auto-anamorphic
+            
+            if(autoCropCB.Checked)
+            {
+                crop = "--auto-anamorphic --modulus 2 "; //Auto Removes Black Bars, Changed from loose-anamorphic to --auto-anamorphic
+            }
+            else
+            {
+                crop = "--crop 0:0:0:0 --auto-anamorphic --modulus 2 "; //Forces 0 crop, Changed from loose-anamorphic to --auto-anamorphic
+            }
+
 
             return "--verbose 1 " + sourceOptions + VideoString + AudioString + crop;
 
@@ -2842,6 +2853,19 @@ namespace MovieDataCollector
             }
 
         }
+        private void autoCropCB_CheckedChanged_1(object sender, EventArgs e)
+        {
+            if (autoCropCB.Checked)
+            {
+                //Update default in dictionary
+                CF.DefaultSettings["AutoCrop"] = "True";
+            }
+            else
+            {
+                //Update default in dictionary
+                CF.DefaultSettings["AutoCrop"] = "False";
+            }
+        }
         private void TurboCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             if (turboCheckBox.Checked)
@@ -3400,7 +3424,7 @@ namespace MovieDataCollector
                         SmtpServer.Send(mail);
                         //CustomMessageBox.Show("Notification Sent!", 120, 230, "Notification Message");
                         NLabelUpdate("Notification sent to : " + sendTo, Color.GreenYellow);
-
+                        CF.UpdateDefaults(); //Stores info in config file
 
                     }
                     catch (Exception ex)
@@ -3495,6 +3519,10 @@ namespace MovieDataCollector
         private void UsernameBox_Leave(object sender, EventArgs e)
         {
             CF.DefaultSettings["GmailAccount"] = usernameBox.Text;
+        }
+        private void PasswordBox_Leave(object sender, EventArgs e)
+        {
+            CF.DefaultSettings["Password"] = passwordBox.Text;
         }
         private void SendToBox_Leave(object sender, EventArgs e)
         {
@@ -4123,6 +4151,7 @@ namespace MovieDataCollector
                 NewPreset.Add("EncoderLevel", encoderLevelComboBox.Text);
 
                 if (optimizeStreamingCheckBox.Checked) { NewPreset.Add("Optimize", "true"); } else { NewPreset.Add("Optimize", "false"); }
+                if (autoCropCB.Checked) { NewPreset.Add("AutoCrop", "true"); } else { NewPreset.Add("AutoCrop", "false"); }
                 if (twoPassCheckbox.Checked) { NewPreset.Add("TwoPass", "true"); } else { NewPreset.Add("TwoPass", "false"); }
                 if (turboCheckBox.Checked) { NewPreset.Add("TurboFirstPass", "true"); } else { NewPreset.Add("TurboFirstPass", "false"); }
 
@@ -4214,6 +4243,7 @@ namespace MovieDataCollector
                     encoderLevelComboBox.Text = PF.PresetList[index]["EncoderLevel"];
 
                     if (PF.PresetList[index]["Optimize"] == "true") { optimizeStreamingCheckBox.Checked = true; } else { optimizeStreamingCheckBox.Checked = false; }
+                    if (PF.PresetList[index]["AutoCrop"] == "true") { autoCropCB.Checked = true; } else { autoCropCB.Checked = false; }
                     if (PF.PresetList[index]["TwoPass"] == "true") { twoPassCheckbox.Checked = true; } else { twoPassCheckbox.Checked = false; }
                     if (PF.PresetList[index]["TurboFirstPass"] == "true") { turboCheckBox.Checked = true; } else { turboCheckBox.Checked = false; }
 
@@ -4243,5 +4273,7 @@ namespace MovieDataCollector
                     break;
             }
         }
+
+       
     }
 }

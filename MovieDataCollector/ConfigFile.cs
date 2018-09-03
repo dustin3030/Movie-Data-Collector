@@ -34,6 +34,7 @@ namespace MovieDataCollector
                 "TwoPass", //True
                 "TurboFirstPass", //True
                 "Optimize", //True
+                "AutoCrop", //True
                 "Mixdown", //Dolby Prologic 2
                 "AudioBitrateCap", //96
                 "EncoderSpeed", //Medium
@@ -46,6 +47,7 @@ namespace MovieDataCollector
                 "AudioSampleRate", //48
                 "ConversionPreset", //Roku Compliant
                 "GmailAccount", //Left blank as default
+                "Password", //Left blank as Default
                 "NotifyAddress", //Left blank as default
                 "SubtitleSelection", //None
                 "ForcedSubtitleBurnIn" //False
@@ -68,6 +70,7 @@ namespace MovieDataCollector
                 "True", //TwoPass
                 "True", //TurboFirstPass
                 "True", //Optimize
+                "True", //Autocrop
                 "Dolby Prologic 2", //Mixdown
                 "96", //AudioBitrateCap
                 "Medium", //EncoderSpeed
@@ -80,6 +83,7 @@ namespace MovieDataCollector
                 "48", //AudioSampleRate
                 "", //ConversionPreset is blank by default
                 "", //GmailAccount
+                "", //Password
                 "", //NotifyAddress
                 "None", //SubtitleSelection
                 "False" //ForcedSubtitleBurnIn
