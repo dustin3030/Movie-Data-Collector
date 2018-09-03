@@ -946,7 +946,7 @@ namespace MovieDataCollector
                                                         conversionProcess.StartInfo.UseShellExecute = false; //Must be set to false to redirect standard error.
                                                                                                              //conversionProcess.StartInfo.RedirectStandardError = true; //Allows for redirect of the standard error for the process.
                                                         conversionProcess.EnableRaisingEvents = true; //Raises process exited event on close
-                                                        conversionProcess.Start();
+                                                        conversionProcess.Start();      
                                                         //StreamReader SError = conversionProcess.StandardError;
                                                         conversionProcess.PriorityClass = ProcessPriorityClass.High; //starts the process with the highest possible priority.
                                                         conversionProcess.WaitForExit();
