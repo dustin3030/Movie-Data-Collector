@@ -44,6 +44,12 @@ namespace MovieDataCollector
         List<string> PLEXEpisodeNames = new List<string>(); //Used for manual rename form - Populates ListOfEpisodeNames based on format selection
         ConfigFile cf = new ConfigFile();
 
+        bool filenameListboxFlag = false;
+        bool changedFileNamesListboxFlag = false;
+
+        int filenameListboxLastIndex = 0;
+        int changedFileNamesListboxLastIndex = 0;
+
         public TVForm()
         {
             InitializeComponent();
@@ -372,6 +378,10 @@ namespace MovieDataCollector
                 notificationLabel.Update();
 
                 DetermineEpisodeFromFileName(); //sets season and episode from filename
+                for (int i = 0; i < fileNamesListbox.SelectedIndices.Count; i++)
+                {
+                    changedFileNamesListbox.SelectedIndices.Add(fileNamesListbox.SelectedIndices[i]);
+                }
             }
             else
             {
@@ -382,13 +392,6 @@ namespace MovieDataCollector
         private void PreviewChangesButton_Click(object sender, EventArgs e)
         {
             PreviewChanges();
-            if (changedFileNamesListbox.Items.Count > 0 & fileNamesListbox.Items.Count > 0)
-            {
-                if (fileNamesListbox.SelectedIndex > -1)
-                {
-                    changedFileNamesListbox.SelectedIndex = fileNamesListbox.SelectedIndex;
-                }
-            }
         }
         private void DetermineEpisodeFromFileName()
         {
@@ -893,33 +896,71 @@ namespace MovieDataCollector
         }
         private void FileNamesListbox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
+            if(filenameListboxFlag) //items in box and something was clicked
             {
-                if (changedFileNamesListbox.Items.Count > 0 & fileNamesListbox.Items.Count > 0)
-                {
-                    //ensures when selecting an item from the listbox that both listboxes highlight the same index
-                    changedFileNamesListbox.SelectedIndex = fileNamesListbox.SelectedIndex;
-                }
-            }
-            catch
-            {
+                changedFileNamesListboxFlag = false;
 
+                if(fileNamesListbox.SelectedIndex != -1)
+                {
+                    if (fileNamesListbox.Items.Count > 0 && changedFileNamesListbox.Items.Count > 0)
+                    {
+                        //Match changedfilenamelistbox to match
+                        changedFileNamesListbox.SelectedIndices.Clear();
+
+                        for (int i = 0; i < fileNamesListbox.SelectedIndices.Count; i++)
+                        {
+                            changedFileNamesListbox.SelectedIndices.Add(fileNamesListbox.SelectedIndices[i]);
+                        }
+
+                        filenameListboxFlag = false;
+                    }
+                }
+                else
+                {
+                    changedFileNamesListbox.SelectedIndices.Clear();
+                }
+
+                    
+            }
+            else if(fileNamesListbox.SelectedIndices.Count == 1 && fileNamesListbox.Focused)
+            {
+                changedFileNamesListbox.SelectedIndices.Clear();
+                changedFileNamesListbox.SelectedIndex = fileNamesListbox.SelectedIndex;
             }
 
         }
         private void ChangedFileNamesListbox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
+            if (changedFileNamesListboxFlag) //items in the box and something was clicked
             {
-                if (fileNamesListbox.Items.Count > 0 & changedFileNamesListbox.Items.Count > 0)
-                {
-                    //ensures when selecting an item from the listbox that both listboxes highlight the same index
-                    fileNamesListbox.SelectedIndex = changedFileNamesListbox.SelectedIndex;
-                }
-            }
-            catch
-            {
+                filenameListboxFlag = false;
 
+                if(changedFileNamesListbox.SelectedIndex != -1)
+                {
+                    if (fileNamesListbox.Items.Count > 0 && changedFileNamesListbox.Items.Count > 0)
+                    {
+                        //Match changedfilenamelistbox to match
+                        fileNamesListbox.SelectedIndices.Clear();
+
+                        for (int i = 0; i < changedFileNamesListbox.SelectedIndices.Count; i++)
+                        {
+                            fileNamesListbox.SelectedIndices.Add(changedFileNamesListbox.SelectedIndices[i]);
+                        }
+
+                        changedFileNamesListboxFlag = false;
+                    }
+                }
+                else
+                {
+                    fileNamesListbox.SelectedIndices.Clear();
+                }
+                
+
+            }
+            else if (changedFileNamesListbox.SelectedIndices.Count == 1 && changedFileNamesListbox.Focused)
+            {
+                fileNamesListbox.SelectedIndices.Clear();
+                fileNamesListbox.SelectedIndex = changedFileNamesListbox.SelectedIndex;
             }
         }
         private string FormatFileName(string fileName)
@@ -1668,31 +1709,18 @@ namespace MovieDataCollector
 
                 changedFileNamesListbox.Items.Clear(); //clear out the preview listbox.
                 //Start Loop
-                for (int i = 0; i < fileNamesListbox.Items.Count ; i++) //Loop through filenamesListBox
-                {
-                    fileNameString = fileNamesListbox.Items[i].ToString(); //Store filename from listbox, make uppercase to eliminae possibilities
-                    Titles.Insert(i, ""); //increases list size as fileNameString increases
 
-                    for (int b = 0; b < cf.FavoriteTitles.Count ; b++) //Loop through each name in listbox to see if it matchs the filename in the listbox.
+
+                    for (int i = 0; i < fileNamesListbox.Items.Count; i++) //Loop through filenamesListBox
                     {
-                        testString = cf.FavoriteTitles[b]; //make uppercase to eliminate possibilities
+                        fileNameString = fileNamesListbox.Items[i].ToString(); //Store filename from listbox, make uppercase to eliminae possibilities
+                        Titles.Insert(i, ""); //increases list size as fileNameString increases
 
-                        if(fileNameString.ToUpper().Contains(testString.ToUpper())) //Exact Match
+                        for (int b = 0; b < cf.FavoriteTitles.Count; b++) //Loop through each name in listbox to see if it matchs the filename in the listbox.
                         {
-                            notificationLabel.Text = "Match found, " + cf.FavoriteTitles[b].ToString() + ".";
-                            notificationLabel.Invalidate();
-                            notificationLabel.Update();
+                            testString = cf.FavoriteTitles[b]; //make uppercase to eliminate possibilities
 
-                            favoriteMatchFound = true;
-                        }
-
-                        if(!favoriteMatchFound) //Remove spaces and apostrophes
-                        {
-                            testString = FormatFileName(cf.FavoriteTitles[b]);
-                            testString = testString.Replace(" ", ".");
-                            testString = testString.Replace("'", "");
-
-                            if (fileNameString.ToUpper().Contains(testString.ToUpper()))
+                            if (fileNameString.ToUpper().Contains(testString.ToUpper())) //Exact Match
                             {
                                 notificationLabel.Text = "Match found, " + cf.FavoriteTitles[b].ToString() + ".";
                                 notificationLabel.Invalidate();
@@ -1701,76 +1729,91 @@ namespace MovieDataCollector
                                 favoriteMatchFound = true;
                             }
 
-                            testString = testString.Replace("&", "and");
-
-                            if (fileNameString.ToUpper().Contains(testString.ToUpper()))
+                            if (!favoriteMatchFound) //Remove spaces and apostrophes
                             {
-                                notificationLabel.Text = "Match found, " + cf.FavoriteTitles[b].ToString() + ".";
+                                testString = FormatFileName(cf.FavoriteTitles[b]);
+                                testString = testString.Replace(" ", ".");
+                                testString = testString.Replace("'", "");
+
+                                if (fileNameString.ToUpper().Contains(testString.ToUpper()))
+                                {
+                                    notificationLabel.Text = "Match found, " + cf.FavoriteTitles[b].ToString() + ".";
+                                    notificationLabel.Invalidate();
+                                    notificationLabel.Update();
+
+                                    favoriteMatchFound = true;
+                                }
+
+                                testString = testString.Replace("&", "and");
+
+                                if (fileNameString.ToUpper().Contains(testString.ToUpper()))
+                                {
+                                    notificationLabel.Text = "Match found, " + cf.FavoriteTitles[b].ToString() + ".";
+                                    notificationLabel.Invalidate();
+                                    notificationLabel.Update();
+
+                                    favoriteMatchFound = true;
+                                }
+
+                                testString = testString.Replace("AND", "&");
+
+                                if (fileNameString.ToUpper().Contains(testString.ToUpper()))
+                                {
+                                    notificationLabel.Text = "Match found, " + cf.FavoriteTitles[b].ToString() + ".";
+                                    notificationLabel.Invalidate();
+                                    notificationLabel.Update();
+
+                                    favoriteMatchFound = true;
+                                }
+
+                            }
+
+                            if (!favoriteMatchFound) //Change and to & and vice versa
+                            {
+                                testString = FormatFileName(cf.FavoriteTitles[b]);
+                                testString = testString.Replace(" ", ".");
+                                testString = testString.Replace("'", "");
+
+                                if (fileNameString.ToUpper().Contains(testString.ToUpper()))
+                                {
+                                    notificationLabel.Text = "Match found, " + cf.FavoriteTitles[b].ToString() + ".";
+                                    notificationLabel.Invalidate();
+                                    notificationLabel.Update();
+
+                                    favoriteMatchFound = true;
+                                }
+                            }
+
+                            if (favoriteMatchFound) //Match found, proceed looking up info and populating form with suggested name
+                            {
+                                notificationLabel.Text = "Match found! Identifyting episode.";
                                 notificationLabel.Invalidate();
                                 notificationLabel.Update();
 
-                                favoriteMatchFound = true;
-                            }
+                                TVSeriesInfo SI = new TVSeriesInfo(APIKey, cf.FavoriteIDs[b].ToString());
+                                SeriesInfo = SI; //Makes the seriesinfo global
+                                title = AutoDetermineEpisodeFromFileName(fileNameString);
+                                //Scrub incompatible characters from file name
+                                title = FormatFileName(title);
 
-                            testString = testString.Replace("AND", "&");
-
-                            if (fileNameString.ToUpper().Contains(testString.ToUpper()))
-                            {
-                                notificationLabel.Text = "Match found, " + cf.FavoriteTitles[b].ToString() + ".";
+                                notificationLabel.Text = "Match found, " + title;
                                 notificationLabel.Invalidate();
                                 notificationLabel.Update();
 
-                                favoriteMatchFound = true;
+                                if (!string.IsNullOrEmpty(title))
+                                {
+                                    notificationLabel.Text = "Match Found!";
+                                    notificationLabel.Invalidate();
+                                    notificationLabel.Update();
+
+                                    Titles.Insert(i, title); //insert the title in the appropriate spot in the list
+                                }
                             }
 
+                            favoriteMatchFound = false;
                         }
 
-                        if (!favoriteMatchFound) //Change and to & and vice versa
-                        {
-                            testString = FormatFileName(cf.FavoriteTitles[b]);
-                            testString = testString.Replace(" ", ".");
-                            testString = testString.Replace("'", "");
-
-                            if (fileNameString.ToUpper().Contains(testString.ToUpper()))
-                            {
-                                notificationLabel.Text = "Match found, " + cf.FavoriteTitles[b].ToString() + ".";
-                                notificationLabel.Invalidate();
-                                notificationLabel.Update();
-
-                                favoriteMatchFound = true;
-                            }
-                        }
-
-                        if (favoriteMatchFound) //Match found, proceed looking up info and populating form with suggested name
-                        {
-                            notificationLabel.Text = "Match found! Identifyting episode.";
-                            notificationLabel.Invalidate();
-                            notificationLabel.Update();
-
-                            TVSeriesInfo SI = new TVSeriesInfo(APIKey, cf.FavoriteIDs[b].ToString());
-                            SeriesInfo = SI; //Makes the seriesinfo global
-                            title = AutoDetermineEpisodeFromFileName(fileNameString);
-                            //Scrub incompatible characters from file name
-                            title = FormatFileName(title);
-
-                            notificationLabel.Text = "Match found, " + title;
-                            notificationLabel.Invalidate();
-                            notificationLabel.Update();
-
-                            if (!string.IsNullOrEmpty(title))
-                            {
-                                notificationLabel.Text = "Match Found!";
-                                notificationLabel.Invalidate();
-                                notificationLabel.Update();
-
-                                Titles.Insert(i, title); //insert the title in the appropriate spot in the list
-                            }
-                        }
-
-                        favoriteMatchFound = false;
                     }
-
-                }
 
                 for (int i = 0; i < fileNamesListbox.Items.Count; i++)
                 {
@@ -1901,6 +1944,28 @@ namespace MovieDataCollector
                 recursiveCB.BackColor = Color.FromName("GreenYellow");
             }
             
+        }
+
+        private void changedFileNamesListbox_MouseClick(object sender, MouseEventArgs e)
+        {
+            //Sets flag if listbox contains items and was clicked
+            //Used to control what items are selected
+            if (changedFileNamesListbox.Items.Count > 0)
+            {
+                changedFileNamesListboxFlag = true;
+            }
+            
+        }
+
+        private void fileNamesListbox_MouseClick(object sender, MouseEventArgs e)
+        {
+            //Sets flag if listbox contains items and was clicked
+            //Used to control what items are selected
+            if (fileNamesListbox.Items.Count > 0)
+            {
+                filenameListboxFlag = true;
+            }
+            filenameListboxLastIndex = fileNamesListbox.SelectedIndex;
         }
     }
 }

@@ -305,6 +305,7 @@
             this.fileNamesListbox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.fileNamesListbox.Size = new System.Drawing.Size(401, 199);
             this.fileNamesListbox.TabIndex = 16;
+            this.fileNamesListbox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.fileNamesListbox_MouseClick);
             this.fileNamesListbox.SelectedIndexChanged += new System.EventHandler(this.FileNamesListbox_SelectedIndexChanged);
             this.fileNamesListbox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.FileNamesListbox_MouseDoubleClick);
             // 
@@ -316,8 +317,10 @@
             this.changedFileNamesListbox.FormattingEnabled = true;
             this.changedFileNamesListbox.Location = new System.Drawing.Point(419, 241);
             this.changedFileNamesListbox.Name = "changedFileNamesListbox";
+            this.changedFileNamesListbox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.changedFileNamesListbox.Size = new System.Drawing.Size(401, 199);
             this.changedFileNamesListbox.TabIndex = 17;
+            this.changedFileNamesListbox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.changedFileNamesListbox_MouseClick);
             this.changedFileNamesListbox.SelectedIndexChanged += new System.EventHandler(this.ChangedFileNamesListbox_SelectedIndexChanged);
             this.changedFileNamesListbox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ChangedFileNamesListbox_MouseDoubleClick);
             // 
