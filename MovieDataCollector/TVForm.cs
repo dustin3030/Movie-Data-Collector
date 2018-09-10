@@ -35,11 +35,13 @@ namespace MovieDataCollector
 
 
         TVSeriesInfo SeriesInfo;
-        List<string> EpisodePathList= new List<string>(); //Stores File Location for episode list
-        List<string> ListOfEpisodeNames = new List<string>();
-        List<string> KODIEpisodeNames = new List<string>();
-        List<string> SynologyEpisodeName = new List<string>();
-        List<string> PLEXEpisodeNames = new List<string>();
+        List<string> EpisodePathList= new List<string>(); //Stores File Location for episode list, Necessary for recursive search function
+
+
+        List<string> ListOfEpisodeNames = new List<string>(); //Used in Manual Rename Form, Populated with items from ONE of the following 3 lists (KODIEpisodeNames, SynologyEpisodeNames, PLEXEpisodeNames)
+        List<string> KODIEpisodeNames = new List<string>(); //Used for manual rename form - Populates ListOfEpisodeNames based on format selection
+        List<string> SynologyEpisodeName = new List<string>(); //Used for manual rename form - Populates ListOfEpisodeNames based on format selection
+        List<string> PLEXEpisodeNames = new List<string>(); //Used for manual rename form - Populates ListOfEpisodeNames based on format selection
         ConfigFile cf = new ConfigFile();
 
         public TVForm()
@@ -516,8 +518,8 @@ namespace MovieDataCollector
                                         case 2: //Synology
                                             newTitle = SeriesInfo.series["SeriesName"] + "." + season + "." + episode + "." + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
                                             break;
-                                        default: //Synology
-                                            newTitle = SeriesInfo.series["SeriesName"] + "." + season + "." + episode + "." + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
+                                        default: //Plex
+                                            newTitle = SeriesInfo.series["SeriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
                                             break;
                                     }
                                     //newTitle = SeriesInfo.series["SeriesName"] + " " + season + episode + " " + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
@@ -703,6 +705,25 @@ namespace MovieDataCollector
             for (int i = 0; i < (maxEpisode + 1); i++) //loop through episode number
             {
                 //attempt to determine the episode number from the filename
+                //Plex Format - ShowName – sXXeYY – Optional_Info.ext
+                //Synology Format - ShowName.SXX.EYY.ext
+                /*Kodi Formats - ShowName S01E02.ext
+                 ShowName S1E2.ext
+                 ShowName S01.E02.ext
+                 ShowName S01_E02.ext
+                 ShowName S01xE02.ext
+                 ShowName 1x02.ext
+                 ShowName 102.ext*/
+                /*Othe Formats - anything_s01e02.ext
+                anything_s1e2.ext
+                anything_s01.e02.ext
+                anything_s01_e02.ext
+                anything_1x02.ext
+                anything_102.ext
+                anything_1x02.ext
+                02 Episode Name.avi
+                s01e02.avi
+                1x02.avi*/
                 if (FileName.Contains("E0" + i.ToString() + " ") ||
                     FileName.Contains("E0" + i.ToString() + "_") ||
                     FileName.Contains("E0" + i.ToString() + ".") ||
@@ -1235,6 +1256,8 @@ namespace MovieDataCollector
                 value = fileNamesListbox.SelectedIndex;
                 fileNamesListbox.Items.RemoveAt(value);
                 changedFileNamesListbox.Items.RemoveAt(value);
+                EpisodePathList.RemoveAt(value);
+
             }
 
             //Allows you to delete items from fileNamesListbox if changedFileNamesListbox isn't populated
