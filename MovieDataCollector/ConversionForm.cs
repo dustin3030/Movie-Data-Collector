@@ -2256,7 +2256,7 @@ namespace MovieDataCollector
                                     {
                                         if (videoFile.Text[i].Properties["Language"] == "English")
                                         {
-                                            subtitleBurnString = "--subtitle-burned " + (i + 1).ToString() + " ";
+                                            subtitleBurnString = "--subtitle-burned=" + (i + 1).ToString() + " ";
                                         }
                                     }
                                 }
