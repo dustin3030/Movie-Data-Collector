@@ -77,6 +77,7 @@ namespace MovieDataCollector
                     notificationLabel.Text = "ID found, gathering Series info.";
                     notificationLabel.Invalidate();
                     notificationLabel.Update();
+
                     TVSeriesInfo T = new TVSeriesInfo(APIKey, ID.ToString());
                     SeriesImagePicturebox.ImageLocation = "http://thetvdb.com/banners/" + T.series["banner"];
                     SeriesInfo = T;

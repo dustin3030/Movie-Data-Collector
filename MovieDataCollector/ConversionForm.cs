@@ -13,6 +13,7 @@ using MediaInfoNET; /* http://teejeetech.blogspot.com/2013/01/mediainfo-wrapper-
                       Downloaded Wrapper for returning media info from files.
                       Need to have both the wrapper (MediaInfoNet.dll) and the DLL (MediaInfo.dll) saved in the
                       Application folder (Release or Debug) or it will not work, Add MediaInfoNet.dll as a reference through the project menu*/
+using System.Threading.Tasks;
 
 namespace MovieDataCollector
 {
@@ -783,7 +784,7 @@ namespace MovieDataCollector
             AudioInfo.Clear();
             SubtitleInfo.Clear();
         }
-        private void QuickInfobutton_Click(object sender, EventArgs e)
+        private async void QuickInfobutton_Click(object sender, EventArgs e)
         {
 
             if (VideoFilesList.Count > 0 & filesListBox.Items.Count > 0)
@@ -804,6 +805,7 @@ namespace MovieDataCollector
                     for (int i = 0; i < VideoFilesList.Count(); i++)
                     {
                         NLabelUpdate("Processing file " + (i + 1).ToString() + " of " + VideoFilesList.Count().ToString(), Color.GreenYellow);
+
                         GetQuickInfo(VideoFilesList[i], filesListBox.Items[i].ToString());
                     }
                 }
@@ -874,9 +876,11 @@ namespace MovieDataCollector
 
 
         /*The following methods are for converting video files*/
-        private void ConvertAllButton_Click(object sender, EventArgs e)
+        private async void ConvertAllButton_Click(object sender, EventArgs e)
         {
             CF.UpdateDefaults();
+
+            
 
             //Check for location of HandbrakeCLI
             string handBrakeCLILocation = CheckForHandbrakeCLI();
@@ -937,29 +941,32 @@ namespace MovieDataCollector
                                             //Launch command line object to pass the commands to
                                             if (System.IO.File.Exists(VideoFilesList[i])) //Skip file if it has been moved or deleted 
                                             {
-                                                try
+
+                                                await Task.Run(()=>
                                                 {
-                                                    using (Process conversionProcess = new Process())
+                                                    try
                                                     {
-                                                        conversionProcess.StartInfo.FileName = handBrakeCLILocation + @"\HandBrakeCLI.exe";
-                                                        conversionProcess.StartInfo.Arguments = "/c " + handBrakeCLIString; //Sets commandline arguments
-                                                        conversionProcess.StartInfo.UseShellExecute = false; //Must be set to false to redirect standard error.
-                                                                                                             //conversionProcess.StartInfo.RedirectStandardError = true; //Allows for redirect of the standard error for the process.
-                                                        conversionProcess.EnableRaisingEvents = true; //Raises process exited event on close
-                                                        conversionProcess.Start();      
-                                                        //StreamReader SError = conversionProcess.StandardError;
-                                                        conversionProcess.PriorityClass = ProcessPriorityClass.High; //starts the process with the highest possible priority.
-                                                        conversionProcess.WaitForExit();
-                                                        //string standardError = SError.ReadToEnd();
-                                                        exitCode = conversionProcess.ExitCode;
+                                                        using (Process conversionProcess = new Process())
+                                                        {
+                                                            conversionProcess.StartInfo.FileName = handBrakeCLILocation + @"\HandBrakeCLI.exe";
+                                                            conversionProcess.StartInfo.Arguments = "/c " + handBrakeCLIString; //Sets commandline arguments
+                                                            conversionProcess.StartInfo.UseShellExecute = false; //Must be set to false to redirect standard error.
+                                                                                                                    //conversionProcess.StartInfo.RedirectStandardError = true; //Allows for redirect of the standard error for the process.
+                                                            conversionProcess.EnableRaisingEvents = true; //Raises process exited event on close
+
+                                                            conversionProcess.Start();
+                                                            conversionProcess.WaitForExit();
+
+                                                            exitCode = conversionProcess.ExitCode;
+                                                        }
                                                     }
-                                                }
-                                                catch
-                                                {
-                                                    exitCode = 4; //Unknown Error
-                                                }
-
-
+                                                    catch
+                                                    {
+                                                        exitCode = 4; //Unknown Error
+                                                    }
+                                                        
+                                                });
+                                                    
                                             }
 
                                             switch (exitCode)
@@ -1013,27 +1020,30 @@ namespace MovieDataCollector
                                     //Launch command line object to pass the commands to
                                     if (System.IO.File.Exists(VideoFilesList[i])) //Skip file if it has been moved or deleted 
                                     {
-                                        try
+                                        await Task.Run(() =>
                                         {
-                                            using (Process conversionProcess = new Process())
+                                            try
                                             {
-                                                conversionProcess.StartInfo.FileName = handBrakeCLILocation + @"\HandBrakeCLI.exe";
-                                                conversionProcess.StartInfo.Arguments = "/c " + handBrakeCLIString; //Sets commandline arguments
-                                                conversionProcess.StartInfo.UseShellExecute = false; //Must be set to false to redirect standard error.
-                                                                                                     //conversionProcess.StartInfo.RedirectStandardError = true; //Allows for redirect of the standard error for the process.
-                                                conversionProcess.EnableRaisingEvents = true; //Raises process exited event on close
-                                                conversionProcess.Start();
-                                                //StreamReader SError = conversionProcess.StandardError;
-                                                conversionProcess.PriorityClass = ProcessPriorityClass.High; //starts the process with the highest possible priority.
-                                                conversionProcess.WaitForExit();
-                                                //string standardError = SError.ReadToEnd();
-                                                exitCode = conversionProcess.ExitCode;
+                                                using (Process conversionProcess = new Process())
+                                                {
+                                                    conversionProcess.StartInfo.FileName = handBrakeCLILocation + @"\HandBrakeCLI.exe";
+                                                    conversionProcess.StartInfo.Arguments = "/c " + handBrakeCLIString; //Sets commandline arguments
+                                                    conversionProcess.StartInfo.UseShellExecute = false; //Must be set to false to redirect standard error.
+                                                                                                         //conversionProcess.StartInfo.RedirectStandardError = true; //Allows for redirect of the standard error for the process.
+                                                    conversionProcess.EnableRaisingEvents = true; //Raises process exited event on close
+
+                                                    conversionProcess.Start();
+                                                    conversionProcess.WaitForExit();
+
+                                                    exitCode = conversionProcess.ExitCode;
+                                                }
                                             }
-                                        }
-                                        catch
-                                        {
-                                            exitCode = 4; //Unknown Error
-                                        }
+                                            catch
+                                            {
+                                                exitCode = 4; //Unknown Error
+                                            }
+
+                                        });
 
 
                                     }
@@ -1091,8 +1101,21 @@ namespace MovieDataCollector
                                 string password = passwordBox.Text;
                                 string sendTo = sendToBox.Text;
 
-                                if (VideoFilesList.Count == 1) { SendNotification(username, password, sendTo, "Movie Data Collector Notification", "The transcoding que initiated " + startTime.ToString() + " failed. HandbrakeCLI exited with code" + exitCode.ToString()); }
-                                if (VideoFilesList.Count > 1) { SendNotification(username, password, sendTo, "Movie Data Collector Notification", "The transcoding que initiated " + startTime.ToString() + " is now complete. " + (VideoFilesList.Count() - Errors.Count()).ToString() + " of " + VideoFilesList.Count().ToString() + " files processed successfully in " + totalProcessingTime); }
+                                if (VideoFilesList.Count == 1)
+                                {
+                                    await Task.Run(() =>
+                                   {
+                                       SendNotification(username, password, sendTo, "Movie Data Collector Notification", "The transcoding que initiated " + startTime.ToString() + " failed. HandbrakeCLI exited with code" + exitCode.ToString());
+                                   });
+                                    
+                                }
+                                if (VideoFilesList.Count > 1)
+                                {
+                                    await Task.Run(() =>
+                                    {
+                                        SendNotification(username, password, sendTo, "Movie Data Collector Notification", "The transcoding que initiated " + startTime.ToString() + " is now complete. " + (VideoFilesList.Count() - Errors.Count()).ToString() + " of " + VideoFilesList.Count().ToString() + " files processed successfully in " + totalProcessingTime);
+                                    });
+                                }
                             }
                         }
                         else if (selectCounter > 0) //Items selected from list
@@ -3379,7 +3402,7 @@ namespace MovieDataCollector
             {
                 if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(sendTo))
                 {
-                    NLabelUpdate("Attempting to send notification", Color.GreenYellow);
+                    //NLabelUpdate("Attempting to send notification", Color.GreenYellow);
 
                     if (!userName.ToUpper().Contains("@GMAIL.COM")) { userName += "@gmail.com"; }
 
@@ -3422,30 +3445,34 @@ namespace MovieDataCollector
                         SmtpServer.EnableSsl = true;
 
                         SmtpServer.Send(mail);
-                        //CustomMessageBox.Show("Notification Sent!", 120, 230, "Notification Message");
-                        NLabelUpdate("Notification sent to : " + sendTo, Color.GreenYellow);
+                        CustomMessageBox.Show("Notification Sent!", 120, 230, "Notification Message");
+                        //NLabelUpdate("Notification sent to : " + sendTo, Color.GreenYellow);
                         CF.UpdateDefaults(); //Stores info in config file
 
                     }
                     catch (Exception ex)
                     {
                         CustomMessageBox.Show("You may have to enable less secure apps access to gmail. See https://support.google.com/accounts/answer/6010255?hl=en" + "/r/n" + ex.ToString(), 600, 300);
-                        NLabelUpdate("Notification failed to send.", Color.Red);
+                        //NLabelUpdate("Notification failed to send.", Color.Red);
                     }
                 }
                 else
                 {
-                    NLabelUpdate("Missing Notification Parameters", Color.Red);
+                    CustomMessageBox.Show("Missing Notifiction Parameters", 600, 300);
+                    //NLabelUpdate("Missing Notification Parameters", Color.Red);
                 }
             }
         }
-        private void TestNotificationButton_Click(object sender, EventArgs e)
+        private async void TestNotificationButton_Click(object sender, EventArgs e)
         {
             string username = usernameBox.Text;
             string password = passwordBox.Text;
             string sendTo = sendToBox.Text;
 
-            SendNotification(username, password, sendTo, "Test Notification", "Notification Test from Movie Data Collector");
+            await Task.Run(() =>
+            {
+                SendNotification(username, password, sendTo, "Test Notification", "Notification Test from Movie Data Collector");
+            });
 
         }
         private void NotificationCheck_CheckedChanged(object sender, EventArgs e)
