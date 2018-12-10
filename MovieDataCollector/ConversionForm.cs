@@ -2514,28 +2514,102 @@ namespace MovieDataCollector
                         }
                     }
                 }
-                outputAudioTrack = "--audio " + (audioTrackNumber + 1).ToString() + " ";
+
+                if(!disableCheckStream2.Checked) //Track 2 Enabled
+                {
+
+                    if (!disableCheckStream3.Checked) //Track 3 Enabled
+                    {
+                        outputAudioTrack = "--audio " + (audioTrackNumber + 1).ToString() + "," + (audioTrackNumber + 1).ToString() + "," + (audioTrackNumber + 1).ToString() + " ";
+                    }
+                    else //Track 3 Disabled
+                    {
+                        outputAudioTrack = "--audio " + (audioTrackNumber + 1).ToString() + "," + (audioTrackNumber + 1).ToString() + " ";
+                    }
+                }
+                else //Track 2 disabled (Assume Track 3 is disabled also)
+                {
+                    outputAudioTrack = "--audio " + (audioTrackNumber + 1).ToString() + " ";
+                }
+
 
                 /*Samplerate***********************************************************************************************************************************************************************************************/
+                string samplerate1 = "";
+                string samplerate2 = "";
+                string samplerate3 = "";
+
+                //Samplerate1
                 if (string.IsNullOrEmpty(sampleRateCombo.Text))
                 {
                     if (videoFile.Audio[audioTrackNumber].SamplingRate / 1000 >= 48)
                     {
-                        outputSampleRate = "--arate 48 "; //Roku Compatible high rate
+                        samplerate1 = "48"; //Roku Compatible high rate
                     }
                     else if(videoFile.Audio[audioTrackNumber].SamplingRate / 1000 == 44.1)
                     {
-                        outputSampleRate = "--arate 44.1 "; //Roku compatible low rate
+                        samplerate1 = "44.1"; //Roku compatible low rate
                     }
                     else
                     {
-                        outputSampleRate = "--arate 48 "; //Default to 48
+                        samplerate1 = "48"; //Default to 48
                     }
                 }
                 else //Use user selected samplerate
                 {
-                    outputSampleRate = "--arate " + sampleRateCombo.Text + " ";
+                    samplerate1 = sampleRateCombo.Text;
                 }
+                
+                //Samplerate 2
+                if(!disableCheckStream2.Checked) //Stream 2 enabled
+                {
+                    if (string.IsNullOrEmpty(sampleRateCombo2.Text))
+                    {
+
+                        if (videoFile.Audio[audioTrackNumber].SamplingRate / 1000 >= 48)
+                        {
+                            samplerate2 = "48"; //Roku Compatible high rate
+                        }
+                        else if (videoFile.Audio[audioTrackNumber].SamplingRate / 1000 == 44.1)
+                        {
+                            samplerate2 = "44.1"; //Roku compatible low rate
+                        }
+                        else
+                        {
+                            samplerate2 = "48"; //Default to 48
+                        }
+                    }
+                    else //Use user selected samplerate
+                    {
+                        samplerate2 = sampleRateCombo2.Text;
+                    }
+                }
+
+                //Samplerate 3
+                if (!disableCheckStream2.Checked) //Stream 3 enabled
+                {
+                    if (string.IsNullOrEmpty(sampleRateCombo3.Text))
+                    {
+
+                        if (videoFile.Audio[audioTrackNumber].SamplingRate / 1000 >= 48)
+                        {
+                            samplerate3 = "48"; //Roku Compatible high rate
+                        }
+                        else if (videoFile.Audio[audioTrackNumber].SamplingRate / 1000 == 44.1)
+                        {
+                            samplerate3 = "44.1"; //Roku compatible low rate
+                        }
+                        else
+                        {
+                            samplerate3 = "48"; //Default to 48
+                        }
+                    }
+                    else //Use user selected samplerate
+                    {
+                        samplerate3 = sampleRateCombo3.Text;
+                    }
+                }
+
+                outputSampleRate = "--arate " + samplerate1 + samplerate2 + samplerate3 + " ";
 
                 /*Bitrate***********************************************************************************************************************************************************************************************/
 
@@ -3540,14 +3614,45 @@ namespace MovieDataCollector
                 mixdownComboBox.Text = mixdownList[0];
 
                 //Update default in dictionary
-                CF.DefaultSettings[""] = mixdownList[0];
+                CF.DefaultSettings["Mixdown"] = mixdownList[0];
             }
             else
             {
                 //Update default in dictionary
-                CF.DefaultSettings[""] = mixdownComboBox.Text;
+                CF.DefaultSettings["Mixdown"] = mixdownComboBox.Text;
             }
         }
+        private void MixdownComboBox2_TextChanged(object sender, EventArgs e)
+        {
+            if (!mixdownList.Contains(mixdownComboBox2.Text))
+            {
+                mixdownComboBox2.Text = mixdownList[0];
+
+                //Update default in dictionary
+                CF.DefaultSettings["Mixdown2"] = mixdownList[0];
+            }
+            else
+            {
+                //Update default in dictionary
+                CF.DefaultSettings["Mixdown2"] = mixdownComboBox2.Text;
+            }
+        }
+        private void MixdownComboBox3_TextChanged(object sender, EventArgs e)
+        {
+            if (!mixdownList.Contains(mixdownComboBox3.Text))
+            {
+                mixdownComboBox3.Text = mixdownList[0];
+
+                //Update default in dictionary
+                CF.DefaultSettings["Mixdown3"] = mixdownList[0];
+            }
+            else
+            {
+                //Update default in dictionary
+                CF.DefaultSettings["Mixdown3"] = mixdownComboBox3.Text;
+            }
+        }
+
         private void AudioBitrateCombo_TextChanged(object sender, EventArgs e)
         {
             double ABitrate;
@@ -3562,6 +3667,35 @@ namespace MovieDataCollector
 
             CF.DefaultSettings["AudioBitrateCap"] = ABitrate.ToString();
         }
+        private void AudioBitrateCombo2_TextChanged(object sender, EventArgs e)
+        {
+            double ABitrate;
+
+            try { double.TryParse(audioBitrateCombo2.Text, out ABitrate); }
+            catch { ABitrate = 192; }
+
+            if (ABitrate > 256) { ABitrate = 256; }
+            if (ABitrate < 64) { ABitrate = 64; }
+
+            audioBitrateCombo2.Text = ABitrate.ToString();
+
+            CF.DefaultSettings["AudioBitrateCap2"] = ABitrate.ToString();
+        }
+        private void AudioBitrateCombo3_TextChanged(object sender, EventArgs e)
+        {
+            double ABitrate;
+
+            try { double.TryParse(audioBitrateCombo3.Text, out ABitrate); }
+            catch { ABitrate = 192; }
+
+            if (ABitrate > 256) { ABitrate = 256; }
+            if (ABitrate < 64) { ABitrate = 64; }
+
+            audioBitrateCombo3.Text = ABitrate.ToString();
+
+            CF.DefaultSettings["AudioBitrateCap3"] = ABitrate.ToString();
+        }
+
         private void SampleRateCombo_TextChanged(object sender, EventArgs e)
         {
             double SRate;
@@ -3579,6 +3713,40 @@ namespace MovieDataCollector
             }
             CF.DefaultSettings["AudioSampleRate"] = sampleRateCombo.Text;
         }
+        private void SampleRateCombo2_TextChanged(object sender, EventArgs e)
+        {
+            double SRate;
+            try { double.TryParse(sampleRateCombo2.Text, out SRate); }
+            catch { SRate = 48; } //Default to 48
+
+            if (SRate > 48) { sampleRateCombo2.Text = "48"; }
+            else if (SRate < 48 && SRate > 44.1)
+            {
+                sampleRateCombo2.Text = "48";
+            }
+            else if (SRate <= 44.1)
+            {
+                sampleRateCombo2.Text = "44.1";
+            }
+            CF.DefaultSettings["AudioSampleRate2"] = sampleRateCombo2.Text;
+        }
+        private void SampleRateCombo3_TextChanged(object sender, EventArgs e)
+        {
+            double SRate;
+            try { double.TryParse(sampleRateCombo3.Text, out SRate); }
+            catch { SRate = 48; } //Default to 48
+
+            if (SRate > 48) { sampleRateCombo3.Text = "48"; }
+            else if (SRate < 48 && SRate > 44.1)
+            {
+                sampleRateCombo3.Text = "48";
+            }
+            else if (SRate <= 44.1)
+            {
+                sampleRateCombo3.Text = "44.1";
+            }
+            CF.DefaultSettings["AudioSampleRate3"] = sampleRateCombo3.Text;
+        }
 
         //Audio combobox leave
         private void AudioCodecComboBox_Leave(object sender, EventArgs e)
@@ -3595,10 +3763,75 @@ namespace MovieDataCollector
                 CF.DefaultSettings["AudioCodec"] = audioCodecComboBox.Text;
             }
         }
+        private void AudioCodecComboBox2_Leave(object sender, EventArgs e)
+        {
+            if (!codecList.Contains(audioCodecComboBox2.Text))
+            {
+                audioCodecComboBox2.Text = codecList[0];
+
+                //Update default in dictionary
+                CF.DefaultSettings["AudioCodec2"] = codecList[0];
+            }
+            else
+            {
+                CF.DefaultSettings["AudioCodec2"] = audioCodecComboBox2.Text;
+            }
+        }
+        private void AudioCodecComboBox3_Leave(object sender, EventArgs e)
+        {
+            if (!codecList.Contains(audioCodecComboBox3.Text))
+            {
+                audioCodecComboBox3.Text = codecList[0];
+
+                //Update default in dictionary
+                CF.DefaultSettings["AudioCodec3"] = codecList[0];
+            }
+            else
+            {
+                CF.DefaultSettings["AudioCodec3"] = audioCodecComboBox3.Text;
+            }
+        }
+
         private void MixdownComboBox_Leave(object sender, EventArgs e)
         {
-            //Need to add code again
+            if(!mixdownList.Contains(mixdownComboBox.Text))
+            {
+                mixdownComboBox.Text = mixdownList[0];
+
+                CF.DefaultSettings["Mixdown"] = mixdownList[0];
+            }
+            else
+            {
+                CF.DefaultSettings["Mixdown"] = mixdownComboBox.Text;
+            }
         }
+        private void MixdownComboBox2_Leave(object sender, EventArgs e)
+        {
+            if(!mixdownList.Contains(mixdownComboBox2.Text))
+            {
+                mixdownComboBox2.Text = mixdownList[0];
+
+                CF.DefaultSettings["Mixdown2"] = mixdownList[0];
+            }
+            else
+            {
+                CF.DefaultSettings["Mixdown2"] = mixdownComboBox2.Text;
+            }
+        }
+        private void MixdownComboBox3_Leave(object sender, EventArgs e)
+        {
+            if (!mixdownList.Contains(mixdownComboBox3.Text))
+            {
+                mixdownComboBox3.Text = mixdownList[0];
+
+                CF.DefaultSettings["Mixdown3"] = mixdownList[0];
+            }
+            else
+            {
+                CF.DefaultSettings["Mixdown3"] = mixdownComboBox3.Text;
+            }
+        }
+
         private void AudioBitrateCombo_Leave(object sender, EventArgs e)
         {
             double ABitrate;
@@ -3613,6 +3846,35 @@ namespace MovieDataCollector
 
             CF.DefaultSettings["AudioBitrateCap"] = ABitrate.ToString();
         }
+        private void AudioBitrateCombo2_Leave(object sender, EventArgs e)
+        {
+            double ABitrate;
+
+            try { double.TryParse(audioBitrateCombo2.Text, out ABitrate); }
+            catch { ABitrate = 192; }
+
+            if (ABitrate > 256) { ABitrate = 256; }
+            if (ABitrate < 64) { ABitrate = 64; }
+
+            audioBitrateCombo2.Text = ABitrate.ToString();
+
+            CF.DefaultSettings["AudioBitrateCap2"] = ABitrate.ToString();
+        }
+        private void AudioBitrateCombo3_Leave(object sender, EventArgs e)
+        {
+            double ABitrate;
+
+            try { double.TryParse(audioBitrateCombo3.Text, out ABitrate); }
+            catch { ABitrate = 192; }
+
+            if (ABitrate > 256) { ABitrate = 256; }
+            if (ABitrate < 64) { ABitrate = 64; }
+
+            audioBitrateCombo3.Text = ABitrate.ToString();
+
+            CF.DefaultSettings["AudioBitrateCap3"] = ABitrate.ToString();
+        }
+
         private void SampleRateCombo_Leave(object sender, EventArgs e)
         {
             double SRate;
@@ -3630,6 +3892,40 @@ namespace MovieDataCollector
             }
             CF.DefaultSettings["AudioSampleRate"] = sampleRateCombo.Text;
         }
+        private void SampleRateCombo2_Leave(object sender, EventArgs e)
+        {
+            double SRate;
+            try { double.TryParse(sampleRateCombo2.Text, out SRate); }
+            catch { SRate = 48; } //Default to 48
+
+            if (SRate > 48) { sampleRateCombo2.Text = "48"; }
+            else if (SRate < 48 && SRate > 44.1)
+            {
+                sampleRateCombo2.Text = "48";
+            }
+            else if (SRate <= 44.1)
+            {
+                sampleRateCombo2.Text = "44.1";
+            }
+            CF.DefaultSettings["AudioSampleRate2"] = sampleRateCombo2.Text;
+        }
+        private void SampleRateCombo3_Leave(object sender, EventArgs e)
+        {
+            double SRate;
+            try { double.TryParse(sampleRateCombo3.Text, out SRate); }
+            catch { SRate = 48; } //Default to 48
+
+            if (SRate > 48) { sampleRateCombo3.Text = "48"; }
+            else if (SRate < 48 && SRate > 44.1)
+            {
+                sampleRateCombo3.Text = "48";
+            }
+            else if (SRate <= 44.1)
+            {
+                sampleRateCombo3.Text = "44.1";
+            }
+            CF.DefaultSettings["AudioSampleRate3"] = sampleRateCombo3.Text;
+        }
 
         //Audio Checkboxes
         private void FilteredAACCheck_CheckedChanged(object sender, EventArgs e)
@@ -3644,6 +3940,31 @@ namespace MovieDataCollector
             }
             
         }
+        private void FilteredAACCheck2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (filteredAACCheck2.Checked)
+            {
+                CF.DefaultSettings["AAC_Passthru2"] = "True";
+            }
+            else
+            {
+                CF.DefaultSettings["AAC_Passthru2"] = "False";
+            }
+
+        }
+        private void FilteredAACCheck3_CheckedChanged(object sender, EventArgs e)
+        {
+            if (filteredAACCheck3.Checked)
+            {
+                CF.DefaultSettings["AAC_Passthru3"] = "True";
+            }
+            else
+            {
+                CF.DefaultSettings["AAC_Passthru3"] = "False";
+            }
+
+        }
+
         private void FilteredAC3Check_CheckedChanged(object sender, EventArgs e)
         {
             if (filteredAC3Check.Checked)
@@ -3655,6 +3976,56 @@ namespace MovieDataCollector
                 CF.DefaultSettings["AC3_Passthru"] = "False";
             }
         }
+        private void FilteredAC3Check2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (filteredAC3Check2.Checked)
+            {
+                CF.DefaultSettings["AC3_Passthru2"] = "True";
+            }
+            else
+            {
+                CF.DefaultSettings["AC3_Passthru2"] = "False";
+            }
+        }
+        private void FilteredAC3Check3_CheckedChanged(object sender, EventArgs e)
+        {
+            if (filteredAC3Check3.Checked)
+            {
+                CF.DefaultSettings["AC3_Passthru3"] = "True";
+            }
+            else
+            {
+                CF.DefaultSettings["AC3_Passthru3"] = "False";
+            }
+        }
+
+        private void FilteredEAC3Check_CheckedChanged(object sender, EventArgs e)
+        {
+            if (filteredEAC3Check.Checked)
+            {
+                CF.DefaultSettings["EAC3_Passthru"] = "True";
+            }
+            else
+            {
+                CF.DefaultSettings["EAC3_Passthru"] = "False";
+            }
+        }
+        private void FilteredEAC3Check2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (filteredEAC3Check2.Checked)
+            {
+                CF.DefaultSettings["EAC3_Passthru2"] = "True";
+            }
+            else
+            {
+                CF.DefaultSettings["EAC3_Passthru2"] = "False";
+            }
+        }
+        private void FilteredEAC3Check3_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
         private void FilteredDTSCheck_CheckedChanged(object sender, EventArgs e)
         {
             if (filteredDTSCheck.Checked)
@@ -3664,6 +4035,164 @@ namespace MovieDataCollector
             else
             {
                 CF.DefaultSettings["DTS_Passthru"] = "False";
+            }
+        }
+        private void FilteredDTSCheck2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (filteredDTSCheck2.Checked)
+            {
+                CF.DefaultSettings["DTS_Passthru2"] = "True";
+            }
+            else
+            {
+                CF.DefaultSettings["DTS_Passthru2"] = "False";
+            }
+        }
+        private void FilteredDTSCheck3_CheckedChanged(object sender, EventArgs e)
+        {
+            if (filteredDTSCheck3.Checked)
+            {
+                CF.DefaultSettings["DTS_Passthru3"] = "True";
+            }
+            else
+            {
+                CF.DefaultSettings["DTS_Passthru3"] = "False";
+            }
+        }
+
+        private void FilteredDTSHDCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            if (filteredDTSHDCheck.Checked)
+            {
+                CF.DefaultSettings["DTSHD_Passthru"] = "True";
+            }
+            else
+            {
+                CF.DefaultSettings["DTSHD_Passthru"] = "False";
+            }
+        }
+        private void FilteredDTSHDCheck2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (filteredDTSHDCheck2.Checked)
+            {
+                CF.DefaultSettings["DTSHD_Passthru2"] = "True";
+            }
+            else
+            {
+                CF.DefaultSettings["DTSHD_Passthru2"] = "False";
+            }
+        }
+        private void FilteredDTSHDCheck3_CheckedChanged(object sender, EventArgs e)
+        {
+            if (filteredDTSHDCheck3.Checked)
+            {
+                CF.DefaultSettings["DTSHD_Passthru3"] = "True";
+            }
+            else
+            {
+                CF.DefaultSettings["DTSHD_Passthru3"] = "False";
+            }
+        }
+
+        private void FilteredTrueHDCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            if (filteredTrueHDCheck.Checked)
+            {
+                CF.DefaultSettings["TrueHD_Passthru"] = "True";
+            }
+            else
+            {
+                CF.DefaultSettings["TrueHD_Passthru"] = "False";
+            }
+        }
+        private void FilteredTrueHDCheck2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (filteredTrueHDCheck2.Checked)
+            {
+                CF.DefaultSettings["TrueHD_Passthru2"] = "True";
+            }
+            else
+            {
+                CF.DefaultSettings["TrueHD_Passthru2"] = "False";
+            }
+        }
+        private void FilteredTrueHDCheck3_CheckedChanged(object sender, EventArgs e)
+        {
+            if (filteredTrueHDCheck3.Checked)
+            {
+                CF.DefaultSettings["TrueHD_Passthru3"] = "True";
+            }
+            else
+            {
+                CF.DefaultSettings["TrueHD_Passthru3"] = "False";
+            }
+        }
+
+        private void FilteredMP3Check_CheckedChanged(object sender, EventArgs e)
+        {
+            if (filteredMP3Check.Checked)
+            {
+                CF.DefaultSettings["MP3_Passthru"] = "True";
+            }
+            else
+            {
+                CF.DefaultSettings["MP3_Passthru"] = "False";
+            }
+        }
+        private void FilteredMP3Check2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (filteredMP3Check2.Checked)
+            {
+                CF.DefaultSettings["MP3_Passthru2"] = "True";
+            }
+            else
+            {
+                CF.DefaultSettings["MP3_Passthru2"] = "False";
+            }
+        }
+        private void FilteredMP3Check3_CheckedChanged(object sender, EventArgs e)
+        {
+            if (filteredMP3Check3.Checked)
+            {
+                CF.DefaultSettings["MP3_Passthru3"] = "True";
+            }
+            else
+            {
+                CF.DefaultSettings["MP3_Passthru3"] = "False";
+            }
+        }
+
+        private void FilteredFLACCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            if (filteredFLACCheck.Checked)
+            {
+                CF.DefaultSettings["FLAC_Passthru"] = "True";
+            }
+            else
+            {
+                CF.DefaultSettings["FLAC_Passthru"] = "False";
+            }
+        }
+        private void FilteredFLACCheck2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (filteredFLACCheck2.Checked)
+            {
+                CF.DefaultSettings["FLAC_Passthru2"] = "True";
+            }
+            else
+            {
+                CF.DefaultSettings["FLAC_Passthru2"] = "False";
+            }
+        }
+        private void FilteredFLACCheck3_CheckedChanged(object sender, EventArgs e)
+        {
+            if (filteredFLACCheck3.Checked)
+            {
+                CF.DefaultSettings["FLAC_Passthru3"] = "True";
+            }
+            else
+            {
+                CF.DefaultSettings["FLAC_Passthru3"] = "False";
             }
         }
 
@@ -4528,14 +5057,7 @@ namespace MovieDataCollector
                     audioCodecComboBox.Text = PF.PresetList[index]["AudioCodec"];
                     mixdownComboBox.Text = PF.PresetList[index]["AudioMixdown"];
                     sampleRateCombo.Text = PF.PresetList[index]["AudioSampleRate"];
-
-                    audioCodecComboBox2.Text = PF.PresetList[index]["AudioCodec2"];
-                    mixdownComboBox2.Text = PF.PresetList[index]["AudioMixdown2"];
-                    sampleRateCombo2.Text = PF.PresetList[index]["AudioSampleRate2"];
-
-                    audioCodecComboBox3.Text = PF.PresetList[index]["AudioCodec3"];
-                    mixdownComboBox3.Text = PF.PresetList[index]["AudioMixdown3"];
-                    sampleRateCombo3.Text = PF.PresetList[index]["AudioSampleRate3"];
+                    audioBitrateCombo.Text = PF.PresetList[index]["AudioBitrate"];
 
                     if (PF.PresetList[index]["FilteredAACCheck"] == "true") { filteredAACCheck.Checked = true; } else { filteredAACCheck.Checked = false; }
                     if (PF.PresetList[index]["FilteredAC3Check"] == "true") { filteredAC3Check.Checked = true; } else { filteredAC3Check.Checked = false; }
@@ -4546,29 +5068,119 @@ namespace MovieDataCollector
                     if (PF.PresetList[index]["FilteredMP3Check"] == "true") { filteredMP3Check.Checked = true; } else { filteredMP3Check.Checked = false; }
                     if (PF.PresetList[index]["FilteredFLACCheck"] == "true") { filteredFLACCheck.Checked = true; } else { filteredFLACCheck.Checked = false; }
 
+                    if (PF.PresetList[index]["EnableTrack2"] == "true")
+                    {
+                        audioCodecComboBox2.Enabled = true;
+                        mixdownComboBox2.Enabled = true;
+                        sampleRateCombo2.Enabled = true;
+                        audioBitrateCombo2.Enabled = true;
+
+                        audioCodecComboBox2.Text = PF.PresetList[index]["AudioCodec2"];
+                        mixdownComboBox2.Text = PF.PresetList[index]["AudioMixdown2"];
+                        sampleRateCombo2.Text = PF.PresetList[index]["AudioSampleRate2"];
+                        audioBitrateCombo2.Text = PF.PresetList[index]["AudioBitrate2"];
+
+                        if (PF.PresetList[index]["AudioCodec2"] == "Filtered Passthru")
+                        {
+                            filteredAACCheck2.Visible = true;
+                            filteredAC3Check2.Visible = true;
+                            filteredEAC3Check2.Visible = true;
+                            filteredDTSCheck2.Visible = true;
+                            filteredDTSHDCheck2.Visible = true;
+                            filteredTrueHDCheck2.Visible = true;
+                            filteredFLACCheck2.Visible = true;
+                            filteredMP3Check2.Visible = true;
+
+                            if (PF.PresetList[index]["FilteredAACCheck2"] == "true") { filteredAACCheck2.Checked = true; } else { filteredAACCheck2.Checked = false; }
+                            if (PF.PresetList[index]["FilteredAC3Check2"] == "true") { filteredAC3Check2.Checked = true; } else { filteredAC3Check2.Checked = false; }
+                            if (PF.PresetList[index]["FilteredEAC3Check2"] == "true") { filteredEAC3Check2.Checked = true; } else { filteredEAC3Check2.Checked = false; }
+                            if (PF.PresetList[index]["FilteredDTSCheck2"] == "true") { filteredDTSCheck2.Checked = true; } else { filteredDTSCheck2.Checked = false; }
+                            if (PF.PresetList[index]["FilteredDTSHDCheck2"] == "true") { filteredDTSHDCheck2.Checked = true; } else { filteredDTSHDCheck2.Checked = false; }
+                            if (PF.PresetList[index]["FilteredTrueHDCheck2"] == "true") { filteredTrueHDCheck2.Checked = true; } else { filteredTrueHDCheck2.Checked = false; }
+                            if (PF.PresetList[index]["FilteredMP3Check2"] == "true") { filteredMP3Check2.Checked = true; } else { filteredMP3Check2.Checked = false; }
+                            if (PF.PresetList[index]["FilteredFLACCheck2"] == "true") { filteredFLACCheck2.Checked = true; } else { filteredFLACCheck2.Checked = false; }
+                        }
+
+                    }
+                    else
+                    {
+                        audioCodecComboBox2.Text = "";
+                        mixdownComboBox2.Text = "";
+                        sampleRateCombo2.Text = "";
+                        audioBitrateCombo2.Text = "";
+
+                        audioCodecComboBox2.Enabled = false;
+                        mixdownComboBox2.Enabled = false;
+                        sampleRateCombo2.Enabled = false;
+                        audioBitrateCombo2.Enabled = false;
+
+                        filteredAACCheck2.Visible = false;
+                        filteredAC3Check2.Visible = false;
+                        filteredEAC3Check2.Visible = false;
+                        filteredDTSCheck2.Visible = false;
+                        filteredDTSHDCheck2.Visible = false;
+                        filteredTrueHDCheck2.Visible = false;
+                        filteredFLACCheck2.Visible = false;
+                        filteredMP3Check2.Visible = false;
+                    }
 
 
-                    if (PF.PresetList[index]["FilteredAACCheck2"] == "true") { filteredAACCheck2.Checked = true; } else { filteredAACCheck2.Checked = false; }
-                    if (PF.PresetList[index]["FilteredAC3Check2"] == "true") { filteredAC3Check2.Checked = true; } else { filteredAC3Check2.Checked = false; }
-                    if (PF.PresetList[index]["FilteredEAC3Check2"] == "true") { filteredEAC3Check2.Checked = true; } else { filteredEAC3Check2.Checked = false; }
-                    if (PF.PresetList[index]["FilteredDTSCheck2"] == "true") { filteredDTSCheck2.Checked = true; } else { filteredDTSCheck2.Checked = false; }
-                    if (PF.PresetList[index]["FilteredDTSHDCheck2"] == "true") { filteredDTSHDCheck2.Checked = true; } else { filteredDTSHDCheck2.Checked = false; }
-                    if (PF.PresetList[index]["FilteredTrueHDCheck2"] == "true") { filteredTrueHDCheck2.Checked = true; } else { filteredTrueHDCheck2.Checked = false; }
-                    if (PF.PresetList[index]["FilteredMP3Check2"] == "true") { filteredMP3Check2.Checked = true; } else { filteredMP3Check2.Checked = false; }
-                    if (PF.PresetList[index]["FilteredFLACCheck2"] == "true") { filteredFLACCheck2.Checked = true; } else { filteredFLACCheck2.Checked = false; }
+                    if (PF.PresetList[index]["EnableTrack3"] == "true")
+                    {
+                        audioCodecComboBox3.Enabled = true;
+                        mixdownComboBox3.Enabled = true;
+                        sampleRateCombo3.Enabled = true;
+                        audioBitrateCombo3.Enabled = true;
 
-                    if (PF.PresetList[index]["FilteredAACCheck3"] == "true") { filteredAACCheck3.Checked = true; } else { filteredAACCheck3.Checked = false; }
-                    if (PF.PresetList[index]["FilteredAC3Check3"] == "true") { filteredAC3Check3.Checked = true; } else { filteredAC3Check3.Checked = false; }
-                    if (PF.PresetList[index]["FilteredEAC3Check3"] == "true") { filteredEAC3Check3.Checked = true; } else { filteredEAC3Check3.Checked = false; }
-                    if (PF.PresetList[index]["FilteredDTSCheck3"] == "true") { filteredDTSCheck3.Checked = true; } else { filteredDTSCheck3.Checked = false; }
-                    if (PF.PresetList[index]["FilteredDTSHDCheck3"] == "true") { filteredDTSHDCheck3.Checked = true; } else { filteredDTSHDCheck3.Checked = false; }
-                    if (PF.PresetList[index]["FilteredTrueHDCheck3"] == "true") { filteredTrueHDCheck3.Checked = true; } else { filteredTrueHDCheck3.Checked = false; }
-                    if (PF.PresetList[index]["FilteredMP3Check3"] == "true") { filteredMP3Check3.Checked = true; } else { filteredMP3Check3.Checked = false; }
-                    if (PF.PresetList[index]["FilteredFLACCheck3"] == "true") { filteredFLACCheck3.Checked = true; } else { filteredFLACCheck3.Checked = false; }
+                        audioCodecComboBox3.Text = PF.PresetList[index]["AudioCodec3"];
+                        mixdownComboBox3.Text = PF.PresetList[index]["AudioMixdown3"];
+                        sampleRateCombo3.Text = PF.PresetList[index]["AudioSampleRate3"];
+                        audioBitrateCombo3.Text = PF.PresetList[index]["AudioBitrate3"];
 
-                    audioBitrateCombo.Text = PF.PresetList[index]["AudioBitrate"];
-                    audioBitrateCombo2.Text = PF.PresetList[index]["AudioBitrate2"];
-                    audioBitrateCombo3.Text = PF.PresetList[index]["AudioBitrate3"];
+
+                        if (PF.PresetList[index]["AudioCodec3"] == "Filtered Passthru")
+                        {
+                            filteredAACCheck3.Visible = true;
+                            filteredAC3Check3.Visible = true;
+                            filteredEAC3Check3.Visible = true;
+                            filteredDTSCheck3.Visible = true;
+                            filteredDTSHDCheck3.Visible = true;
+                            filteredTrueHDCheck3.Visible = true;
+                            filteredFLACCheck3.Visible = true;
+                            filteredMP3Check3.Visible = true;
+
+                            if (PF.PresetList[index]["FilteredAACCheck3"] == "true") { filteredAACCheck3.Checked = true; } else { filteredAACCheck3.Checked = false; }
+                            if (PF.PresetList[index]["FilteredAC3Check3"] == "true") { filteredAC3Check3.Checked = true; } else { filteredAC3Check3.Checked = false; }
+                            if (PF.PresetList[index]["FilteredEAC3Check3"] == "true") { filteredEAC3Check3.Checked = true; } else { filteredEAC3Check3.Checked = false; }
+                            if (PF.PresetList[index]["FilteredDTSCheck3"] == "true") { filteredDTSCheck3.Checked = true; } else { filteredDTSCheck3.Checked = false; }
+                            if (PF.PresetList[index]["FilteredDTSHDCheck3"] == "true") { filteredDTSHDCheck3.Checked = true; } else { filteredDTSHDCheck3.Checked = false; }
+                            if (PF.PresetList[index]["FilteredTrueHDCheck3"] == "true") { filteredTrueHDCheck3.Checked = true; } else { filteredTrueHDCheck3.Checked = false; }
+                            if (PF.PresetList[index]["FilteredMP3Check3"] == "true") { filteredMP3Check3.Checked = true; } else { filteredMP3Check3.Checked = false; }
+                            if (PF.PresetList[index]["FilteredFLACCheck3"] == "true") { filteredFLACCheck3.Checked = true; } else { filteredFLACCheck3.Checked = false; }
+                        }
+
+                    }
+                    else
+                    {
+                        audioCodecComboBox3.Text = "";
+                        mixdownComboBox3.Text = "";
+                        sampleRateCombo3.Text = "";
+                        audioBitrateCombo3.Text = "";
+
+                        audioCodecComboBox3.Enabled = false;
+                        mixdownComboBox3.Enabled = false;
+                        sampleRateCombo3.Enabled = false;
+                        audioBitrateCombo3.Enabled = false;
+
+                        filteredAACCheck3.Visible = false;
+                        filteredAC3Check3.Visible = false;
+                        filteredEAC3Check3.Visible = false;
+                        filteredDTSCheck3.Visible = false;
+                        filteredDTSHDCheck3.Visible = false;
+                        filteredTrueHDCheck3.Visible = false;
+                        filteredFLACCheck3.Visible = false;
+                        filteredMP3Check3.Visible = false;
+                    }
 
                     encoderSpeedCombo.Text = PF.PresetList[index]["EncoderSpeed"];
                     frameRateModeCombo.Text = PF.PresetList[index]["FrameRateMode"];
@@ -4592,6 +5204,8 @@ namespace MovieDataCollector
             
         }
 
+
+
         private void CompatibilityCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch (compatibilityCombo.SelectedIndex)
@@ -4610,7 +5224,6 @@ namespace MovieDataCollector
                     break;
             }
         }
-
         private void disableCheckStream2_CheckedChanged(object sender, EventArgs e)
         {
             if (disableCheckStream2.Checked == false)
@@ -4619,6 +5232,7 @@ namespace MovieDataCollector
                 mixdownComboBox2.Enabled = true;
                 sampleRateCombo2.Enabled = true;
                 audioBitrateCombo2.Enabled = true;
+
                 filteredAACCheck2.Enabled = true;
                 filteredAC3Check2.Enabled = true;
                 filteredDTSCheck2.Enabled = true;
@@ -4627,6 +5241,15 @@ namespace MovieDataCollector
                 filteredTrueHDCheck2.Enabled = true;
                 filteredMP3Check2.Enabled = true;
                 filteredFLACCheck2.Enabled = true;
+
+                filteredAACCheck2.Visible = true;
+                filteredAC3Check2.Visible = true;
+                filteredDTSCheck2.Visible = true;
+                filteredEAC3Check2.Visible = true;
+                filteredDTSHDCheck2.Visible = true;
+                filteredTrueHDCheck2.Visible = true;
+                filteredMP3Check2.Visible = true;
+                filteredFLACCheck2.Visible = true;
             }
             else
             {
@@ -4634,6 +5257,7 @@ namespace MovieDataCollector
                 mixdownComboBox2.Enabled = false;
                 sampleRateCombo2.Enabled = false;
                 audioBitrateCombo2.Enabled = false;
+
                 filteredAACCheck2.Enabled = false;
                 filteredAC3Check2.Enabled = false;
                 filteredDTSCheck2.Enabled = false;
@@ -4642,9 +5266,17 @@ namespace MovieDataCollector
                 filteredTrueHDCheck2.Enabled = false;
                 filteredMP3Check2.Enabled = false;
                 filteredFLACCheck2.Enabled = false;
+
+                filteredAACCheck2.Visible = false;
+                filteredAC3Check2.Visible = false;
+                filteredDTSCheck2.Visible = false;
+                filteredEAC3Check2.Visible = false;
+                filteredDTSHDCheck2.Visible = false;
+                filteredTrueHDCheck2.Visible = false;
+                filteredMP3Check2.Visible = false;
+                filteredFLACCheck2.Visible = false;
             }
         }
-
         private void disableCheckStream3_CheckedChanged(object sender, EventArgs e)
         {
             if (disableCheckStream3.Checked == false)
@@ -4653,6 +5285,7 @@ namespace MovieDataCollector
                 mixdownComboBox3.Enabled = true;
                 sampleRateCombo3.Enabled = true;
                 audioBitrateCombo3.Enabled = true;
+
                 filteredAACCheck3.Enabled = true;
                 filteredAC3Check3.Enabled = true;
                 filteredDTSCheck3.Enabled = true;
@@ -4661,6 +5294,15 @@ namespace MovieDataCollector
                 filteredTrueHDCheck3.Enabled = true;
                 filteredMP3Check3.Enabled = true;
                 filteredFLACCheck3.Enabled = true;
+
+                filteredAACCheck3.Visible = true;
+                filteredAC3Check3.Visible = true;
+                filteredDTSCheck3.Visible = true;
+                filteredEAC3Check3.Visible = true;
+                filteredDTSHDCheck3.Visible = true;
+                filteredTrueHDCheck3.Visible = true;
+                filteredMP3Check3.Visible = true;
+                filteredFLACCheck3.Visible = true;
             }
             else
             {
@@ -4668,6 +5310,7 @@ namespace MovieDataCollector
                 mixdownComboBox3.Enabled = false;
                 sampleRateCombo3.Enabled = false;
                 audioBitrateCombo3.Enabled = false;
+
                 filteredAACCheck3.Enabled = false;
                 filteredAC3Check3.Enabled = false;
                 filteredDTSCheck3.Enabled = false;
@@ -4676,6 +5319,15 @@ namespace MovieDataCollector
                 filteredTrueHDCheck3.Enabled = false;
                 filteredMP3Check3.Enabled = false;
                 filteredFLACCheck3.Enabled = false;
+
+                filteredAACCheck3.Visible = false;
+                filteredAC3Check3.Visible = false;
+                filteredDTSCheck3.Visible = false;
+                filteredEAC3Check3.Visible = false;
+                filteredDTSHDCheck3.Visible = false;
+                filteredTrueHDCheck3.Visible = false;
+                filteredMP3Check3.Visible = false;
+                filteredFLACCheck3.Visible = false;
             }
         }
 

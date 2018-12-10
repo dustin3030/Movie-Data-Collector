@@ -53,6 +53,11 @@
             this.audioSetingTabControl = new System.Windows.Forms.TabControl();
             this.audioPage1 = new System.Windows.Forms.TabPage();
             this.codecLabel = new System.Windows.Forms.Label();
+            this.filteredFLACCheck = new System.Windows.Forms.CheckBox();
+            this.filteredMP3Check = new System.Windows.Forms.CheckBox();
+            this.filteredEAC3Check = new System.Windows.Forms.CheckBox();
+            this.filteredTrueHDCheck = new System.Windows.Forms.CheckBox();
+            this.filteredDTSHDCheck = new System.Windows.Forms.CheckBox();
             this.filteredDTSCheck = new System.Windows.Forms.CheckBox();
             this.mixdownLabel = new System.Windows.Forms.Label();
             this.filteredAC3Check = new System.Windows.Forms.CheckBox();
@@ -68,8 +73,13 @@
             this.audioPage2 = new System.Windows.Forms.TabPage();
             this.disableCheckStream2 = new System.Windows.Forms.CheckBox();
             this.codecLabel2 = new System.Windows.Forms.Label();
+            this.filteredDTSHDCheck2 = new System.Windows.Forms.CheckBox();
+            this.filteredFLACCheck2 = new System.Windows.Forms.CheckBox();
+            this.filteredMP3Check2 = new System.Windows.Forms.CheckBox();
             this.filteredDTSCheck2 = new System.Windows.Forms.CheckBox();
             this.mixdownLabel2 = new System.Windows.Forms.Label();
+            this.filteredEAC3Check2 = new System.Windows.Forms.CheckBox();
+            this.filteredTrueHDCheck2 = new System.Windows.Forms.CheckBox();
             this.filteredAC3Check2 = new System.Windows.Forms.CheckBox();
             this.audioCodecComboBox2 = new System.Windows.Forms.ComboBox();
             this.filteredAACCheck2 = new System.Windows.Forms.CheckBox();
@@ -85,6 +95,11 @@
             this.codecLabel3 = new System.Windows.Forms.Label();
             this.filteredDTSCheck3 = new System.Windows.Forms.CheckBox();
             this.mixdownLabel3 = new System.Windows.Forms.Label();
+            this.filteredFLACCheck3 = new System.Windows.Forms.CheckBox();
+            this.filteredMP3Check3 = new System.Windows.Forms.CheckBox();
+            this.filteredTrueHDCheck3 = new System.Windows.Forms.CheckBox();
+            this.filteredDTSHDCheck3 = new System.Windows.Forms.CheckBox();
+            this.filteredEAC3Check3 = new System.Windows.Forms.CheckBox();
             this.filteredAC3Check3 = new System.Windows.Forms.CheckBox();
             this.audioCodecComboBox3 = new System.Windows.Forms.ComboBox();
             this.filteredAACCheck3 = new System.Windows.Forms.CheckBox();
@@ -141,21 +156,6 @@
             this.conversionSettingsLabel = new System.Windows.Forms.Label();
             this.compatibilitySelectionLabel = new System.Windows.Forms.Label();
             this.invisibleCloseButton = new System.Windows.Forms.Button();
-            this.filteredDTSHDCheck = new System.Windows.Forms.CheckBox();
-            this.filteredTrueHDCheck = new System.Windows.Forms.CheckBox();
-            this.filteredEAC3Check = new System.Windows.Forms.CheckBox();
-            this.filteredMP3Check = new System.Windows.Forms.CheckBox();
-            this.filteredFLACCheck = new System.Windows.Forms.CheckBox();
-            this.filteredEAC3Check2 = new System.Windows.Forms.CheckBox();
-            this.filteredTrueHDCheck2 = new System.Windows.Forms.CheckBox();
-            this.filteredDTSHDCheck2 = new System.Windows.Forms.CheckBox();
-            this.filteredMP3Check2 = new System.Windows.Forms.CheckBox();
-            this.filteredFLACCheck2 = new System.Windows.Forms.CheckBox();
-            this.filteredEAC3Check3 = new System.Windows.Forms.CheckBox();
-            this.filteredDTSHDCheck3 = new System.Windows.Forms.CheckBox();
-            this.filteredTrueHDCheck3 = new System.Windows.Forms.CheckBox();
-            this.filteredMP3Check3 = new System.Windows.Forms.CheckBox();
-            this.filteredFLACCheck3 = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.selectionPicturebox)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -482,6 +482,66 @@
             this.codecLabel.TabIndex = 2;
             this.codecLabel.Text = "Codec";
             // 
+            // filteredFLACCheck
+            // 
+            this.filteredFLACCheck.AutoSize = true;
+            this.filteredFLACCheck.Location = new System.Drawing.Point(446, 39);
+            this.filteredFLACCheck.Name = "filteredFLACCheck";
+            this.filteredFLACCheck.Size = new System.Drawing.Size(56, 17);
+            this.filteredFLACCheck.TabIndex = 7;
+            this.filteredFLACCheck.Text = "FLAC";
+            this.filteredFLACCheck.UseVisualStyleBackColor = true;
+            this.filteredFLACCheck.Visible = false;
+            this.filteredFLACCheck.CheckedChanged += new System.EventHandler(this.FilteredFLACCheck_CheckedChanged);
+            // 
+            // filteredMP3Check
+            // 
+            this.filteredMP3Check.AutoSize = true;
+            this.filteredMP3Check.Location = new System.Drawing.Point(446, 19);
+            this.filteredMP3Check.Name = "filteredMP3Check";
+            this.filteredMP3Check.Size = new System.Drawing.Size(51, 17);
+            this.filteredMP3Check.TabIndex = 7;
+            this.filteredMP3Check.Text = "MP3";
+            this.filteredMP3Check.UseVisualStyleBackColor = true;
+            this.filteredMP3Check.Visible = false;
+            this.filteredMP3Check.CheckedChanged += new System.EventHandler(this.FilteredMP3Check_CheckedChanged);
+            // 
+            // filteredEAC3Check
+            // 
+            this.filteredEAC3Check.AutoSize = true;
+            this.filteredEAC3Check.Location = new System.Drawing.Point(314, 19);
+            this.filteredEAC3Check.Name = "filteredEAC3Check";
+            this.filteredEAC3Check.Size = new System.Drawing.Size(61, 17);
+            this.filteredEAC3Check.TabIndex = 7;
+            this.filteredEAC3Check.Text = "E-AC3";
+            this.filteredEAC3Check.UseVisualStyleBackColor = true;
+            this.filteredEAC3Check.Visible = false;
+            this.filteredEAC3Check.CheckedChanged += new System.EventHandler(this.FilteredEAC3Check_CheckedChanged);
+            // 
+            // filteredTrueHDCheck
+            // 
+            this.filteredTrueHDCheck.AutoSize = true;
+            this.filteredTrueHDCheck.Location = new System.Drawing.Point(374, 41);
+            this.filteredTrueHDCheck.Name = "filteredTrueHDCheck";
+            this.filteredTrueHDCheck.Size = new System.Drawing.Size(70, 17);
+            this.filteredTrueHDCheck.TabIndex = 7;
+            this.filteredTrueHDCheck.Text = "TrueHD";
+            this.filteredTrueHDCheck.UseVisualStyleBackColor = true;
+            this.filteredTrueHDCheck.Visible = false;
+            this.filteredTrueHDCheck.CheckedChanged += new System.EventHandler(this.FilteredTrueHDCheck_CheckedChanged);
+            // 
+            // filteredDTSHDCheck
+            // 
+            this.filteredDTSHDCheck.AutoSize = true;
+            this.filteredDTSHDCheck.Location = new System.Drawing.Point(374, 19);
+            this.filteredDTSHDCheck.Name = "filteredDTSHDCheck";
+            this.filteredDTSHDCheck.Size = new System.Drawing.Size(73, 17);
+            this.filteredDTSHDCheck.TabIndex = 7;
+            this.filteredDTSHDCheck.Text = "DTS-HD";
+            this.filteredDTSHDCheck.UseVisualStyleBackColor = true;
+            this.filteredDTSHDCheck.Visible = false;
+            this.filteredDTSHDCheck.CheckedChanged += new System.EventHandler(this.FilteredDTSHDCheck_CheckedChanged);
+            // 
             // filteredDTSCheck
             // 
             this.filteredDTSCheck.AutoSize = true;
@@ -531,6 +591,7 @@
             this.audioCodecComboBox.TabIndex = 0;
             this.audioCodecComboBox.SelectedIndexChanged += new System.EventHandler(this.AudioCodecComboBox_SelectedIndexChanged);
             this.audioCodecComboBox.TextChanged += new System.EventHandler(this.AudioCodecComboBox_TextChanged);
+            this.audioCodecComboBox.Leave += new System.EventHandler(this.AudioCodecComboBox_Leave);
             // 
             // filteredAACCheck
             // 
@@ -576,6 +637,7 @@
             this.mixdownComboBox.TabIndex = 0;
             this.mixdownComboBox.SelectedIndexChanged += new System.EventHandler(this.MixdownComboBox_SelectedIndexChanged);
             this.mixdownComboBox.TextChanged += new System.EventHandler(this.MixdownComboBox_TextChanged);
+            this.mixdownComboBox.Leave += new System.EventHandler(this.MixdownComboBox_Leave);
             // 
             // audioBitrateCombo
             // 
@@ -602,7 +664,7 @@
             this.audioBitrateCombo.TabIndex = 6;
             this.audioBitrateCombo.SelectedIndexChanged += new System.EventHandler(this.AudioBitrateCombo_SelectedIndexChanged);
             this.audioBitrateCombo.TextChanged += new System.EventHandler(this.AudioBitrateCombo_TextChanged);
-            this.audioBitrateCombo.Leave += new System.EventHandler(this.AudioCodecComboBox_Leave);
+            this.audioBitrateCombo.Leave += new System.EventHandler(this.AudioBitrateCombo_Leave);
             // 
             // sampleRateCombo
             // 
@@ -691,6 +753,42 @@
             this.codecLabel2.TabIndex = 11;
             this.codecLabel2.Text = "Codec";
             // 
+            // filteredDTSHDCheck2
+            // 
+            this.filteredDTSHDCheck2.AutoSize = true;
+            this.filteredDTSHDCheck2.Location = new System.Drawing.Point(374, 19);
+            this.filteredDTSHDCheck2.Name = "filteredDTSHDCheck2";
+            this.filteredDTSHDCheck2.Size = new System.Drawing.Size(73, 17);
+            this.filteredDTSHDCheck2.TabIndex = 18;
+            this.filteredDTSHDCheck2.Text = "DTS-HD";
+            this.filteredDTSHDCheck2.UseVisualStyleBackColor = true;
+            this.filteredDTSHDCheck2.Visible = false;
+            this.filteredDTSHDCheck2.CheckedChanged += new System.EventHandler(this.FilteredDTSHDCheck2_CheckedChanged);
+            // 
+            // filteredFLACCheck2
+            // 
+            this.filteredFLACCheck2.AutoSize = true;
+            this.filteredFLACCheck2.Location = new System.Drawing.Point(446, 39);
+            this.filteredFLACCheck2.Name = "filteredFLACCheck2";
+            this.filteredFLACCheck2.Size = new System.Drawing.Size(56, 17);
+            this.filteredFLACCheck2.TabIndex = 18;
+            this.filteredFLACCheck2.Text = "FLAC";
+            this.filteredFLACCheck2.UseVisualStyleBackColor = true;
+            this.filteredFLACCheck2.Visible = false;
+            this.filteredFLACCheck2.CheckedChanged += new System.EventHandler(this.FilteredFLACCheck2_CheckedChanged);
+            // 
+            // filteredMP3Check2
+            // 
+            this.filteredMP3Check2.AutoSize = true;
+            this.filteredMP3Check2.Location = new System.Drawing.Point(446, 19);
+            this.filteredMP3Check2.Name = "filteredMP3Check2";
+            this.filteredMP3Check2.Size = new System.Drawing.Size(51, 17);
+            this.filteredMP3Check2.TabIndex = 18;
+            this.filteredMP3Check2.Text = "MP3";
+            this.filteredMP3Check2.UseVisualStyleBackColor = true;
+            this.filteredMP3Check2.Visible = false;
+            this.filteredMP3Check2.CheckedChanged += new System.EventHandler(this.FilteredMP3Check2_CheckedChanged);
+            // 
             // filteredDTSCheck2
             // 
             this.filteredDTSCheck2.AutoSize = true;
@@ -701,6 +799,7 @@
             this.filteredDTSCheck2.Text = "DTS";
             this.filteredDTSCheck2.UseVisualStyleBackColor = true;
             this.filteredDTSCheck2.Visible = false;
+            this.filteredDTSCheck2.CheckedChanged += new System.EventHandler(this.FilteredDTSCheck2_CheckedChanged);
             // 
             // mixdownLabel2
             // 
@@ -710,6 +809,30 @@
             this.mixdownLabel2.Size = new System.Drawing.Size(56, 13);
             this.mixdownLabel2.TabIndex = 12;
             this.mixdownLabel2.Text = "Mixdown";
+            // 
+            // filteredEAC3Check2
+            // 
+            this.filteredEAC3Check2.AutoSize = true;
+            this.filteredEAC3Check2.Location = new System.Drawing.Point(314, 19);
+            this.filteredEAC3Check2.Name = "filteredEAC3Check2";
+            this.filteredEAC3Check2.Size = new System.Drawing.Size(61, 17);
+            this.filteredEAC3Check2.TabIndex = 19;
+            this.filteredEAC3Check2.Text = "E-AC3";
+            this.filteredEAC3Check2.UseVisualStyleBackColor = true;
+            this.filteredEAC3Check2.Visible = false;
+            this.filteredEAC3Check2.CheckedChanged += new System.EventHandler(this.FilteredEAC3Check2_CheckedChanged);
+            // 
+            // filteredTrueHDCheck2
+            // 
+            this.filteredTrueHDCheck2.AutoSize = true;
+            this.filteredTrueHDCheck2.Location = new System.Drawing.Point(374, 41);
+            this.filteredTrueHDCheck2.Name = "filteredTrueHDCheck2";
+            this.filteredTrueHDCheck2.Size = new System.Drawing.Size(70, 17);
+            this.filteredTrueHDCheck2.TabIndex = 19;
+            this.filteredTrueHDCheck2.Text = "TrueHD";
+            this.filteredTrueHDCheck2.UseVisualStyleBackColor = true;
+            this.filteredTrueHDCheck2.Visible = false;
+            this.filteredTrueHDCheck2.CheckedChanged += new System.EventHandler(this.FilteredTrueHDCheck2_CheckedChanged);
             // 
             // filteredAC3Check2
             // 
@@ -721,6 +844,7 @@
             this.filteredAC3Check2.Text = "AC3";
             this.filteredAC3Check2.UseVisualStyleBackColor = true;
             this.filteredAC3Check2.Visible = false;
+            this.filteredAC3Check2.CheckedChanged += new System.EventHandler(this.FilteredAC3Check2_CheckedChanged);
             // 
             // audioCodecComboBox2
             // 
@@ -738,6 +862,7 @@
             this.audioCodecComboBox2.TabIndex = 8;
             this.audioCodecComboBox2.SelectedIndexChanged += new System.EventHandler(this.audioCodecComboBox2_SelectedIndexChanged);
             this.audioCodecComboBox2.TextChanged += new System.EventHandler(this.AudioCodecComboBox2_TextChanged);
+            this.audioCodecComboBox2.Leave += new System.EventHandler(this.AudioCodecComboBox2_Leave);
             // 
             // filteredAACCheck2
             // 
@@ -749,6 +874,7 @@
             this.filteredAACCheck2.Text = "AAC";
             this.filteredAACCheck2.UseVisualStyleBackColor = true;
             this.filteredAACCheck2.Visible = false;
+            this.filteredAACCheck2.CheckedChanged += new System.EventHandler(this.FilteredAACCheck2_CheckedChanged);
             // 
             // sampleRateLabel2
             // 
@@ -781,6 +907,8 @@
             this.mixdownComboBox2.Size = new System.Drawing.Size(133, 21);
             this.mixdownComboBox2.TabIndex = 9;
             this.mixdownComboBox2.SelectedIndexChanged += new System.EventHandler(this.MixdownComboBox2_SelectedIndexChanged);
+            this.mixdownComboBox2.TextChanged += new System.EventHandler(this.MixdownComboBox2_TextChanged);
+            this.mixdownComboBox2.Leave += new System.EventHandler(this.MixdownComboBox2_Leave);
             // 
             // audioBitrateCombo2
             // 
@@ -806,6 +934,8 @@
             this.audioBitrateCombo2.Size = new System.Drawing.Size(47, 21);
             this.audioBitrateCombo2.TabIndex = 16;
             this.audioBitrateCombo2.SelectedIndexChanged += new System.EventHandler(this.AudioBitrateCombo2_SelectedIndexChanged);
+            this.audioBitrateCombo2.TextChanged += new System.EventHandler(this.AudioBitrateCombo2_TextChanged);
+            this.audioBitrateCombo2.Leave += new System.EventHandler(this.AudioBitrateCombo2_Leave);
             // 
             // sampleRateCombo2
             // 
@@ -820,6 +950,8 @@
             this.sampleRateCombo2.Size = new System.Drawing.Size(54, 21);
             this.sampleRateCombo2.TabIndex = 10;
             this.sampleRateCombo2.SelectedIndexChanged += new System.EventHandler(this.SampleRateCombo2_SelectedIndexChanged);
+            this.sampleRateCombo2.TextChanged += new System.EventHandler(this.SampleRateCombo2_TextChanged);
+            this.sampleRateCombo2.Leave += new System.EventHandler(this.SampleRateCombo2_Leave);
             // 
             // passthruFilterLabel2
             // 
@@ -901,6 +1033,7 @@
             this.filteredDTSCheck3.Text = "DTS";
             this.filteredDTSCheck3.UseVisualStyleBackColor = true;
             this.filteredDTSCheck3.Visible = false;
+            this.filteredDTSCheck3.CheckedChanged += new System.EventHandler(this.FilteredDTSCheck3_CheckedChanged);
             // 
             // mixdownLabel3
             // 
@@ -910,6 +1043,66 @@
             this.mixdownLabel3.Size = new System.Drawing.Size(56, 13);
             this.mixdownLabel3.TabIndex = 12;
             this.mixdownLabel3.Text = "Mixdown";
+            // 
+            // filteredFLACCheck3
+            // 
+            this.filteredFLACCheck3.AutoSize = true;
+            this.filteredFLACCheck3.Location = new System.Drawing.Point(446, 39);
+            this.filteredFLACCheck3.Name = "filteredFLACCheck3";
+            this.filteredFLACCheck3.Size = new System.Drawing.Size(56, 17);
+            this.filteredFLACCheck3.TabIndex = 19;
+            this.filteredFLACCheck3.Text = "FLAC";
+            this.filteredFLACCheck3.UseVisualStyleBackColor = true;
+            this.filteredFLACCheck3.Visible = false;
+            this.filteredFLACCheck3.CheckedChanged += new System.EventHandler(this.FilteredFLACCheck3_CheckedChanged);
+            // 
+            // filteredMP3Check3
+            // 
+            this.filteredMP3Check3.AutoSize = true;
+            this.filteredMP3Check3.Location = new System.Drawing.Point(446, 19);
+            this.filteredMP3Check3.Name = "filteredMP3Check3";
+            this.filteredMP3Check3.Size = new System.Drawing.Size(51, 17);
+            this.filteredMP3Check3.TabIndex = 19;
+            this.filteredMP3Check3.Text = "MP3";
+            this.filteredMP3Check3.UseVisualStyleBackColor = true;
+            this.filteredMP3Check3.Visible = false;
+            this.filteredMP3Check3.CheckedChanged += new System.EventHandler(this.FilteredMP3Check3_CheckedChanged);
+            // 
+            // filteredTrueHDCheck3
+            // 
+            this.filteredTrueHDCheck3.AutoSize = true;
+            this.filteredTrueHDCheck3.Location = new System.Drawing.Point(374, 41);
+            this.filteredTrueHDCheck3.Name = "filteredTrueHDCheck3";
+            this.filteredTrueHDCheck3.Size = new System.Drawing.Size(70, 17);
+            this.filteredTrueHDCheck3.TabIndex = 19;
+            this.filteredTrueHDCheck3.Text = "TrueHD";
+            this.filteredTrueHDCheck3.UseVisualStyleBackColor = true;
+            this.filteredTrueHDCheck3.Visible = false;
+            this.filteredTrueHDCheck3.CheckedChanged += new System.EventHandler(this.FilteredTrueHDCheck3_CheckedChanged);
+            // 
+            // filteredDTSHDCheck3
+            // 
+            this.filteredDTSHDCheck3.AutoSize = true;
+            this.filteredDTSHDCheck3.Location = new System.Drawing.Point(374, 19);
+            this.filteredDTSHDCheck3.Name = "filteredDTSHDCheck3";
+            this.filteredDTSHDCheck3.Size = new System.Drawing.Size(73, 17);
+            this.filteredDTSHDCheck3.TabIndex = 19;
+            this.filteredDTSHDCheck3.Text = "DTS-HD";
+            this.filteredDTSHDCheck3.UseVisualStyleBackColor = true;
+            this.filteredDTSHDCheck3.Visible = false;
+            this.filteredDTSHDCheck3.CheckedChanged += new System.EventHandler(this.FilteredDTSHDCheck3_CheckedChanged);
+            // 
+            // filteredEAC3Check3
+            // 
+            this.filteredEAC3Check3.AutoSize = true;
+            this.filteredEAC3Check3.Location = new System.Drawing.Point(314, 19);
+            this.filteredEAC3Check3.Name = "filteredEAC3Check3";
+            this.filteredEAC3Check3.Size = new System.Drawing.Size(61, 17);
+            this.filteredEAC3Check3.TabIndex = 19;
+            this.filteredEAC3Check3.Text = "E-AC3";
+            this.filteredEAC3Check3.UseVisualStyleBackColor = true;
+            this.filteredEAC3Check3.Visible = false;
+            this.filteredEAC3Check3.CheckedChanged += new System.EventHandler(this.FilteredEAC3Check3_CheckedChanged);
             // 
             // filteredAC3Check3
             // 
@@ -921,6 +1114,7 @@
             this.filteredAC3Check3.Text = "AC3";
             this.filteredAC3Check3.UseVisualStyleBackColor = true;
             this.filteredAC3Check3.Visible = false;
+            this.filteredAC3Check3.CheckedChanged += new System.EventHandler(this.FilteredAC3Check3_CheckedChanged);
             // 
             // audioCodecComboBox3
             // 
@@ -938,6 +1132,7 @@
             this.audioCodecComboBox3.TabIndex = 8;
             this.audioCodecComboBox3.SelectedIndexChanged += new System.EventHandler(this.audioCodecComboBox3_SelectedIndexChanged);
             this.audioCodecComboBox3.TextChanged += new System.EventHandler(this.AudioCodecComboBox3_TextChanged);
+            this.audioCodecComboBox3.Leave += new System.EventHandler(this.AudioCodecComboBox3_Leave);
             // 
             // filteredAACCheck3
             // 
@@ -949,6 +1144,7 @@
             this.filteredAACCheck3.Text = "AAC";
             this.filteredAACCheck3.UseVisualStyleBackColor = true;
             this.filteredAACCheck3.Visible = false;
+            this.filteredAACCheck3.CheckedChanged += new System.EventHandler(this.FilteredAACCheck3_CheckedChanged);
             // 
             // sampleRateLabel3
             // 
@@ -981,6 +1177,8 @@
             this.mixdownComboBox3.Size = new System.Drawing.Size(133, 21);
             this.mixdownComboBox3.TabIndex = 9;
             this.mixdownComboBox3.SelectedIndexChanged += new System.EventHandler(this.MixdownComboBox3_SelectedIndexChanged);
+            this.mixdownComboBox3.TextChanged += new System.EventHandler(this.MixdownComboBox3_TextChanged);
+            this.mixdownComboBox3.Leave += new System.EventHandler(this.MixdownComboBox3_Leave);
             // 
             // audioBitrateCombo3
             // 
@@ -1006,6 +1204,8 @@
             this.audioBitrateCombo3.Size = new System.Drawing.Size(47, 21);
             this.audioBitrateCombo3.TabIndex = 16;
             this.audioBitrateCombo3.SelectedIndexChanged += new System.EventHandler(this.AudioBitrateCombo3_SelectedIndexChanged);
+            this.audioBitrateCombo3.TextChanged += new System.EventHandler(this.AudioBitrateCombo3_TextChanged);
+            this.audioBitrateCombo3.Leave += new System.EventHandler(this.AudioBitrateCombo3_Leave);
             // 
             // sampleRateCombo3
             // 
@@ -1020,6 +1220,8 @@
             this.sampleRateCombo3.Size = new System.Drawing.Size(54, 21);
             this.sampleRateCombo3.TabIndex = 10;
             this.sampleRateCombo3.SelectedIndexChanged += new System.EventHandler(this.SampleRateCombo3_SelectedIndexChanged);
+            this.sampleRateCombo3.TextChanged += new System.EventHandler(this.SampleRateCombo3_TextChanged);
+            this.sampleRateCombo3.Leave += new System.EventHandler(this.SampleRateCombo3_Leave);
             // 
             // passthruFilterLabel3
             // 
@@ -1662,176 +1864,6 @@
             this.invisibleCloseButton.Text = "button1";
             this.invisibleCloseButton.UseVisualStyleBackColor = true;
             this.invisibleCloseButton.Click += new System.EventHandler(this.InvisibleCloseButton_Click);
-            // 
-            // filteredDTSHDCheck
-            // 
-            this.filteredDTSHDCheck.AutoSize = true;
-            this.filteredDTSHDCheck.Location = new System.Drawing.Point(374, 19);
-            this.filteredDTSHDCheck.Name = "filteredDTSHDCheck";
-            this.filteredDTSHDCheck.Size = new System.Drawing.Size(73, 17);
-            this.filteredDTSHDCheck.TabIndex = 7;
-            this.filteredDTSHDCheck.Text = "DTS-HD";
-            this.filteredDTSHDCheck.UseVisualStyleBackColor = true;
-            this.filteredDTSHDCheck.Visible = false;
-            this.filteredDTSHDCheck.CheckedChanged += new System.EventHandler(this.FilteredDTSCheck_CheckedChanged);
-            // 
-            // filteredTrueHDCheck
-            // 
-            this.filteredTrueHDCheck.AutoSize = true;
-            this.filteredTrueHDCheck.Location = new System.Drawing.Point(374, 41);
-            this.filteredTrueHDCheck.Name = "filteredTrueHDCheck";
-            this.filteredTrueHDCheck.Size = new System.Drawing.Size(70, 17);
-            this.filteredTrueHDCheck.TabIndex = 7;
-            this.filteredTrueHDCheck.Text = "TrueHD";
-            this.filteredTrueHDCheck.UseVisualStyleBackColor = true;
-            this.filteredTrueHDCheck.Visible = false;
-            this.filteredTrueHDCheck.CheckedChanged += new System.EventHandler(this.FilteredDTSCheck_CheckedChanged);
-            // 
-            // filteredEAC3Check
-            // 
-            this.filteredEAC3Check.AutoSize = true;
-            this.filteredEAC3Check.Location = new System.Drawing.Point(314, 19);
-            this.filteredEAC3Check.Name = "filteredEAC3Check";
-            this.filteredEAC3Check.Size = new System.Drawing.Size(61, 17);
-            this.filteredEAC3Check.TabIndex = 7;
-            this.filteredEAC3Check.Text = "E-AC3";
-            this.filteredEAC3Check.UseVisualStyleBackColor = true;
-            this.filteredEAC3Check.Visible = false;
-            this.filteredEAC3Check.CheckedChanged += new System.EventHandler(this.FilteredDTSCheck_CheckedChanged);
-            // 
-            // filteredMP3Check
-            // 
-            this.filteredMP3Check.AutoSize = true;
-            this.filteredMP3Check.Location = new System.Drawing.Point(446, 19);
-            this.filteredMP3Check.Name = "filteredMP3Check";
-            this.filteredMP3Check.Size = new System.Drawing.Size(51, 17);
-            this.filteredMP3Check.TabIndex = 7;
-            this.filteredMP3Check.Text = "MP3";
-            this.filteredMP3Check.UseVisualStyleBackColor = true;
-            this.filteredMP3Check.Visible = false;
-            this.filteredMP3Check.CheckedChanged += new System.EventHandler(this.FilteredDTSCheck_CheckedChanged);
-            // 
-            // filteredFLACCheck
-            // 
-            this.filteredFLACCheck.AutoSize = true;
-            this.filteredFLACCheck.Location = new System.Drawing.Point(446, 39);
-            this.filteredFLACCheck.Name = "filteredFLACCheck";
-            this.filteredFLACCheck.Size = new System.Drawing.Size(56, 17);
-            this.filteredFLACCheck.TabIndex = 7;
-            this.filteredFLACCheck.Text = "FLAC";
-            this.filteredFLACCheck.UseVisualStyleBackColor = true;
-            this.filteredFLACCheck.Visible = false;
-            this.filteredFLACCheck.CheckedChanged += new System.EventHandler(this.FilteredDTSCheck_CheckedChanged);
-            // 
-            // filteredEAC3Check2
-            // 
-            this.filteredEAC3Check2.AutoSize = true;
-            this.filteredEAC3Check2.Location = new System.Drawing.Point(314, 19);
-            this.filteredEAC3Check2.Name = "filteredEAC3Check2";
-            this.filteredEAC3Check2.Size = new System.Drawing.Size(61, 17);
-            this.filteredEAC3Check2.TabIndex = 19;
-            this.filteredEAC3Check2.Text = "E-AC3";
-            this.filteredEAC3Check2.UseVisualStyleBackColor = true;
-            this.filteredEAC3Check2.Visible = false;
-            // 
-            // filteredTrueHDCheck2
-            // 
-            this.filteredTrueHDCheck2.AutoSize = true;
-            this.filteredTrueHDCheck2.Location = new System.Drawing.Point(374, 41);
-            this.filteredTrueHDCheck2.Name = "filteredTrueHDCheck2";
-            this.filteredTrueHDCheck2.Size = new System.Drawing.Size(70, 17);
-            this.filteredTrueHDCheck2.TabIndex = 19;
-            this.filteredTrueHDCheck2.Text = "TrueHD";
-            this.filteredTrueHDCheck2.UseVisualStyleBackColor = true;
-            this.filteredTrueHDCheck2.Visible = false;
-            // 
-            // filteredDTSHDCheck2
-            // 
-            this.filteredDTSHDCheck2.AutoSize = true;
-            this.filteredDTSHDCheck2.Location = new System.Drawing.Point(374, 19);
-            this.filteredDTSHDCheck2.Name = "filteredDTSHDCheck2";
-            this.filteredDTSHDCheck2.Size = new System.Drawing.Size(73, 17);
-            this.filteredDTSHDCheck2.TabIndex = 18;
-            this.filteredDTSHDCheck2.Text = "DTS-HD";
-            this.filteredDTSHDCheck2.UseVisualStyleBackColor = true;
-            this.filteredDTSHDCheck2.Visible = false;
-            // 
-            // filteredMP3Check2
-            // 
-            this.filteredMP3Check2.AutoSize = true;
-            this.filteredMP3Check2.Location = new System.Drawing.Point(446, 19);
-            this.filteredMP3Check2.Name = "filteredMP3Check2";
-            this.filteredMP3Check2.Size = new System.Drawing.Size(51, 17);
-            this.filteredMP3Check2.TabIndex = 18;
-            this.filteredMP3Check2.Text = "MP3";
-            this.filteredMP3Check2.UseVisualStyleBackColor = true;
-            this.filteredMP3Check2.Visible = false;
-            // 
-            // filteredFLACCheck2
-            // 
-            this.filteredFLACCheck2.AutoSize = true;
-            this.filteredFLACCheck2.Location = new System.Drawing.Point(446, 39);
-            this.filteredFLACCheck2.Name = "filteredFLACCheck2";
-            this.filteredFLACCheck2.Size = new System.Drawing.Size(56, 17);
-            this.filteredFLACCheck2.TabIndex = 18;
-            this.filteredFLACCheck2.Text = "FLAC";
-            this.filteredFLACCheck2.UseVisualStyleBackColor = true;
-            this.filteredFLACCheck2.Visible = false;
-            // 
-            // filteredEAC3Check3
-            // 
-            this.filteredEAC3Check3.AutoSize = true;
-            this.filteredEAC3Check3.Location = new System.Drawing.Point(314, 19);
-            this.filteredEAC3Check3.Name = "filteredEAC3Check3";
-            this.filteredEAC3Check3.Size = new System.Drawing.Size(61, 17);
-            this.filteredEAC3Check3.TabIndex = 19;
-            this.filteredEAC3Check3.Text = "E-AC3";
-            this.filteredEAC3Check3.UseVisualStyleBackColor = true;
-            this.filteredEAC3Check3.Visible = false;
-            // 
-            // filteredDTSHDCheck3
-            // 
-            this.filteredDTSHDCheck3.AutoSize = true;
-            this.filteredDTSHDCheck3.Location = new System.Drawing.Point(374, 19);
-            this.filteredDTSHDCheck3.Name = "filteredDTSHDCheck3";
-            this.filteredDTSHDCheck3.Size = new System.Drawing.Size(73, 17);
-            this.filteredDTSHDCheck3.TabIndex = 19;
-            this.filteredDTSHDCheck3.Text = "DTS-HD";
-            this.filteredDTSHDCheck3.UseVisualStyleBackColor = true;
-            this.filteredDTSHDCheck3.Visible = false;
-            // 
-            // filteredTrueHDCheck3
-            // 
-            this.filteredTrueHDCheck3.AutoSize = true;
-            this.filteredTrueHDCheck3.Location = new System.Drawing.Point(374, 41);
-            this.filteredTrueHDCheck3.Name = "filteredTrueHDCheck3";
-            this.filteredTrueHDCheck3.Size = new System.Drawing.Size(70, 17);
-            this.filteredTrueHDCheck3.TabIndex = 19;
-            this.filteredTrueHDCheck3.Text = "TrueHD";
-            this.filteredTrueHDCheck3.UseVisualStyleBackColor = true;
-            this.filteredTrueHDCheck3.Visible = false;
-            // 
-            // filteredMP3Check3
-            // 
-            this.filteredMP3Check3.AutoSize = true;
-            this.filteredMP3Check3.Location = new System.Drawing.Point(446, 19);
-            this.filteredMP3Check3.Name = "filteredMP3Check3";
-            this.filteredMP3Check3.Size = new System.Drawing.Size(51, 17);
-            this.filteredMP3Check3.TabIndex = 19;
-            this.filteredMP3Check3.Text = "MP3";
-            this.filteredMP3Check3.UseVisualStyleBackColor = true;
-            this.filteredMP3Check3.Visible = false;
-            // 
-            // filteredFLACCheck3
-            // 
-            this.filteredFLACCheck3.AutoSize = true;
-            this.filteredFLACCheck3.Location = new System.Drawing.Point(446, 39);
-            this.filteredFLACCheck3.Name = "filteredFLACCheck3";
-            this.filteredFLACCheck3.Size = new System.Drawing.Size(56, 17);
-            this.filteredFLACCheck3.TabIndex = 19;
-            this.filteredFLACCheck3.Text = "FLAC";
-            this.filteredFLACCheck3.UseVisualStyleBackColor = true;
-            this.filteredFLACCheck3.Visible = false;
             // 
             // ConversionForm
             // 

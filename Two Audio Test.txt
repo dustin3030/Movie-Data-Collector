@@ -10,3 +10,5 @@
 --audio 1,1 --aencoder av_aac,copy:dts --audio-fallback av_aac --ab 192,480 --arate 48,48 --mixdown dpl2,5point1 --drc 0,0 --gain 0,0 --crop 0:0:0:0 --auto-anamorphic --modulus 2 
 
 
+
+--audio "1,1,1" -A "Track1,Track2,Track3" --aencoder "fdk_aac,eac3,copy:dtshd" --audio-fallback "eac3" --ab 256,768,1509 --arate 48,48,48 --mixdown "dpl2,5point1,5point1" --drc 0,0,0 --gain 0,0,0

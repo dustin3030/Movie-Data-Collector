@@ -265,7 +265,7 @@ namespace MovieDataCollector
             "false", //FilteredFLACCheck
             "128", //AudioBitrate
 
-            "EnableTrack2", //false
+            "false", //EnableTrack2
             "E-AC3", //AudioCodecAAC2
             "5.1", //AudioMixdown2
             "48", //AudioSampleRate2
@@ -279,7 +279,7 @@ namespace MovieDataCollector
             "false", //FilteredFLACCheck2
             "128", //AudioBitrate2
 
-            "EnableTrack3", //false
+            "false", //EnableTrack3
             "Filtered Passthru", //AudioCodecAAC3
             "5.1", //AudioMixdown3
             "48", //AudioSampleRate3
