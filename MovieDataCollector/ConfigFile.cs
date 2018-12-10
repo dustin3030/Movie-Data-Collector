@@ -26,17 +26,11 @@ namespace MovieDataCollector
                 "CompatibilitySelector", //Roku
                 "TVAbsoluteNumbersCheck", //False
                 "TVTitleInFilenameCheck", //False
-                "DefaultFormat", //Synology
-                "AudioCodec", //AAC (FDK)
-                "AAC_Passthru", //False
-                "AC3_Passthru", //False
-                "DTS_Passthru", //False
+                "DefaultFormat", //Plex
                 "TwoPass", //True
                 "TurboFirstPass", //True
                 "Optimize", //True
                 "AutoCrop", //True
-                "Mixdown", //Dolby Prologic 2
-                "AudioBitrateCap", //96
                 "EncoderSpeed", //Medium
                 "EncoderTune", //Fast Decode
                 "EncoderProfile", //High
@@ -44,13 +38,57 @@ namespace MovieDataCollector
                 "VideoBitrateCap", //3.5
                 "Framerate", //Roku Compliant
                 "FramerateMode", //Constant, Peak, Variable
-                "AudioSampleRate", //48
                 "ConversionPreset", //Roku Compliant
                 "GmailAccount", //Left blank as default
                 "Password", //Left blank as Default
                 "NotifyAddress", //Left blank as default
                 "SubtitleSelection", //None
-                "ForcedSubtitleBurnIn" //False
+                "ForcedSubtitleBurnIn", //False
+
+                "AudioCodec", //AAC (FDK)
+                "AAC_Passthru", //False
+                "AC3_Passthru", //False
+                "EAC3_Passthru", //False
+                "DTS_Passthru", //False
+                "DTSHD_Passthru", //False
+                "TrueHD_Passthru", //False
+                "MP3_Passthru", //False
+                "FLAC_Passthru", //False
+
+                "Mixdown", //Dolby Prologic 2
+                "AudioBitrateCap", //128
+                "AudioSampleRate", //48
+
+                "EnableTrack2", //false
+                "AudioCodec2", //E-AC3
+                "AAC_Passthru2", //False
+                "AC3_Passthru2", //False
+                "EAC3_Passthru2", //False
+                "DTS_Passthru2", //False
+                "DTSHD_Passthru2", //False
+                "TrueHD_Passthru2", //False
+                "MP3_Passthru2", //False
+                "FLAC_Passthru2", //False
+
+                "Mixdown2", //5.1
+                "AudioBitrateCap2", //128
+                "AudioSampleRate2", //48
+
+                "EnableTrack3", //false
+                "AudioCodec3", //Passthru
+                "AAC_Passthru3", //False
+                "AC3_Passthru3", //False
+                "EAC3_Passthru3", //False
+                "DTS_Passthru3", //False
+                "DTSHD_Passthru3", //False
+                "TrueHD_Passthru3", //False
+                "MP3_Passthru3", //False
+                "FLAC_Passthru3", //False
+
+                "Mixdown3", //5.1
+                "AudioBitrateCap3", //128
+                "AudioSampleRate3", //48
+
             };
         List<string> ValueList = new List<string>()
             {
@@ -63,16 +101,10 @@ namespace MovieDataCollector
                 "False", //TVAbsoluteNumbersCheck
                 "False", //TVTitleInFilenameCheck
                 "Synology", //DefaultFormat
-                "AAC (FDK)", //AudioCodec
-                "False", //AAC_Passthru
-                "False", //AC3_Passthru
-                "False", //DTS_Passthru
                 "True", //TwoPass
                 "True", //TurboFirstPass
                 "True", //Optimize
                 "True", //Autocrop
-                "Dolby Prologic 2", //Mixdown
-                "96", //AudioBitrateCap
                 "Medium", //EncoderSpeed
                 "Fast Decode", //EncoderTune
                 "High", //EncoderProfile
@@ -80,13 +112,56 @@ namespace MovieDataCollector
                 "3.5", //VideoBitrateCap
                 "Roku Compliant", //Framerate
                 "Peak", //FramerateMode
-                "48", //AudioSampleRate
                 "", //ConversionPreset is blank by default
                 "", //GmailAccount
                 "", //Password
                 "", //NotifyAddress
                 "None", //SubtitleSelection
-                "False" //ForcedSubtitleBurnIn
+                "False", //ForcedSubtitleBurnIn
+
+                "AAC (FDK)", //"AudioCodec"
+                "False", //"AAC_Passthru"
+                "False", //"AC3_Passthru"
+                "False", //"EAC3_Passthru"
+                "False", //"DTS_Passthru"
+                "False", //"DTSHD_Passthru"
+                "False", //"TrueHD_Passthru"
+                "False", //"MP3_Passthru"
+                "False", //"FLAC_Passthru"
+
+                "Dolby Prologic 2", //Mixdown
+                "128", //AudioBitrateCap
+                "48", //AudioSampleRate
+
+                "false", //EnableTrack2
+                "E-AC3", //AudioCodec2
+                "False", //"AAC_Passthru2"
+                "False", //"AC3_Passthru2"
+                "False", //"EAC3_Passthru2"
+                "False", //"DTS_Passthru2"
+                "False", //"DTSHD_Passthru2"
+                "False", //"TrueHD_Passthru2"
+                "False", //"MP3_Passthru2"
+                "False", //"FLAC_Passthru2"
+
+                "5.1", //Mixdown2
+                "128", //AudioBitrateCap2
+                "48", //AudioSampleRate2
+
+                "false", //EnableTrack3
+                "Filtered Passthru", //AudioCodec3
+                "False", //"AAC_Passthru3"
+                "False", //"AC3_Passthru3"
+                "False", //"EAC3_Passthru3"
+                "False", //"DTS_Passthru3"
+                "False", //"DTSHD_Passthru3"
+                "False", //"TrueHD_Passthru3"
+                "False", //"MP3_Passthru3"
+                "False", //"FLAC_Passthru3"
+
+                "5.1", //Mixdown3
+                "128", //AudioBitrateCap3
+                "48", //AudioSampleRate3
             };
 
         public ConfigFile()

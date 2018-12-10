@@ -25,8 +25,42 @@ namespace MovieDataCollector
             "AudioSampleRate", //48
             "FilteredAACCheck", //false
             "FilteredAC3Check", //false
+            "FilteredEAC3Check", //false
             "FilteredDTSCheck", //false
-            "AudioBitrate", //96
+            "FilteredDTSHDCheck", //false
+            "FilteredTrueHDCheck", //false
+            "FilteredMP3Check", //false
+            "FilteredFLACCheck", //false
+            "AudioBitrate", //128
+
+            "EnableTrack2", //False
+            "AudioCodec2", //E-AC3
+            "AudioMixdown2", //5.1
+            "AudioSampleRate2", //48
+            "FilteredAACCheck2", //false
+            "FilteredAC3Check2", //false
+            "FilteredEAC3Check2", //false
+            "FilteredDTSCheck2", //false
+            "FilteredDTSHDCheck2", //false
+            "FilteredTrueHDCheck2", //false
+            "FilteredMP3Check2", //false
+            "FilteredFLACCheck2", //false
+            "AudioBitrate2", //128
+
+            "EnableTrack3", //False
+            "AudioCodec3", //Filtered Passthru
+            "AudioMixdown3", //5.1
+            "AudioSampleRate3", //48
+            "FilteredAACCheck3", //false
+            "FilteredAC3Check3", //false
+            "FilteredEAC3Check3", //false
+            "FilteredDTSCheck3", //false
+            "FilteredDTSHDCheck3", //false
+            "FilteredTrueHDCheck3", //false
+            "FilteredMP3Check3", //false
+            "FilteredFLACCheck3", //false
+            "AudioBitrate3", //128
+
             "EncoderSpeed", //Very Fast
             "FrameRateMode", //Peak
             "FrameRate", //Roku Compliant\
@@ -49,8 +83,42 @@ namespace MovieDataCollector
             "48", //AudioSampleRate
             "false", //FilteredAACCheck
             "false", //FilteredAC3Check
+            "false", //FilteredEAC3Check
             "false", //FilteredDTSCheck
+            "false", //FilteredDTSHDCheck
+            "false", //FilteredTrueHDCheck
+            "false", //FilteredMP3Check
+            "false", //FilteredFLACCheck
             "128", //AudioBitrate
+
+            "false", //EnableTrack2
+            "E-AC3", //AudioCodecAAC2
+            "5.1", //AudioMixdown2
+            "48", //AudioSampleRate2
+            "false", //FilteredAACCheck2
+            "false", //FilteredAC3Check2
+            "false", //FilteredEAC3Check2
+            "false", //FilteredDTSCheck2
+            "false", //FilteredDTSHDCheck2
+            "false", //FilteredTrueHDCheck2
+            "false", //FilteredMP3Check2
+            "false", //FilteredFLACCheck2
+            "128", //AudioBitrate2
+
+            "false", //EnableTrack3
+            "Filtered Passthru", //AudioCodecAAC3
+            "5.1", //AudioMixdown3
+            "48", //AudioSampleRate3
+            "false", //FilteredAACCheck3
+            "false", //FilteredAC3Check3
+            "false", //FilteredEAC3Check3
+            "false", //FilteredDTSCheck3
+            "false", //FilteredDTSHDCheck3
+            "false", //FilteredTrueHDCheck3
+            "false", //FilteredMP3Check3
+            "false", //FilteredFLACCheck3
+            "128", //AudioBitrate3
+
             "Very Fast", //EncoderSpeed
             "Peak", //FrameRateMode
             "23.976", //FrameRate
@@ -73,8 +141,42 @@ namespace MovieDataCollector
             "48", //AudioSampleRate
             "false", //FilteredAACCheck
             "false", //FilteredAC3Check
+            "false", //FilteredEAC3Check
             "false", //FilteredDTSCheck
-            "160", //AudioBitrate
+            "false", //FilteredDTSHDCheck
+            "false", //FilteredTrueHDCheck
+            "false", //FilteredMP3Check
+            "false", //FilteredFLACCheck
+            "128", //AudioBitrate
+
+            "true", //EnableTrack2
+            "E-AC3", //AudioCodecAAC2
+            "5.1", //AudioMixdown2
+            "48", //AudioSampleRate2
+            "false", //FilteredAACCheck2
+            "false", //FilteredAC3Check2
+            "false", //FilteredEAC3Check2
+            "false", //FilteredDTSCheck2
+            "false", //FilteredDTSHDCheck2
+            "false", //FilteredTrueHDCheck2
+            "false", //FilteredMP3Check2
+            "false", //FilteredFLACCheck2
+            "128", //AudioBitrate2
+
+            "true", //EnableTrack3
+            "Filtered Passthru", //AudioCodecAAC3
+            "5.1", //AudioMixdown3
+            "48", //AudioSampleRate3
+            "false", //FilteredAACCheck3
+            "false", //FilteredAC3Check3
+            "false", //FilteredEAC3Check3
+            "false", //FilteredDTSCheck3
+            "false", //FilteredDTSHDCheck3
+            "false", //FilteredTrueHDCheck3
+            "false", //FilteredMP3Check3
+            "false", //FilteredFLACCheck3
+            "128", //AudioBitrate3
+
             "Medium", //EncoderSpeed
             "Peak", //FrameRateMode
             "23.976", //FrameRate
@@ -97,8 +199,42 @@ namespace MovieDataCollector
             "48", //AudioSampleRate
             "false", //FilteredAACCheck
             "false", //FilteredAC3Check
+            "false", //FilteredEAC3Check
             "false", //FilteredDTSCheck
-            "160", //AudioBitrate
+            "false", //FilteredDTSHDCheck
+            "false", //FilteredTrueHDCheck
+            "false", //FilteredMP3Check
+            "false", //FilteredFLACCheck
+            "128", //AudioBitrate
+
+            "false", //EnableTrack2
+            "E-AC3", //AudioCodecAAC2
+            "5.1", //AudioMixdown2
+            "48", //AudioSampleRate2
+            "false", //FilteredAACCheck2
+            "false", //FilteredAC3Check2
+            "false", //FilteredEAC3Check2
+            "false", //FilteredDTSCheck2
+            "false", //FilteredDTSHDCheck2
+            "false", //FilteredTrueHDCheck2
+            "false", //FilteredMP3Check2
+            "false", //FilteredFLACCheck2
+            "128", //AudioBitrate2
+
+            "false", //EnableTrack3
+            "Filtered Passthru", //AudioCodecAAC3
+            "5.1", //AudioMixdown3
+            "48", //AudioSampleRate3
+            "false", //FilteredAACCheck3
+            "false", //FilteredAC3Check3
+            "false", //FilteredEAC3Check3
+            "false", //FilteredDTSCheck3
+            "false", //FilteredDTSHDCheck3
+            "false", //FilteredTrueHDCheck3
+            "false", //FilteredMP3Check3
+            "false", //FilteredFLACCheck3
+            "128", //AudioBitrate3
+
             "Faster", //EncoderSpeed
             "Peak", //FrameRateMode
             "23.976", //FrameRate
@@ -121,8 +257,42 @@ namespace MovieDataCollector
             "48", //AudioSampleRate
             "false", //FilteredAACCheck
             "false", //FilteredAC3Check
+            "false", //FilteredEAC3Check
             "false", //FilteredDTSCheck
-            "160", //AudioBitrate
+            "false", //FilteredDTSHDCheck
+            "false", //FilteredTrueHDCheck
+            "false", //FilteredMP3Check
+            "false", //FilteredFLACCheck
+            "128", //AudioBitrate
+
+            "EnableTrack2", //false
+            "E-AC3", //AudioCodecAAC2
+            "5.1", //AudioMixdown2
+            "48", //AudioSampleRate2
+            "false", //FilteredAACCheck2
+            "false", //FilteredAC3Check2
+            "false", //FilteredEAC3Check2
+            "false", //FilteredDTSCheck2
+            "false", //FilteredDTSHDCheck2
+            "false", //FilteredTrueHDCheck2
+            "false", //FilteredMP3Check2
+            "false", //FilteredFLACCheck2
+            "128", //AudioBitrate2
+
+            "EnableTrack3", //false
+            "Filtered Passthru", //AudioCodecAAC3
+            "5.1", //AudioMixdown3
+            "48", //AudioSampleRate3
+            "false", //FilteredAACCheck3
+            "false", //FilteredAC3Check3
+            "false", //FilteredEAC3Check3
+            "false", //FilteredDTSCheck3
+            "false", //FilteredDTSHDCheck3
+            "false", //FilteredTrueHDCheck3
+            "false", //FilteredMP3Check3
+            "false", //FilteredFLACCheck3
+            "128", //AudioBitrate3
+
             "Medium", //EncoderSpeed
             "Peak", //FrameRateMode
             "23.976", //FrameRate

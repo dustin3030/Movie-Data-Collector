@@ -1,0 +1,3 @@
+Thread encoding task
+Allow multiple audio tracks
+Add option to output command line encoding options to log

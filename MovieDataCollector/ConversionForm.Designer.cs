@@ -47,9 +47,54 @@
             this.notificationLabel = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.mediaInfoPage = new System.Windows.Forms.TabPage();
-            this.outPutTextBox = new System.Windows.Forms.RichTextBox();
+            this.MediaInfoTB = new System.Windows.Forms.RichTextBox();
             this.exportInfoButton = new System.Windows.Forms.Button();
             this.conversionSettingsPage = new System.Windows.Forms.TabPage();
+            this.audioSetingTabControl = new System.Windows.Forms.TabControl();
+            this.audioPage1 = new System.Windows.Forms.TabPage();
+            this.codecLabel = new System.Windows.Forms.Label();
+            this.filteredDTSCheck = new System.Windows.Forms.CheckBox();
+            this.mixdownLabel = new System.Windows.Forms.Label();
+            this.filteredAC3Check = new System.Windows.Forms.CheckBox();
+            this.audioCodecComboBox = new System.Windows.Forms.ComboBox();
+            this.filteredAACCheck = new System.Windows.Forms.CheckBox();
+            this.sampleRateLabel = new System.Windows.Forms.Label();
+            this.kbpsLabel = new System.Windows.Forms.Label();
+            this.mixdownComboBox = new System.Windows.Forms.ComboBox();
+            this.audioBitrateCombo = new System.Windows.Forms.ComboBox();
+            this.sampleRateCombo = new System.Windows.Forms.ComboBox();
+            this.passthruFilterLabel = new System.Windows.Forms.Label();
+            this.ABitrateLabel = new System.Windows.Forms.Label();
+            this.audioPage2 = new System.Windows.Forms.TabPage();
+            this.disableCheckStream2 = new System.Windows.Forms.CheckBox();
+            this.codecLabel2 = new System.Windows.Forms.Label();
+            this.filteredDTSCheck2 = new System.Windows.Forms.CheckBox();
+            this.mixdownLabel2 = new System.Windows.Forms.Label();
+            this.filteredAC3Check2 = new System.Windows.Forms.CheckBox();
+            this.audioCodecComboBox2 = new System.Windows.Forms.ComboBox();
+            this.filteredAACCheck2 = new System.Windows.Forms.CheckBox();
+            this.sampleRateLabel2 = new System.Windows.Forms.Label();
+            this.kbpsLabel2 = new System.Windows.Forms.Label();
+            this.mixdownComboBox2 = new System.Windows.Forms.ComboBox();
+            this.audioBitrateCombo2 = new System.Windows.Forms.ComboBox();
+            this.sampleRateCombo2 = new System.Windows.Forms.ComboBox();
+            this.passthruFilterLabel2 = new System.Windows.Forms.Label();
+            this.ABitrateLabel2 = new System.Windows.Forms.Label();
+            this.audioPage3 = new System.Windows.Forms.TabPage();
+            this.disableCheckStream3 = new System.Windows.Forms.CheckBox();
+            this.codecLabel3 = new System.Windows.Forms.Label();
+            this.filteredDTSCheck3 = new System.Windows.Forms.CheckBox();
+            this.mixdownLabel3 = new System.Windows.Forms.Label();
+            this.filteredAC3Check3 = new System.Windows.Forms.CheckBox();
+            this.audioCodecComboBox3 = new System.Windows.Forms.ComboBox();
+            this.filteredAACCheck3 = new System.Windows.Forms.CheckBox();
+            this.sampleRateLabel3 = new System.Windows.Forms.Label();
+            this.kbpsLabel3 = new System.Windows.Forms.Label();
+            this.mixdownComboBox3 = new System.Windows.Forms.ComboBox();
+            this.audioBitrateCombo3 = new System.Windows.Forms.ComboBox();
+            this.sampleRateCombo3 = new System.Windows.Forms.ComboBox();
+            this.passthruFilterLabel3 = new System.Windows.Forms.Label();
+            this.ABitrateLabel3 = new System.Windows.Forms.Label();
             this.removePresetButton = new System.Windows.Forms.Button();
             this.addPresetButton = new System.Windows.Forms.Button();
             this.presetComboBox = new System.Windows.Forms.ComboBox();
@@ -91,30 +136,38 @@
             this.videoSettingsLabel = new System.Windows.Forms.Label();
             this.audioSettingsLabel = new System.Windows.Forms.Label();
             this.audioSettinsPanel = new System.Windows.Forms.Panel();
-            this.filteredDTSCheck = new System.Windows.Forms.CheckBox();
-            this.filteredAC3Check = new System.Windows.Forms.CheckBox();
-            this.filteredAACCheck = new System.Windows.Forms.CheckBox();
-            this.kbpsLabel = new System.Windows.Forms.Label();
-            this.audioBitrateCombo = new System.Windows.Forms.ComboBox();
-            this.passthruFilterLabel = new System.Windows.Forms.Label();
-            this.sampleRateCombo = new System.Windows.Forms.ComboBox();
-            this.mixdownComboBox = new System.Windows.Forms.ComboBox();
-            this.sampleRateLabel = new System.Windows.Forms.Label();
-            this.audioCodecComboBox = new System.Windows.Forms.ComboBox();
-            this.ABitrateLabel = new System.Windows.Forms.Label();
-            this.mixdownLabel = new System.Windows.Forms.Label();
-            this.codecLabel = new System.Windows.Forms.Label();
+            this.HBCommandOutputTab = new System.Windows.Forms.TabPage();
+            this.CommandOutPutTextBox = new System.Windows.Forms.RichTextBox();
             this.conversionSettingsLabel = new System.Windows.Forms.Label();
             this.compatibilitySelectionLabel = new System.Windows.Forms.Label();
             this.invisibleCloseButton = new System.Windows.Forms.Button();
+            this.filteredDTSHDCheck = new System.Windows.Forms.CheckBox();
+            this.filteredTrueHDCheck = new System.Windows.Forms.CheckBox();
+            this.filteredEAC3Check = new System.Windows.Forms.CheckBox();
+            this.filteredMP3Check = new System.Windows.Forms.CheckBox();
+            this.filteredFLACCheck = new System.Windows.Forms.CheckBox();
+            this.filteredEAC3Check2 = new System.Windows.Forms.CheckBox();
+            this.filteredTrueHDCheck2 = new System.Windows.Forms.CheckBox();
+            this.filteredDTSHDCheck2 = new System.Windows.Forms.CheckBox();
+            this.filteredMP3Check2 = new System.Windows.Forms.CheckBox();
+            this.filteredFLACCheck2 = new System.Windows.Forms.CheckBox();
+            this.filteredEAC3Check3 = new System.Windows.Forms.CheckBox();
+            this.filteredDTSHDCheck3 = new System.Windows.Forms.CheckBox();
+            this.filteredTrueHDCheck3 = new System.Windows.Forms.CheckBox();
+            this.filteredMP3Check3 = new System.Windows.Forms.CheckBox();
+            this.filteredFLACCheck3 = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.selectionPicturebox)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.mediaInfoPage.SuspendLayout();
             this.conversionSettingsPage.SuspendLayout();
+            this.audioSetingTabControl.SuspendLayout();
+            this.audioPage1.SuspendLayout();
+            this.audioPage2.SuspendLayout();
+            this.audioPage3.SuspendLayout();
             this.videoSettingsPanel.SuspendLayout();
             this.subtitleGroupBox.SuspendLayout();
-            this.audioSettinsPanel.SuspendLayout();
+            this.HBCommandOutputTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -310,6 +363,7 @@
             // 
             this.tabControl1.Controls.Add(this.mediaInfoPage);
             this.tabControl1.Controls.Add(this.conversionSettingsPage);
+            this.tabControl1.Controls.Add(this.HBCommandOutputTab);
             this.tabControl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabControl1.Location = new System.Drawing.Point(498, 64);
             this.tabControl1.Name = "tabControl1";
@@ -320,7 +374,7 @@
             // mediaInfoPage
             // 
             this.mediaInfoPage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.mediaInfoPage.Controls.Add(this.outPutTextBox);
+            this.mediaInfoPage.Controls.Add(this.MediaInfoTB);
             this.mediaInfoPage.Controls.Add(this.exportInfoButton);
             this.mediaInfoPage.Location = new System.Drawing.Point(4, 22);
             this.mediaInfoPage.Name = "mediaInfoPage";
@@ -329,15 +383,15 @@
             this.mediaInfoPage.TabIndex = 0;
             this.mediaInfoPage.Text = "Media Info";
             // 
-            // outPutTextBox
+            // MediaInfoTB
             // 
-            this.outPutTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.outPutTextBox.ForeColor = System.Drawing.Color.GreenYellow;
-            this.outPutTextBox.Location = new System.Drawing.Point(3, 3);
-            this.outPutTextBox.Name = "outPutTextBox";
-            this.outPutTextBox.Size = new System.Drawing.Size(531, 444);
-            this.outPutTextBox.TabIndex = 2;
-            this.outPutTextBox.Text = "";
+            this.MediaInfoTB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.MediaInfoTB.ForeColor = System.Drawing.Color.GreenYellow;
+            this.MediaInfoTB.Location = new System.Drawing.Point(3, 6);
+            this.MediaInfoTB.Name = "MediaInfoTB";
+            this.MediaInfoTB.Size = new System.Drawing.Size(531, 441);
+            this.MediaInfoTB.TabIndex = 2;
+            this.MediaInfoTB.Text = "";
             // 
             // exportInfoButton
             // 
@@ -354,6 +408,7 @@
             // conversionSettingsPage
             // 
             this.conversionSettingsPage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.conversionSettingsPage.Controls.Add(this.audioSetingTabControl);
             this.conversionSettingsPage.Controls.Add(this.removePresetButton);
             this.conversionSettingsPage.Controls.Add(this.addPresetButton);
             this.conversionSettingsPage.Controls.Add(this.presetComboBox);
@@ -377,6 +432,613 @@
             this.conversionSettingsPage.Size = new System.Drawing.Size(534, 495);
             this.conversionSettingsPage.TabIndex = 1;
             this.conversionSettingsPage.Text = "Conversion Settings";
+            // 
+            // audioSetingTabControl
+            // 
+            this.audioSetingTabControl.CausesValidation = false;
+            this.audioSetingTabControl.Controls.Add(this.audioPage1);
+            this.audioSetingTabControl.Controls.Add(this.audioPage2);
+            this.audioSetingTabControl.Controls.Add(this.audioPage3);
+            this.audioSetingTabControl.Location = new System.Drawing.Point(10, 33);
+            this.audioSetingTabControl.Name = "audioSetingTabControl";
+            this.audioSetingTabControl.SelectedIndex = 0;
+            this.audioSetingTabControl.Size = new System.Drawing.Size(514, 120);
+            this.audioSetingTabControl.TabIndex = 8;
+            // 
+            // audioPage1
+            // 
+            this.audioPage1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.audioPage1.Controls.Add(this.codecLabel);
+            this.audioPage1.Controls.Add(this.filteredFLACCheck);
+            this.audioPage1.Controls.Add(this.filteredMP3Check);
+            this.audioPage1.Controls.Add(this.filteredEAC3Check);
+            this.audioPage1.Controls.Add(this.filteredTrueHDCheck);
+            this.audioPage1.Controls.Add(this.filteredDTSHDCheck);
+            this.audioPage1.Controls.Add(this.filteredDTSCheck);
+            this.audioPage1.Controls.Add(this.mixdownLabel);
+            this.audioPage1.Controls.Add(this.filteredAC3Check);
+            this.audioPage1.Controls.Add(this.audioCodecComboBox);
+            this.audioPage1.Controls.Add(this.filteredAACCheck);
+            this.audioPage1.Controls.Add(this.sampleRateLabel);
+            this.audioPage1.Controls.Add(this.kbpsLabel);
+            this.audioPage1.Controls.Add(this.mixdownComboBox);
+            this.audioPage1.Controls.Add(this.audioBitrateCombo);
+            this.audioPage1.Controls.Add(this.sampleRateCombo);
+            this.audioPage1.Controls.Add(this.passthruFilterLabel);
+            this.audioPage1.Controls.Add(this.ABitrateLabel);
+            this.audioPage1.Location = new System.Drawing.Point(4, 22);
+            this.audioPage1.Name = "audioPage1";
+            this.audioPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.audioPage1.Size = new System.Drawing.Size(506, 94);
+            this.audioPage1.TabIndex = 0;
+            this.audioPage1.Text = "Stream 1";
+            // 
+            // codecLabel
+            // 
+            this.codecLabel.AutoSize = true;
+            this.codecLabel.Location = new System.Drawing.Point(67, 14);
+            this.codecLabel.Name = "codecLabel";
+            this.codecLabel.Size = new System.Drawing.Size(43, 13);
+            this.codecLabel.TabIndex = 2;
+            this.codecLabel.Text = "Codec";
+            // 
+            // filteredDTSCheck
+            // 
+            this.filteredDTSCheck.AutoSize = true;
+            this.filteredDTSCheck.Location = new System.Drawing.Point(315, 42);
+            this.filteredDTSCheck.Name = "filteredDTSCheck";
+            this.filteredDTSCheck.Size = new System.Drawing.Size(51, 17);
+            this.filteredDTSCheck.TabIndex = 7;
+            this.filteredDTSCheck.Text = "DTS";
+            this.filteredDTSCheck.UseVisualStyleBackColor = true;
+            this.filteredDTSCheck.Visible = false;
+            this.filteredDTSCheck.CheckedChanged += new System.EventHandler(this.FilteredDTSCheck_CheckedChanged);
+            // 
+            // mixdownLabel
+            // 
+            this.mixdownLabel.AutoSize = true;
+            this.mixdownLabel.Location = new System.Drawing.Point(54, 42);
+            this.mixdownLabel.Name = "mixdownLabel";
+            this.mixdownLabel.Size = new System.Drawing.Size(56, 13);
+            this.mixdownLabel.TabIndex = 3;
+            this.mixdownLabel.Text = "Mixdown";
+            // 
+            // filteredAC3Check
+            // 
+            this.filteredAC3Check.AutoSize = true;
+            this.filteredAC3Check.Location = new System.Drawing.Point(265, 41);
+            this.filteredAC3Check.Name = "filteredAC3Check";
+            this.filteredAC3Check.Size = new System.Drawing.Size(49, 17);
+            this.filteredAC3Check.TabIndex = 7;
+            this.filteredAC3Check.Text = "AC3";
+            this.filteredAC3Check.UseVisualStyleBackColor = true;
+            this.filteredAC3Check.Visible = false;
+            this.filteredAC3Check.CheckedChanged += new System.EventHandler(this.FilteredAC3Check_CheckedChanged);
+            // 
+            // audioCodecComboBox
+            // 
+            this.audioCodecComboBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.audioCodecComboBox.ForeColor = System.Drawing.Color.GreenYellow;
+            this.audioCodecComboBox.FormattingEnabled = true;
+            this.audioCodecComboBox.Items.AddRange(new object[] {
+            "AAC (FDK)",
+            "AC3",
+            "E-AC3",
+            "Filtered Passthru"});
+            this.audioCodecComboBox.Location = new System.Drawing.Point(116, 11);
+            this.audioCodecComboBox.Name = "audioCodecComboBox";
+            this.audioCodecComboBox.Size = new System.Drawing.Size(133, 21);
+            this.audioCodecComboBox.TabIndex = 0;
+            this.audioCodecComboBox.SelectedIndexChanged += new System.EventHandler(this.AudioCodecComboBox_SelectedIndexChanged);
+            this.audioCodecComboBox.TextChanged += new System.EventHandler(this.AudioCodecComboBox_TextChanged);
+            // 
+            // filteredAACCheck
+            // 
+            this.filteredAACCheck.AutoSize = true;
+            this.filteredAACCheck.Location = new System.Drawing.Point(265, 19);
+            this.filteredAACCheck.Name = "filteredAACCheck";
+            this.filteredAACCheck.Size = new System.Drawing.Size(50, 17);
+            this.filteredAACCheck.TabIndex = 7;
+            this.filteredAACCheck.Text = "AAC";
+            this.filteredAACCheck.UseVisualStyleBackColor = true;
+            this.filteredAACCheck.Visible = false;
+            this.filteredAACCheck.CheckedChanged += new System.EventHandler(this.FilteredAACCheck_CheckedChanged);
+            // 
+            // sampleRateLabel
+            // 
+            this.sampleRateLabel.AutoSize = true;
+            this.sampleRateLabel.Location = new System.Drawing.Point(31, 67);
+            this.sampleRateLabel.Name = "sampleRateLabel";
+            this.sampleRateLabel.Size = new System.Drawing.Size(79, 13);
+            this.sampleRateLabel.TabIndex = 4;
+            this.sampleRateLabel.Text = "Sample Rate";
+            // 
+            // kbpsLabel
+            // 
+            this.kbpsLabel.AutoSize = true;
+            this.kbpsLabel.Location = new System.Drawing.Point(465, 69);
+            this.kbpsLabel.Name = "kbpsLabel";
+            this.kbpsLabel.Size = new System.Drawing.Size(35, 13);
+            this.kbpsLabel.TabIndex = 5;
+            this.kbpsLabel.Text = "Kbps";
+            // 
+            // mixdownComboBox
+            // 
+            this.mixdownComboBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.mixdownComboBox.ForeColor = System.Drawing.Color.GreenYellow;
+            this.mixdownComboBox.FormattingEnabled = true;
+            this.mixdownComboBox.Items.AddRange(new object[] {
+            "Dolby ProLogic 2",
+            "5.1 Audio"});
+            this.mixdownComboBox.Location = new System.Drawing.Point(116, 37);
+            this.mixdownComboBox.Name = "mixdownComboBox";
+            this.mixdownComboBox.Size = new System.Drawing.Size(133, 21);
+            this.mixdownComboBox.TabIndex = 0;
+            this.mixdownComboBox.SelectedIndexChanged += new System.EventHandler(this.MixdownComboBox_SelectedIndexChanged);
+            this.mixdownComboBox.TextChanged += new System.EventHandler(this.MixdownComboBox_TextChanged);
+            // 
+            // audioBitrateCombo
+            // 
+            this.audioBitrateCombo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.audioBitrateCombo.ForeColor = System.Drawing.Color.GreenYellow;
+            this.audioBitrateCombo.FormattingEnabled = true;
+            this.audioBitrateCombo.Items.AddRange(new object[] {
+            "32",
+            "40",
+            "48",
+            "56",
+            "64",
+            "80",
+            "96",
+            "112",
+            "128",
+            "160",
+            "192",
+            "224",
+            "256"});
+            this.audioBitrateCombo.Location = new System.Drawing.Point(412, 65);
+            this.audioBitrateCombo.Name = "audioBitrateCombo";
+            this.audioBitrateCombo.Size = new System.Drawing.Size(47, 21);
+            this.audioBitrateCombo.TabIndex = 6;
+            this.audioBitrateCombo.SelectedIndexChanged += new System.EventHandler(this.AudioBitrateCombo_SelectedIndexChanged);
+            this.audioBitrateCombo.TextChanged += new System.EventHandler(this.AudioBitrateCombo_TextChanged);
+            this.audioBitrateCombo.Leave += new System.EventHandler(this.AudioCodecComboBox_Leave);
+            // 
+            // sampleRateCombo
+            // 
+            this.sampleRateCombo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.sampleRateCombo.ForeColor = System.Drawing.Color.GreenYellow;
+            this.sampleRateCombo.FormattingEnabled = true;
+            this.sampleRateCombo.Items.AddRange(new object[] {
+            "44.1",
+            "48"});
+            this.sampleRateCombo.Location = new System.Drawing.Point(116, 64);
+            this.sampleRateCombo.Name = "sampleRateCombo";
+            this.sampleRateCombo.Size = new System.Drawing.Size(54, 21);
+            this.sampleRateCombo.TabIndex = 0;
+            this.sampleRateCombo.SelectedIndexChanged += new System.EventHandler(this.SampleRateCombo_SelectedIndexChanged);
+            this.sampleRateCombo.TextChanged += new System.EventHandler(this.SampleRateCombo_TextChanged);
+            this.sampleRateCombo.Leave += new System.EventHandler(this.SampleRateCombo_Leave);
+            // 
+            // passthruFilterLabel
+            // 
+            this.passthruFilterLabel.AutoSize = true;
+            this.passthruFilterLabel.Location = new System.Drawing.Point(338, 4);
+            this.passthruFilterLabel.Name = "passthruFilterLabel";
+            this.passthruFilterLabel.Size = new System.Drawing.Size(94, 13);
+            this.passthruFilterLabel.TabIndex = 6;
+            this.passthruFilterLabel.Text = "Passthru Filters";
+            this.passthruFilterLabel.Visible = false;
+            // 
+            // ABitrateLabel
+            // 
+            this.ABitrateLabel.AutoSize = true;
+            this.ABitrateLabel.Location = new System.Drawing.Point(262, 69);
+            this.ABitrateLabel.Name = "ABitrateLabel";
+            this.ABitrateLabel.Size = new System.Drawing.Size(143, 13);
+            this.ABitrateLabel.TabIndex = 4;
+            this.ABitrateLabel.Text = "Bitrate Per Channel Cap";
+            // 
+            // audioPage2
+            // 
+            this.audioPage2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.audioPage2.Controls.Add(this.disableCheckStream2);
+            this.audioPage2.Controls.Add(this.codecLabel2);
+            this.audioPage2.Controls.Add(this.filteredDTSHDCheck2);
+            this.audioPage2.Controls.Add(this.filteredFLACCheck2);
+            this.audioPage2.Controls.Add(this.filteredMP3Check2);
+            this.audioPage2.Controls.Add(this.filteredDTSCheck2);
+            this.audioPage2.Controls.Add(this.mixdownLabel2);
+            this.audioPage2.Controls.Add(this.filteredEAC3Check2);
+            this.audioPage2.Controls.Add(this.filteredTrueHDCheck2);
+            this.audioPage2.Controls.Add(this.filteredAC3Check2);
+            this.audioPage2.Controls.Add(this.audioCodecComboBox2);
+            this.audioPage2.Controls.Add(this.filteredAACCheck2);
+            this.audioPage2.Controls.Add(this.sampleRateLabel2);
+            this.audioPage2.Controls.Add(this.kbpsLabel2);
+            this.audioPage2.Controls.Add(this.mixdownComboBox2);
+            this.audioPage2.Controls.Add(this.audioBitrateCombo2);
+            this.audioPage2.Controls.Add(this.sampleRateCombo2);
+            this.audioPage2.Controls.Add(this.passthruFilterLabel2);
+            this.audioPage2.Controls.Add(this.ABitrateLabel2);
+            this.audioPage2.Location = new System.Drawing.Point(4, 22);
+            this.audioPage2.Name = "audioPage2";
+            this.audioPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.audioPage2.Size = new System.Drawing.Size(506, 94);
+            this.audioPage2.TabIndex = 1;
+            this.audioPage2.Text = "Stream 2";
+            // 
+            // disableCheckStream2
+            // 
+            this.disableCheckStream2.Appearance = System.Windows.Forms.Appearance.Button;
+            this.disableCheckStream2.AutoSize = true;
+            this.disableCheckStream2.BackColor = System.Drawing.Color.GreenYellow;
+            this.disableCheckStream2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.disableCheckStream2.Location = new System.Drawing.Point(3, 4);
+            this.disableCheckStream2.Name = "disableCheckStream2";
+            this.disableCheckStream2.Size = new System.Drawing.Size(59, 23);
+            this.disableCheckStream2.TabIndex = 21;
+            this.disableCheckStream2.Text = "Disable";
+            this.disableCheckStream2.UseVisualStyleBackColor = false;
+            this.disableCheckStream2.CheckedChanged += new System.EventHandler(this.disableCheckStream2_CheckedChanged);
+            // 
+            // codecLabel2
+            // 
+            this.codecLabel2.AutoSize = true;
+            this.codecLabel2.Location = new System.Drawing.Point(67, 14);
+            this.codecLabel2.Name = "codecLabel2";
+            this.codecLabel2.Size = new System.Drawing.Size(43, 13);
+            this.codecLabel2.TabIndex = 11;
+            this.codecLabel2.Text = "Codec";
+            // 
+            // filteredDTSCheck2
+            // 
+            this.filteredDTSCheck2.AutoSize = true;
+            this.filteredDTSCheck2.Location = new System.Drawing.Point(315, 42);
+            this.filteredDTSCheck2.Name = "filteredDTSCheck2";
+            this.filteredDTSCheck2.Size = new System.Drawing.Size(51, 17);
+            this.filteredDTSCheck2.TabIndex = 18;
+            this.filteredDTSCheck2.Text = "DTS";
+            this.filteredDTSCheck2.UseVisualStyleBackColor = true;
+            this.filteredDTSCheck2.Visible = false;
+            // 
+            // mixdownLabel2
+            // 
+            this.mixdownLabel2.AutoSize = true;
+            this.mixdownLabel2.Location = new System.Drawing.Point(54, 42);
+            this.mixdownLabel2.Name = "mixdownLabel2";
+            this.mixdownLabel2.Size = new System.Drawing.Size(56, 13);
+            this.mixdownLabel2.TabIndex = 12;
+            this.mixdownLabel2.Text = "Mixdown";
+            // 
+            // filteredAC3Check2
+            // 
+            this.filteredAC3Check2.AutoSize = true;
+            this.filteredAC3Check2.Location = new System.Drawing.Point(265, 41);
+            this.filteredAC3Check2.Name = "filteredAC3Check2";
+            this.filteredAC3Check2.Size = new System.Drawing.Size(49, 17);
+            this.filteredAC3Check2.TabIndex = 19;
+            this.filteredAC3Check2.Text = "AC3";
+            this.filteredAC3Check2.UseVisualStyleBackColor = true;
+            this.filteredAC3Check2.Visible = false;
+            // 
+            // audioCodecComboBox2
+            // 
+            this.audioCodecComboBox2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.audioCodecComboBox2.ForeColor = System.Drawing.Color.GreenYellow;
+            this.audioCodecComboBox2.FormattingEnabled = true;
+            this.audioCodecComboBox2.Items.AddRange(new object[] {
+            "AAC (FDK)",
+            "AC3",
+            "E-AC3",
+            "Filtered Passthru"});
+            this.audioCodecComboBox2.Location = new System.Drawing.Point(116, 11);
+            this.audioCodecComboBox2.Name = "audioCodecComboBox2";
+            this.audioCodecComboBox2.Size = new System.Drawing.Size(133, 21);
+            this.audioCodecComboBox2.TabIndex = 8;
+            this.audioCodecComboBox2.SelectedIndexChanged += new System.EventHandler(this.audioCodecComboBox2_SelectedIndexChanged);
+            this.audioCodecComboBox2.TextChanged += new System.EventHandler(this.AudioCodecComboBox2_TextChanged);
+            // 
+            // filteredAACCheck2
+            // 
+            this.filteredAACCheck2.AutoSize = true;
+            this.filteredAACCheck2.Location = new System.Drawing.Point(265, 19);
+            this.filteredAACCheck2.Name = "filteredAACCheck2";
+            this.filteredAACCheck2.Size = new System.Drawing.Size(50, 17);
+            this.filteredAACCheck2.TabIndex = 20;
+            this.filteredAACCheck2.Text = "AAC";
+            this.filteredAACCheck2.UseVisualStyleBackColor = true;
+            this.filteredAACCheck2.Visible = false;
+            // 
+            // sampleRateLabel2
+            // 
+            this.sampleRateLabel2.AutoSize = true;
+            this.sampleRateLabel2.Location = new System.Drawing.Point(31, 67);
+            this.sampleRateLabel2.Name = "sampleRateLabel2";
+            this.sampleRateLabel2.Size = new System.Drawing.Size(79, 13);
+            this.sampleRateLabel2.TabIndex = 13;
+            this.sampleRateLabel2.Text = "Sample Rate";
+            // 
+            // kbpsLabel2
+            // 
+            this.kbpsLabel2.AutoSize = true;
+            this.kbpsLabel2.Location = new System.Drawing.Point(465, 69);
+            this.kbpsLabel2.Name = "kbpsLabel2";
+            this.kbpsLabel2.Size = new System.Drawing.Size(35, 13);
+            this.kbpsLabel2.TabIndex = 15;
+            this.kbpsLabel2.Text = "Kbps";
+            // 
+            // mixdownComboBox2
+            // 
+            this.mixdownComboBox2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.mixdownComboBox2.ForeColor = System.Drawing.Color.GreenYellow;
+            this.mixdownComboBox2.FormattingEnabled = true;
+            this.mixdownComboBox2.Items.AddRange(new object[] {
+            "Dolby ProLogic 2",
+            "5.1 Audio"});
+            this.mixdownComboBox2.Location = new System.Drawing.Point(116, 37);
+            this.mixdownComboBox2.Name = "mixdownComboBox2";
+            this.mixdownComboBox2.Size = new System.Drawing.Size(133, 21);
+            this.mixdownComboBox2.TabIndex = 9;
+            this.mixdownComboBox2.SelectedIndexChanged += new System.EventHandler(this.MixdownComboBox2_SelectedIndexChanged);
+            // 
+            // audioBitrateCombo2
+            // 
+            this.audioBitrateCombo2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.audioBitrateCombo2.ForeColor = System.Drawing.Color.GreenYellow;
+            this.audioBitrateCombo2.FormattingEnabled = true;
+            this.audioBitrateCombo2.Items.AddRange(new object[] {
+            "32",
+            "40",
+            "48",
+            "56",
+            "64",
+            "80",
+            "96",
+            "112",
+            "128",
+            "160",
+            "192",
+            "224",
+            "256"});
+            this.audioBitrateCombo2.Location = new System.Drawing.Point(412, 65);
+            this.audioBitrateCombo2.Name = "audioBitrateCombo2";
+            this.audioBitrateCombo2.Size = new System.Drawing.Size(47, 21);
+            this.audioBitrateCombo2.TabIndex = 16;
+            this.audioBitrateCombo2.SelectedIndexChanged += new System.EventHandler(this.AudioBitrateCombo2_SelectedIndexChanged);
+            // 
+            // sampleRateCombo2
+            // 
+            this.sampleRateCombo2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.sampleRateCombo2.ForeColor = System.Drawing.Color.GreenYellow;
+            this.sampleRateCombo2.FormattingEnabled = true;
+            this.sampleRateCombo2.Items.AddRange(new object[] {
+            "44.1",
+            "48"});
+            this.sampleRateCombo2.Location = new System.Drawing.Point(116, 64);
+            this.sampleRateCombo2.Name = "sampleRateCombo2";
+            this.sampleRateCombo2.Size = new System.Drawing.Size(54, 21);
+            this.sampleRateCombo2.TabIndex = 10;
+            this.sampleRateCombo2.SelectedIndexChanged += new System.EventHandler(this.SampleRateCombo2_SelectedIndexChanged);
+            // 
+            // passthruFilterLabel2
+            // 
+            this.passthruFilterLabel2.AutoSize = true;
+            this.passthruFilterLabel2.Location = new System.Drawing.Point(338, 4);
+            this.passthruFilterLabel2.Name = "passthruFilterLabel2";
+            this.passthruFilterLabel2.Size = new System.Drawing.Size(94, 13);
+            this.passthruFilterLabel2.TabIndex = 17;
+            this.passthruFilterLabel2.Text = "Passthru Filters";
+            this.passthruFilterLabel2.Visible = false;
+            // 
+            // ABitrateLabel2
+            // 
+            this.ABitrateLabel2.AutoSize = true;
+            this.ABitrateLabel2.Location = new System.Drawing.Point(262, 69);
+            this.ABitrateLabel2.Name = "ABitrateLabel2";
+            this.ABitrateLabel2.Size = new System.Drawing.Size(143, 13);
+            this.ABitrateLabel2.TabIndex = 14;
+            this.ABitrateLabel2.Text = "Bitrate Per Channel Cap";
+            // 
+            // audioPage3
+            // 
+            this.audioPage3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.audioPage3.Controls.Add(this.disableCheckStream3);
+            this.audioPage3.Controls.Add(this.codecLabel3);
+            this.audioPage3.Controls.Add(this.filteredDTSCheck3);
+            this.audioPage3.Controls.Add(this.mixdownLabel3);
+            this.audioPage3.Controls.Add(this.filteredFLACCheck3);
+            this.audioPage3.Controls.Add(this.filteredMP3Check3);
+            this.audioPage3.Controls.Add(this.filteredTrueHDCheck3);
+            this.audioPage3.Controls.Add(this.filteredDTSHDCheck3);
+            this.audioPage3.Controls.Add(this.filteredEAC3Check3);
+            this.audioPage3.Controls.Add(this.filteredAC3Check3);
+            this.audioPage3.Controls.Add(this.audioCodecComboBox3);
+            this.audioPage3.Controls.Add(this.filteredAACCheck3);
+            this.audioPage3.Controls.Add(this.sampleRateLabel3);
+            this.audioPage3.Controls.Add(this.kbpsLabel3);
+            this.audioPage3.Controls.Add(this.mixdownComboBox3);
+            this.audioPage3.Controls.Add(this.audioBitrateCombo3);
+            this.audioPage3.Controls.Add(this.sampleRateCombo3);
+            this.audioPage3.Controls.Add(this.passthruFilterLabel3);
+            this.audioPage3.Controls.Add(this.ABitrateLabel3);
+            this.audioPage3.Location = new System.Drawing.Point(4, 22);
+            this.audioPage3.Name = "audioPage3";
+            this.audioPage3.Size = new System.Drawing.Size(506, 94);
+            this.audioPage3.TabIndex = 2;
+            this.audioPage3.Text = "Stream 3";
+            // 
+            // disableCheckStream3
+            // 
+            this.disableCheckStream3.Appearance = System.Windows.Forms.Appearance.Button;
+            this.disableCheckStream3.AutoSize = true;
+            this.disableCheckStream3.BackColor = System.Drawing.Color.GreenYellow;
+            this.disableCheckStream3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.disableCheckStream3.Location = new System.Drawing.Point(3, 4);
+            this.disableCheckStream3.Name = "disableCheckStream3";
+            this.disableCheckStream3.Size = new System.Drawing.Size(59, 23);
+            this.disableCheckStream3.TabIndex = 22;
+            this.disableCheckStream3.Text = "Disable";
+            this.disableCheckStream3.UseVisualStyleBackColor = false;
+            this.disableCheckStream3.CheckedChanged += new System.EventHandler(this.disableCheckStream3_CheckedChanged);
+            // 
+            // codecLabel3
+            // 
+            this.codecLabel3.AutoSize = true;
+            this.codecLabel3.Location = new System.Drawing.Point(67, 14);
+            this.codecLabel3.Name = "codecLabel3";
+            this.codecLabel3.Size = new System.Drawing.Size(43, 13);
+            this.codecLabel3.TabIndex = 11;
+            this.codecLabel3.Text = "Codec";
+            // 
+            // filteredDTSCheck3
+            // 
+            this.filteredDTSCheck3.AutoSize = true;
+            this.filteredDTSCheck3.Location = new System.Drawing.Point(315, 42);
+            this.filteredDTSCheck3.Name = "filteredDTSCheck3";
+            this.filteredDTSCheck3.Size = new System.Drawing.Size(51, 17);
+            this.filteredDTSCheck3.TabIndex = 18;
+            this.filteredDTSCheck3.Text = "DTS";
+            this.filteredDTSCheck3.UseVisualStyleBackColor = true;
+            this.filteredDTSCheck3.Visible = false;
+            // 
+            // mixdownLabel3
+            // 
+            this.mixdownLabel3.AutoSize = true;
+            this.mixdownLabel3.Location = new System.Drawing.Point(54, 42);
+            this.mixdownLabel3.Name = "mixdownLabel3";
+            this.mixdownLabel3.Size = new System.Drawing.Size(56, 13);
+            this.mixdownLabel3.TabIndex = 12;
+            this.mixdownLabel3.Text = "Mixdown";
+            // 
+            // filteredAC3Check3
+            // 
+            this.filteredAC3Check3.AutoSize = true;
+            this.filteredAC3Check3.Location = new System.Drawing.Point(265, 41);
+            this.filteredAC3Check3.Name = "filteredAC3Check3";
+            this.filteredAC3Check3.Size = new System.Drawing.Size(49, 17);
+            this.filteredAC3Check3.TabIndex = 19;
+            this.filteredAC3Check3.Text = "AC3";
+            this.filteredAC3Check3.UseVisualStyleBackColor = true;
+            this.filteredAC3Check3.Visible = false;
+            // 
+            // audioCodecComboBox3
+            // 
+            this.audioCodecComboBox3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.audioCodecComboBox3.ForeColor = System.Drawing.Color.GreenYellow;
+            this.audioCodecComboBox3.FormattingEnabled = true;
+            this.audioCodecComboBox3.Items.AddRange(new object[] {
+            "AAC (FDK)",
+            "AC3",
+            "E-AC3",
+            "Filtered Passthru"});
+            this.audioCodecComboBox3.Location = new System.Drawing.Point(116, 11);
+            this.audioCodecComboBox3.Name = "audioCodecComboBox3";
+            this.audioCodecComboBox3.Size = new System.Drawing.Size(133, 21);
+            this.audioCodecComboBox3.TabIndex = 8;
+            this.audioCodecComboBox3.SelectedIndexChanged += new System.EventHandler(this.audioCodecComboBox3_SelectedIndexChanged);
+            this.audioCodecComboBox3.TextChanged += new System.EventHandler(this.AudioCodecComboBox3_TextChanged);
+            // 
+            // filteredAACCheck3
+            // 
+            this.filteredAACCheck3.AutoSize = true;
+            this.filteredAACCheck3.Location = new System.Drawing.Point(265, 19);
+            this.filteredAACCheck3.Name = "filteredAACCheck3";
+            this.filteredAACCheck3.Size = new System.Drawing.Size(50, 17);
+            this.filteredAACCheck3.TabIndex = 20;
+            this.filteredAACCheck3.Text = "AAC";
+            this.filteredAACCheck3.UseVisualStyleBackColor = true;
+            this.filteredAACCheck3.Visible = false;
+            // 
+            // sampleRateLabel3
+            // 
+            this.sampleRateLabel3.AutoSize = true;
+            this.sampleRateLabel3.Location = new System.Drawing.Point(31, 67);
+            this.sampleRateLabel3.Name = "sampleRateLabel3";
+            this.sampleRateLabel3.Size = new System.Drawing.Size(79, 13);
+            this.sampleRateLabel3.TabIndex = 13;
+            this.sampleRateLabel3.Text = "Sample Rate";
+            // 
+            // kbpsLabel3
+            // 
+            this.kbpsLabel3.AutoSize = true;
+            this.kbpsLabel3.Location = new System.Drawing.Point(465, 69);
+            this.kbpsLabel3.Name = "kbpsLabel3";
+            this.kbpsLabel3.Size = new System.Drawing.Size(35, 13);
+            this.kbpsLabel3.TabIndex = 15;
+            this.kbpsLabel3.Text = "Kbps";
+            // 
+            // mixdownComboBox3
+            // 
+            this.mixdownComboBox3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.mixdownComboBox3.ForeColor = System.Drawing.Color.GreenYellow;
+            this.mixdownComboBox3.FormattingEnabled = true;
+            this.mixdownComboBox3.Items.AddRange(new object[] {
+            "Dolby ProLogic 2",
+            "5.1 Audio"});
+            this.mixdownComboBox3.Location = new System.Drawing.Point(116, 37);
+            this.mixdownComboBox3.Name = "mixdownComboBox3";
+            this.mixdownComboBox3.Size = new System.Drawing.Size(133, 21);
+            this.mixdownComboBox3.TabIndex = 9;
+            this.mixdownComboBox3.SelectedIndexChanged += new System.EventHandler(this.MixdownComboBox3_SelectedIndexChanged);
+            // 
+            // audioBitrateCombo3
+            // 
+            this.audioBitrateCombo3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.audioBitrateCombo3.ForeColor = System.Drawing.Color.GreenYellow;
+            this.audioBitrateCombo3.FormattingEnabled = true;
+            this.audioBitrateCombo3.Items.AddRange(new object[] {
+            "32",
+            "40",
+            "48",
+            "56",
+            "64",
+            "80",
+            "96",
+            "112",
+            "128",
+            "160",
+            "192",
+            "224",
+            "256"});
+            this.audioBitrateCombo3.Location = new System.Drawing.Point(412, 65);
+            this.audioBitrateCombo3.Name = "audioBitrateCombo3";
+            this.audioBitrateCombo3.Size = new System.Drawing.Size(47, 21);
+            this.audioBitrateCombo3.TabIndex = 16;
+            this.audioBitrateCombo3.SelectedIndexChanged += new System.EventHandler(this.AudioBitrateCombo3_SelectedIndexChanged);
+            // 
+            // sampleRateCombo3
+            // 
+            this.sampleRateCombo3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.sampleRateCombo3.ForeColor = System.Drawing.Color.GreenYellow;
+            this.sampleRateCombo3.FormattingEnabled = true;
+            this.sampleRateCombo3.Items.AddRange(new object[] {
+            "44.1",
+            "48"});
+            this.sampleRateCombo3.Location = new System.Drawing.Point(116, 64);
+            this.sampleRateCombo3.Name = "sampleRateCombo3";
+            this.sampleRateCombo3.Size = new System.Drawing.Size(54, 21);
+            this.sampleRateCombo3.TabIndex = 10;
+            this.sampleRateCombo3.SelectedIndexChanged += new System.EventHandler(this.SampleRateCombo3_SelectedIndexChanged);
+            // 
+            // passthruFilterLabel3
+            // 
+            this.passthruFilterLabel3.AutoSize = true;
+            this.passthruFilterLabel3.Location = new System.Drawing.Point(338, 4);
+            this.passthruFilterLabel3.Name = "passthruFilterLabel3";
+            this.passthruFilterLabel3.Size = new System.Drawing.Size(94, 13);
+            this.passthruFilterLabel3.TabIndex = 17;
+            this.passthruFilterLabel3.Text = "Passthru Filters";
+            this.passthruFilterLabel3.Visible = false;
+            // 
+            // ABitrateLabel3
+            // 
+            this.ABitrateLabel3.AutoSize = true;
+            this.ABitrateLabel3.Location = new System.Drawing.Point(262, 69);
+            this.ABitrateLabel3.Name = "ABitrateLabel3";
+            this.ABitrateLabel3.Size = new System.Drawing.Size(143, 13);
+            this.ABitrateLabel3.TabIndex = 14;
+            this.ABitrateLabel3.Text = "Bitrate Per Channel Cap";
             // 
             // removePresetButton
             // 
@@ -936,7 +1598,7 @@
             // audioSettingsLabel
             // 
             this.audioSettingsLabel.AutoSize = true;
-            this.audioSettingsLabel.Location = new System.Drawing.Point(3, 19);
+            this.audioSettingsLabel.Location = new System.Drawing.Point(7, 20);
             this.audioSettingsLabel.Name = "audioSettingsLabel";
             this.audioSettingsLabel.Size = new System.Drawing.Size(156, 13);
             this.audioSettingsLabel.TabIndex = 1;
@@ -945,188 +1607,30 @@
             // audioSettinsPanel
             // 
             this.audioSettinsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.audioSettinsPanel.Controls.Add(this.filteredDTSCheck);
-            this.audioSettinsPanel.Controls.Add(this.filteredAC3Check);
-            this.audioSettinsPanel.Controls.Add(this.filteredAACCheck);
-            this.audioSettinsPanel.Controls.Add(this.kbpsLabel);
-            this.audioSettinsPanel.Controls.Add(this.audioBitrateCombo);
-            this.audioSettinsPanel.Controls.Add(this.passthruFilterLabel);
-            this.audioSettinsPanel.Controls.Add(this.sampleRateCombo);
-            this.audioSettinsPanel.Controls.Add(this.mixdownComboBox);
-            this.audioSettinsPanel.Controls.Add(this.sampleRateLabel);
-            this.audioSettinsPanel.Controls.Add(this.audioCodecComboBox);
-            this.audioSettinsPanel.Controls.Add(this.ABitrateLabel);
-            this.audioSettinsPanel.Controls.Add(this.mixdownLabel);
-            this.audioSettinsPanel.Controls.Add(this.codecLabel);
             this.audioSettinsPanel.Location = new System.Drawing.Point(6, 36);
             this.audioSettinsPanel.Name = "audioSettinsPanel";
             this.audioSettinsPanel.Size = new System.Drawing.Size(522, 121);
             this.audioSettinsPanel.TabIndex = 0;
             // 
-            // filteredDTSCheck
+            // HBCommandOutputTab
             // 
-            this.filteredDTSCheck.AutoSize = true;
-            this.filteredDTSCheck.Location = new System.Drawing.Point(406, 29);
-            this.filteredDTSCheck.Name = "filteredDTSCheck";
-            this.filteredDTSCheck.Size = new System.Drawing.Size(87, 17);
-            this.filteredDTSCheck.TabIndex = 7;
-            this.filteredDTSCheck.Text = "Dolby DTS";
-            this.filteredDTSCheck.UseVisualStyleBackColor = true;
-            this.filteredDTSCheck.Visible = false;
-            this.filteredDTSCheck.CheckedChanged += new System.EventHandler(this.FilteredDTSCheck_CheckedChanged);
+            this.HBCommandOutputTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.HBCommandOutputTab.Controls.Add(this.CommandOutPutTextBox);
+            this.HBCommandOutputTab.Location = new System.Drawing.Point(4, 22);
+            this.HBCommandOutputTab.Name = "HBCommandOutputTab";
+            this.HBCommandOutputTab.Size = new System.Drawing.Size(534, 495);
+            this.HBCommandOutputTab.TabIndex = 2;
+            this.HBCommandOutputTab.Text = "Handbrake Command Output";
             // 
-            // filteredAC3Check
+            // CommandOutPutTextBox
             // 
-            this.filteredAC3Check.AutoSize = true;
-            this.filteredAC3Check.Location = new System.Drawing.Point(350, 29);
-            this.filteredAC3Check.Name = "filteredAC3Check";
-            this.filteredAC3Check.Size = new System.Drawing.Size(49, 17);
-            this.filteredAC3Check.TabIndex = 7;
-            this.filteredAC3Check.Text = "AC3";
-            this.filteredAC3Check.UseVisualStyleBackColor = true;
-            this.filteredAC3Check.Visible = false;
-            this.filteredAC3Check.CheckedChanged += new System.EventHandler(this.FilteredAC3Check_CheckedChanged);
-            // 
-            // filteredAACCheck
-            // 
-            this.filteredAACCheck.AutoSize = true;
-            this.filteredAACCheck.Location = new System.Drawing.Point(294, 29);
-            this.filteredAACCheck.Name = "filteredAACCheck";
-            this.filteredAACCheck.Size = new System.Drawing.Size(50, 17);
-            this.filteredAACCheck.TabIndex = 7;
-            this.filteredAACCheck.Text = "AAC";
-            this.filteredAACCheck.UseVisualStyleBackColor = true;
-            this.filteredAACCheck.Visible = false;
-            this.filteredAACCheck.CheckedChanged += new System.EventHandler(this.FilteredAACCheck_CheckedChanged);
-            // 
-            // kbpsLabel
-            // 
-            this.kbpsLabel.AutoSize = true;
-            this.kbpsLabel.Location = new System.Drawing.Point(478, 62);
-            this.kbpsLabel.Name = "kbpsLabel";
-            this.kbpsLabel.Size = new System.Drawing.Size(35, 13);
-            this.kbpsLabel.TabIndex = 5;
-            this.kbpsLabel.Text = "Kbps";
-            // 
-            // audioBitrateCombo
-            // 
-            this.audioBitrateCombo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.audioBitrateCombo.ForeColor = System.Drawing.Color.GreenYellow;
-            this.audioBitrateCombo.FormattingEnabled = true;
-            this.audioBitrateCombo.Items.AddRange(new object[] {
-            "32",
-            "40",
-            "48",
-            "56",
-            "64",
-            "80",
-            "96",
-            "112",
-            "128",
-            "160",
-            "192",
-            "224",
-            "256"});
-            this.audioBitrateCombo.Location = new System.Drawing.Point(425, 58);
-            this.audioBitrateCombo.Name = "audioBitrateCombo";
-            this.audioBitrateCombo.Size = new System.Drawing.Size(47, 21);
-            this.audioBitrateCombo.TabIndex = 6;
-            this.audioBitrateCombo.SelectedIndexChanged += new System.EventHandler(this.AudioBitrateCombo_SelectedIndexChanged);
-            this.audioBitrateCombo.TextChanged += new System.EventHandler(this.AudioBitrateCombo_TextChanged);
-            this.audioBitrateCombo.Leave += new System.EventHandler(this.AudioCodecComboBox_Leave);
-            // 
-            // passthruFilterLabel
-            // 
-            this.passthruFilterLabel.AutoSize = true;
-            this.passthruFilterLabel.Location = new System.Drawing.Point(335, 6);
-            this.passthruFilterLabel.Name = "passthruFilterLabel";
-            this.passthruFilterLabel.Size = new System.Drawing.Size(94, 13);
-            this.passthruFilterLabel.TabIndex = 6;
-            this.passthruFilterLabel.Text = "Passthru Filters";
-            this.passthruFilterLabel.Visible = false;
-            // 
-            // sampleRateCombo
-            // 
-            this.sampleRateCombo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.sampleRateCombo.ForeColor = System.Drawing.Color.GreenYellow;
-            this.sampleRateCombo.FormattingEnabled = true;
-            this.sampleRateCombo.Items.AddRange(new object[] {
-            "44.1",
-            "48"});
-            this.sampleRateCombo.Location = new System.Drawing.Point(89, 81);
-            this.sampleRateCombo.Name = "sampleRateCombo";
-            this.sampleRateCombo.Size = new System.Drawing.Size(54, 21);
-            this.sampleRateCombo.TabIndex = 0;
-            this.sampleRateCombo.SelectedIndexChanged += new System.EventHandler(this.SampleRateCombo_SelectedIndexChanged);
-            this.sampleRateCombo.TextChanged += new System.EventHandler(this.SampleRateCombo_TextChanged);
-            this.sampleRateCombo.Leave += new System.EventHandler(this.SampleRateCombo_Leave);
-            // 
-            // mixdownComboBox
-            // 
-            this.mixdownComboBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.mixdownComboBox.ForeColor = System.Drawing.Color.GreenYellow;
-            this.mixdownComboBox.FormattingEnabled = true;
-            this.mixdownComboBox.Items.AddRange(new object[] {
-            "Dolby ProLogic 2",
-            "5.1 Audio"});
-            this.mixdownComboBox.Location = new System.Drawing.Point(89, 54);
-            this.mixdownComboBox.Name = "mixdownComboBox";
-            this.mixdownComboBox.Size = new System.Drawing.Size(133, 21);
-            this.mixdownComboBox.TabIndex = 0;
-            this.mixdownComboBox.SelectedIndexChanged += new System.EventHandler(this.MixdownComboBox_SelectedIndexChanged);
-            this.mixdownComboBox.TextChanged += new System.EventHandler(this.MixdownComboBox_TextChanged);
-            // 
-            // sampleRateLabel
-            // 
-            this.sampleRateLabel.AutoSize = true;
-            this.sampleRateLabel.Location = new System.Drawing.Point(4, 84);
-            this.sampleRateLabel.Name = "sampleRateLabel";
-            this.sampleRateLabel.Size = new System.Drawing.Size(79, 13);
-            this.sampleRateLabel.TabIndex = 4;
-            this.sampleRateLabel.Text = "Sample Rate";
-            // 
-            // audioCodecComboBox
-            // 
-            this.audioCodecComboBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.audioCodecComboBox.ForeColor = System.Drawing.Color.GreenYellow;
-            this.audioCodecComboBox.FormattingEnabled = true;
-            this.audioCodecComboBox.Items.AddRange(new object[] {
-            "AAC (FDK)",
-            "AC3",
-            "Filtered Passthru"});
-            this.audioCodecComboBox.Location = new System.Drawing.Point(89, 28);
-            this.audioCodecComboBox.Name = "audioCodecComboBox";
-            this.audioCodecComboBox.Size = new System.Drawing.Size(133, 21);
-            this.audioCodecComboBox.TabIndex = 0;
-            this.audioCodecComboBox.SelectedIndexChanged += new System.EventHandler(this.AudioCodecComboBox_SelectedIndexChanged);
-            this.audioCodecComboBox.TextChanged += new System.EventHandler(this.AudioCodecComboBox_TextChanged);
-            // 
-            // ABitrateLabel
-            // 
-            this.ABitrateLabel.AutoSize = true;
-            this.ABitrateLabel.Location = new System.Drawing.Point(275, 62);
-            this.ABitrateLabel.Name = "ABitrateLabel";
-            this.ABitrateLabel.Size = new System.Drawing.Size(143, 13);
-            this.ABitrateLabel.TabIndex = 4;
-            this.ABitrateLabel.Text = "Bitrate Per Channel Cap";
-            // 
-            // mixdownLabel
-            // 
-            this.mixdownLabel.AutoSize = true;
-            this.mixdownLabel.Location = new System.Drawing.Point(27, 59);
-            this.mixdownLabel.Name = "mixdownLabel";
-            this.mixdownLabel.Size = new System.Drawing.Size(56, 13);
-            this.mixdownLabel.TabIndex = 3;
-            this.mixdownLabel.Text = "Mixdown";
-            // 
-            // codecLabel
-            // 
-            this.codecLabel.AutoSize = true;
-            this.codecLabel.Location = new System.Drawing.Point(40, 31);
-            this.codecLabel.Name = "codecLabel";
-            this.codecLabel.Size = new System.Drawing.Size(43, 13);
-            this.codecLabel.TabIndex = 2;
-            this.codecLabel.Text = "Codec";
+            this.CommandOutPutTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.CommandOutPutTextBox.ForeColor = System.Drawing.Color.GreenYellow;
+            this.CommandOutPutTextBox.Location = new System.Drawing.Point(3, 3);
+            this.CommandOutPutTextBox.Name = "CommandOutPutTextBox";
+            this.CommandOutPutTextBox.Size = new System.Drawing.Size(528, 489);
+            this.CommandOutPutTextBox.TabIndex = 0;
+            this.CommandOutPutTextBox.Text = "";
             // 
             // conversionSettingsLabel
             // 
@@ -1158,6 +1662,176 @@
             this.invisibleCloseButton.Text = "button1";
             this.invisibleCloseButton.UseVisualStyleBackColor = true;
             this.invisibleCloseButton.Click += new System.EventHandler(this.InvisibleCloseButton_Click);
+            // 
+            // filteredDTSHDCheck
+            // 
+            this.filteredDTSHDCheck.AutoSize = true;
+            this.filteredDTSHDCheck.Location = new System.Drawing.Point(374, 19);
+            this.filteredDTSHDCheck.Name = "filteredDTSHDCheck";
+            this.filteredDTSHDCheck.Size = new System.Drawing.Size(73, 17);
+            this.filteredDTSHDCheck.TabIndex = 7;
+            this.filteredDTSHDCheck.Text = "DTS-HD";
+            this.filteredDTSHDCheck.UseVisualStyleBackColor = true;
+            this.filteredDTSHDCheck.Visible = false;
+            this.filteredDTSHDCheck.CheckedChanged += new System.EventHandler(this.FilteredDTSCheck_CheckedChanged);
+            // 
+            // filteredTrueHDCheck
+            // 
+            this.filteredTrueHDCheck.AutoSize = true;
+            this.filteredTrueHDCheck.Location = new System.Drawing.Point(374, 41);
+            this.filteredTrueHDCheck.Name = "filteredTrueHDCheck";
+            this.filteredTrueHDCheck.Size = new System.Drawing.Size(70, 17);
+            this.filteredTrueHDCheck.TabIndex = 7;
+            this.filteredTrueHDCheck.Text = "TrueHD";
+            this.filteredTrueHDCheck.UseVisualStyleBackColor = true;
+            this.filteredTrueHDCheck.Visible = false;
+            this.filteredTrueHDCheck.CheckedChanged += new System.EventHandler(this.FilteredDTSCheck_CheckedChanged);
+            // 
+            // filteredEAC3Check
+            // 
+            this.filteredEAC3Check.AutoSize = true;
+            this.filteredEAC3Check.Location = new System.Drawing.Point(314, 19);
+            this.filteredEAC3Check.Name = "filteredEAC3Check";
+            this.filteredEAC3Check.Size = new System.Drawing.Size(61, 17);
+            this.filteredEAC3Check.TabIndex = 7;
+            this.filteredEAC3Check.Text = "E-AC3";
+            this.filteredEAC3Check.UseVisualStyleBackColor = true;
+            this.filteredEAC3Check.Visible = false;
+            this.filteredEAC3Check.CheckedChanged += new System.EventHandler(this.FilteredDTSCheck_CheckedChanged);
+            // 
+            // filteredMP3Check
+            // 
+            this.filteredMP3Check.AutoSize = true;
+            this.filteredMP3Check.Location = new System.Drawing.Point(446, 19);
+            this.filteredMP3Check.Name = "filteredMP3Check";
+            this.filteredMP3Check.Size = new System.Drawing.Size(51, 17);
+            this.filteredMP3Check.TabIndex = 7;
+            this.filteredMP3Check.Text = "MP3";
+            this.filteredMP3Check.UseVisualStyleBackColor = true;
+            this.filteredMP3Check.Visible = false;
+            this.filteredMP3Check.CheckedChanged += new System.EventHandler(this.FilteredDTSCheck_CheckedChanged);
+            // 
+            // filteredFLACCheck
+            // 
+            this.filteredFLACCheck.AutoSize = true;
+            this.filteredFLACCheck.Location = new System.Drawing.Point(446, 39);
+            this.filteredFLACCheck.Name = "filteredFLACCheck";
+            this.filteredFLACCheck.Size = new System.Drawing.Size(56, 17);
+            this.filteredFLACCheck.TabIndex = 7;
+            this.filteredFLACCheck.Text = "FLAC";
+            this.filteredFLACCheck.UseVisualStyleBackColor = true;
+            this.filteredFLACCheck.Visible = false;
+            this.filteredFLACCheck.CheckedChanged += new System.EventHandler(this.FilteredDTSCheck_CheckedChanged);
+            // 
+            // filteredEAC3Check2
+            // 
+            this.filteredEAC3Check2.AutoSize = true;
+            this.filteredEAC3Check2.Location = new System.Drawing.Point(314, 19);
+            this.filteredEAC3Check2.Name = "filteredEAC3Check2";
+            this.filteredEAC3Check2.Size = new System.Drawing.Size(61, 17);
+            this.filteredEAC3Check2.TabIndex = 19;
+            this.filteredEAC3Check2.Text = "E-AC3";
+            this.filteredEAC3Check2.UseVisualStyleBackColor = true;
+            this.filteredEAC3Check2.Visible = false;
+            // 
+            // filteredTrueHDCheck2
+            // 
+            this.filteredTrueHDCheck2.AutoSize = true;
+            this.filteredTrueHDCheck2.Location = new System.Drawing.Point(374, 41);
+            this.filteredTrueHDCheck2.Name = "filteredTrueHDCheck2";
+            this.filteredTrueHDCheck2.Size = new System.Drawing.Size(70, 17);
+            this.filteredTrueHDCheck2.TabIndex = 19;
+            this.filteredTrueHDCheck2.Text = "TrueHD";
+            this.filteredTrueHDCheck2.UseVisualStyleBackColor = true;
+            this.filteredTrueHDCheck2.Visible = false;
+            // 
+            // filteredDTSHDCheck2
+            // 
+            this.filteredDTSHDCheck2.AutoSize = true;
+            this.filteredDTSHDCheck2.Location = new System.Drawing.Point(374, 19);
+            this.filteredDTSHDCheck2.Name = "filteredDTSHDCheck2";
+            this.filteredDTSHDCheck2.Size = new System.Drawing.Size(73, 17);
+            this.filteredDTSHDCheck2.TabIndex = 18;
+            this.filteredDTSHDCheck2.Text = "DTS-HD";
+            this.filteredDTSHDCheck2.UseVisualStyleBackColor = true;
+            this.filteredDTSHDCheck2.Visible = false;
+            // 
+            // filteredMP3Check2
+            // 
+            this.filteredMP3Check2.AutoSize = true;
+            this.filteredMP3Check2.Location = new System.Drawing.Point(446, 19);
+            this.filteredMP3Check2.Name = "filteredMP3Check2";
+            this.filteredMP3Check2.Size = new System.Drawing.Size(51, 17);
+            this.filteredMP3Check2.TabIndex = 18;
+            this.filteredMP3Check2.Text = "MP3";
+            this.filteredMP3Check2.UseVisualStyleBackColor = true;
+            this.filteredMP3Check2.Visible = false;
+            // 
+            // filteredFLACCheck2
+            // 
+            this.filteredFLACCheck2.AutoSize = true;
+            this.filteredFLACCheck2.Location = new System.Drawing.Point(446, 39);
+            this.filteredFLACCheck2.Name = "filteredFLACCheck2";
+            this.filteredFLACCheck2.Size = new System.Drawing.Size(56, 17);
+            this.filteredFLACCheck2.TabIndex = 18;
+            this.filteredFLACCheck2.Text = "FLAC";
+            this.filteredFLACCheck2.UseVisualStyleBackColor = true;
+            this.filteredFLACCheck2.Visible = false;
+            // 
+            // filteredEAC3Check3
+            // 
+            this.filteredEAC3Check3.AutoSize = true;
+            this.filteredEAC3Check3.Location = new System.Drawing.Point(314, 19);
+            this.filteredEAC3Check3.Name = "filteredEAC3Check3";
+            this.filteredEAC3Check3.Size = new System.Drawing.Size(61, 17);
+            this.filteredEAC3Check3.TabIndex = 19;
+            this.filteredEAC3Check3.Text = "E-AC3";
+            this.filteredEAC3Check3.UseVisualStyleBackColor = true;
+            this.filteredEAC3Check3.Visible = false;
+            // 
+            // filteredDTSHDCheck3
+            // 
+            this.filteredDTSHDCheck3.AutoSize = true;
+            this.filteredDTSHDCheck3.Location = new System.Drawing.Point(374, 19);
+            this.filteredDTSHDCheck3.Name = "filteredDTSHDCheck3";
+            this.filteredDTSHDCheck3.Size = new System.Drawing.Size(73, 17);
+            this.filteredDTSHDCheck3.TabIndex = 19;
+            this.filteredDTSHDCheck3.Text = "DTS-HD";
+            this.filteredDTSHDCheck3.UseVisualStyleBackColor = true;
+            this.filteredDTSHDCheck3.Visible = false;
+            // 
+            // filteredTrueHDCheck3
+            // 
+            this.filteredTrueHDCheck3.AutoSize = true;
+            this.filteredTrueHDCheck3.Location = new System.Drawing.Point(374, 41);
+            this.filteredTrueHDCheck3.Name = "filteredTrueHDCheck3";
+            this.filteredTrueHDCheck3.Size = new System.Drawing.Size(70, 17);
+            this.filteredTrueHDCheck3.TabIndex = 19;
+            this.filteredTrueHDCheck3.Text = "TrueHD";
+            this.filteredTrueHDCheck3.UseVisualStyleBackColor = true;
+            this.filteredTrueHDCheck3.Visible = false;
+            // 
+            // filteredMP3Check3
+            // 
+            this.filteredMP3Check3.AutoSize = true;
+            this.filteredMP3Check3.Location = new System.Drawing.Point(446, 19);
+            this.filteredMP3Check3.Name = "filteredMP3Check3";
+            this.filteredMP3Check3.Size = new System.Drawing.Size(51, 17);
+            this.filteredMP3Check3.TabIndex = 19;
+            this.filteredMP3Check3.Text = "MP3";
+            this.filteredMP3Check3.UseVisualStyleBackColor = true;
+            this.filteredMP3Check3.Visible = false;
+            // 
+            // filteredFLACCheck3
+            // 
+            this.filteredFLACCheck3.AutoSize = true;
+            this.filteredFLACCheck3.Location = new System.Drawing.Point(446, 39);
+            this.filteredFLACCheck3.Name = "filteredFLACCheck3";
+            this.filteredFLACCheck3.Size = new System.Drawing.Size(56, 17);
+            this.filteredFLACCheck3.TabIndex = 19;
+            this.filteredFLACCheck3.Text = "FLAC";
+            this.filteredFLACCheck3.UseVisualStyleBackColor = true;
+            this.filteredFLACCheck3.Visible = false;
             // 
             // ConversionForm
             // 
@@ -1195,12 +1869,18 @@
             this.mediaInfoPage.ResumeLayout(false);
             this.conversionSettingsPage.ResumeLayout(false);
             this.conversionSettingsPage.PerformLayout();
+            this.audioSetingTabControl.ResumeLayout(false);
+            this.audioPage1.ResumeLayout(false);
+            this.audioPage1.PerformLayout();
+            this.audioPage2.ResumeLayout(false);
+            this.audioPage2.PerformLayout();
+            this.audioPage3.ResumeLayout(false);
+            this.audioPage3.PerformLayout();
             this.videoSettingsPanel.ResumeLayout(false);
             this.videoSettingsPanel.PerformLayout();
             this.subtitleGroupBox.ResumeLayout(false);
             this.subtitleGroupBox.PerformLayout();
-            this.audioSettinsPanel.ResumeLayout(false);
-            this.audioSettinsPanel.PerformLayout();
+            this.HBCommandOutputTab.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1227,7 +1907,7 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage mediaInfoPage;
         private System.Windows.Forms.TabPage conversionSettingsPage;
-        private System.Windows.Forms.RichTextBox outPutTextBox;
+        private System.Windows.Forms.RichTextBox MediaInfoTB;
         private System.Windows.Forms.Button exportInfoButton;
         private System.Windows.Forms.Label ABitrateLabel;
         private System.Windows.Forms.Label mixdownLabel;
@@ -1286,5 +1966,54 @@
         private System.Windows.Forms.Label subIncludeLabel;
         private System.Windows.Forms.Label subtitleInfoLabel;
         private System.Windows.Forms.CheckBox autoCropCB;
+        private System.Windows.Forms.TabPage HBCommandOutputTab;
+        private System.Windows.Forms.RichTextBox CommandOutPutTextBox;
+        private System.Windows.Forms.TabControl audioSetingTabControl;
+        private System.Windows.Forms.TabPage audioPage1;
+        private System.Windows.Forms.TabPage audioPage2;
+        private System.Windows.Forms.Label codecLabel2;
+        private System.Windows.Forms.CheckBox filteredDTSCheck2;
+        private System.Windows.Forms.Label mixdownLabel2;
+        private System.Windows.Forms.CheckBox filteredAC3Check2;
+        private System.Windows.Forms.ComboBox audioCodecComboBox2;
+        private System.Windows.Forms.CheckBox filteredAACCheck2;
+        private System.Windows.Forms.Label sampleRateLabel2;
+        private System.Windows.Forms.Label kbpsLabel2;
+        private System.Windows.Forms.ComboBox mixdownComboBox2;
+        private System.Windows.Forms.ComboBox audioBitrateCombo2;
+        private System.Windows.Forms.ComboBox sampleRateCombo2;
+        private System.Windows.Forms.Label passthruFilterLabel2;
+        private System.Windows.Forms.Label ABitrateLabel2;
+        private System.Windows.Forms.TabPage audioPage3;
+        private System.Windows.Forms.Label codecLabel3;
+        private System.Windows.Forms.CheckBox filteredDTSCheck3;
+        private System.Windows.Forms.Label mixdownLabel3;
+        private System.Windows.Forms.CheckBox filteredAC3Check3;
+        private System.Windows.Forms.ComboBox audioCodecComboBox3;
+        private System.Windows.Forms.CheckBox filteredAACCheck3;
+        private System.Windows.Forms.Label sampleRateLabel3;
+        private System.Windows.Forms.Label kbpsLabel3;
+        private System.Windows.Forms.ComboBox mixdownComboBox3;
+        private System.Windows.Forms.ComboBox audioBitrateCombo3;
+        private System.Windows.Forms.ComboBox sampleRateCombo3;
+        private System.Windows.Forms.Label passthruFilterLabel3;
+        private System.Windows.Forms.Label ABitrateLabel3;
+        private System.Windows.Forms.CheckBox disableCheckStream2;
+        private System.Windows.Forms.CheckBox disableCheckStream3;
+        private System.Windows.Forms.CheckBox filteredFLACCheck;
+        private System.Windows.Forms.CheckBox filteredMP3Check;
+        private System.Windows.Forms.CheckBox filteredEAC3Check;
+        private System.Windows.Forms.CheckBox filteredTrueHDCheck;
+        private System.Windows.Forms.CheckBox filteredDTSHDCheck;
+        private System.Windows.Forms.CheckBox filteredDTSHDCheck2;
+        private System.Windows.Forms.CheckBox filteredFLACCheck2;
+        private System.Windows.Forms.CheckBox filteredMP3Check2;
+        private System.Windows.Forms.CheckBox filteredEAC3Check2;
+        private System.Windows.Forms.CheckBox filteredTrueHDCheck2;
+        private System.Windows.Forms.CheckBox filteredFLACCheck3;
+        private System.Windows.Forms.CheckBox filteredMP3Check3;
+        private System.Windows.Forms.CheckBox filteredTrueHDCheck3;
+        private System.Windows.Forms.CheckBox filteredDTSHDCheck3;
+        private System.Windows.Forms.CheckBox filteredEAC3Check3;
     }
 }

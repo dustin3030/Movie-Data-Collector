@@ -116,7 +116,8 @@ namespace MovieDataCollector
         {
             "AAC (FDK)", //Default
             "Filtered Passthru",
-            "AC3"
+            "AC3",
+            "E-AC3"
         };
 
         List<string> mixdownList = new List<string>()
@@ -127,16 +128,16 @@ namespace MovieDataCollector
 
         List<string> audioBitrateCapList = new List<string>()
         {
-            "192", //Default
+            "128", //Default
             "32",
             "40",
             "48",
             "56",
             "64",
             "80",
-            "96", //Highest bitrate supported by Roku
+            "96", 
             "112",
-            "128",
+            "128", //Highest bitrate supported by Roku
             "160",
             "224",
             "256"
@@ -273,13 +274,80 @@ namespace MovieDataCollector
                 filteredDTSCheck.Visible = true;
                 passthruFilterLabel.Visible = true;
             }
+            audioCodecComboBox2.Text = CF.DefaultSettings["AudioCodec2"];
+            if (CF.DefaultSettings["AudioCodec2"] == "Filtered Passthru")
+            {
+                filteredAACCheck2.Visible = true;
+                filteredAC3Check2.Visible = true;
+                filteredDTSCheck2.Visible = true;
+                passthruFilterLabel2.Visible = true;
+            }
+            audioCodecComboBox3.Text = CF.DefaultSettings["AudioCodec3"];
+            if (CF.DefaultSettings["AudioCodec3"] == "Filtered Passthru")
+            {
+                filteredAACCheck3.Visible = true;
+                filteredAC3Check3.Visible = true;
+                filteredDTSCheck3.Visible = true;
+                passthruFilterLabel3.Visible = true;
+            }
             if (CF.DefaultSettings["AAC_Passthru"] == "True") { filteredAACCheck.Checked = true; } else { filteredAACCheck.Checked = false; }
             if (CF.DefaultSettings["AC3_Passthru"] == "True") { filteredAC3Check.Checked = true; } else { filteredAC3Check.Checked = false; }
             if (CF.DefaultSettings["DTS_Passthru"] == "True") { filteredDTSCheck.Checked = true; } else { filteredDTSCheck.Checked = false; }
 
+            if (CF.DefaultSettings["AAC_Passthru2"] == "True") { filteredAACCheck2.Checked = true; } else { filteredAACCheck2.Checked = false; }
+            if (CF.DefaultSettings["AC3_Passthru2"] == "True") { filteredAC3Check2.Checked = true; } else { filteredAC3Check2.Checked = false; }
+            if (CF.DefaultSettings["DTS_Passthru2"] == "True") { filteredDTSCheck2.Checked = true; } else { filteredDTSCheck2.Checked = false; }
+
+            if (CF.DefaultSettings["AAC_Passthru3"] == "True") { filteredAACCheck3.Checked = true; } else { filteredAACCheck3.Checked = false; }
+            if (CF.DefaultSettings["AC3_Passthru3"] == "True") { filteredAC3Check3.Checked = true; } else { filteredAC3Check3.Checked = false; }
+            if (CF.DefaultSettings["DTS_Passthru3"] == "True") { filteredDTSCheck3.Checked = true; } else { filteredDTSCheck3.Checked = false; }
+
             mixdownComboBox.Text = CF.DefaultSettings["Mixdown"];
             audioBitrateCombo.Text = CF.DefaultSettings["AudioBitrateCap"];
             sampleRateCombo.Text = CF.DefaultSettings["AudioSampleRate"];
+
+            mixdownComboBox2.Text = CF.DefaultSettings["Mixdown2"];
+            audioBitrateCombo2.Text = CF.DefaultSettings["AudioBitrateCap2"];
+            sampleRateCombo2.Text = CF.DefaultSettings["AudioSampleRate2"];
+
+            mixdownComboBox3.Text = CF.DefaultSettings["Mixdown3"];
+            audioBitrateCombo3.Text = CF.DefaultSettings["AudioBitrateCap3"];
+            sampleRateCombo3.Text = CF.DefaultSettings["AudioSampleRate3"];
+
+            if (CF.DefaultSettings["EnableTrack2"] == "True")
+            {
+                disableCheckStream2.Checked = false;
+                audioCodecComboBox2.Enabled = true;
+                mixdownComboBox2.Enabled = true;
+                sampleRateCombo2.Enabled = true;
+                audioBitrateCombo2.Enabled = true;
+            }
+            else
+            {
+                disableCheckStream2.Checked = true;
+                audioCodecComboBox2.Enabled = false;
+                mixdownComboBox2.Enabled = false;
+                sampleRateCombo2.Enabled = false;
+                audioBitrateCombo2.Enabled = false;
+            }
+
+            if (CF.DefaultSettings["EnableTrack3"] == "True")
+            {
+                disableCheckStream3.Checked = false;
+                audioCodecComboBox3.Enabled = true;
+                mixdownComboBox3.Enabled = true;
+                sampleRateCombo3.Enabled = true;
+                audioBitrateCombo3.Enabled = true;
+            }
+            else
+            {
+                disableCheckStream3.Checked = true;
+                audioCodecComboBox3.Enabled = false;
+                mixdownComboBox3.Enabled = false;
+                sampleRateCombo3.Enabled = false;
+                audioBitrateCombo3.Enabled = false;
+            }
+
 
             /*Video Settings*/
             encoderSpeedCombo.Text = CF.DefaultSettings["EncoderSpeed"];
@@ -313,7 +381,7 @@ namespace MovieDataCollector
             {
                 string fileName = ""; //Holds value of processing filename
                 filesListBox.Items.Clear();
-                outPutTextBox.Clear();
+                MediaInfoTB.Clear();
                 VideoFilesList.Clear();
                 IncompatibilityInfo.Clear();
 
@@ -411,10 +479,10 @@ namespace MovieDataCollector
                     if (!string.IsNullOrEmpty(CF.DefaultSettings["InputFilePath"])) //As long as the file path isn't empty or null, get info about file
                     {
                         MediaFile videoFile = new MediaFile(videoFileName); //return info about selected file
-                        outPutTextBox.Text = videoFile.Info_Text; //output info about selected file to the output box
-                        outPutTextBox.SelectionStart = 0;
-                        outPutTextBox.ScrollToCaret(); // force current position back to top
-                        outPutTextBox.Update();
+                        MediaInfoTB.Text = videoFile.Info_Text; //output info about selected file to the output box
+                        MediaInfoTB.SelectionStart = 0;
+                        MediaInfoTB.ScrollToCaret(); // force current position back to top
+                        MediaInfoTB.Update();
                     }
                 }
             }
@@ -431,15 +499,15 @@ namespace MovieDataCollector
                         if (!string.IsNullOrEmpty(CF.DefaultSettings["InputFilePath"])) //check that folderpath isn't empty
                         {
                             MediaFile videoFile = new MediaFile(videoFileName); //list incompatible file attributes.
-                            outPutTextBox.Text = "INCOMPATIBLE FILE FOUND - " +
+                            MediaInfoTB.Text = "INCOMPATIBLE FILE FOUND - " +
                                 filesListBox.SelectedItem.ToString() + "\r\n\r\n" +
                                 "INCOMPATIBLE FILE ATTRIBUTES LISTED BELOW:\r\n\r\n" +
                                 IncompatibilityInfo[filesListBox.SelectedIndex] +
                                 separator2 +
                                 videoFile.Info_Text;
-                            outPutTextBox.SelectionStart = 0;
-                            outPutTextBox.ScrollToCaret(); // force current position back to top
-                            outPutTextBox.Update();
+                            MediaInfoTB.SelectionStart = 0;
+                            MediaInfoTB.ScrollToCaret(); // force current position back to top
+                            MediaInfoTB.Update();
                         }
                     }
                 }
@@ -549,14 +617,14 @@ namespace MovieDataCollector
         private void SaveInfoButton_Click(object sender, EventArgs e)
         {
             string fileLocation = "";
-            string outputBoxText = outPutTextBox.Text;
+            string outputBoxText = MediaInfoTB.Text;
             outputBoxText = outputBoxText.Replace("\n", "\r\n");
             //SaveFileDialog
 #pragma warning disable IDE0017 // Simplify object initialization
             SaveFileDialog SFD = new SaveFileDialog();
 #pragma warning restore IDE0017 // Simplify object initialization
             SFD.DefaultExt = "txt";
-            if (outPutTextBox.Text.Contains(separator))
+            if (MediaInfoTB.Text.Contains(separator))
             {
                 SFD.FileName = "Quick_Media_Info.txt";
             }
@@ -759,24 +827,24 @@ namespace MovieDataCollector
 
             if (string.IsNullOrEmpty(VideoInfo.ToString()) && string.IsNullOrEmpty(AudioInfo.ToString()) && string.IsNullOrEmpty(SubtitleInfo.ToString()))
             {
-                outPutTextBox.Text = outPutTextBox.Text + fileName + "\n\t" + "Unable to gather info. File may be corrupt." + separator;
-                outPutTextBox.SelectionStart = 0;
+                MediaInfoTB.Text = MediaInfoTB.Text + fileName + "\n\t" + "Unable to gather info. File may be corrupt." + separator;
+                MediaInfoTB.SelectionStart = 0;
                 //outPutTextBox.ScrollToCaret(); // force current position back to top
-                outPutTextBox.Update();
+                MediaInfoTB.Update();
             }
             else
             {
-                outPutTextBox.Text = outPutTextBox.Text + fileName + "\n\t"
+                MediaInfoTB.Text = MediaInfoTB.Text + fileName + "\n\t"
                 + VideoInfo.ToString() + "\n\t";
-                if (!string.IsNullOrEmpty(AudioInfo.ToString())) { outPutTextBox.Text += AudioInfo.ToString(); }
-                if (!string.IsNullOrEmpty(SubtitleInfo.ToString())) { outPutTextBox.Text += SubtitleInfo.ToString(); }
+                if (!string.IsNullOrEmpty(AudioInfo.ToString())) { MediaInfoTB.Text += AudioInfo.ToString(); }
+                if (!string.IsNullOrEmpty(SubtitleInfo.ToString())) { MediaInfoTB.Text += SubtitleInfo.ToString(); }
 
                 //Add Separator
-                outPutTextBox.Text = outPutTextBox.Text.TrimEnd('\t') + separator;
+                MediaInfoTB.Text = MediaInfoTB.Text.TrimEnd('\t') + separator;
 
-                outPutTextBox.SelectionStart = 0;
+                MediaInfoTB.SelectionStart = 0;
                 //outPutTextBox.ScrollToCaret(); // force current position back to top
-                outPutTextBox.Update();
+                MediaInfoTB.Update();
             }
 
 
@@ -790,7 +858,7 @@ namespace MovieDataCollector
             if (VideoFilesList.Count > 0 & filesListBox.Items.Count > 0)
             {
                 tabControl1.SelectedIndex = 0; //Selects Media Info Tab
-                outPutTextBox.Clear();
+                MediaInfoTB.Clear();
                 notificationLabel.Visible = true;
                 if(filesListBox.SelectedIndices.Count > 0) //selected items
                 {
@@ -830,10 +898,10 @@ namespace MovieDataCollector
                         {
                             NLabelUpdate("Processing detailed info for " + filesListBox.Items[filesListBox.SelectedIndex].ToString() + ".", Color.GreenYellow);
                             MediaFile videoFile = new MediaFile(videoFileName); //return info about selected file
-                            outPutTextBox.Text = videoFile.Info_Text; //output info about selected file to the output box
-                            outPutTextBox.SelectionStart = 0;
-                            outPutTextBox.ScrollToCaret(); // force current position back to top
-                            outPutTextBox.Update();
+                            MediaInfoTB.Text = videoFile.Info_Text; //output info about selected file to the output box
+                            MediaInfoTB.SelectionStart = 0;
+                            MediaInfoTB.ScrollToCaret(); // force current position back to top
+                            MediaInfoTB.Update();
                             NLabelUpdate("Processing detailed info for " + filesListBox.Items[filesListBox.SelectedIndex].ToString() + " is now complete.", Color.GreenYellow);
                         }
                     }
@@ -852,15 +920,15 @@ namespace MovieDataCollector
                             {
                                 NLabelUpdate("Processing detailed info for " + filesListBox.Items[filesListBox.SelectedIndex].ToString() + ".", Color.GreenYellow);
                                 MediaFile videoFile = new MediaFile(videoFileName); //list incompatible file attributes.
-                                outPutTextBox.Text = "INCOMPATIBLE FILE FOUND - " +
+                                MediaInfoTB.Text = "INCOMPATIBLE FILE FOUND - " +
                                     filesListBox.SelectedItem.ToString() + "\r\n\r\n" +
                                     "INCOMPATIBLE FILE ATTRIBUTES LISTED BELOW:\r\n\r\n" +
                                     IncompatibilityInfo[filesListBox.SelectedIndex] +
                                     separator2 +
                                     videoFile.Info_Text;
-                                outPutTextBox.SelectionStart = 0;
-                                outPutTextBox.ScrollToCaret(); // force current position back to top
-                                outPutTextBox.Update();
+                                MediaInfoTB.SelectionStart = 0;
+                                MediaInfoTB.ScrollToCaret(); // force current position back to top
+                                MediaInfoTB.Update();
                                 NLabelUpdate("Processing detailed info for " + filesListBox.Items[filesListBox.SelectedIndex].ToString() + " is now complete.", Color.GreenYellow);
                             }
                         }
@@ -879,7 +947,7 @@ namespace MovieDataCollector
         private async void ConvertAllButton_Click(object sender, EventArgs e)
         {
             CF.UpdateDefaults();
-
+            CommandOutPutTextBox.Text = ""; //Clear output text
             
 
             //Check for location of HandbrakeCLI
@@ -936,6 +1004,17 @@ namespace MovieDataCollector
                                             handBrakeCLIString = ""; // Set to defaults let handbrake error out if necessary
                                         }
 
+                                        //Send commands used in handbrake cli to the command output textbox
+                                        string commandOutputString = "Handbrake Command for encoding task " + selectCounter.ToString() + " \"" + filesListBox.Items[i].ToString() + "\" \r\n\r\n" + handBrakeCLIString;
+                                        if (string.IsNullOrEmpty(CommandOutPutTextBox.Text))
+                                        {
+                                            CommandOutPutTextBox.Text = commandOutputString;
+                                        }
+                                        else
+                                        {
+                                            CommandOutPutTextBox.Text += "\r\n\r\n" + commandOutputString;
+                                        }
+                                        
                                         try //Check for errors and continue processing 
                                         {
                                             //Launch command line object to pass the commands to
@@ -1015,6 +1094,17 @@ namespace MovieDataCollector
                                     handBrakeCLIString = ""; // Set to defaults let handbrake error out if necessary
                                 }
 
+                                //Send commands used in handbrake cli to the command output textbox
+                                string commandOutputString = "Handbrake Command for encoding task " + i.ToString() + " \"" + filesListBox.Items[i].ToString() + "\" \r\n\r\n" + handBrakeCLIString;
+                                if (string.IsNullOrEmpty(CommandOutPutTextBox.Text))
+                                {
+                                    CommandOutPutTextBox.Text = commandOutputString;
+                                }
+                                else
+                                {
+                                    CommandOutPutTextBox.Text += "\r\n\r\n" + commandOutputString;
+                                }
+
                                 try //Check for errors and continue processing 
                                 {
                                     //Launch command line object to pass the commands to
@@ -1087,7 +1177,7 @@ namespace MovieDataCollector
                             {
                                 errorString += ErrorLine + "\r\n";
                             }
-                            outPutTextBox.Text = "Files skipped due to error:\r\n" + errorString;
+                            MediaInfoTB.Text = "Files skipped due to error:\r\n" + errorString;
 
                             if (VideoFilesList.Count == 1) { NLabelUpdate("The transcoding que initiated " + startTime.ToString() + " failed. HandbrakeCLI exited with code " + exitCode.ToString(), Color.GreenYellow); }
                             if (VideoFilesList.Count > 1) { NLabelUpdate("The transcoding que initiated " + startTime.ToString() + " is now complete. " + (VideoFilesList.Count() - Errors.Count()).ToString() + " of " + VideoFilesList.Count().ToString() + " files processed successfully in " + totalProcessingTime, Color.GreenYellow); }
@@ -1120,7 +1210,7 @@ namespace MovieDataCollector
                         }
                         else if (selectCounter > 0) //Items selected from list
                         {
-                            outPutTextBox.Text = ""; //Clears Output Box on successful Encode
+                            MediaInfoTB.Text = ""; //Clears Output Box on successful Encode
 
                             if (filesListBox.SelectedIndices.Count == 1) { NLabelUpdate("The transcoding que initiated " + startTime.ToString() + " is now complete. The file was processed in " + totalProcessingTime, Color.GreenYellow); }
                             if (filesListBox.SelectedIndices.Count > 1) { NLabelUpdate("The transcoding que initiated " + startTime.ToString() + " is now complete. " + filesListBox.SelectedIndices.Count.ToString() + " files were processed in " + totalProcessingTime, Color.GreenYellow); }
@@ -1137,7 +1227,7 @@ namespace MovieDataCollector
                         }
                         else
                         {
-                            outPutTextBox.Text = ""; //Clears Output Box on successful Encode
+                            MediaInfoTB.Text = ""; //Clears Output Box on successful Encode
 
                             if (VideoFilesList.Count == 1) { NLabelUpdate("The transcoding que initiated " + startTime.ToString() + " is now complete. The file was processed in " + totalProcessingTime, Color.GreenYellow); }
                             if (VideoFilesList.Count > 1) { NLabelUpdate("The transcoding que initiated " + startTime.ToString() + " is now complete. " + VideoFilesList.Count().ToString() + " files were processed in " + totalProcessingTime, Color.GreenYellow); }
@@ -2308,6 +2398,10 @@ namespace MovieDataCollector
         }
         private string AudioConversionString(MediaFile videoFile)
         {
+            /*12/9/18 - addiing support for secondary 5.1 audio track if file contains a 5.1 or above track. Note* at this time Handbrake is only capable of encoding up to 5.1 in E-AC3 format
+            and ROKU can only decode AAC, AC3, and E-AC3 formats while it can passthrough DTS. Thus to keep files as universal as possible to prevent transcoding on the server
+            we must maintain 5.1 audio as the highest level audio possible in the second stream.*/
+
             //Users selected variables
             double userSelectedBitrate = 0; //Bitrate for audio is per channel so stereo audio of 96 bitrate would actually be 96 * 2 = 192
 
@@ -2351,7 +2445,7 @@ namespace MovieDataCollector
                             }
                             else
                             {
-                                //ATOMS tracks are object oriented and show 0 channels
+                                //ATMOS tracks are object oriented and show 0 channels
                                 if (videoFile.Audio[i].Description.Contains("ATMOS"))
                                 {
                                     maxBitrate = videoFile.Audio[i].Bitrate / 8; //7.1 audio has 8 channels, ATMOS is at least 7.1 always.
@@ -2518,14 +2612,14 @@ namespace MovieDataCollector
                             switch (videoFile.Audio[audioTrackNumber].Properties["Format"])
                             {
                                 case "DTS":
-                                    outputFallBack = "--audio-fallback ac3 "; //No DTS encoder option
+                                    outputFallBack = "--audio-fallback \"ac3\" "; //No DTS encoder option
                                     break;
                                 case "AC-3":
-                                    outputFallBack = "--audio-fallback ac3 ";
+                                    outputFallBack = "--audio-fallback \"ac3\" ";
                                     break;
                                 case "AAC":
                                     //outputFallBack = "--audio-fallback av_aac "; - Use the FDK encoder it's much better, requires handbrake to be compiled separateley.
-                                    outputFallBack = "--audio-fallback fdk_aac ";
+                                    outputFallBack = "--audio-fallback \"fdk_aac\" ";
                                     break;
                                 default:
                                     break;
@@ -2534,17 +2628,17 @@ namespace MovieDataCollector
                         else //Default fallback is fdk_aac
                         {
                             //outputFallBack = "--audio-fallback av_aac "; - Use the FDK encoder it's much better, requires handbrake to be compiled separateley.
-                            outputFallBack = "--audio-fallback fdk_aac ";
+                            outputFallBack = "--audio-fallback \"fdk_aac\" ";
                         }
                         break;
                     default:
                         //outputFallBack = "--audio-fallback av_aac "; - Use the FDK encoder it's much better, requires handbrake to be compiled separateley.
-                        outputFallBack = "--audio-fallback fdk_aac ";
+                        outputFallBack = "--audio-fallback \"fdk_aac\" ";
                         break;
                 }
                 /*Mixdown***********************************************************************************************************************************************************************************************/
 
-                //The options are auto, mono, stereo, dpl1 (Dolby Surround), dpl2 (Dolby ProLogic? 2), or 6ch (5.1).
+                //The options are mono, stereo, dpl1 (Dolby Surround), dpl2 (Dolby ProLogic? 2), or 5point1 (5.1).
                 switch (audioCodecComboBox.Text)
                 {
                     case "Filtered Passthru":
@@ -2571,7 +2665,7 @@ namespace MovieDataCollector
                                 outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
                                 break;
                             case 6:
-                                outputMixdown = "--mixdown 6ch  ";
+                                outputMixdown = "--mixdown 5point1  ";
                                 outputBitrate = "--ab " + (userSelectedBitrate * 6).ToString() + " ";
                                 break;
                             default:
@@ -2580,19 +2674,6 @@ namespace MovieDataCollector
                                 break;
                         }
                         break;
-                    /*case "AAC (AVC)": //only good up to Dolby Pro Logic 2 (2 channel)
-                        switch (videoFile.Audio[audioTrackNumber].Channels)
-                        {
-                            case 1:
-                                outputMixdown = "--mixdown mono ";
-                                outputBitrate = "--ab " + (userSelectedBitrate * 1).ToString() + " ";
-                                break;
-                            default:
-                                outputMixdown = "--mixdown dpl2 ";
-                                outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
-                                break;
-                        }
-                        break;*/
                     case "AAC (FDK)": //only good up to Dolby Pro Logic 2 (2 channel)
                         switch (videoFile.Audio[audioTrackNumber].Channels)
                         {
@@ -2637,19 +2718,19 @@ namespace MovieDataCollector
                                         outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
                                         break;
                                     case 6:
-                                        outputMixdown = "--mixdown 6ch ";
+                                        outputMixdown = "--mixdown 5point1 ";
                                         outputBitrate = "--ab " + (userSelectedBitrate * 6).ToString() + " ";
                                         break;
                                     case 7:
-                                        outputMixdown = "--mixdown 6ch ";
+                                        outputMixdown = "--mixdown 5point1 ";
                                         outputBitrate = "--ab " + (userSelectedBitrate * 6).ToString() + " ";
                                         break;
                                     case 8:
-                                        outputMixdown = "--mixdown 6ch ";
+                                        outputMixdown = "--mixdown 5point1 ";
                                         outputBitrate = "--ab " + (userSelectedBitrate * 6).ToString() + " ";
                                         break;
                                     default:
-                                        outputMixdown = "--mixdown 6ch ";
+                                        outputMixdown = "--mixdown 5point1 ";
                                         outputBitrate = "--ab " + (userSelectedBitrate * 6).ToString() + " ";
                                         break;
                                 }
@@ -2676,7 +2757,7 @@ namespace MovieDataCollector
             }
             /*Mixdown***********************************************************************************************************************************************************************************************/
 
-            //The options are auto, mono, stereo, dpl1 (Dolby Surround), dpl2 (Dolby ProLogic? 2), or 6ch (5.1).
+            //The options are auto, mono, stereo, dpl1 (Dolby Surround), dpl2 (Dolby ProLogic? 2), or 5point1 (5.1).
             switch (audioCodecComboBox.Text)
             {
                 case "Filtered Passthru":
@@ -2695,7 +2776,7 @@ namespace MovieDataCollector
                             outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
                             break;
                         default: //5.1 Audio
-                            outputMixdown = "--mixdown 6ch ";
+                            outputMixdown = "--mixdown 5point1 ";
                             outputBitrate = "--ab " + (userSelectedBitrate * 6).ToString() + " ";
                             break;
                     }
@@ -2729,17 +2810,17 @@ namespace MovieDataCollector
             {
                 case "AAC (FDK)":
                     //outputEncoder = "--audio-fallback av_aac "; - Use the FDK encoder it's much better, requires handbrake to be compiled separateley.
-                    outputEncoder = "--aencoder fdk_aac ";
+                    outputEncoder = "--aencoder \"fdk_aac\" ";
                     break;
                 case "AC3":
-                    outputEncoder = "--aencoder ac3 ";
+                    outputEncoder = "--aencoder \"ac3\" ";
                     break;
                 case "Filtered Passthru":
-                    outputEncoder = "--aencoder copy ";
+                    outputEncoder = "--aencoder \"copy\" ";
                     break;
                 default:
                     //outputEncoder = "--audio-fallback av_aac "; - Use the FDK encoder it's much better, requires handbrake to be compiled separateley.
-                    outputEncoder = "--aencoder fdk_aac ";
+                    outputEncoder = "--aencoder \"fdk_aac\" ";
                     break;
             }
 
@@ -3187,39 +3268,161 @@ namespace MovieDataCollector
                 case "Filtered Passthru":
                     filteredAACCheck.Visible = true;
                     filteredAC3Check.Visible = true;
+                    filteredEAC3Check.Visible = true;
                     filteredDTSCheck.Visible = true;
+                    filteredDTSHDCheck.Visible = true;
+                    filteredTrueHDCheck.Visible = true;
+                    filteredMP3Check.Visible = true;
+                    filteredFLACCheck.Visible = true;
                     passthruFilterLabel.Visible = true;
                     break;
                 case "AAC (FDK)":
                     filteredAACCheck.Visible = false;
                     filteredAC3Check.Visible = false;
+                    filteredEAC3Check.Visible = false;
                     filteredDTSCheck.Visible = false;
+                    filteredDTSHDCheck.Visible = false;
+                    filteredTrueHDCheck.Visible = false;
+                    filteredMP3Check.Visible = false;
+                    filteredFLACCheck.Visible = false;
                     passthruFilterLabel.Visible = false;
-                    filteredAACCheck.Checked = false;
-                    filteredAC3Check.Checked = false;
-                    filteredDTSCheck.Checked = false;
                     mixdownComboBox.Text = "Dolby ProLogic 2"; //AAC can only mix down to Prologic or Mono
                     break;
                 case "AC3":
                     filteredAACCheck.Visible = false;
                     filteredAC3Check.Visible = false;
+                    filteredEAC3Check.Visible = false;
                     filteredDTSCheck.Visible = false;
-                    filteredAACCheck.Checked = false;
-                    filteredAC3Check.Checked = false;
-                    filteredDTSCheck.Checked = false;
+                    filteredDTSHDCheck.Visible = false;
+                    filteredTrueHDCheck.Visible = false;
+                    filteredMP3Check.Visible = false;
+                    filteredFLACCheck.Visible = false;
                     passthruFilterLabel.Visible = false;
                     break;
                 default:
                     filteredAACCheck.Visible = false;
                     filteredAC3Check.Visible = false;
+                    filteredEAC3Check.Visible = false;
                     filteredDTSCheck.Visible = false;
-                    filteredAACCheck.Checked = false;
-                    filteredAC3Check.Checked = false;
-                    filteredDTSCheck.Checked = false;
+                    filteredDTSHDCheck.Visible = false;
+                    filteredTrueHDCheck.Visible = false;
+                    filteredMP3Check.Visible = false;
+                    filteredFLACCheck.Visible = false;
                     passthruFilterLabel.Visible = false;
                     break;
             }
         }
+        private void audioCodecComboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //set default value in dictionary.
+            CF.DefaultSettings["AudioCodec2"] = audioCodecComboBox2.Text;
+
+            //Only show filter options if Filtered Passthru is selected.
+            switch (audioCodecComboBox2.Text)
+            {
+                case "Filtered Passthru":
+                    filteredAACCheck2.Visible = true;
+                    filteredAC3Check2.Visible = true;
+                    filteredEAC3Check2.Visible = true;
+                    filteredDTSCheck2.Visible = true;
+                    filteredDTSHDCheck2.Visible = true;
+                    filteredTrueHDCheck2.Visible = true;
+                    filteredMP3Check2.Visible = true;
+                    filteredFLACCheck2.Visible = true;
+                    passthruFilterLabel2.Visible = true;
+                    break;
+                case "AAC (FDK)":
+                    filteredAACCheck2.Visible = false;
+                    filteredAC3Check2.Visible = false;
+                    filteredEAC3Check2.Visible = false;
+                    filteredDTSCheck2.Visible = false;
+                    filteredDTSHDCheck2.Visible = false;
+                    filteredTrueHDCheck2.Visible = false;
+                    filteredMP3Check2.Visible = false;
+                    filteredFLACCheck2.Visible = false;
+                    passthruFilterLabel2.Visible = false;
+                    mixdownComboBox2.Text = "Dolby ProLogic 2"; //AAC can only mix down to Prologic or Mono
+                    break;
+                case "AC3":
+                    filteredAACCheck2.Visible = false;
+                    filteredAC3Check2.Visible = false;
+                    filteredEAC3Check2.Visible = false;
+                    filteredDTSCheck2.Visible = false;
+                    filteredDTSHDCheck2.Visible = false;
+                    filteredTrueHDCheck2.Visible = false;
+                    filteredMP3Check2.Visible = false;
+                    filteredFLACCheck2.Visible = false;
+                    passthruFilterLabel2.Visible = false;
+                    break;
+                default:
+                    filteredAACCheck2.Visible = false;
+                    filteredAC3Check2.Visible = false;
+                    filteredEAC3Check2.Visible = false;
+                    filteredDTSCheck2.Visible = false;
+                    filteredDTSHDCheck2.Visible = false;
+                    filteredTrueHDCheck2.Visible = false;
+                    filteredMP3Check2.Visible = false;
+                    filteredFLACCheck2.Visible = false;
+                    passthruFilterLabel2.Visible = false;
+                    break;
+            }
+        }
+        private void audioCodecComboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //set default value in dictionary.
+            CF.DefaultSettings["AudioCodec3"] = audioCodecComboBox3.Text;
+
+            //Only show filter options if Filtered Passthru is selected.
+            switch (audioCodecComboBox3.Text)
+            {
+                case "Filtered Passthru":
+                    filteredAACCheck3.Visible = true;
+                    filteredAC3Check3.Visible = true;
+                    filteredEAC3Check3.Visible = true;
+                    filteredDTSCheck3.Visible = true;
+                    filteredDTSHDCheck3.Visible = true;
+                    filteredTrueHDCheck3.Visible = true;
+                    filteredMP3Check3.Visible = true;
+                    filteredFLACCheck3.Visible = true;
+                    passthruFilterLabel3.Visible = true;
+                    break;
+                case "AAC (FDK)":
+                    filteredAACCheck3.Visible = false;
+                    filteredAC3Check3.Visible = false;
+                    filteredEAC3Check3.Visible = false;
+                    filteredDTSCheck3.Visible = false;
+                    filteredDTSHDCheck3.Visible = false;
+                    filteredTrueHDCheck3.Visible = false;
+                    filteredMP3Check3.Visible = false;
+                    filteredFLACCheck3.Visible = false;
+                    passthruFilterLabel3.Visible = false;
+                    mixdownComboBox3.Text = "Dolby ProLogic 2"; //AAC can only mix down to Prologic or Mono
+                    break;
+                case "AC3":
+                    filteredAACCheck3.Visible = false;
+                    filteredAC3Check3.Visible = false;
+                    filteredEAC3Check3.Visible = false;
+                    filteredDTSCheck3.Visible = false;
+                    filteredDTSHDCheck3.Visible = false;
+                    filteredTrueHDCheck3.Visible = false;
+                    filteredMP3Check3.Visible = false;
+                    filteredFLACCheck3.Visible = false;
+                    passthruFilterLabel3.Visible = false;
+                    break;
+                default:
+                    filteredAACCheck3.Visible = false;
+                    filteredAC3Check3.Visible = false;
+                    filteredEAC3Check3.Visible = false;
+                    filteredDTSCheck3.Visible = false;
+                    filteredDTSHDCheck3.Visible = false;
+                    filteredTrueHDCheck3.Visible = false;
+                    filteredMP3Check3.Visible = false;
+                    filteredFLACCheck3.Visible = false;
+                    passthruFilterLabel3.Visible = false;
+                    break;
+            }
+        }
+
         private void MixdownComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             //set default in dictionary
@@ -3229,18 +3432,61 @@ namespace MovieDataCollector
             {
                 NLabelUpdate("The AAC (FDK) Codec can only mixdown to \"Dolby ProLogic 2\"", Color.Red);
                 mixdownComboBox.Text = "Dolby ProLogic 2";
-            }
-            
+            } 
         }
+        private void MixdownComboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //set default in dictionary
+            CF.DefaultSettings["Mixdown2"] = mixdownComboBox2.Text;
+
+            if (audioCodecComboBox2.Text == "AAC (FDK)" && mixdownComboBox2.Text != "Dolby ProLogic 2")
+            {
+                NLabelUpdate("The AAC (FDK) Codec can only mixdown to \"Dolby ProLogic 2\"", Color.Red);
+                mixdownComboBox2.Text = "Dolby ProLogic 2";
+            }
+        }
+        private void MixdownComboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //set default in dictionary
+            CF.DefaultSettings["Mixdown3"] = mixdownComboBox3.Text;
+
+            if (audioCodecComboBox3.Text == "AAC (FDK)" && mixdownComboBox3.Text != "Dolby ProLogic 2")
+            {
+                NLabelUpdate("The AAC (FDK) Codec can only mixdown to \"Dolby ProLogic 2\"", Color.Red);
+                mixdownComboBox3.Text = "Dolby ProLogic 2";
+            }
+        }
+
         private void SampleRateCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Update default in dictionary
             CF.DefaultSettings["AudioSampleRate"] = sampleRateCombo.Text;
         }
+        private void SampleRateCombo2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Update default in dictionary
+            CF.DefaultSettings["AudioSampleRate2"] = sampleRateCombo2.Text;
+        }
+        private void SampleRateCombo3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Update default in dictionary
+            CF.DefaultSettings["AudioSampleRate3"] = sampleRateCombo3.Text;
+        }
+
         private void AudioBitrateCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Update default in dictionary
             CF.DefaultSettings["AudioBitrateCap"] = audioBitrateCombo.Text;
+        }
+        private void AudioBitrateCombo2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Update default in dictionary
+            CF.DefaultSettings["AudioBitrateCap2"] = audioBitrateCombo2.Text;
+        }
+        private void AudioBitrateCombo3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Update default in dictionary
+            CF.DefaultSettings["AudioBitrateCap3"] = audioBitrateCombo3.Text;
         }
 
         //Audio Combobox Text Changed
@@ -3258,6 +3504,35 @@ namespace MovieDataCollector
                 CF.DefaultSettings["AudioCodec"] = audioCodecComboBox.Text;
             }
         }
+        private void AudioCodecComboBox2_TextChanged(object sender, EventArgs e)
+        {
+            if (!codecList.Contains(audioCodecComboBox2.Text))
+            {
+                audioCodecComboBox2.Text = codecList[0];
+
+                //Update default in dictionary
+                CF.DefaultSettings["AudioCodec2"] = codecList[0];
+            }
+            else
+            {
+                CF.DefaultSettings["AudioCodec2"] = audioCodecComboBox2.Text;
+            }
+        }
+        private void AudioCodecComboBox3_TextChanged(object sender, EventArgs e)
+        {
+            if (!codecList.Contains(audioCodecComboBox3.Text))
+            {
+                audioCodecComboBox3.Text = codecList[0];
+
+                //Update default in dictionary
+                CF.DefaultSettings["AudioCodec3"] = codecList[0];
+            }
+            else
+            {
+                CF.DefaultSettings["AudioCodec3"] = audioCodecComboBox.Text;
+            }
+        }
+
         private void MixdownComboBox_TextChanged(object sender, EventArgs e)
         {
             if (!mixdownList.Contains(mixdownComboBox.Text))
@@ -3574,7 +3849,7 @@ namespace MovieDataCollector
                     filesListBox.Items.Clear();
                     VideoFilesList.Clear();
                     IncompatibilityInfo.Clear();
-                    outPutTextBox.Clear();
+                    MediaInfoTB.Clear();
 
 
                     try
@@ -3627,7 +3902,7 @@ namespace MovieDataCollector
                                         outPutText.Append("\n" + filesListBox.Items[i] + "\n" + IncompatibilityInfo[i] + separator);
                                     }
 
-                                    outPutTextBox.Text = "\t\t\t\tINVALID ATTRIBUTES:\n\n" + outPutText.ToString();
+                                    MediaInfoTB.Text = "\t\t\t\tINVALID ATTRIBUTES:\n\n" + outPutText.ToString();
                                 }
 
                                 NLabelUpdate("Listing " + filesListBox.Items.Count.ToString() + " Files Incompatible with Xbox360", Color.GreenYellow);
@@ -3655,7 +3930,7 @@ namespace MovieDataCollector
                                     {
                                         outPutText.Append("\n" + filesListBox.Items[i] + "\n" + IncompatibilityInfo[i] + separator);
                                     }
-                                    outPutTextBox.Text = "\t\t\t\tINVALID ATTRIBUTES:\n\n" + outPutText.ToString();
+                                    MediaInfoTB.Text = "\t\t\t\tINVALID ATTRIBUTES:\n\n" + outPutText.ToString();
                                 }
                                 NLabelUpdate("Listing " + filesListBox.Items.Count.ToString() + " Files Incompatible with Roku", Color.GreenYellow);
                             }
@@ -4246,8 +4521,6 @@ namespace MovieDataCollector
                     } 
                 }
 
-               
-
 
                 if (PF.presetNames.Contains(presetComboBox.Text))
                 {
@@ -4256,11 +4529,47 @@ namespace MovieDataCollector
                     mixdownComboBox.Text = PF.PresetList[index]["AudioMixdown"];
                     sampleRateCombo.Text = PF.PresetList[index]["AudioSampleRate"];
 
+                    audioCodecComboBox2.Text = PF.PresetList[index]["AudioCodec2"];
+                    mixdownComboBox2.Text = PF.PresetList[index]["AudioMixdown2"];
+                    sampleRateCombo2.Text = PF.PresetList[index]["AudioSampleRate2"];
+
+                    audioCodecComboBox3.Text = PF.PresetList[index]["AudioCodec3"];
+                    mixdownComboBox3.Text = PF.PresetList[index]["AudioMixdown3"];
+                    sampleRateCombo3.Text = PF.PresetList[index]["AudioSampleRate3"];
+
                     if (PF.PresetList[index]["FilteredAACCheck"] == "true") { filteredAACCheck.Checked = true; } else { filteredAACCheck.Checked = false; }
                     if (PF.PresetList[index]["FilteredAC3Check"] == "true") { filteredAC3Check.Checked = true; } else { filteredAC3Check.Checked = false; }
+                    if (PF.PresetList[index]["FilteredEAC3Check"] == "true") { filteredEAC3Check.Checked = true; } else { filteredEAC3Check.Checked = false; }
                     if (PF.PresetList[index]["FilteredDTSCheck"] == "true") { filteredDTSCheck.Checked = true; } else { filteredDTSCheck.Checked = false; }
+                    if (PF.PresetList[index]["FilteredDTSHDCheck"] == "true") { filteredDTSHDCheck.Checked = true; } else { filteredDTSHDCheck.Checked = false; }
+                    if (PF.PresetList[index]["FilteredTrueHDCheck"] == "true") { filteredTrueHDCheck.Checked = true; } else { filteredTrueHDCheck.Checked = false; }
+                    if (PF.PresetList[index]["FilteredMP3Check"] == "true") { filteredMP3Check.Checked = true; } else { filteredMP3Check.Checked = false; }
+                    if (PF.PresetList[index]["FilteredFLACCheck"] == "true") { filteredFLACCheck.Checked = true; } else { filteredFLACCheck.Checked = false; }
+
+
+
+                    if (PF.PresetList[index]["FilteredAACCheck2"] == "true") { filteredAACCheck2.Checked = true; } else { filteredAACCheck2.Checked = false; }
+                    if (PF.PresetList[index]["FilteredAC3Check2"] == "true") { filteredAC3Check2.Checked = true; } else { filteredAC3Check2.Checked = false; }
+                    if (PF.PresetList[index]["FilteredEAC3Check2"] == "true") { filteredEAC3Check2.Checked = true; } else { filteredEAC3Check2.Checked = false; }
+                    if (PF.PresetList[index]["FilteredDTSCheck2"] == "true") { filteredDTSCheck2.Checked = true; } else { filteredDTSCheck2.Checked = false; }
+                    if (PF.PresetList[index]["FilteredDTSHDCheck2"] == "true") { filteredDTSHDCheck2.Checked = true; } else { filteredDTSHDCheck2.Checked = false; }
+                    if (PF.PresetList[index]["FilteredTrueHDCheck2"] == "true") { filteredTrueHDCheck2.Checked = true; } else { filteredTrueHDCheck2.Checked = false; }
+                    if (PF.PresetList[index]["FilteredMP3Check2"] == "true") { filteredMP3Check2.Checked = true; } else { filteredMP3Check2.Checked = false; }
+                    if (PF.PresetList[index]["FilteredFLACCheck2"] == "true") { filteredFLACCheck2.Checked = true; } else { filteredFLACCheck2.Checked = false; }
+
+                    if (PF.PresetList[index]["FilteredAACCheck3"] == "true") { filteredAACCheck3.Checked = true; } else { filteredAACCheck3.Checked = false; }
+                    if (PF.PresetList[index]["FilteredAC3Check3"] == "true") { filteredAC3Check3.Checked = true; } else { filteredAC3Check3.Checked = false; }
+                    if (PF.PresetList[index]["FilteredEAC3Check3"] == "true") { filteredEAC3Check3.Checked = true; } else { filteredEAC3Check3.Checked = false; }
+                    if (PF.PresetList[index]["FilteredDTSCheck3"] == "true") { filteredDTSCheck3.Checked = true; } else { filteredDTSCheck3.Checked = false; }
+                    if (PF.PresetList[index]["FilteredDTSHDCheck3"] == "true") { filteredDTSHDCheck3.Checked = true; } else { filteredDTSHDCheck3.Checked = false; }
+                    if (PF.PresetList[index]["FilteredTrueHDCheck3"] == "true") { filteredTrueHDCheck3.Checked = true; } else { filteredTrueHDCheck3.Checked = false; }
+                    if (PF.PresetList[index]["FilteredMP3Check3"] == "true") { filteredMP3Check3.Checked = true; } else { filteredMP3Check3.Checked = false; }
+                    if (PF.PresetList[index]["FilteredFLACCheck3"] == "true") { filteredFLACCheck3.Checked = true; } else { filteredFLACCheck3.Checked = false; }
 
                     audioBitrateCombo.Text = PF.PresetList[index]["AudioBitrate"];
+                    audioBitrateCombo2.Text = PF.PresetList[index]["AudioBitrate2"];
+                    audioBitrateCombo3.Text = PF.PresetList[index]["AudioBitrate3"];
+
                     encoderSpeedCombo.Text = PF.PresetList[index]["EncoderSpeed"];
                     frameRateModeCombo.Text = PF.PresetList[index]["FrameRateMode"];
                     framerateCombo.Text = PF.PresetList[index]["FrameRate"];
@@ -4268,6 +4577,7 @@ namespace MovieDataCollector
                     avgBitrateCombo.Text = PF.PresetList[index]["VideoBitrate"];
                     encoderProfileComboBox.Text = PF.PresetList[index]["EncoderProfile"];
                     encoderLevelComboBox.Text = PF.PresetList[index]["EncoderLevel"];
+
 
                     if (PF.PresetList[index]["Optimize"] == "true") { optimizeStreamingCheckBox.Checked = true; } else { optimizeStreamingCheckBox.Checked = false; }
                     if (PF.PresetList[index]["AutoCrop"] == "true") { autoCropCB.Checked = true; } else { autoCropCB.Checked = false; }
@@ -4301,6 +4611,74 @@ namespace MovieDataCollector
             }
         }
 
-       
+        private void disableCheckStream2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (disableCheckStream2.Checked == false)
+            {
+                audioCodecComboBox2.Enabled = true;
+                mixdownComboBox2.Enabled = true;
+                sampleRateCombo2.Enabled = true;
+                audioBitrateCombo2.Enabled = true;
+                filteredAACCheck2.Enabled = true;
+                filteredAC3Check2.Enabled = true;
+                filteredDTSCheck2.Enabled = true;
+                filteredEAC3Check2.Enabled = true;
+                filteredDTSHDCheck2.Enabled = true;
+                filteredTrueHDCheck2.Enabled = true;
+                filteredMP3Check2.Enabled = true;
+                filteredFLACCheck2.Enabled = true;
+            }
+            else
+            {
+                audioCodecComboBox2.Enabled = false;
+                mixdownComboBox2.Enabled = false;
+                sampleRateCombo2.Enabled = false;
+                audioBitrateCombo2.Enabled = false;
+                filteredAACCheck2.Enabled = false;
+                filteredAC3Check2.Enabled = false;
+                filteredDTSCheck2.Enabled = false;
+                filteredEAC3Check2.Enabled = false;
+                filteredDTSHDCheck2.Enabled = false;
+                filteredTrueHDCheck2.Enabled = false;
+                filteredMP3Check2.Enabled = false;
+                filteredFLACCheck2.Enabled = false;
+            }
+        }
+
+        private void disableCheckStream3_CheckedChanged(object sender, EventArgs e)
+        {
+            if (disableCheckStream3.Checked == false)
+            {
+                audioCodecComboBox3.Enabled = true;
+                mixdownComboBox3.Enabled = true;
+                sampleRateCombo3.Enabled = true;
+                audioBitrateCombo3.Enabled = true;
+                filteredAACCheck3.Enabled = true;
+                filteredAC3Check3.Enabled = true;
+                filteredDTSCheck3.Enabled = true;
+                filteredEAC3Check3.Enabled = true;
+                filteredDTSHDCheck3.Enabled = true;
+                filteredTrueHDCheck3.Enabled = true;
+                filteredMP3Check3.Enabled = true;
+                filteredFLACCheck3.Enabled = true;
+            }
+            else
+            {
+                audioCodecComboBox3.Enabled = false;
+                mixdownComboBox3.Enabled = false;
+                sampleRateCombo3.Enabled = false;
+                audioBitrateCombo3.Enabled = false;
+                filteredAACCheck3.Enabled = false;
+                filteredAC3Check3.Enabled = false;
+                filteredDTSCheck3.Enabled = false;
+                filteredEAC3Check3.Enabled = false;
+                filteredDTSHDCheck3.Enabled = false;
+                filteredTrueHDCheck3.Enabled = false;
+                filteredMP3Check3.Enabled = false;
+                filteredFLACCheck3.Enabled = false;
+            }
+        }
+
+   
     }
 }
