@@ -163,16 +163,16 @@ namespace MovieDataCollector
             "false", //FilteredFLACCheck2
             "128", //AudioBitrate2
 
-            "true", //EnableTrack3
+            "false", //EnableTrack3
             "Filtered Passthru", //AudioCodecAAC3
             "5.1", //AudioMixdown3
             "48", //AudioSampleRate3
             "false", //FilteredAACCheck3
-            "false", //FilteredAC3Check3
-            "false", //FilteredEAC3Check3
-            "false", //FilteredDTSCheck3
-            "false", //FilteredDTSHDCheck3
-            "false", //FilteredTrueHDCheck3
+            "true", //FilteredAC3Check3
+            "true", //FilteredEAC3Check3
+            "true", //FilteredDTSCheck3
+            "true", //FilteredDTSHDCheck3
+            "true", //FilteredTrueHDCheck3
             "false", //FilteredMP3Check3
             "false", //FilteredFLACCheck3
             "128", //AudioBitrate3
@@ -226,11 +226,11 @@ namespace MovieDataCollector
             "5.1", //AudioMixdown3
             "48", //AudioSampleRate3
             "false", //FilteredAACCheck3
-            "false", //FilteredAC3Check3
-            "false", //FilteredEAC3Check3
-            "false", //FilteredDTSCheck3
-            "false", //FilteredDTSHDCheck3
-            "false", //FilteredTrueHDCheck3
+            "true", //FilteredAC3Check3
+            "true", //FilteredEAC3Check3
+            "true", //FilteredDTSCheck3
+            "true", //FilteredDTSHDCheck3
+            "true", //FilteredTrueHDCheck3
             "false", //FilteredMP3Check3
             "false", //FilteredFLACCheck3
             "128", //AudioBitrate3
@@ -265,7 +265,7 @@ namespace MovieDataCollector
             "false", //FilteredFLACCheck
             "128", //AudioBitrate
 
-            "false", //EnableTrack2
+            "true", //EnableTrack2
             "E-AC3", //AudioCodecAAC2
             "5.1", //AudioMixdown2
             "48", //AudioSampleRate2
@@ -279,16 +279,16 @@ namespace MovieDataCollector
             "false", //FilteredFLACCheck2
             "128", //AudioBitrate2
 
-            "false", //EnableTrack3
+            "true", //EnableTrack3
             "Filtered Passthru", //AudioCodecAAC3
             "5.1", //AudioMixdown3
             "48", //AudioSampleRate3
             "false", //FilteredAACCheck3
-            "false", //FilteredAC3Check3
-            "false", //FilteredEAC3Check3
-            "false", //FilteredDTSCheck3
-            "false", //FilteredDTSHDCheck3
-            "false", //FilteredTrueHDCheck3
+            "true", //FilteredAC3Check3
+            "true", //FilteredEAC3Check3
+            "true", //FilteredDTSCheck3
+            "true", //FilteredDTSHDCheck3
+            "true", //FilteredTrueHDCheck3
             "false", //FilteredMP3Check3
             "false", //FilteredFLACCheck3
             "128", //AudioBitrate3

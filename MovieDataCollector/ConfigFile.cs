@@ -151,11 +151,11 @@ namespace MovieDataCollector
                 "false", //EnableTrack3
                 "Filtered Passthru", //AudioCodec3
                 "False", //"AAC_Passthru3"
-                "False", //"AC3_Passthru3"
-                "False", //"EAC3_Passthru3"
-                "False", //"DTS_Passthru3"
-                "False", //"DTSHD_Passthru3"
-                "False", //"TrueHD_Passthru3"
+                "True", //"AC3_Passthru3"
+                "True", //"EAC3_Passthru3"
+                "True", //"DTS_Passthru3"
+                "True", //"DTSHD_Passthru3"
+                "True", //"TrueHD_Passthru3"
                 "False", //"MP3_Passthru3"
                 "False", //"FLAC_Passthru3"
 

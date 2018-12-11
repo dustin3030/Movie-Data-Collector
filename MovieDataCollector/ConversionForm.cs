@@ -266,53 +266,62 @@ namespace MovieDataCollector
             if (CF.DefaultSettings["CompatibilitySelector"] == "Xbox") { compatibilityCombo.SelectedIndex = 1; }
 
             /*Audio Settings*/
+            /*Track 1*******************************************************************************************************************************************************/
             audioCodecComboBox.Text = CF.DefaultSettings["AudioCodec"];
-            if (CF.DefaultSettings["AudioCodec"] == "Filtered Passthru")
-            {
-                filteredAACCheck.Visible = true;
-                filteredAC3Check.Visible = true;
-                filteredDTSCheck.Visible = true;
-                passthruFilterLabel.Visible = true;
-            }
-            audioCodecComboBox2.Text = CF.DefaultSettings["AudioCodec2"];
-            if (CF.DefaultSettings["AudioCodec2"] == "Filtered Passthru")
-            {
-                filteredAACCheck2.Visible = true;
-                filteredAC3Check2.Visible = true;
-                filteredDTSCheck2.Visible = true;
-                passthruFilterLabel2.Visible = true;
-            }
-            audioCodecComboBox3.Text = CF.DefaultSettings["AudioCodec3"];
-            if (CF.DefaultSettings["AudioCodec3"] == "Filtered Passthru")
-            {
-                filteredAACCheck3.Visible = true;
-                filteredAC3Check3.Visible = true;
-                filteredDTSCheck3.Visible = true;
-                passthruFilterLabel3.Visible = true;
-            }
-            if (CF.DefaultSettings["AAC_Passthru"] == "True") { filteredAACCheck.Checked = true; } else { filteredAACCheck.Checked = false; }
-            if (CF.DefaultSettings["AC3_Passthru"] == "True") { filteredAC3Check.Checked = true; } else { filteredAC3Check.Checked = false; }
-            if (CF.DefaultSettings["DTS_Passthru"] == "True") { filteredDTSCheck.Checked = true; } else { filteredDTSCheck.Checked = false; }
-
-            if (CF.DefaultSettings["AAC_Passthru2"] == "True") { filteredAACCheck2.Checked = true; } else { filteredAACCheck2.Checked = false; }
-            if (CF.DefaultSettings["AC3_Passthru2"] == "True") { filteredAC3Check2.Checked = true; } else { filteredAC3Check2.Checked = false; }
-            if (CF.DefaultSettings["DTS_Passthru2"] == "True") { filteredDTSCheck2.Checked = true; } else { filteredDTSCheck2.Checked = false; }
-
-            if (CF.DefaultSettings["AAC_Passthru3"] == "True") { filteredAACCheck3.Checked = true; } else { filteredAACCheck3.Checked = false; }
-            if (CF.DefaultSettings["AC3_Passthru3"] == "True") { filteredAC3Check3.Checked = true; } else { filteredAC3Check3.Checked = false; }
-            if (CF.DefaultSettings["DTS_Passthru3"] == "True") { filteredDTSCheck3.Checked = true; } else { filteredDTSCheck3.Checked = false; }
-
             mixdownComboBox.Text = CF.DefaultSettings["Mixdown"];
             audioBitrateCombo.Text = CF.DefaultSettings["AudioBitrateCap"];
             sampleRateCombo.Text = CF.DefaultSettings["AudioSampleRate"];
 
+            if (CF.DefaultSettings["AudioCodec"] == "Filtered Passthru")
+            {
+                filteredAACCheck.Visible = true;
+                filteredAC3Check.Visible = true;
+                filteredEAC3Check.Visible = true;
+                filteredDTSCheck.Visible = true;
+                filteredDTSHDCheck.Visible = true;
+                filteredTrueHDCheck.Visible = true;
+                filteredMP3Check.Visible = true;
+                filteredFLACCheck.Visible = true;
+                passthruFilterLabel.Visible = true;
+            }
+            else
+            {
+                filteredAACCheck.Visible = false;
+                filteredAC3Check.Visible = false;
+                filteredEAC3Check.Visible = false;
+                filteredDTSCheck.Visible = false;
+                filteredDTSHDCheck.Visible = false;
+                filteredTrueHDCheck.Visible = false;
+                filteredMP3Check.Visible = false;
+                filteredFLACCheck.Visible = false;
+                passthruFilterLabel.Visible = false;
+            }
+
+            if (CF.DefaultSettings["AAC_Passthru"] == "True") { filteredAACCheck.Checked = true; } else { filteredAACCheck.Checked = false; }
+            if (CF.DefaultSettings["AC3_Passthru"] == "True") { filteredAC3Check.Checked = true; } else { filteredAC3Check.Checked = false; }
+            if (CF.DefaultSettings["EAC3_Passthru"] == "True") { filteredEAC3Check.Checked = true; } else { filteredEAC3Check.Checked = false; }
+            if (CF.DefaultSettings["DTS_Passthru"] == "True") { filteredDTSCheck.Checked = true; } else { filteredDTSCheck.Checked = false; }
+            if (CF.DefaultSettings["DTSHD_Passthru"] == "True") { filteredDTSHDCheck.Checked = true; } else { filteredDTSHDCheck.Checked = false; }
+            if (CF.DefaultSettings["TrueHD_Passthru"] == "True") { filteredTrueHDCheck.Checked = true; } else { filteredTrueHDCheck.Checked = false; }
+            if (CF.DefaultSettings["MP3_Passthru"] == "True") { filteredMP3Check.Checked = true; } else { filteredMP3Check.Checked = false; }
+            if (CF.DefaultSettings["FLAC_Passthru"] == "True") { filteredFLACCheck.Checked = true; } else { filteredFLACCheck.Checked = false; }
+
+            /*Track 2*******************************************************************************************************************************************************/
+            audioCodecComboBox2.Text = CF.DefaultSettings["AudioCodec2"];
             mixdownComboBox2.Text = CF.DefaultSettings["Mixdown2"];
             audioBitrateCombo2.Text = CF.DefaultSettings["AudioBitrateCap2"];
             sampleRateCombo2.Text = CF.DefaultSettings["AudioSampleRate2"];
 
-            mixdownComboBox3.Text = CF.DefaultSettings["Mixdown3"];
-            audioBitrateCombo3.Text = CF.DefaultSettings["AudioBitrateCap3"];
-            sampleRateCombo3.Text = CF.DefaultSettings["AudioSampleRate3"];
+            
+
+            if (CF.DefaultSettings["AAC_Passthru2"] == "True") { filteredAACCheck2.Checked = true; } else { filteredAACCheck2.Checked = false; }
+            if (CF.DefaultSettings["AC3_Passthru2"] == "True") { filteredAC3Check2.Checked = true; } else { filteredAC3Check2.Checked = false; }
+            if (CF.DefaultSettings["EAC3_Passthru2"] == "True") { filteredEAC3Check2.Checked = true; } else { filteredEAC3Check2.Checked = false; }
+            if (CF.DefaultSettings["DTS_Passthru2"] == "True") { filteredDTSCheck2.Checked = true; } else { filteredDTSCheck2.Checked = false; }
+            if (CF.DefaultSettings["DTSHD_Passthru2"] == "True") { filteredDTSHDCheck2.Checked = true; } else { filteredDTSHDCheck2.Checked = false; }
+            if (CF.DefaultSettings["TrueHD_Passthru2"] == "True") { filteredTrueHDCheck2.Checked = true; } else { filteredTrueHDCheck2.Checked = false; }
+            if (CF.DefaultSettings["MP3_Passthru2"] == "True") { filteredMP3Check2.Checked = true; } else { filteredMP3Check2.Checked = false; }
+            if (CF.DefaultSettings["FLAC_Passthru2"] == "True") { filteredFLACCheck2.Checked = true; } else { filteredFLACCheck2.Checked = false; }
 
             if (CF.DefaultSettings["EnableTrack2"] == "True")
             {
@@ -321,6 +330,31 @@ namespace MovieDataCollector
                 mixdownComboBox2.Enabled = true;
                 sampleRateCombo2.Enabled = true;
                 audioBitrateCombo2.Enabled = true;
+
+                if (CF.DefaultSettings["AudioCodec2"] == "Filtered Passthru")
+                {
+                    filteredAACCheck2.Visible = true;
+                    filteredAC3Check2.Visible = true;
+                    filteredEAC3Check2.Visible = true;
+                    filteredDTSCheck2.Visible = true;
+                    filteredDTSHDCheck2.Visible = true;
+                    filteredTrueHDCheck2.Visible = true;
+                    filteredMP3Check2.Visible = true;
+                    filteredFLACCheck2.Visible = true;
+                    passthruFilterLabel2.Visible = true;
+                }
+                else
+                {
+                    filteredAACCheck2.Visible = false;
+                    filteredAC3Check2.Visible = false;
+                    filteredEAC3Check2.Visible = false;
+                    filteredDTSCheck2.Visible = false;
+                    filteredDTSHDCheck2.Visible = false;
+                    filteredTrueHDCheck2.Visible = false;
+                    filteredMP3Check2.Visible = false;
+                    filteredFLACCheck2.Visible = false;
+                    passthruFilterLabel2.Visible = false;
+                }
             }
             else
             {
@@ -329,7 +363,36 @@ namespace MovieDataCollector
                 mixdownComboBox2.Enabled = false;
                 sampleRateCombo2.Enabled = false;
                 audioBitrateCombo2.Enabled = false;
+
+                filteredAACCheck2.Visible = false;
+                filteredAC3Check2.Visible = false;
+                filteredEAC3Check2.Visible = false;
+                filteredDTSCheck2.Visible = false;
+                filteredDTSHDCheck2.Visible = false;
+                filteredTrueHDCheck2.Visible = false;
+                filteredMP3Check2.Visible = false;
+                filteredFLACCheck2.Visible = false;
+                passthruFilterLabel2.Visible = false;
+
             }
+
+
+            /*Track 3*******************************************************************************************************************************************************/
+            audioCodecComboBox3.Text = CF.DefaultSettings["AudioCodec3"];
+            mixdownComboBox3.Text = CF.DefaultSettings["Mixdown3"];
+            audioBitrateCombo3.Text = CF.DefaultSettings["AudioBitrateCap3"];
+            sampleRateCombo3.Text = CF.DefaultSettings["AudioSampleRate3"];
+
+
+
+            if (CF.DefaultSettings["AAC_Passthru3"] == "True") { filteredAACCheck3.Checked = true; } else { filteredAACCheck3.Checked = false; }
+            if (CF.DefaultSettings["AC3_Passthru3"] == "True") { filteredAC3Check3.Checked = true; } else { filteredAC3Check3.Checked = false; }
+            if (CF.DefaultSettings["EAC3_Passthru3"] == "True") { filteredEAC3Check3.Checked = true; } else { filteredEAC3Check3.Checked = false; }
+            if (CF.DefaultSettings["DTS_Passthru3"] == "True") { filteredDTSCheck3.Checked = true; } else { filteredDTSCheck3.Checked = false; }
+            if (CF.DefaultSettings["DTSHD_Passthru3"] == "True") { filteredDTSHDCheck3.Checked = true; } else { filteredDTSHDCheck3.Checked = false; }
+            if (CF.DefaultSettings["TrueHD_Passthru3"] == "True") { filteredTrueHDCheck3.Checked = true; } else { filteredTrueHDCheck3.Checked = false; }
+            if (CF.DefaultSettings["MP3_Passthru3"] == "True") { filteredMP3Check3.Checked = true; } else { filteredMP3Check3.Checked = false; }
+            if (CF.DefaultSettings["FLAC_Passthru3"] == "True") { filteredFLACCheck3.Checked = true; } else { filteredFLACCheck3.Checked = false; }
 
             if (CF.DefaultSettings["EnableTrack3"] == "True")
             {
@@ -338,6 +401,31 @@ namespace MovieDataCollector
                 mixdownComboBox3.Enabled = true;
                 sampleRateCombo3.Enabled = true;
                 audioBitrateCombo3.Enabled = true;
+
+                if (CF.DefaultSettings["AudioCodec3"] == "Filtered Passthru")
+                {
+                    filteredAACCheck3.Visible = true;
+                    filteredAC3Check3.Visible = true;
+                    filteredEAC3Check3.Visible = true;
+                    filteredDTSCheck3.Visible = true;
+                    filteredDTSHDCheck3.Visible = true;
+                    filteredTrueHDCheck3.Visible = true;
+                    filteredMP3Check3.Visible = true;
+                    filteredFLACCheck3.Visible = true;
+                    passthruFilterLabel3.Visible = true;
+                }
+                else
+                {
+                    filteredAACCheck3.Visible = false;
+                    filteredAC3Check3.Visible = false;
+                    filteredEAC3Check3.Visible = false;
+                    filteredDTSCheck3.Visible = false;
+                    filteredDTSHDCheck3.Visible = false;
+                    filteredTrueHDCheck3.Visible = false;
+                    filteredMP3Check3.Visible = false;
+                    filteredFLACCheck3.Visible = false;
+                    passthruFilterLabel3.Visible = false;
+                }
             }
             else
             {
@@ -346,29 +434,18 @@ namespace MovieDataCollector
                 mixdownComboBox3.Enabled = false;
                 sampleRateCombo3.Enabled = false;
                 audioBitrateCombo3.Enabled = false;
+
+                filteredAACCheck3.Visible = false;
+                filteredAC3Check3.Visible = false;
+                filteredEAC3Check3.Visible = false;
+                filteredDTSCheck3.Visible = false;
+                filteredDTSHDCheck3.Visible = false;
+                filteredTrueHDCheck3.Visible = false;
+                filteredMP3Check3.Visible = false;
+                filteredFLACCheck3.Visible = false;
+                passthruFilterLabel3.Visible = false;
+
             }
-
-
-            /*Video Settings*/
-            encoderSpeedCombo.Text = CF.DefaultSettings["EncoderSpeed"];
-            framerateCombo.Text = CF.DefaultSettings["Framerate"];
-            frameRateModeCombo.Text = CF.DefaultSettings["FramerateMode"]; //Constant, Peak, Variable
-            encoderTuneComboBox.Text = CF.DefaultSettings["EncoderTune"];
-            avgBitrateCombo.Text = CF.DefaultSettings["VideoBitrateCap"];
-            encoderProfileComboBox.Text = CF.DefaultSettings["EncoderProfile"];
-            encoderLevelComboBox.Text = CF.DefaultSettings["EncoderLevel"];
-            subtitleCombo.Text = CF.DefaultSettings["SubtitleSelection"];
-
-            if (CF.DefaultSettings["Optimize"] == "True") { optimizeStreamingCheckBox.Checked = true; } else { optimizeStreamingCheckBox.Checked = false; }
-            if (CF.DefaultSettings["AutoCrop"] == "True") { autoCropCB.Checked = true; } else { autoCropCB.Checked = false; }
-            if (CF.DefaultSettings["TwoPass"] == "True") { twoPassCheckbox.Checked = true; } else { twoPassCheckbox.Checked = false; }
-            if (CF.DefaultSettings["TurboFirstPass"] == "True") { turboCheckBox.Checked = true; } else { turboCheckBox.Checked = false; }
-            if(CF.DefaultSettings["ForcedSubtitleBurnIn"] == "True") { burnInSubtitlesCheck.Checked = true; } else { burnInSubtitlesCheck.Checked = false; } 
-
-            /*Notification Settings*/
-            if (!string.IsNullOrEmpty(CF.DefaultSettings["GmailAccount"])) { usernameBox.Text = CF.DefaultSettings["GmailAccount"]; }
-            if (!string.IsNullOrEmpty(CF.DefaultSettings["Password"])) { passwordBox.Text = CF.DefaultSettings["Password"]; }
-            if (!string.IsNullOrEmpty(CF.DefaultSettings["NotifyAddress"])) { sendToBox.Text = CF.DefaultSettings["NotifyAddress"]; }
 
         }
         private void ReturnAllVideoFiles()
@@ -5562,48 +5639,50 @@ namespace MovieDataCollector
                 Dictionary<string, string> NewPreset = new Dictionary<string, string>();
 #pragma warning restore IDE0028 // Simplify collection initialization
                 NewPreset.Add("Name", presetComboBox.Text);
-
+/*Audio Stream 1***********************************************************************************************************************************************************/
                 NewPreset.Add("AudioCodec", audioCodecComboBox.Text);
                 NewPreset.Add("AudioMixdown", mixdownComboBox.Text);
                 NewPreset.Add("AudioSampleRate", sampleRateCombo.Text);
                 if (filteredAACCheck.Checked) { NewPreset.Add("FilteredAACCheck", "true"); } else { NewPreset.Add("FilteredAACCheck", "false"); }
                 if (filteredAC3Check.Checked) { NewPreset.Add("FilteredAC3Check", "true"); } else { NewPreset.Add("FilteredAC3Check", "false"); }
-                if (filteredDTSCheck.Checked) { NewPreset.Add("FilteredEAC3Check", "true"); } else { NewPreset.Add("FilteredEAC3Check", "false"); }
-                if (filteredAACCheck.Checked) { NewPreset.Add("FilteredDTSCheck", "true"); } else { NewPreset.Add("FilteredDTSCheck", "false"); }
-                if (filteredAC3Check.Checked) { NewPreset.Add("FilteredDTSHDCheck", "true"); } else { NewPreset.Add("FilteredDTSHDCheck", "false"); }
-                if (filteredDTSCheck.Checked) { NewPreset.Add("FilteredTrueHDCheck", "true"); } else { NewPreset.Add("FilteredTrueHDCheck", "false"); }
-                if (filteredAACCheck.Checked) { NewPreset.Add("FilteredMP3Check", "true"); } else { NewPreset.Add("FilteredMP3Check", "false"); }
-                if (filteredAC3Check.Checked) { NewPreset.Add("FilteredFLACCheck", "true"); } else { NewPreset.Add("FilteredFLACCheck", "false"); }
+                if (filteredEAC3Check.Checked) { NewPreset.Add("FilteredEAC3Check", "true"); } else { NewPreset.Add("FilteredEAC3Check", "false"); }
+                if (filteredDTSCheck.Checked) { NewPreset.Add("FilteredDTSCheck", "true"); } else { NewPreset.Add("FilteredDTSCheck", "false"); }
+                if (filteredDTSHDCheck.Checked) { NewPreset.Add("FilteredDTSHDCheck", "true"); } else { NewPreset.Add("FilteredDTSHDCheck", "false"); }
+                if (filteredTrueHDCheck.Checked) { NewPreset.Add("FilteredTrueHDCheck", "true"); } else { NewPreset.Add("FilteredTrueHDCheck", "false"); }
+                if (filteredMP3Check.Checked) { NewPreset.Add("FilteredMP3Check", "true"); } else { NewPreset.Add("FilteredMP3Check", "false"); }
+                if (filteredFLACCheck.Checked) { NewPreset.Add("FilteredFLACCheck", "true"); } else { NewPreset.Add("FilteredFLACCheck", "false"); }
                 NewPreset.Add("AudioBitrate", audioBitrateCombo.Text);
 
+/*Audio Stream 2***********************************************************************************************************************************************************/
                 NewPreset.Add("AudioCodec2", audioCodecComboBox2.Text);
                 NewPreset.Add("AudioMixdown2", mixdownComboBox2.Text);
                 NewPreset.Add("AudioSampleRate2", sampleRateCombo2.Text);
-                if (disableCheckStream2.Checked) { NewPreset.Add("EnableTrack2", "true"); } else { NewPreset.Add("EnableTrack2", "false"); }
+                if (disableCheckStream2.Checked) { NewPreset.Add("EnableTrack2", "false"); } else { NewPreset.Add("EnableTrack2", "true"); }
                 if (filteredAACCheck2.Checked) { NewPreset.Add("FilteredAACCheck2", "true"); } else { NewPreset.Add("FilteredAACCheck2", "false"); }
                 if (filteredAC3Check2.Checked) { NewPreset.Add("FilteredAC3Check2", "true"); } else { NewPreset.Add("FilteredAC3Check2", "false"); }
-                if (filteredDTSCheck2.Checked) { NewPreset.Add("FilteredEAC3Check2", "true"); } else { NewPreset.Add("FilteredEAC3Check2", "false"); }
-                if (filteredAACCheck2.Checked) { NewPreset.Add("FilteredDTSCheck2", "true"); } else { NewPreset.Add("FilteredDTSCheck2", "false"); }
-                if (filteredAC3Check2.Checked) { NewPreset.Add("FilteredDTSHDCheck2", "true"); } else { NewPreset.Add("FilteredDTSHDCheck2", "false"); }
-                if (filteredDTSCheck2.Checked) { NewPreset.Add("FilteredTrueHDCheck2", "true"); } else { NewPreset.Add("FilteredTrueHDCheck2", "false"); }
-                if (filteredAACCheck2.Checked) { NewPreset.Add("FilteredMP3Check2", "true"); } else { NewPreset.Add("FilteredMP3Check2", "false"); }
-                if (filteredAC3Check2.Checked) { NewPreset.Add("FilteredFLACCheck2", "true"); } else { NewPreset.Add("FilteredFLACCheck2", "false"); }
+                if (filteredEAC3Check2.Checked) { NewPreset.Add("FilteredEAC3Check2", "true"); } else { NewPreset.Add("FilteredEAC3Check2", "false"); }
+                if (filteredDTSCheck2.Checked) { NewPreset.Add("FilteredDTSCheck2", "true"); } else { NewPreset.Add("FilteredDTSCheck2", "false"); }
+                if (filteredDTSHDCheck2.Checked) { NewPreset.Add("FilteredDTSHDCheck2", "true"); } else { NewPreset.Add("FilteredDTSHDCheck2", "false"); }
+                if (filteredTrueHDCheck2.Checked) { NewPreset.Add("FilteredTrueHDCheck2", "true"); } else { NewPreset.Add("FilteredTrueHDCheck2", "false"); }
+                if (filteredMP3Check2.Checked) { NewPreset.Add("FilteredMP3Check2", "true"); } else { NewPreset.Add("FilteredMP3Check2", "false"); }
+                if (filteredFLACCheck2.Checked) { NewPreset.Add("FilteredFLACCheck2", "true"); } else { NewPreset.Add("FilteredFLACCheck2", "false"); }
                 NewPreset.Add("AudioBitrate2", audioBitrateCombo2.Text);
 
+/*Audio Stream 3***********************************************************************************************************************************************************/
                 NewPreset.Add("AudioCodec3", audioCodecComboBox3.Text);
                 NewPreset.Add("AudioMixdown3", mixdownComboBox3.Text);
                 NewPreset.Add("AudioSampleRate3", sampleRateCombo3.Text);
-                if (disableCheckStream3.Checked) { NewPreset.Add("EnableTrack3", "true"); } else { NewPreset.Add("EnableTrack3", "false"); }
+                if (disableCheckStream3.Checked) { NewPreset.Add("EnableTrack3", "false"); } else { NewPreset.Add("EnableTrack3", "true"); }
                 if (filteredAACCheck3.Checked) { NewPreset.Add("FilteredAACCheck3", "true"); } else { NewPreset.Add("FilteredAACCheck3", "false"); }
                 if (filteredAC3Check3.Checked) { NewPreset.Add("FilteredAC3Check3", "true"); } else { NewPreset.Add("FilteredAC3Check3", "false"); }
-                if (filteredDTSCheck3.Checked) { NewPreset.Add("FilteredEAC3Check3", "true"); } else { NewPreset.Add("FilteredEAC3Check3", "false"); }
-                if (filteredAACCheck3.Checked) { NewPreset.Add("FilteredDTSCheck3", "true"); } else { NewPreset.Add("FilteredDTSCheck3", "false"); }
-                if (filteredAC3Check3.Checked) { NewPreset.Add("FilteredDTSHDCheck3", "true"); } else { NewPreset.Add("FilteredDTSHDCheck3", "false"); }
-                if (filteredDTSCheck3.Checked) { NewPreset.Add("FilteredTrueHDCheck3", "true"); } else { NewPreset.Add("FilteredTrueHDCheck3", "false"); }
-                if (filteredAACCheck3.Checked) { NewPreset.Add("FilteredMP3Check3", "true"); } else { NewPreset.Add("FilteredMP3Check3", "false"); }
-                if (filteredAC3Check3.Checked) { NewPreset.Add("FilteredFLACCheck3", "true"); } else { NewPreset.Add("FilteredFLACCheck3", "false"); }
+                if (filteredEAC3Check3.Checked) { NewPreset.Add("FilteredEAC3Check3", "true"); } else { NewPreset.Add("FilteredEAC3Check3", "false"); }
+                if (filteredDTSCheck3.Checked) { NewPreset.Add("FilteredDTSCheck3", "true"); } else { NewPreset.Add("FilteredDTSCheck3", "false"); }
+                if (filteredDTSHDCheck3.Checked) { NewPreset.Add("FilteredDTSHDCheck3", "true"); } else { NewPreset.Add("FilteredDTSHDCheck3", "false"); }
+                if (filteredTrueHDCheck3.Checked) { NewPreset.Add("FilteredTrueHDCheck3", "true"); } else { NewPreset.Add("FilteredTrueHDCheck3", "false"); }
+                if (filteredMP3Check3.Checked) { NewPreset.Add("FilteredMP3Check3", "true"); } else { NewPreset.Add("FilteredMP3Check3", "false"); }
+                if (filteredFLACCheck3.Checked) { NewPreset.Add("FilteredFLACCheck3", "true"); } else { NewPreset.Add("FilteredFLACCheck3", "false"); }
                 NewPreset.Add("AudioBitrate3", audioBitrateCombo3.Text);
-
+/*Other Options************************************************************************************************************************************************************/
                 NewPreset.Add("EncoderSpeed", encoderSpeedCombo.Text);
                 NewPreset.Add("FrameRateMode", frameRateModeCombo.Text);
                 NewPreset.Add("FrameRate", framerateCombo.Text);
@@ -5699,12 +5778,7 @@ namespace MovieDataCollector
                     if (PF.PresetList[index]["FilteredMP3Check"] == "true") { filteredMP3Check.Checked = true; } else { filteredMP3Check.Checked = false; }
                     if (PF.PresetList[index]["FilteredFLACCheck"] == "true") { filteredFLACCheck.Checked = true; } else { filteredFLACCheck.Checked = false; }
 
-                    if (PF.PresetList[index]["EnableTrack2"] == "true") { disableCheckStream2.Checked = false; } else { disableCheckStream2.Checked = true; }
-         
-                    audioCodecComboBox2.Enabled = true;
-                    mixdownComboBox2.Enabled = true;
-                    sampleRateCombo2.Enabled = true;
-                    audioBitrateCombo2.Enabled = true;
+/*Audio Stream 2************************************************************************************************************************************************************************************/
 
                     audioCodecComboBox2.Text = PF.PresetList[index]["AudioCodec2"];
                     mixdownComboBox2.Text = PF.PresetList[index]["AudioMixdown2"];
@@ -5720,19 +5794,41 @@ namespace MovieDataCollector
                     if (PF.PresetList[index]["FilteredMP3Check2"] == "true") { filteredMP3Check2.Checked = true; } else { filteredMP3Check2.Checked = false; }
                     if (PF.PresetList[index]["FilteredFLACCheck2"] == "true") { filteredFLACCheck2.Checked = true; } else { filteredFLACCheck2.Checked = false; }
 
-                    if (PF.PresetList[index]["AudioCodec2"] == "Filtered Passthru")
+                    //This needs to be last as it triggers an event
+                    if (PF.PresetList[index]["EnableTrack2"] == "true")//Track Enabled
                     {
-                        filteredAACCheck2.Visible = true;
-                        filteredAC3Check2.Visible = true;
-                        filteredEAC3Check2.Visible = true;
-                        filteredDTSCheck2.Visible = true;
-                        filteredDTSHDCheck2.Visible = true;
-                        filteredTrueHDCheck2.Visible = true;
-                        filteredFLACCheck2.Visible = true;
-                        filteredMP3Check2.Visible = true;
+                        disableCheckStream2.Checked = false; 
+                        if(audioCodecComboBox2.Text == "Filtered Passthru")
+                        {
+                            filteredAACCheck2.Visible = true;
+                            filteredAC3Check2.Visible = true;
+                            filteredEAC3Check2.Visible = true;
+                            filteredDTSCheck2.Visible = true;
+                            filteredDTSHDCheck2.Visible = true;
+                            filteredTrueHDCheck2.Visible = true;
+                            filteredFLACCheck2.Visible = true;
+                            filteredMP3Check2.Visible = true;
+                        }
+                        else
+                        {
+                            filteredAACCheck2.Visible = false;
+                            filteredAC3Check2.Visible = false;
+                            filteredEAC3Check2.Visible = false;
+                            filteredDTSCheck2.Visible = false;
+                            filteredDTSHDCheck2.Visible = false;
+                            filteredTrueHDCheck2.Visible = false;
+                            filteredFLACCheck2.Visible = false;
+                            filteredMP3Check2.Visible = false;
+                        }
+
+                        audioCodecComboBox2.Enabled = true;
+                        mixdownComboBox2.Enabled = true;
+                        sampleRateCombo2.Enabled = true;
+                        audioBitrateCombo2.Enabled = true;
                     }
-                    else
+                    else//Track Disabled
                     {
+                        disableCheckStream2.Checked = true; 
                         filteredAACCheck2.Visible = false;
                         filteredAC3Check2.Visible = false;
                         filteredEAC3Check2.Visible = false;
@@ -5741,15 +5837,15 @@ namespace MovieDataCollector
                         filteredTrueHDCheck2.Visible = false;
                         filteredFLACCheck2.Visible = false;
                         filteredMP3Check2.Visible = false;
+
+                        audioCodecComboBox2.Enabled = false;
+                        mixdownComboBox2.Enabled = false;
+                        sampleRateCombo2.Enabled = false;
+                        audioBitrateCombo2.Enabled = false;
                     }
 
-                    if (PF.PresetList[index]["EnableTrack3"] == "true") { disableCheckStream3.Checked = false; } else { disableCheckStream3.Checked = true; }
 
-                    audioCodecComboBox3.Enabled = true;
-                    mixdownComboBox3.Enabled = true;
-                    sampleRateCombo3.Enabled = true;
-                    audioBitrateCombo3.Enabled = true;
-
+                    /*Audio Stream 3************************************************************************************************************************************************************************************/
                     audioCodecComboBox3.Text = PF.PresetList[index]["AudioCodec3"];
                     mixdownComboBox3.Text = PF.PresetList[index]["AudioMixdown3"];
                     sampleRateCombo3.Text = PF.PresetList[index]["AudioSampleRate3"];
@@ -5764,19 +5860,41 @@ namespace MovieDataCollector
                     if (PF.PresetList[index]["FilteredMP3Check3"] == "true") { filteredMP3Check3.Checked = true; } else { filteredMP3Check3.Checked = false; }
                     if (PF.PresetList[index]["FilteredFLACCheck3"] == "true") { filteredFLACCheck3.Checked = true; } else { filteredFLACCheck3.Checked = false; }
 
-                    if (PF.PresetList[index]["AudioCodec3"] == "Filtered Passthru")
+                    //This needs to be last as it triggers an event
+                    if (PF.PresetList[index]["EnableTrack3"] == "true")//Track Enabled
                     {
-                        filteredAACCheck3.Visible = true;
-                        filteredAC3Check3.Visible = true;
-                        filteredEAC3Check3.Visible = true;
-                        filteredDTSCheck3.Visible = true;
-                        filteredDTSHDCheck3.Visible = true;
-                        filteredTrueHDCheck3.Visible = true;
-                        filteredFLACCheck3.Visible = true;
-                        filteredMP3Check3.Visible = true;
+                        disableCheckStream3.Checked = false;
+                        if (audioCodecComboBox3.Text == "Filtered Passthru")
+                        {
+                            filteredAACCheck3.Visible = true;
+                            filteredAC3Check3.Visible = true;
+                            filteredEAC3Check3.Visible = true;
+                            filteredDTSCheck3.Visible = true;
+                            filteredDTSHDCheck3.Visible = true;
+                            filteredTrueHDCheck3.Visible = true;
+                            filteredFLACCheck3.Visible = true;
+                            filteredMP3Check3.Visible = true;
+                        }
+                        else
+                        {
+                            filteredAACCheck3.Visible = false;
+                            filteredAC3Check3.Visible = false;
+                            filteredEAC3Check3.Visible = false;
+                            filteredDTSCheck3.Visible = false;
+                            filteredDTSHDCheck3.Visible = false;
+                            filteredTrueHDCheck3.Visible = false;
+                            filteredFLACCheck3.Visible = false;
+                            filteredMP3Check3.Visible = false;
+                        }
+
+                        audioCodecComboBox3.Enabled = true;
+                        mixdownComboBox3.Enabled = true;
+                        sampleRateCombo3.Enabled = true;
+                        audioBitrateCombo3.Enabled = true;
                     }
-                    else
+                    else//Track Disabled
                     {
+                        disableCheckStream3.Checked = true; 
                         filteredAACCheck3.Visible = false;
                         filteredAC3Check3.Visible = false;
                         filteredEAC3Check3.Visible = false;
@@ -5785,8 +5903,14 @@ namespace MovieDataCollector
                         filteredTrueHDCheck3.Visible = false;
                         filteredFLACCheck3.Visible = false;
                         filteredMP3Check3.Visible = false;
+
+                        audioCodecComboBox3.Enabled = false;
+                        mixdownComboBox3.Enabled = false;
+                        sampleRateCombo3.Enabled = false;
+                        audioBitrateCombo3.Enabled = false;
                     }
 
+                    /*Other Options******************************************************************************************************************************************************************************/
                     encoderSpeedCombo.Text = PF.PresetList[index]["EncoderSpeed"];
                     frameRateModeCombo.Text = PF.PresetList[index]["FrameRateMode"];
                     framerateCombo.Text = PF.PresetList[index]["FrameRate"];
@@ -5831,46 +5955,47 @@ namespace MovieDataCollector
         }
         private void disableCheckStream2_CheckedChanged(object sender, EventArgs e)
         {
-            if (disableCheckStream2.Checked == false)
+            if (disableCheckStream2.Checked == false) //Track Enabled
             {
                 audioCodecComboBox2.Enabled = true;
                 mixdownComboBox2.Enabled = true;
                 sampleRateCombo2.Enabled = true;
                 audioBitrateCombo2.Enabled = true;
 
-                filteredAACCheck2.Enabled = true;
-                filteredAC3Check2.Enabled = true;
-                filteredDTSCheck2.Enabled = true;
-                filteredEAC3Check2.Enabled = true;
-                filteredDTSHDCheck2.Enabled = true;
-                filteredTrueHDCheck2.Enabled = true;
-                filteredMP3Check2.Enabled = true;
-                filteredFLACCheck2.Enabled = true;
+                if(audioCodecComboBox2.Text == "Filtered Passthru")
+                {
+                    filteredAACCheck2.Visible = true;
+                    filteredAC3Check2.Visible = true;
+                    filteredDTSCheck2.Visible = true;
+                    filteredEAC3Check2.Visible = true;
+                    filteredDTSHDCheck2.Visible = true;
+                    filteredTrueHDCheck2.Visible = true;
+                    filteredMP3Check2.Visible = true;
+                    filteredFLACCheck2.Visible = true;
+                    passthruFilterLabel2.Visible = true;
+                }
+                else
+                {
+                    filteredAACCheck2.Visible = false;
+                    filteredAC3Check2.Visible = false;
+                    filteredDTSCheck2.Visible = false;
+                    filteredEAC3Check2.Visible = false;
+                    filteredDTSHDCheck2.Visible = false;
+                    filteredTrueHDCheck2.Visible = false;
+                    filteredMP3Check2.Visible = false;
+                    filteredFLACCheck2.Visible = false;
+                    passthruFilterLabel2.Visible = false;
 
-                filteredAACCheck2.Visible = true;
-                filteredAC3Check2.Visible = true;
-                filteredDTSCheck2.Visible = true;
-                filteredEAC3Check2.Visible = true;
-                filteredDTSHDCheck2.Visible = true;
-                filteredTrueHDCheck2.Visible = true;
-                filteredMP3Check2.Visible = true;
-                filteredFLACCheck2.Visible = true;
+                }
+
+
             }
-            else
+            else //Track Disabled
             {
                 audioCodecComboBox2.Enabled = false;
                 mixdownComboBox2.Enabled = false;
                 sampleRateCombo2.Enabled = false;
                 audioBitrateCombo2.Enabled = false;
-
-                filteredAACCheck2.Enabled = false;
-                filteredAC3Check2.Enabled = false;
-                filteredDTSCheck2.Enabled = false;
-                filteredEAC3Check2.Enabled = false;
-                filteredDTSHDCheck2.Enabled = false;
-                filteredTrueHDCheck2.Enabled = false;
-                filteredMP3Check2.Enabled = false;
-                filteredFLACCheck2.Enabled = false;
 
                 filteredAACCheck2.Visible = false;
                 filteredAC3Check2.Visible = false;
@@ -5880,50 +6005,51 @@ namespace MovieDataCollector
                 filteredTrueHDCheck2.Visible = false;
                 filteredMP3Check2.Visible = false;
                 filteredFLACCheck2.Visible = false;
+                passthruFilterLabel2.Visible = false;
             }
         }
         private void disableCheckStream3_CheckedChanged(object sender, EventArgs e)
         {
-            if (disableCheckStream3.Checked == false)
+            if (disableCheckStream3.Checked == false) //Track Enabled
             {
                 audioCodecComboBox3.Enabled = true;
                 mixdownComboBox3.Enabled = true;
                 sampleRateCombo3.Enabled = true;
                 audioBitrateCombo3.Enabled = true;
 
-                filteredAACCheck3.Enabled = true;
-                filteredAC3Check3.Enabled = true;
-                filteredDTSCheck3.Enabled = true;
-                filteredEAC3Check3.Enabled = true;
-                filteredDTSHDCheck3.Enabled = true;
-                filteredTrueHDCheck3.Enabled = true;
-                filteredMP3Check3.Enabled = true;
-                filteredFLACCheck3.Enabled = true;
+                if (audioCodecComboBox3.Text == "Filtered Passthru")
+                {
+                    filteredAACCheck3.Visible = true;
+                    filteredAC3Check3.Visible = true;
+                    filteredDTSCheck3.Visible = true;
+                    filteredEAC3Check3.Visible = true;
+                    filteredDTSHDCheck3.Visible = true;
+                    filteredTrueHDCheck3.Visible = true;
+                    filteredMP3Check3.Visible = true;
+                    filteredFLACCheck3.Visible = true;
+                    passthruFilterLabel3.Visible = true;
+                }
+                else
+                {
+                    filteredAACCheck3.Visible = false;
+                    filteredAC3Check3.Visible = false;
+                    filteredDTSCheck3.Visible = false;
+                    filteredEAC3Check3.Visible = false;
+                    filteredDTSHDCheck3.Visible = false;
+                    filteredTrueHDCheck3.Visible = false;
+                    filteredMP3Check3.Visible = false;
+                    filteredFLACCheck3.Visible = false;
+                    passthruFilterLabel3.Visible = false;
+                }
 
-                filteredAACCheck3.Visible = true;
-                filteredAC3Check3.Visible = true;
-                filteredDTSCheck3.Visible = true;
-                filteredEAC3Check3.Visible = true;
-                filteredDTSHDCheck3.Visible = true;
-                filteredTrueHDCheck3.Visible = true;
-                filteredMP3Check3.Visible = true;
-                filteredFLACCheck3.Visible = true;
+
             }
-            else
+            else //Track Disabled
             {
                 audioCodecComboBox3.Enabled = false;
                 mixdownComboBox3.Enabled = false;
                 sampleRateCombo3.Enabled = false;
                 audioBitrateCombo3.Enabled = false;
-
-                filteredAACCheck3.Enabled = false;
-                filteredAC3Check3.Enabled = false;
-                filteredDTSCheck3.Enabled = false;
-                filteredEAC3Check3.Enabled = false;
-                filteredDTSHDCheck3.Enabled = false;
-                filteredTrueHDCheck3.Enabled = false;
-                filteredMP3Check3.Enabled = false;
-                filteredFLACCheck3.Enabled = false;
 
                 filteredAACCheck3.Visible = false;
                 filteredAC3Check3.Visible = false;
@@ -5933,6 +6059,7 @@ namespace MovieDataCollector
                 filteredTrueHDCheck3.Visible = false;
                 filteredMP3Check3.Visible = false;
                 filteredFLACCheck3.Visible = false;
+                passthruFilterLabel3.Visible = false;
             }
         }
 
