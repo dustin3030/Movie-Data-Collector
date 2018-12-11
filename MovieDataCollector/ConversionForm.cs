@@ -827,6 +827,19 @@ namespace MovieDataCollector
                 {
                     audioChannels = videoFile.Audio[i].Properties["Channel(s)"] + ", ";
                 }
+                if (videoFile.Audio[i].Properties.ContainsKey("Format"))
+                {
+                    if(videoFile.Audio[i].Properties["Format"] == "E-AC-3")
+                    {
+                        audioChannels = videoFile.Audio[i].Properties["Channel(s)"] + "???, ";
+                    }
+                }
+                if(videoFile.Audio[i].Properties.ContainsKey("Channel(s)_Original"))
+                {
+                    //Channel(s)_Original : 8 channels / 6 channels
+                    audioChannels = videoFile.Audio[i].Properties["Channel(s)_Original"] + ", ";
+                }
+
 
                 if (videoFile.Audio[i].Properties.ContainsKey("Bit rate"))
                 {
@@ -3435,7 +3448,7 @@ namespace MovieDataCollector
                     }
                     
                 }
-                if (filteredAC3Check.Checked || filteredAC3Check.Checked || filteredAC3Check.Checked)
+                if (filteredAC3Check.Checked || filteredAC3Check2.Checked || filteredAC3Check3.Checked)
                 {
                     if (string.IsNullOrEmpty(outputAudioPassthruMask))
                     {
@@ -3446,7 +3459,7 @@ namespace MovieDataCollector
                         outputAudioPassthruMask += ",ac3";
                     }
                 }
-                if (filteredEAC3Check.Checked || filteredEAC3Check.Checked || filteredEAC3Check.Checked)
+                if (filteredEAC3Check.Checked || filteredEAC3Check2.Checked || filteredEAC3Check3.Checked)
                 {
                     if (string.IsNullOrEmpty(outputAudioPassthruMask))
                     {
@@ -3457,7 +3470,7 @@ namespace MovieDataCollector
                         outputAudioPassthruMask += ",eac3";
                     }
                 }
-                if (filteredDTSCheck.Checked || filteredDTSCheck.Checked || filteredDTSCheck.Checked)
+                if (filteredDTSCheck.Checked || filteredDTSCheck2.Checked || filteredDTSCheck3.Checked)
                 {
                     if (string.IsNullOrEmpty(outputAudioPassthruMask))
                     {
@@ -3468,7 +3481,7 @@ namespace MovieDataCollector
                         outputAudioPassthruMask += ",dts";
                     }
                 }
-                if (filteredDTSHDCheck.Checked || filteredDTSHDCheck.Checked || filteredDTSHDCheck.Checked)
+                if (filteredDTSHDCheck.Checked || filteredDTSHDCheck2.Checked || filteredDTSHDCheck3.Checked)
                 {
                     if (string.IsNullOrEmpty(outputAudioPassthruMask))
                     {
@@ -3479,7 +3492,7 @@ namespace MovieDataCollector
                         outputAudioPassthruMask += ",dtshd";
                     }
                 }
-                if (filteredTrueHDCheck.Checked || filteredTrueHDCheck.Checked || filteredTrueHDCheck.Checked)
+                if (filteredTrueHDCheck.Checked || filteredTrueHDCheck2.Checked || filteredTrueHDCheck3.Checked)
                 {
                     if (string.IsNullOrEmpty(outputAudioPassthruMask))
                     {
@@ -3490,7 +3503,7 @@ namespace MovieDataCollector
                         outputAudioPassthruMask += ",truehd";
                     }
                 }
-                if (filteredMP3Check.Checked || filteredMP3Check.Checked || filteredMP3Check.Checked)
+                if (filteredMP3Check.Checked || filteredMP3Check2.Checked || filteredMP3Check3.Checked)
                 {
                     if (string.IsNullOrEmpty(outputAudioPassthruMask))
                     {
@@ -3501,7 +3514,7 @@ namespace MovieDataCollector
                         outputAudioPassthruMask += ",mp3";
                     }
                 }
-                if (filteredFLACCheck.Checked || filteredFLACCheck.Checked || filteredFLACCheck.Checked)
+                if (filteredFLACCheck.Checked || filteredFLACCheck2.Checked || filteredFLACCheck3.Checked)
                 {
                     if (string.IsNullOrEmpty(outputAudioPassthruMask))
                     {
@@ -3514,7 +3527,7 @@ namespace MovieDataCollector
                 }
                 if(!string.IsNullOrEmpty(outputAudioPassthruMask))
                 {
-                    outputAudioPassthruMask = "--audio-copy-mask " + outputAudioPassthruMask;
+                    outputAudioPassthruMask = "--audio-copy-mask " + outputAudioPassthruMask + " ";
                 }
                 
             }
@@ -3618,7 +3631,6 @@ namespace MovieDataCollector
             string outputFileExt = ".mp4";
             string containerFormat = "--format mp4 ";
             string chapterMarkers = "--markers "; //Add chapter markers
-            string largeFileSize = "";
             string webOptimization = "";
             /*Input File***********************************************************************************************************************************************************************************************/
             if (optimizeStreamingCheckBox.Checked) { webOptimization = "--optimize "; } //Optimize mp4 files for HTTP streaming ("fast start")
@@ -3629,15 +3641,13 @@ namespace MovieDataCollector
 
 
             /*Output File***********************************************************************************************************************************************************************************************/
-            largeFileSize = ""; // "--large-file "; //Create 64-bit mp4 files that can hold more than 4 GB of data. Note: breaks pre-iOS iPod compatibility. Only use if file will be larger than 4GB
-            if (outputLargerThan4Gb) { largeFileSize = "--large-file "; } else { largeFileSize = ""; }
 
             //Check if output filename already exists, if so add a number to the tail end of the file name
 
             if (!System.IO.File.Exists(outputPath + "\\" + filename.Replace(inputFileExt, outputFileExt)))
             {
                 //outputFile = "--output \"" + outputPath + "\\" + filename.Replace(inputFileExt, outputFileExt) + "\" ";
-                outputFile = "--output \"" + outputPath + "\\" + filename.Replace(inputFileExt, outputFileExt) + "\" " + containerFormat + chapterMarkers + largeFileSize + webOptimization;
+                outputFile = "--output \"" + outputPath + "\\" + filename.Replace(inputFileExt, outputFileExt) + "\" " + containerFormat + chapterMarkers + webOptimization;
             }
             else
             {
@@ -3649,7 +3659,7 @@ namespace MovieDataCollector
                     newName = outputPath + "\\" + filename.Replace(inputFileExt, "") + "-" + counter.ToString() + outputFileExt;
                 }
 
-                outputFile = "--output \"" + newName + "\" " + containerFormat + chapterMarkers + largeFileSize + webOptimization; //Location to output converted file
+                outputFile = "--output \"" + newName + "\" " + containerFormat + chapterMarkers + webOptimization; //Location to output converted file
             }
 
             return inputFile + outputFile;
@@ -5080,7 +5090,7 @@ namespace MovieDataCollector
 
                             NLabelUpdate("Analyzing file " + loopcount.ToString() + " of " + fileCount.ToString() + " - " + file, Color.GreenYellow);
 
-                            if (compatibilityCombo.SelectedIndex == 1)
+                            if (compatibilityCombo.SelectedIndex == 1) //Xbox
                             {
                                 if (!string.IsNullOrEmpty(XboxCompatibilityCheck(file)))
                                 {
