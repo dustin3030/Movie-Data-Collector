@@ -151,7 +151,7 @@
             this.CompatibilityCheckerButton.Name = "CompatibilityCheckerButton";
             this.CompatibilityCheckerButton.Size = new System.Drawing.Size(233, 68);
             this.CompatibilityCheckerButton.TabIndex = 1;
-            this.CompatibilityCheckerButton.Text = "&Compatibility Checker";
+            this.CompatibilityCheckerButton.Text = "&Convert";
             this.CompatibilityCheckerButton.UseVisualStyleBackColor = false;
             this.CompatibilityCheckerButton.Click += new System.EventHandler(this.CompatibilityCheckerButton_Click);
             // 
