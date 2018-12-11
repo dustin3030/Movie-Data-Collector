@@ -248,7 +248,6 @@
             this.compatibilityCombo.Size = new System.Drawing.Size(64, 21);
             this.compatibilityCombo.TabIndex = 3;
             this.compatibilityCombo.Text = "Roku";
-            this.compatibilityCombo.SelectedIndexChanged += new System.EventHandler(this.CompatibilityCombo_SelectedIndexChanged);
             // 
             // selectionPicturebox
             // 

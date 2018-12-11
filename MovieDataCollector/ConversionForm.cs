@@ -1303,7 +1303,16 @@ namespace MovieDataCollector
 
             MediaFile videoFile = new MediaFile(filepath);
             AudioString = AudioConversionString(videoFile);
-            audioTrack = int.Parse(Program.GeneralParser(AudioString, "--audio ", " "));
+            if(!disableCheckStream2.Checked)
+            {
+                audioTrack = int.Parse(Program.GeneralParser(AudioString, "--audio ", ","));
+
+            }
+            else
+            {
+                audioTrack = int.Parse(Program.GeneralParser(AudioString, "--audio ", " "));
+            }
+            
 
             VideoString = VideoConversionString(videoFile, audioTrack);
 
@@ -2404,6 +2413,8 @@ namespace MovieDataCollector
 
             //Users selected variables
             double userSelectedBitrate = 0; //Bitrate for audio is per channel so stereo audio of 96 bitrate would actually be 96 * 2 = 192
+            double userSelectedBitrate2 = 0; //Bitrate for audio is per channel so stereo audio of 96 bitrate would actually be 96 * 2 = 192
+            double userSelectedBitrate3 = 0; //Bitrate for audio is per channel so stereo audio of 96 bitrate would actually be 96 * 2 = 192
 
             //Variables derived from file
             double bitrateOfFile = 0; //used to determine the bitrate of the actual audio.
@@ -2418,7 +2429,14 @@ namespace MovieDataCollector
             string outputMixdown = "";
             string outputSampleRate = "--arate 48 "; //Auto is no longer listd as an option in handbrake cli documentation 2/2017.
             string outputDynamicRange = "--drc 0 --gain 0 ";
+
             string outputBitrate = "";
+            string outputBitrate2 = "";
+            string outputBitrate3 = "";
+
+            string mixdown1 = "";
+            string mixdown2 = "";
+            string mixdown3 = "";
             /*****************************************************************************************************************************************************************************************************************************/
 
             if (videoFile.Audio.Count > 0) //Source Readable
@@ -2492,6 +2510,15 @@ namespace MovieDataCollector
                                     audioTrackNumber = i; //Mark the audio track that has the highest bitrate
                                 }
                                    
+                            }
+                            else if (videoFile.Audio[audioTrackNumber].Properties.ContainsKey("Channel(s)_Original"))
+                            {
+                                //Identified as DolbyHD 8 channels
+                                if ((videoFile.Audio[i].Bitrate / 8) > maxBitrate)
+                                {
+                                    maxBitrate = videoFile.Audio[i].Bitrate / 8; //7.1 audio has 8 channels, DolbyHD is at least 7.1 always.
+                                    audioTrackNumber = i; //Mark the audio track that has the highest bitrate
+                                }
                             }
                             //Dolby TrueHD tracks are object based and show 0 channels
                             else if (videoFile.Audio[audioTrackNumber].Properties.ContainsKey("Channel(s)"))
@@ -2567,45 +2594,45 @@ namespace MovieDataCollector
 
                         if (videoFile.Audio[audioTrackNumber].SamplingRate / 1000 >= 48)
                         {
-                            samplerate2 = "48"; //Roku Compatible high rate
+                            samplerate2 = ",48"; //Roku Compatible high rate
                         }
                         else if (videoFile.Audio[audioTrackNumber].SamplingRate / 1000 == 44.1)
                         {
-                            samplerate2 = "44.1"; //Roku compatible low rate
+                            samplerate2 = ",44.1"; //Roku compatible low rate
                         }
                         else
                         {
-                            samplerate2 = "48"; //Default to 48
+                            samplerate2 = ",48"; //Default to 48
                         }
                     }
                     else //Use user selected samplerate
                     {
-                        samplerate2 = sampleRateCombo2.Text;
+                        samplerate2 = "," + sampleRateCombo2.Text;
                     }
                 }
 
                 //Samplerate 3
-                if (!disableCheckStream2.Checked) //Stream 3 enabled
+                if (!disableCheckStream3.Checked) //Stream 3 enabled
                 {
                     if (string.IsNullOrEmpty(sampleRateCombo3.Text))
                     {
 
                         if (videoFile.Audio[audioTrackNumber].SamplingRate / 1000 >= 48)
                         {
-                            samplerate3 = "48"; //Roku Compatible high rate
+                            samplerate3 = ",48"; //Roku Compatible high rate
                         }
                         else if (videoFile.Audio[audioTrackNumber].SamplingRate / 1000 == 44.1)
                         {
-                            samplerate3 = "44.1"; //Roku compatible low rate
+                            samplerate3 = ",44.1"; //Roku compatible low rate
                         }
                         else
                         {
-                            samplerate3 = "48"; //Default to 48
+                            samplerate3 = ",48"; //Default to 48
                         }
                     }
                     else //Use user selected samplerate
                     {
-                        samplerate3 = sampleRateCombo3.Text;
+                        samplerate3 = "," + sampleRateCombo3.Text;
                     }
                 }
 
@@ -2615,7 +2642,10 @@ namespace MovieDataCollector
 
                 //Determine per channel Bitrate selected by user
                 try { userSelectedBitrate = int.Parse(audioBitrateCombo.Text); } catch { userSelectedBitrate = 96; }//default value is 96
+                try { userSelectedBitrate2 = int.Parse(audioBitrateCombo2.Text); } catch { userSelectedBitrate2 = 96; }//default value is 96
+                try { userSelectedBitrate3 = int.Parse(audioBitrateCombo3.Text); } catch { userSelectedBitrate3 = 96; }//default value is 96
 
+                //Determine bitrate of file
                 if (videoFile.Audio[audioTrackNumber].Bitrate != 0)
                 {
                     
@@ -2650,7 +2680,7 @@ namespace MovieDataCollector
                 }
                 else if (videoFile.Audio[audioTrackNumber].Properties.ContainsKey("Bit rate"))
                 {
-                    try { double.TryParse(videoFile.Audio[audioTrackNumber].Properties["Bit rate"].Replace(" ", "").Replace("Kbps", ""), out bitrateOfFile); }
+                    try { double.TryParse(videoFile.Audio[audioTrackNumber].Properties["Bit rate"].Replace(" ", "").Replace("Unknown/","").Replace("Kbps", ""), out bitrateOfFile); }
                     catch { bitrateOfFile = 0; }
 
                     if(videoFile.Audio[audioTrackNumber].Description.Contains("ATMOS"))
@@ -2665,6 +2695,13 @@ namespace MovieDataCollector
                             bitrateOfFile = bitrateOfFile / 8; //The Dolby TrueHD detected, 7.1 audio has 8 channels.
                         }
                     }
+                    else if (videoFile.Audio[audioTrackNumber].Properties.ContainsKey("Channel(s)_Original"))
+                    {
+                        if (videoFile.Audio[audioTrackNumber].Properties["Channel(s)"].Contains("Object Based"))
+                        {
+                            bitrateOfFile = bitrateOfFile / 8; //The Dolby Audio detected, 7.1 audio has 8 channels.
+                        }
+                    }
                     else
                     {
                         bitrateOfFile = bitrateOfFile / videoFile.Audio[audioTrackNumber].Channels;
@@ -2675,227 +2712,821 @@ namespace MovieDataCollector
 
                 //If per channel Bitrate of file is < Selected Bitrate use the file's bitrate.
                 if ((bitrateOfFile < userSelectedBitrate) && (bitrateOfFile > 0)) { userSelectedBitrate = bitrateOfFile; }
+                if ((bitrateOfFile < userSelectedBitrate2) && (bitrateOfFile > 0)) { userSelectedBitrate2 = bitrateOfFile; }
+                if ((bitrateOfFile < userSelectedBitrate3) && (bitrateOfFile > 0)) { userSelectedBitrate3 = bitrateOfFile; }
+
 
                 /*Fallback***********************************************************************************************************************************************************************************************/
-                switch (audioCodecComboBox.Text)
-                {
+                /*Set audio codec to use when it is not possible to copy an audio track without re-encoding.*/
 
-                    case "Filtered Passthru":
-                        if (videoFile.Audio[audioTrackNumber].Properties.ContainsKey("Format"))
-                        {
-                            switch (videoFile.Audio[audioTrackNumber].Properties["Format"])
-                            {
-                                case "DTS":
-                                    outputFallBack = "--audio-fallback \"ac3\" "; //No DTS encoder option
-                                    break;
-                                case "AC-3":
-                                    outputFallBack = "--audio-fallback \"ac3\" ";
-                                    break;
-                                case "AAC":
-                                    //outputFallBack = "--audio-fallback av_aac "; - Use the FDK encoder it's much better, requires handbrake to be compiled separateley.
-                                    outputFallBack = "--audio-fallback \"fdk_aac\" ";
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                        else //Default fallback is fdk_aac
-                        {
-                            //outputFallBack = "--audio-fallback av_aac "; - Use the FDK encoder it's much better, requires handbrake to be compiled separateley.
-                            outputFallBack = "--audio-fallback \"fdk_aac\" ";
-                        }
-                        break;
-                    default:
-                        //outputFallBack = "--audio-fallback av_aac "; - Use the FDK encoder it's much better, requires handbrake to be compiled separateley.
-                        outputFallBack = "--audio-fallback \"fdk_aac\" ";
-                        break;
+                if(audioCodecComboBox.Text == "Filtered Passthru" || audioCodecComboBox2.Text == "Filtered Passthru" || audioCodecComboBox3.Text == "Filtered Passthru")
+                {
+                    if(!disableCheckStream2.Checked) //2nd Stream Enabled
+                    {
+                        outputFallBack = "--audio-fallback eac3 ";
+                    }
+                    else //First stream should always be aac as it's universal.
+                    {
+                        outputFallBack = "--audio-fallback fdk_aac ";
+                    }
+                    
                 }
+
                 /*Mixdown***********************************************************************************************************************************************************************************************/
 
                 //The options are mono, stereo, dpl1 (Dolby Surround), dpl2 (Dolby ProLogic? 2), or 5point1 (5.1).
+                if(videoFile.Audio[audioTrackNumber].Properties.ContainsKey("Channel(s)_Original")) //Assume 8 Channels
+                {
+                    switch (audioCodecComboBox.Text)
+                    {
+                        case "Filtered Passthru":
+                            mixdown1 = "5point1";
+                            userSelectedBitrate = userSelectedBitrate * 8;
+                            break;
+                        case "AAC (FDK)": //only good up to Dolby Pro Logic 2 (2 channel)
+                            mixdown1 = "dpl2";
+                            userSelectedBitrate = userSelectedBitrate * 2;
+                            break;
+                        default:
+                            switch (mixdownComboBox.Text)
+                            {
+                                case "Dolby ProLogic 2":
+                                    mixdown1 = "dpl2";
+                                    userSelectedBitrate = userSelectedBitrate * 2;
+                                    break;
+                                default: //5.1 Audio
+                                    mixdown1 = "5point1";
+                                    userSelectedBitrate = userSelectedBitrate * 6;
+                                    break;
+                            }
+                            break;
+                    }
+
+                    if (!disableCheckStream2.Checked) //Enabled
+                    {
+                        switch (audioCodecComboBox2.Text)
+                        {
+                            case "Filtered Passthru":
+                                mixdown2 = ",5point1";
+                                userSelectedBitrate2 = userSelectedBitrate2 * 8;
+                                break;
+                            case "AAC (FDK)": //only good up to Dolby Pro Logic 2 (2 channel)
+                                mixdown2 = ",dpl2";
+                                userSelectedBitrate2 = userSelectedBitrate2 * 2;
+                                break;
+                            default:
+                                switch (mixdownComboBox2.Text)
+                                {
+                                    case "Dolby ProLogic 2":
+                                        mixdown2 = ",dpl2";
+                                        userSelectedBitrate2 = userSelectedBitrate2 * 2;
+                                        break;
+                                    default: //5.1 Audio
+                                        mixdown2 = ",5point1";
+                                        userSelectedBitrate2 = userSelectedBitrate2 * 6;
+                                        break;
+                                }
+                                break;
+                        }
+
+                        if (!disableCheckStream3.Checked) //Enabled
+                        {
+                            switch (audioCodecComboBox3.Text)
+                            {
+                                case "Filtered Passthru":
+                                    mixdown3 = ",5point1";
+                                    userSelectedBitrate3 = userSelectedBitrate3 * 8;
+                                    break;
+                                case "AAC (FDK)": //only good up to Dolby Pro Logic 2 (2 channel)
+                                    mixdown3 = ",dpl2";
+                                    userSelectedBitrate3 = userSelectedBitrate3 * 2;
+                                    break;
+                                default:
+                                    switch (mixdownComboBox3.Text)
+                                    {
+                                        case "Dolby ProLogic 2":
+                                            mixdown3 = ",dpl2";
+                                            userSelectedBitrate3 = userSelectedBitrate3 * 2;
+                                            break;
+                                        default: //5.1 Audio
+                                            mixdown3 = ",5point1";
+                                            userSelectedBitrate3 = userSelectedBitrate3 * 6;
+                                            break;
+                                    }
+                                    break;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    switch (audioCodecComboBox.Text)
+                    {
+                        case "Filtered Passthru":
+                            switch (videoFile.Audio[audioTrackNumber].Channels)
+                            {
+                                case 1:
+                                    mixdown1 = "mono";
+                                    userSelectedBitrate = userSelectedBitrate * 1;
+                                    break;
+                                case 2:
+                                    mixdown1 = "dpl2";
+                                    userSelectedBitrate = userSelectedBitrate * 2;
+                                    break;
+                                case 3:
+                                    mixdown1 = "dpl2";
+                                    userSelectedBitrate = userSelectedBitrate * 2;
+                                    break;
+                                case 4:
+                                    mixdown1 = "dpl2";
+                                    userSelectedBitrate = userSelectedBitrate * 2;
+                                    break;
+                                case 5:
+                                    mixdown1 = "dpl2";
+                                    userSelectedBitrate = userSelectedBitrate * 2;
+                                    break;
+                                case 6:
+                                    mixdown1 = "5point1";
+                                    userSelectedBitrate = userSelectedBitrate * 6;
+                                    break;
+                                case 7:
+                                    mixdown1 = "5point1";
+                                    userSelectedBitrate = userSelectedBitrate * 6;
+                                    break;
+                                case 8:
+                                    mixdown1 = "5point1";
+                                    userSelectedBitrate = userSelectedBitrate * 6;
+                                    break;
+                                default:
+                                    mixdown1 = "dpl2";
+                                    userSelectedBitrate = userSelectedBitrate * 2;
+                                    break;
+                            }
+                            break;
+                        case "AAC (FDK)": //only good up to Dolby Pro Logic 2 (2 channel)
+                            switch (videoFile.Audio[audioTrackNumber].Channels)
+                            {
+                                case 1:
+                                    mixdown1 = "mono";
+                                    userSelectedBitrate = userSelectedBitrate * 1; ;
+                                    break;
+                                default:
+                                    mixdown1 = "dpl2";
+                                    userSelectedBitrate = userSelectedBitrate * 2;
+                                    break;
+                            }
+                            break;
+                        default:
+                            switch (mixdownComboBox.Text)
+                            {
+                                case "Dolby ProLogic 2":
+                                    mixdown1 = "dpl2";
+                                    userSelectedBitrate = userSelectedBitrate * 2;
+                                    break;
+                                default: //5.1 Audio
+                                    switch (videoFile.Audio[audioTrackNumber].Channels)
+                                    {
+                                        case 1:
+                                            mixdown1 = "mono";
+                                            userSelectedBitrate = userSelectedBitrate * 1;
+                                            break;
+                                        case 2:
+                                            mixdown1 = "dpl2";
+                                            userSelectedBitrate = userSelectedBitrate * 2;
+                                            break;
+                                        case 3:
+                                            mixdown1 = "dpl2";
+                                            userSelectedBitrate = userSelectedBitrate * 2;
+                                            break;
+                                        case 4:
+                                            mixdown1 = "dpl2";
+                                            userSelectedBitrate = userSelectedBitrate * 2;
+                                            break;
+                                        case 5:
+                                            mixdown1 = "dpl2";
+                                            userSelectedBitrate = userSelectedBitrate * 2;
+                                            break;
+                                        case 6:
+                                            mixdown1 = "5point1";
+                                            userSelectedBitrate = userSelectedBitrate * 2;
+                                            break;
+                                        case 7:
+                                            mixdown1 = "5point1";
+                                            userSelectedBitrate = userSelectedBitrate * 6;
+                                            break;
+                                        case 8:
+                                            mixdown1 = "5point1";
+                                            userSelectedBitrate = userSelectedBitrate * 6;
+                                            break;
+                                        default:
+                                            mixdown1 = "5point1";
+                                            userSelectedBitrate = userSelectedBitrate * 6;
+                                            break;
+                                    }
+                                    break;
+                            }
+                            break;
+                    }
+
+                    if (!disableCheckStream2.Checked) //Enabled
+                    {
+                        switch (audioCodecComboBox2.Text)
+                        {
+                            case "Filtered Passthru":
+                                switch (videoFile.Audio[audioTrackNumber].Channels)
+                                {
+                                    case 1:
+                                        mixdown2 = ",mono";
+                                        userSelectedBitrate2 = userSelectedBitrate2 * 1;
+                                        break;
+                                    case 2:
+                                        mixdown2 = ",dpl2";
+                                        userSelectedBitrate2 = userSelectedBitrate2 * 2;
+                                        break;
+                                    case 3:
+                                        mixdown2 = ",dpl2";
+                                        userSelectedBitrate2 = userSelectedBitrate2 * 2;
+                                        break;
+                                    case 4:
+                                        mixdown2 = ",dpl2";
+                                        userSelectedBitrate2 = userSelectedBitrate2 * 2;
+                                        break;
+                                    case 5:
+                                        mixdown2 = ",dpl2";
+                                        userSelectedBitrate2 = userSelectedBitrate2 * 2;
+                                        break;
+                                    case 6:
+                                        mixdown2 = ",5point1";
+                                        userSelectedBitrate2 = userSelectedBitrate2 * 6;
+                                        break;
+                                    case 7:
+                                        mixdown2 = ",5point1";
+                                        userSelectedBitrate2 = userSelectedBitrate2 * 6;
+                                        break;
+                                    case 8:
+                                        mixdown2 = ",5point1";
+                                        userSelectedBitrate2 = userSelectedBitrate2 * 6;
+                                        break;
+                                    default:
+                                        mixdown2 = ",dpl2";
+                                        userSelectedBitrate2 = userSelectedBitrate2 * 2;
+                                        break;
+                                }
+                                break;
+                            case "AAC (FDK)": //only good up to Dolby Pro Logic 2 (2 channel)
+                                switch (videoFile.Audio[audioTrackNumber].Channels)
+                                {
+                                    case 1:
+                                        mixdown2 = ",mono";
+                                        userSelectedBitrate2 = userSelectedBitrate2 * 1; ;
+                                        break;
+                                    default:
+                                        mixdown2 = ",dpl2";
+                                        userSelectedBitrate2 = userSelectedBitrate2 * 2;
+                                        break;
+                                }
+                                break;
+                            default:
+                                switch (mixdownComboBox.Text)
+                                {
+                                    case "Dolby ProLogic 2":
+                                        mixdown2 = ",dpl2";
+                                        userSelectedBitrate2 = userSelectedBitrate2 * 2;
+                                        break;
+                                    default: //5.1 Audio
+                                        switch (videoFile.Audio[audioTrackNumber].Channels)
+                                        {
+                                            case 1:
+                                                mixdown2 = ",mono";
+                                                userSelectedBitrate2 = userSelectedBitrate2 * 1;
+                                                break;
+                                            case 2:
+                                                mixdown2 = ",dpl2";
+                                                userSelectedBitrate2 = userSelectedBitrate2 * 2;
+                                                break;
+                                            case 3:
+                                                mixdown2 = ",dpl2";
+                                                userSelectedBitrate2 = userSelectedBitrate2 * 2;
+                                                break;
+                                            case 4:
+                                                mixdown2 = ",dpl2";
+                                                userSelectedBitrate2 = userSelectedBitrate2 * 2;
+                                                break;
+                                            case 5:
+                                                mixdown2 = ",dpl2";
+                                                userSelectedBitrate2 = userSelectedBitrate2 * 2;
+                                                break;
+                                            case 6:
+                                                mixdown2 = ",5point1";
+                                                userSelectedBitrate2 = userSelectedBitrate2 * 2;
+                                                break;
+                                            case 7:
+                                                mixdown2 = ",5point1";
+                                                userSelectedBitrate2 = userSelectedBitrate2 * 6;
+                                                break;
+                                            case 8:
+                                                mixdown2 = ",5point1";
+                                                userSelectedBitrate2 = userSelectedBitrate2 * 6;
+                                                break;
+                                            default:
+                                                mixdown2 = ",5point1";
+                                                userSelectedBitrate2 = userSelectedBitrate2 * 6;
+                                                break;
+                                        }
+                                        break;
+                                }
+                                break;
+                        }
+
+                        if (!disableCheckStream3.Checked) //Enabled
+                        {
+                            switch (audioCodecComboBox3.Text)
+                            {
+                                case "Filtered Passthru":
+                                    switch (videoFile.Audio[audioTrackNumber].Channels)
+                                    {
+                                        case 1:
+                                            mixdown3 = ",mono";
+                                            userSelectedBitrate3 = userSelectedBitrate3 * 1;
+                                            break;
+                                        case 2:
+                                            mixdown3 = ",dpl2";
+                                            userSelectedBitrate3 = userSelectedBitrate3 * 2;
+                                            break;
+                                        case 3:
+                                            mixdown3 = ",dpl2";
+                                            userSelectedBitrate3 = userSelectedBitrate3 * 2;
+                                            break;
+                                        case 4:
+                                            mixdown3 = ",dpl2";
+                                            userSelectedBitrate3 = userSelectedBitrate3 * 2;
+                                            break;
+                                        case 5:
+                                            mixdown3 = ",dpl2";
+                                            userSelectedBitrate3 = userSelectedBitrate3 * 2;
+                                            break;
+                                        case 6:
+                                            mixdown3 = ",5point1";
+                                            userSelectedBitrate3 = userSelectedBitrate3 * 6;
+                                            break;
+                                        case 7:
+                                            mixdown3 = ",5point1";
+                                            userSelectedBitrate3 = userSelectedBitrate3 * 6;
+                                            break;
+                                        case 8:
+                                            mixdown3 = ",5point1";
+                                            userSelectedBitrate3 = userSelectedBitrate3 * 6;
+                                            break;
+                                        default:
+                                            mixdown3 = ",dpl2";
+                                            userSelectedBitrate3 = userSelectedBitrate3 * 2;
+                                            break;
+                                    }
+                                    break;
+                                case "AAC (FDK)": //only good up to Dolby Pro Logic 2 (2 channel)
+                                    switch (videoFile.Audio[audioTrackNumber].Channels)
+                                    {
+                                        case 1:
+                                            mixdown3 = ",mono";
+                                            userSelectedBitrate3 = userSelectedBitrate3 * 1; ;
+                                            break;
+                                        default:
+                                            mixdown3 = ",dpl2";
+                                            userSelectedBitrate3 = userSelectedBitrate3 * 2;
+                                            break;
+                                    }
+                                    break;
+                                default:
+                                    switch (mixdownComboBox.Text)
+                                    {
+                                        case "Dolby ProLogic 2":
+                                            mixdown3 = ",dpl2";
+                                            userSelectedBitrate3 = userSelectedBitrate3 * 2;
+                                            break;
+                                        default: //5.1 Audio
+                                            switch (videoFile.Audio[audioTrackNumber].Channels)
+                                            {
+                                                case 1:
+                                                    mixdown3 = ",mono";
+                                                    userSelectedBitrate3 = userSelectedBitrate3 * 1;
+                                                    break;
+                                                case 2:
+                                                    mixdown3 = ",dpl2";
+                                                    userSelectedBitrate3 = userSelectedBitrate3 * 2;
+                                                    break;
+                                                case 3:
+                                                    mixdown3 = ",dpl2";
+                                                    userSelectedBitrate3 = userSelectedBitrate3 * 2;
+                                                    break;
+                                                case 4:
+                                                    mixdown3 = ",dpl2";
+                                                    userSelectedBitrate3 = userSelectedBitrate3 * 2;
+                                                    break;
+                                                case 5:
+                                                    mixdown3 = ",dpl2";
+                                                    userSelectedBitrate3 = userSelectedBitrate3 * 2;
+                                                    break;
+                                                case 6:
+                                                    mixdown3 = ",5point1";
+                                                    userSelectedBitrate3 = userSelectedBitrate3 * 2;
+                                                    break;
+                                                case 7:
+                                                    mixdown3 = ",5point1";
+                                                    userSelectedBitrate3 = userSelectedBitrate3 * 6;
+                                                    break;
+                                                case 8:
+                                                    mixdown3 = ",5point1";
+                                                    userSelectedBitrate3 = userSelectedBitrate3 * 6;
+                                                    break;
+                                                default:
+                                                    mixdown3 = ",5point1";
+                                                    userSelectedBitrate3 = userSelectedBitrate3 * 6;
+                                                    break;
+                                            }
+                                            break;
+                                    }
+                                    break;
+                            }
+                        }
+                    }
+                }
+
+                
+
+                outputMixdown = "--mixdown " + mixdown1 + mixdown2 + mixdown3 + " ";
+
+                if(!disableCheckStream2.Checked) //Stream 2 Enabled
+                {
+                    if(!disableCheckStream3.Checked)
+                    {
+                        outputBitrate = "--ab " + userSelectedBitrate.ToString() + "," + userSelectedBitrate2.ToString() + "," + userSelectedBitrate3.ToString() + " ";
+                    }
+                    else
+                    {
+                        outputBitrate = "--ab " + userSelectedBitrate.ToString() + "," + userSelectedBitrate2.ToString() +  " ";
+                    }
+                }
+                else //Stream 2 Disabled
+                {
+                    outputBitrate = "--ab " + userSelectedBitrate.ToString() + " ";
+                }
+                
+            }
+            else //Source Unreadable - Set variables derived from file to user selected values
+            {
+                if(!disableCheckStream2.Checked) //Stream 2 enabled
+                {
+                    if(!disableCheckStream3.Checked) //Stream 3 enabled
+                    {
+                        outputAudioTrack = "--audio 1,1,1 ";//Since no track can be read in, select the first audio track.
+                        try { userSelectedBitrate = int.Parse(audioBitrateCombo.Text); } catch { userSelectedBitrate = 96; }//default value is 96
+                        try { userSelectedBitrate2 = int.Parse(audioBitrateCombo2.Text); } catch { userSelectedBitrate2 = 96; }//default value is 96
+                        try { userSelectedBitrate3 = int.Parse(audioBitrateCombo3.Text); } catch { userSelectedBitrate3 = 96; }//default value is 96
+
+                        maxBitrate = userSelectedBitrate;
+                        outputSampleRate = "--arate " + sampleRateCombo.Text + "," + sampleRateCombo2 + "," + sampleRateCombo3 + " ";
+
+                        if (audioCodecComboBox.Text =="Filtered Passthru" || audioCodecComboBox2.Text == "Filtered Passthru" || audioCodecComboBox3.Text == "Filtered Passthru")
+                        {
+                            if (!disableCheckStream2.Checked) //2nd Stream Enabled
+                            {
+                                outputFallBack = "--audio-fallback eac3 ";
+                            }
+                            else //First stream should always be aac as it's universal.
+                            {
+                                outputFallBack = "--audio-fallback fdk_aac ";
+                            }
+
+                        }
+                    }
+                    else //Stream 3 disabled
+                    {
+                        outputAudioTrack = "--audio 1,1 ";//Since no track can be read in, select the first audio track.
+                        try { userSelectedBitrate = int.Parse(audioBitrateCombo.Text); } catch { userSelectedBitrate = 96; }//default value is 96
+                        try { userSelectedBitrate2 = int.Parse(audioBitrateCombo2.Text); } catch { userSelectedBitrate2 = 96; }//default value is 96
+                        try { userSelectedBitrate3 = int.Parse(audioBitrateCombo3.Text); } catch { userSelectedBitrate3 = 96; }//default value is 96
+
+                        maxBitrate = userSelectedBitrate;
+                        outputSampleRate = "--arate " + sampleRateCombo.Text + "," + sampleRateCombo2 + " ";
+
+                        if (audioCodecComboBox.Text == "Filtered Passthru" || audioCodecComboBox2.Text == "Filtered Passthru" || audioCodecComboBox3.Text == "Filtered Passthru")
+                        {
+                            if (!disableCheckStream2.Checked) //2nd Stream Enabled
+                            {
+                                outputFallBack = "--audio-fallback eac3 ";
+                            }
+                            else //First stream should always be aac as it's universal.
+                            {
+                                outputFallBack = "--audio-fallback fdk_aac ";
+                            }
+
+                        }
+                    }
+                }
+                else
+                {
+                    //bitrateOfFile, audioTrackNumber, maxBitrate
+                    outputAudioTrack = "--audio 1 "; //Since no track can be read in, select the first audio track.
+                    try { userSelectedBitrate = int.Parse(audioBitrateCombo.Text); } catch { userSelectedBitrate = 96; }//default value is 96
+                    maxBitrate = userSelectedBitrate;
+
+                    /*Samplerate***********************************************************************************************************************************************************************************************/
+                    outputSampleRate = "--arate " + sampleRateCombo.Text + " ";
+
+                    /*Fallback***********************************************************************************************************************************************************************************************/
+                    //outputFallBack = "--audio-fallback av_aac "; - Use the FDK encoder it's much better, requires handbrake to be compiled separateley.
+                    outputFallBack = "--audio-fallback fdk_aac ";
+                }
+
+                /*Mixdown***********************************************************************************************************************************************************************************************/
+                //The options are auto, mono, stereo, dpl1 (Dolby Surround), dpl2 (Dolby ProLogic? 2), or 5point1 (5.1).
                 switch (audioCodecComboBox.Text)
                 {
                     case "Filtered Passthru":
-                        switch (videoFile.Audio[audioTrackNumber].Channels)
-                        {
-                            case 1:
-                                outputMixdown = "--mixdown mono ";
-                                outputBitrate = "--ab " + (userSelectedBitrate * 1).ToString() + " ";
-                                break;
-                            case 2:
-                                outputMixdown = "--mixdown dpl2  ";
-                                outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
-                                break;
-                            case 3:
-                                outputMixdown = "--mixdown dpl2  ";
-                                outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
-                                break;
-                            case 4:
-                                outputMixdown = "--mixdown dpl2  ";
-                                outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
-                                break;
-                            case 5:
-                                outputMixdown = "--mixdown dpl2  ";
-                                outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
-                                break;
-                            case 6:
-                                outputMixdown = "--mixdown 5point1  ";
-                                outputBitrate = "--ab " + (userSelectedBitrate * 6).ToString() + " ";
-                                break;
-                            default:
-                                outputMixdown = "--mixdown dpl2 ";
-                                outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
-                                break;
-                        }
+                        mixdown1 = mixdownComboBox.Text;
+                        userSelectedBitrate = userSelectedBitrate * 6;
                         break;
                     case "AAC (FDK)": //only good up to Dolby Pro Logic 2 (2 channel)
-                        switch (videoFile.Audio[audioTrackNumber].Channels)
-                        {
-                            case 1:
-                                outputMixdown = "--mixdown mono ";
-                                outputBitrate = "--ab " + (userSelectedBitrate * 1).ToString() + " ";
-                                break;
-                            default:
-                                outputMixdown = "--mixdown dpl2 ";
-                                outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
-                                break;
-                        }
+                        mixdown1 = "dpl2";
+                        userSelectedBitrate = userSelectedBitrate * 2;
                         break;
                     default:
                         switch (mixdownComboBox.Text)
                         {
                             case "Dolby ProLogic 2":
-                                outputMixdown = "--mixdown dpl2 ";
-                                outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
+                                mixdown1 = "dpl2";
+                                userSelectedBitrate = userSelectedBitrate * 2;
                                 break;
                             default: //5.1 Audio
-                                switch (videoFile.Audio[audioTrackNumber].Channels)
-                                {
-                                    case 1:
-                                        outputMixdown = "--mixdown mono ";
-                                        outputBitrate = "--ab " + (userSelectedBitrate * 1).ToString() + " ";
-                                        break;
-                                    case 2:
-                                        outputMixdown = "--mixdown dpl2 ";
-                                        outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
-                                        break;
-                                    case 3:
-                                        outputMixdown = "--mixdown dpl2 ";
-                                        outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
-                                        break;
-                                    case 4:
-                                        outputMixdown = "--mixdown dpl2 ";
-                                        outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
-                                        break;
-                                    case 5:
-                                        outputMixdown = "--mixdown dpl2 ";
-                                        outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
-                                        break;
-                                    case 6:
-                                        outputMixdown = "--mixdown 5point1 ";
-                                        outputBitrate = "--ab " + (userSelectedBitrate * 6).ToString() + " ";
-                                        break;
-                                    case 7:
-                                        outputMixdown = "--mixdown 5point1 ";
-                                        outputBitrate = "--ab " + (userSelectedBitrate * 6).ToString() + " ";
-                                        break;
-                                    case 8:
-                                        outputMixdown = "--mixdown 5point1 ";
-                                        outputBitrate = "--ab " + (userSelectedBitrate * 6).ToString() + " ";
-                                        break;
-                                    default:
-                                        outputMixdown = "--mixdown 5point1 ";
-                                        outputBitrate = "--ab " + (userSelectedBitrate * 6).ToString() + " ";
-                                        break;
-                                }
+                                mixdown1 = "5point1";
+                                userSelectedBitrate = userSelectedBitrate * 6;
                                 break;
                         }
                         break;
                 }
-
-            }
-            else //Source Unreadable - Set variables derived from file to user selected values
-            {
-                //bitrateOfFile, audioTrackNumber, maxBitrate
-                outputAudioTrack = "--audio 1 "; //Since no track can be read in, select the first audio track.
-                try { userSelectedBitrate = int.Parse(audioBitrateCombo.Text); } catch { userSelectedBitrate = 96; }//default value is 96
-                maxBitrate = userSelectedBitrate;
-
-                /*Samplerate***********************************************************************************************************************************************************************************************/
-                outputSampleRate = "--arate " + sampleRateCombo.Text + " ";
-
-                /*Fallback***********************************************************************************************************************************************************************************************/
-                //outputFallBack = "--audio-fallback av_aac "; - Use the FDK encoder it's much better, requires handbrake to be compiled separateley.
-                outputFallBack = "--audio-fallback fdk_aac ";
-
-            }
-            /*Mixdown***********************************************************************************************************************************************************************************************/
-
-            //The options are auto, mono, stereo, dpl1 (Dolby Surround), dpl2 (Dolby ProLogic? 2), or 5point1 (5.1).
-            switch (audioCodecComboBox.Text)
-            {
-                case "Filtered Passthru":
-                    outputMixdown = "";
-                    outputBitrate = "" + (userSelectedBitrate * 2).ToString() + " ";
-                    break;
-                case "AAC (FDK)": //only good up to Dolby Pro Logic 2 (2 channel)
-                    outputMixdown = "--mixdown dpl2 ";
-                    outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
-                    break;
-                default:
-                    switch (mixdownComboBox.Text)
+                if (!disableCheckStream2.Checked)
+                {
+                    switch (audioCodecComboBox2.Text)
                     {
-                        case "Dolby ProLogic 2":
-                            outputMixdown = "--mixdown dpl2 ";
-                            outputBitrate = "--ab " + (userSelectedBitrate * 2).ToString() + " ";
+                        case "Filtered Passthru":
+                            mixdown2 = mixdownComboBox2.Text;
+                            userSelectedBitrate2 = userSelectedBitrate2 * 6;
                             break;
-                        default: //5.1 Audio
-                            outputMixdown = "--mixdown 5point1 ";
-                            outputBitrate = "--ab " + (userSelectedBitrate * 6).ToString() + " ";
+                        case "AAC (FDK)": //only good up to Dolby Pro Logic 2 (2 channel)
+                            mixdown2 = ",dpl2";
+                            userSelectedBitrate2 = userSelectedBitrate2 * 2;
+                            break;
+                        default:
+                            switch (mixdownComboBox2.Text)
+                            {
+                                case "Dolby ProLogic 2":
+                                    mixdown2 = ",dpl2";
+                                    userSelectedBitrate2 = userSelectedBitrate2 * 2;
+                                    break;
+                                default: //5.1 Audio
+                                    mixdown2 = ",5point1";
+                                    userSelectedBitrate2 = userSelectedBitrate2 * 6;
+                                    break;
+                            }
                             break;
                     }
-                    break;
+                    if (!disableCheckStream3.Checked) //Enabled
+                    {
+                        switch (audioCodecComboBox3.Text)
+                        {
+                            case "Filtered Passthru":
+                                mixdown3 = mixdownComboBox3.Text;
+                                userSelectedBitrate3 = userSelectedBitrate3 * 6;
+                                break;
+                            case "AAC (FDK)": //only good up to Dolby Pro Logic 2 (2 channel)
+                                mixdown3 = "--mixdown dpl2 ";
+                                userSelectedBitrate3 = userSelectedBitrate3 * 2;
+                                break;
+                            default:
+                                switch (mixdownComboBox3.Text)
+                                {
+                                    case "Dolby ProLogic 3":
+                                        mixdown3 = "--mixdown dpl2 ";
+                                        userSelectedBitrate3 = userSelectedBitrate3 * 2;
+                                        break;
+                                    default: //5.1 Audio
+                                        mixdown3 = "--mixdown 5point1 ";
+                                        userSelectedBitrate3 = userSelectedBitrate3 * 6;
+                                        break;
+                                }
+                                break;
+                        }
+                    }
+                }
+
+
+
+                outputMixdown = "--mixdown " + mixdown1 + mixdown2 + mixdown3 + " ";
+
+                if (!disableCheckStream2.Checked) //Stream 2 Enabled
+                {
+                    if (!disableCheckStream3.Checked)
+                    {
+                        outputBitrate = "--ab " + userSelectedBitrate.ToString() + "," + userSelectedBitrate2.ToString() + "," + userSelectedBitrate3.ToString() + " ";
+                    }
+                    else
+                    {
+                        outputBitrate = "--ab " + userSelectedBitrate.ToString() + "," + userSelectedBitrate2.ToString() + " ";
+                    }
+                }
+                else //Stream 2 Disabled
+                {
+                    outputBitrate = "--ab " + userSelectedBitrate.ToString() + " ";
+                }
             }
+            
             /*Passthru Mask***********************************************************************************************************************************************************************************************/
 
-            if (audioCodecComboBox.Text == "Filtered Passthru")
+            if(audioCodecComboBox.Text =="Filtered Passthru" || audioCodecComboBox2.Text == "Filtered Passthru" || audioCodecComboBox3.Text == "Filtered Passthru")
             {
-                outputAudioPassthruMask = "--audio-copy-mask ";
-                if (filteredAACCheck.Checked) { outputAudioPassthruMask += "aac"; }
+                //Check which passthru options are selected
 
-                if (filteredAC3Check.Checked)
+                if (filteredAACCheck.Checked || filteredAACCheck2.Checked || filteredAACCheck3.Checked)
                 {
-                    if (outputAudioPassthruMask.Contains("aac")) { outputAudioPassthruMask += ",ac3"; }
-                    else { outputAudioPassthruMask += "ac3"; }
+                    if (string.IsNullOrEmpty(outputAudioPassthruMask))
+                    {
+                        outputAudioPassthruMask += "aac";
+                    }
+                    else
+                    {
+                        outputAudioPassthruMask += ",aac";
+                    }
+                    
                 }
-                if (filteredDTSCheck.Checked)
+                if (filteredAC3Check.Checked || filteredAC3Check.Checked || filteredAC3Check.Checked)
                 {
-                    if (outputAudioPassthruMask.Contains("aac") || outputAudioPassthruMask.Contains("ac3")) { outputAudioPassthruMask += ",dts"; }
-                    else { outputAudioPassthruMask += "dts"; }
+                    if (string.IsNullOrEmpty(outputAudioPassthruMask))
+                    {
+                        outputAudioPassthruMask += "ac3";
+                    }
+                    else
+                    {
+                        outputAudioPassthruMask += ",ac3";
+                    }
                 }
-                outputAudioPassthruMask += " ";
+                if (filteredEAC3Check.Checked || filteredEAC3Check.Checked || filteredEAC3Check.Checked)
+                {
+                    if (string.IsNullOrEmpty(outputAudioPassthruMask))
+                    {
+                        outputAudioPassthruMask += "eac3";
+                    }
+                    else
+                    {
+                        outputAudioPassthruMask += ",eac3";
+                    }
+                }
+                if (filteredDTSCheck.Checked || filteredDTSCheck.Checked || filteredDTSCheck.Checked)
+                {
+                    if (string.IsNullOrEmpty(outputAudioPassthruMask))
+                    {
+                        outputAudioPassthruMask += "dts";
+                    }
+                    else
+                    {
+                        outputAudioPassthruMask += ",dts";
+                    }
+                }
+                if (filteredDTSHDCheck.Checked || filteredDTSHDCheck.Checked || filteredDTSHDCheck.Checked)
+                {
+                    if (string.IsNullOrEmpty(outputAudioPassthruMask))
+                    {
+                        outputAudioPassthruMask += "dtshd";
+                    }
+                    else
+                    {
+                        outputAudioPassthruMask += ",dtshd";
+                    }
+                }
+                if (filteredTrueHDCheck.Checked || filteredTrueHDCheck.Checked || filteredTrueHDCheck.Checked)
+                {
+                    if (string.IsNullOrEmpty(outputAudioPassthruMask))
+                    {
+                        outputAudioPassthruMask += "truehd";
+                    }
+                    else
+                    {
+                        outputAudioPassthruMask += ",truehd";
+                    }
+                }
+                if (filteredMP3Check.Checked || filteredMP3Check.Checked || filteredMP3Check.Checked)
+                {
+                    if (string.IsNullOrEmpty(outputAudioPassthruMask))
+                    {
+                        outputAudioPassthruMask += "mp3";
+                    }
+                    else
+                    {
+                        outputAudioPassthruMask += ",mp3";
+                    }
+                }
+                if (filteredFLACCheck.Checked || filteredFLACCheck.Checked || filteredFLACCheck.Checked)
+                {
+                    if (string.IsNullOrEmpty(outputAudioPassthruMask))
+                    {
+                        outputAudioPassthruMask += "flac16,flac24";
+                    }
+                    else
+                    {
+                        outputAudioPassthruMask += ",flac16,flac24";
+                    }
+                }
+                if(!string.IsNullOrEmpty(outputAudioPassthruMask))
+                {
+                    outputAudioPassthruMask = "--audio-copy-mask " + outputAudioPassthruMask;
+                }
+                
             }
-            else { outputAudioPassthruMask = ""; }
-
-
+            else
+            {
+                outputAudioPassthruMask = "";
+            }
 
             /*Encoder***********************************************************************************************************************************************************************************************/
+            string encoder1 = "";
+            string encoder2 = "";
+            string encoder3 = "";
+
             switch (audioCodecComboBox.Text)
             {
                 case "AAC (FDK)":
                     //outputEncoder = "--audio-fallback av_aac "; - Use the FDK encoder it's much better, requires handbrake to be compiled separateley.
-                    outputEncoder = "--aencoder \"fdk_aac\" ";
+                    encoder1 = "fdk_aac";
                     break;
                 case "AC3":
-                    outputEncoder = "--aencoder \"ac3\" ";
+                    encoder1 = "ac3";
+                    break;
+                case "E-AC3":
+                    encoder1 = "eac3";
                     break;
                 case "Filtered Passthru":
-                    outputEncoder = "--aencoder \"copy\" ";
+                    encoder1 = "copy";
                     break;
                 default:
                     //outputEncoder = "--audio-fallback av_aac "; - Use the FDK encoder it's much better, requires handbrake to be compiled separateley.
-                    outputEncoder = "--aencoder \"fdk_aac\" ";
+                    encoder1 = "fdk_aac";
                     break;
+            }
+            if(!disableCheckStream2.Checked) //Enabled
+            {
+                switch (audioCodecComboBox2.Text)
+                {
+                    case "AAC (FDK)":
+                        //outputEncoder = "--audio-fallback av_aac "; - Use the FDK encoder it's much better, requires handbrake to be compiled separateley.
+                        encoder2 = ",fdk_aac";
+                        break;
+                    case "AC3":
+                        encoder2 = ",AC3";
+                        break;
+                    case "E-AC3":
+                        encoder2 = ",eac3";
+                        break;
+                    case "Filtered Passthru":
+                        encoder2 = ",copy";
+                        break;
+                    default:
+                        //outputEncoder = "--audio-fallback av_aac "; - Use the FDK encoder it's much better, requires handbrake to be compiled separateley.
+                        encoder2 = ",fdk_aac";
+                        break;
+                }
+                if(!disableCheckStream3.Checked)
+                {
+                    switch (audioCodecComboBox3.Text)
+                    {
+                        case "AAC (FDK)":
+                            //outputEncoder = "--audio-fallback av_aac "; - Use the FDK encoder it's much better, requires handbrake to be compiled separateley.
+                            encoder3 = ",fdk_aac";
+                            break;
+                        case "AC3":
+                            encoder3 = ",ac3";
+                            break;
+                        case "E-AC3":
+                            encoder3 = ",eac3";
+                            break;
+                        case "Filtered Passthru":
+                            encoder3 = ",copy";
+                            break;
+                        default:
+                            //outputEncoder = "--audio-fallback av_aac "; - Use the FDK encoder it's much better, requires handbrake to be compiled separateley.
+                            encoder3 = ",fdk_aac";
+                            break;
+                    }
+                }
+            }
+
+            outputEncoder = "--aencoder " + encoder1 + encoder2 + encoder3 + " ";
+
+            if(!disableCheckStream2.Checked) //Enabled
+            {
+                outputDynamicRange = "--drc 0,0 --gain 0,0 ";
+                if(!disableCheckStream3.Checked) //Enabled
+                {
+                    outputDynamicRange = "--drc 0,0,0 --gain 0,0,0 ";
+                }
             }
 
             return outputAudioTrack + outputEncoder + outputAudioPassthruMask + outputFallBack + outputBitrate + outputSampleRate + outputMixdown + outputDynamicRange;
@@ -3362,17 +3993,6 @@ namespace MovieDataCollector
                     passthruFilterLabel.Visible = false;
                     mixdownComboBox.Text = "Dolby ProLogic 2"; //AAC can only mix down to Prologic or Mono
                     break;
-                case "AC3":
-                    filteredAACCheck.Visible = false;
-                    filteredAC3Check.Visible = false;
-                    filteredEAC3Check.Visible = false;
-                    filteredDTSCheck.Visible = false;
-                    filteredDTSHDCheck.Visible = false;
-                    filteredTrueHDCheck.Visible = false;
-                    filteredMP3Check.Visible = false;
-                    filteredFLACCheck.Visible = false;
-                    passthruFilterLabel.Visible = false;
-                    break;
                 default:
                     filteredAACCheck.Visible = false;
                     filteredAC3Check.Visible = false;
@@ -3417,17 +4037,6 @@ namespace MovieDataCollector
                     passthruFilterLabel2.Visible = false;
                     mixdownComboBox2.Text = "Dolby ProLogic 2"; //AAC can only mix down to Prologic or Mono
                     break;
-                case "AC3":
-                    filteredAACCheck2.Visible = false;
-                    filteredAC3Check2.Visible = false;
-                    filteredEAC3Check2.Visible = false;
-                    filteredDTSCheck2.Visible = false;
-                    filteredDTSHDCheck2.Visible = false;
-                    filteredTrueHDCheck2.Visible = false;
-                    filteredMP3Check2.Visible = false;
-                    filteredFLACCheck2.Visible = false;
-                    passthruFilterLabel2.Visible = false;
-                    break;
                 default:
                     filteredAACCheck2.Visible = false;
                     filteredAC3Check2.Visible = false;
@@ -3471,17 +4080,6 @@ namespace MovieDataCollector
                     filteredFLACCheck3.Visible = false;
                     passthruFilterLabel3.Visible = false;
                     mixdownComboBox3.Text = "Dolby ProLogic 2"; //AAC can only mix down to Prologic or Mono
-                    break;
-                case "AC3":
-                    filteredAACCheck3.Visible = false;
-                    filteredAC3Check3.Visible = false;
-                    filteredEAC3Check3.Visible = false;
-                    filteredDTSCheck3.Visible = false;
-                    filteredDTSHDCheck3.Visible = false;
-                    filteredTrueHDCheck3.Visible = false;
-                    filteredMP3Check3.Visible = false;
-                    filteredFLACCheck3.Visible = false;
-                    passthruFilterLabel3.Visible = false;
                     break;
                 default:
                     filteredAACCheck3.Visible = false;
@@ -4964,15 +5562,48 @@ namespace MovieDataCollector
                 Dictionary<string, string> NewPreset = new Dictionary<string, string>();
 #pragma warning restore IDE0028 // Simplify collection initialization
                 NewPreset.Add("Name", presetComboBox.Text);
+
                 NewPreset.Add("AudioCodec", audioCodecComboBox.Text);
                 NewPreset.Add("AudioMixdown", mixdownComboBox.Text);
                 NewPreset.Add("AudioSampleRate", sampleRateCombo.Text);
-
                 if (filteredAACCheck.Checked) { NewPreset.Add("FilteredAACCheck", "true"); } else { NewPreset.Add("FilteredAACCheck", "false"); }
                 if (filteredAC3Check.Checked) { NewPreset.Add("FilteredAC3Check", "true"); } else { NewPreset.Add("FilteredAC3Check", "false"); }
-                if (filteredDTSCheck.Checked) { NewPreset.Add("FilteredDTSCheck", "true"); } else { NewPreset.Add("FilteredDTSCheck", "false"); }
-
+                if (filteredDTSCheck.Checked) { NewPreset.Add("FilteredEAC3Check", "true"); } else { NewPreset.Add("FilteredEAC3Check", "false"); }
+                if (filteredAACCheck.Checked) { NewPreset.Add("FilteredDTSCheck", "true"); } else { NewPreset.Add("FilteredDTSCheck", "false"); }
+                if (filteredAC3Check.Checked) { NewPreset.Add("FilteredDTSHDCheck", "true"); } else { NewPreset.Add("FilteredDTSHDCheck", "false"); }
+                if (filteredDTSCheck.Checked) { NewPreset.Add("FilteredTrueHDCheck", "true"); } else { NewPreset.Add("FilteredTrueHDCheck", "false"); }
+                if (filteredAACCheck.Checked) { NewPreset.Add("FilteredMP3Check", "true"); } else { NewPreset.Add("FilteredMP3Check", "false"); }
+                if (filteredAC3Check.Checked) { NewPreset.Add("FilteredFLACCheck", "true"); } else { NewPreset.Add("FilteredFLACCheck", "false"); }
                 NewPreset.Add("AudioBitrate", audioBitrateCombo.Text);
+
+                NewPreset.Add("AudioCodec2", audioCodecComboBox2.Text);
+                NewPreset.Add("AudioMixdown2", mixdownComboBox2.Text);
+                NewPreset.Add("AudioSampleRate2", sampleRateCombo2.Text);
+                if (disableCheckStream2.Checked) { NewPreset.Add("EnableTrack2", "true"); } else { NewPreset.Add("EnableTrack2", "false"); }
+                if (filteredAACCheck2.Checked) { NewPreset.Add("FilteredAACCheck2", "true"); } else { NewPreset.Add("FilteredAACCheck2", "false"); }
+                if (filteredAC3Check2.Checked) { NewPreset.Add("FilteredAC3Check2", "true"); } else { NewPreset.Add("FilteredAC3Check2", "false"); }
+                if (filteredDTSCheck2.Checked) { NewPreset.Add("FilteredEAC3Check2", "true"); } else { NewPreset.Add("FilteredEAC3Check2", "false"); }
+                if (filteredAACCheck2.Checked) { NewPreset.Add("FilteredDTSCheck2", "true"); } else { NewPreset.Add("FilteredDTSCheck2", "false"); }
+                if (filteredAC3Check2.Checked) { NewPreset.Add("FilteredDTSHDCheck2", "true"); } else { NewPreset.Add("FilteredDTSHDCheck2", "false"); }
+                if (filteredDTSCheck2.Checked) { NewPreset.Add("FilteredTrueHDCheck2", "true"); } else { NewPreset.Add("FilteredTrueHDCheck2", "false"); }
+                if (filteredAACCheck2.Checked) { NewPreset.Add("FilteredMP3Check2", "true"); } else { NewPreset.Add("FilteredMP3Check2", "false"); }
+                if (filteredAC3Check2.Checked) { NewPreset.Add("FilteredFLACCheck2", "true"); } else { NewPreset.Add("FilteredFLACCheck2", "false"); }
+                NewPreset.Add("AudioBitrate2", audioBitrateCombo2.Text);
+
+                NewPreset.Add("AudioCodec3", audioCodecComboBox3.Text);
+                NewPreset.Add("AudioMixdown3", mixdownComboBox3.Text);
+                NewPreset.Add("AudioSampleRate3", sampleRateCombo3.Text);
+                if (disableCheckStream3.Checked) { NewPreset.Add("EnableTrack3", "true"); } else { NewPreset.Add("EnableTrack3", "false"); }
+                if (filteredAACCheck3.Checked) { NewPreset.Add("FilteredAACCheck3", "true"); } else { NewPreset.Add("FilteredAACCheck3", "false"); }
+                if (filteredAC3Check3.Checked) { NewPreset.Add("FilteredAC3Check3", "true"); } else { NewPreset.Add("FilteredAC3Check3", "false"); }
+                if (filteredDTSCheck3.Checked) { NewPreset.Add("FilteredEAC3Check3", "true"); } else { NewPreset.Add("FilteredEAC3Check3", "false"); }
+                if (filteredAACCheck3.Checked) { NewPreset.Add("FilteredDTSCheck3", "true"); } else { NewPreset.Add("FilteredDTSCheck3", "false"); }
+                if (filteredAC3Check3.Checked) { NewPreset.Add("FilteredDTSHDCheck3", "true"); } else { NewPreset.Add("FilteredDTSHDCheck3", "false"); }
+                if (filteredDTSCheck3.Checked) { NewPreset.Add("FilteredTrueHDCheck3", "true"); } else { NewPreset.Add("FilteredTrueHDCheck3", "false"); }
+                if (filteredAACCheck3.Checked) { NewPreset.Add("FilteredMP3Check3", "true"); } else { NewPreset.Add("FilteredMP3Check3", "false"); }
+                if (filteredAC3Check3.Checked) { NewPreset.Add("FilteredFLACCheck3", "true"); } else { NewPreset.Add("FilteredFLACCheck3", "false"); }
+                NewPreset.Add("AudioBitrate3", audioBitrateCombo3.Text);
+
                 NewPreset.Add("EncoderSpeed", encoderSpeedCombo.Text);
                 NewPreset.Add("FrameRateMode", frameRateModeCombo.Text);
                 NewPreset.Add("FrameRate", framerateCombo.Text);
@@ -5068,52 +5699,40 @@ namespace MovieDataCollector
                     if (PF.PresetList[index]["FilteredMP3Check"] == "true") { filteredMP3Check.Checked = true; } else { filteredMP3Check.Checked = false; }
                     if (PF.PresetList[index]["FilteredFLACCheck"] == "true") { filteredFLACCheck.Checked = true; } else { filteredFLACCheck.Checked = false; }
 
-                    if (PF.PresetList[index]["EnableTrack2"] == "true")
+                    if (PF.PresetList[index]["EnableTrack2"] == "true") { disableCheckStream2.Checked = false; } else { disableCheckStream2.Checked = true; }
+         
+                    audioCodecComboBox2.Enabled = true;
+                    mixdownComboBox2.Enabled = true;
+                    sampleRateCombo2.Enabled = true;
+                    audioBitrateCombo2.Enabled = true;
+
+                    audioCodecComboBox2.Text = PF.PresetList[index]["AudioCodec2"];
+                    mixdownComboBox2.Text = PF.PresetList[index]["AudioMixdown2"];
+                    sampleRateCombo2.Text = PF.PresetList[index]["AudioSampleRate2"];
+                    audioBitrateCombo2.Text = PF.PresetList[index]["AudioBitrate2"];
+
+                    if (PF.PresetList[index]["FilteredAACCheck2"] == "true") { filteredAACCheck2.Checked = true; } else { filteredAACCheck2.Checked = false; }
+                    if (PF.PresetList[index]["FilteredAC3Check2"] == "true") { filteredAC3Check2.Checked = true; } else { filteredAC3Check2.Checked = false; }
+                    if (PF.PresetList[index]["FilteredEAC3Check2"] == "true") { filteredEAC3Check2.Checked = true; } else { filteredEAC3Check2.Checked = false; }
+                    if (PF.PresetList[index]["FilteredDTSCheck2"] == "true") { filteredDTSCheck2.Checked = true; } else { filteredDTSCheck2.Checked = false; }
+                    if (PF.PresetList[index]["FilteredDTSHDCheck2"] == "true") { filteredDTSHDCheck2.Checked = true; } else { filteredDTSHDCheck2.Checked = false; }
+                    if (PF.PresetList[index]["FilteredTrueHDCheck2"] == "true") { filteredTrueHDCheck2.Checked = true; } else { filteredTrueHDCheck2.Checked = false; }
+                    if (PF.PresetList[index]["FilteredMP3Check2"] == "true") { filteredMP3Check2.Checked = true; } else { filteredMP3Check2.Checked = false; }
+                    if (PF.PresetList[index]["FilteredFLACCheck2"] == "true") { filteredFLACCheck2.Checked = true; } else { filteredFLACCheck2.Checked = false; }
+
+                    if (PF.PresetList[index]["AudioCodec2"] == "Filtered Passthru")
                     {
-                        audioCodecComboBox2.Enabled = true;
-                        mixdownComboBox2.Enabled = true;
-                        sampleRateCombo2.Enabled = true;
-                        audioBitrateCombo2.Enabled = true;
-
-                        audioCodecComboBox2.Text = PF.PresetList[index]["AudioCodec2"];
-                        mixdownComboBox2.Text = PF.PresetList[index]["AudioMixdown2"];
-                        sampleRateCombo2.Text = PF.PresetList[index]["AudioSampleRate2"];
-                        audioBitrateCombo2.Text = PF.PresetList[index]["AudioBitrate2"];
-
-                        if (PF.PresetList[index]["AudioCodec2"] == "Filtered Passthru")
-                        {
-                            filteredAACCheck2.Visible = true;
-                            filteredAC3Check2.Visible = true;
-                            filteredEAC3Check2.Visible = true;
-                            filteredDTSCheck2.Visible = true;
-                            filteredDTSHDCheck2.Visible = true;
-                            filteredTrueHDCheck2.Visible = true;
-                            filteredFLACCheck2.Visible = true;
-                            filteredMP3Check2.Visible = true;
-
-                            if (PF.PresetList[index]["FilteredAACCheck2"] == "true") { filteredAACCheck2.Checked = true; } else { filteredAACCheck2.Checked = false; }
-                            if (PF.PresetList[index]["FilteredAC3Check2"] == "true") { filteredAC3Check2.Checked = true; } else { filteredAC3Check2.Checked = false; }
-                            if (PF.PresetList[index]["FilteredEAC3Check2"] == "true") { filteredEAC3Check2.Checked = true; } else { filteredEAC3Check2.Checked = false; }
-                            if (PF.PresetList[index]["FilteredDTSCheck2"] == "true") { filteredDTSCheck2.Checked = true; } else { filteredDTSCheck2.Checked = false; }
-                            if (PF.PresetList[index]["FilteredDTSHDCheck2"] == "true") { filteredDTSHDCheck2.Checked = true; } else { filteredDTSHDCheck2.Checked = false; }
-                            if (PF.PresetList[index]["FilteredTrueHDCheck2"] == "true") { filteredTrueHDCheck2.Checked = true; } else { filteredTrueHDCheck2.Checked = false; }
-                            if (PF.PresetList[index]["FilteredMP3Check2"] == "true") { filteredMP3Check2.Checked = true; } else { filteredMP3Check2.Checked = false; }
-                            if (PF.PresetList[index]["FilteredFLACCheck2"] == "true") { filteredFLACCheck2.Checked = true; } else { filteredFLACCheck2.Checked = false; }
-                        }
-
+                        filteredAACCheck2.Visible = true;
+                        filteredAC3Check2.Visible = true;
+                        filteredEAC3Check2.Visible = true;
+                        filteredDTSCheck2.Visible = true;
+                        filteredDTSHDCheck2.Visible = true;
+                        filteredTrueHDCheck2.Visible = true;
+                        filteredFLACCheck2.Visible = true;
+                        filteredMP3Check2.Visible = true;
                     }
                     else
                     {
-                        audioCodecComboBox2.Text = "";
-                        mixdownComboBox2.Text = "";
-                        sampleRateCombo2.Text = "";
-                        audioBitrateCombo2.Text = "";
-
-                        audioCodecComboBox2.Enabled = false;
-                        mixdownComboBox2.Enabled = false;
-                        sampleRateCombo2.Enabled = false;
-                        audioBitrateCombo2.Enabled = false;
-
                         filteredAACCheck2.Visible = false;
                         filteredAC3Check2.Visible = false;
                         filteredEAC3Check2.Visible = false;
@@ -5124,54 +5743,40 @@ namespace MovieDataCollector
                         filteredMP3Check2.Visible = false;
                     }
 
+                    if (PF.PresetList[index]["EnableTrack3"] == "true") { disableCheckStream3.Checked = false; } else { disableCheckStream3.Checked = true; }
 
-                    if (PF.PresetList[index]["EnableTrack3"] == "true")
+                    audioCodecComboBox3.Enabled = true;
+                    mixdownComboBox3.Enabled = true;
+                    sampleRateCombo3.Enabled = true;
+                    audioBitrateCombo3.Enabled = true;
+
+                    audioCodecComboBox3.Text = PF.PresetList[index]["AudioCodec3"];
+                    mixdownComboBox3.Text = PF.PresetList[index]["AudioMixdown3"];
+                    sampleRateCombo3.Text = PF.PresetList[index]["AudioSampleRate3"];
+                    audioBitrateCombo3.Text = PF.PresetList[index]["AudioBitrate3"];
+
+                    if (PF.PresetList[index]["FilteredAACCheck3"] == "true") { filteredAACCheck3.Checked = true; } else { filteredAACCheck3.Checked = false; }
+                    if (PF.PresetList[index]["FilteredAC3Check3"] == "true") { filteredAC3Check3.Checked = true; } else { filteredAC3Check3.Checked = false; }
+                    if (PF.PresetList[index]["FilteredEAC3Check3"] == "true") { filteredEAC3Check3.Checked = true; } else { filteredEAC3Check3.Checked = false; }
+                    if (PF.PresetList[index]["FilteredDTSCheck3"] == "true") { filteredDTSCheck3.Checked = true; } else { filteredDTSCheck3.Checked = false; }
+                    if (PF.PresetList[index]["FilteredDTSHDCheck3"] == "true") { filteredDTSHDCheck3.Checked = true; } else { filteredDTSHDCheck3.Checked = false; }
+                    if (PF.PresetList[index]["FilteredTrueHDCheck3"] == "true") { filteredTrueHDCheck3.Checked = true; } else { filteredTrueHDCheck3.Checked = false; }
+                    if (PF.PresetList[index]["FilteredMP3Check3"] == "true") { filteredMP3Check3.Checked = true; } else { filteredMP3Check3.Checked = false; }
+                    if (PF.PresetList[index]["FilteredFLACCheck3"] == "true") { filteredFLACCheck3.Checked = true; } else { filteredFLACCheck3.Checked = false; }
+
+                    if (PF.PresetList[index]["AudioCodec3"] == "Filtered Passthru")
                     {
-                        audioCodecComboBox3.Enabled = true;
-                        mixdownComboBox3.Enabled = true;
-                        sampleRateCombo3.Enabled = true;
-                        audioBitrateCombo3.Enabled = true;
-
-                        audioCodecComboBox3.Text = PF.PresetList[index]["AudioCodec3"];
-                        mixdownComboBox3.Text = PF.PresetList[index]["AudioMixdown3"];
-                        sampleRateCombo3.Text = PF.PresetList[index]["AudioSampleRate3"];
-                        audioBitrateCombo3.Text = PF.PresetList[index]["AudioBitrate3"];
-
-
-                        if (PF.PresetList[index]["AudioCodec3"] == "Filtered Passthru")
-                        {
-                            filteredAACCheck3.Visible = true;
-                            filteredAC3Check3.Visible = true;
-                            filteredEAC3Check3.Visible = true;
-                            filteredDTSCheck3.Visible = true;
-                            filteredDTSHDCheck3.Visible = true;
-                            filteredTrueHDCheck3.Visible = true;
-                            filteredFLACCheck3.Visible = true;
-                            filteredMP3Check3.Visible = true;
-
-                            if (PF.PresetList[index]["FilteredAACCheck3"] == "true") { filteredAACCheck3.Checked = true; } else { filteredAACCheck3.Checked = false; }
-                            if (PF.PresetList[index]["FilteredAC3Check3"] == "true") { filteredAC3Check3.Checked = true; } else { filteredAC3Check3.Checked = false; }
-                            if (PF.PresetList[index]["FilteredEAC3Check3"] == "true") { filteredEAC3Check3.Checked = true; } else { filteredEAC3Check3.Checked = false; }
-                            if (PF.PresetList[index]["FilteredDTSCheck3"] == "true") { filteredDTSCheck3.Checked = true; } else { filteredDTSCheck3.Checked = false; }
-                            if (PF.PresetList[index]["FilteredDTSHDCheck3"] == "true") { filteredDTSHDCheck3.Checked = true; } else { filteredDTSHDCheck3.Checked = false; }
-                            if (PF.PresetList[index]["FilteredTrueHDCheck3"] == "true") { filteredTrueHDCheck3.Checked = true; } else { filteredTrueHDCheck3.Checked = false; }
-                            if (PF.PresetList[index]["FilteredMP3Check3"] == "true") { filteredMP3Check3.Checked = true; } else { filteredMP3Check3.Checked = false; }
-                            if (PF.PresetList[index]["FilteredFLACCheck3"] == "true") { filteredFLACCheck3.Checked = true; } else { filteredFLACCheck3.Checked = false; }
-                        }
-
+                        filteredAACCheck3.Visible = true;
+                        filteredAC3Check3.Visible = true;
+                        filteredEAC3Check3.Visible = true;
+                        filteredDTSCheck3.Visible = true;
+                        filteredDTSHDCheck3.Visible = true;
+                        filteredTrueHDCheck3.Visible = true;
+                        filteredFLACCheck3.Visible = true;
+                        filteredMP3Check3.Visible = true;
                     }
                     else
                     {
-                        audioCodecComboBox3.Text = "";
-                        mixdownComboBox3.Text = "";
-                        sampleRateCombo3.Text = "";
-                        audioBitrateCombo3.Text = "";
-
-                        audioCodecComboBox3.Enabled = false;
-                        mixdownComboBox3.Enabled = false;
-                        sampleRateCombo3.Enabled = false;
-                        audioBitrateCombo3.Enabled = false;
-
                         filteredAACCheck3.Visible = false;
                         filteredAC3Check3.Visible = false;
                         filteredEAC3Check3.Visible = false;
