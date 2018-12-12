@@ -265,12 +265,19 @@ namespace MovieDataCollector
             if (CF.DefaultSettings["CompatibilitySelector"] == "Roku"){ compatibilityCombo.SelectedIndex = 0; }
             if (CF.DefaultSettings["CompatibilitySelector"] == "Xbox") { compatibilityCombo.SelectedIndex = 1; }
 
+            /*Email Settings*/
+            usernameBox.Text = CF.DefaultSettings["GmailAccount"];
+            passwordBox.Text = CF.DefaultSettings["Password"];
+            sendToBox.Text = CF.DefaultSettings["NotifyAddress"];
+
             /*Audio Settings*/
             /*Track 1*******************************************************************************************************************************************************/
             audioCodecComboBox.Text = CF.DefaultSettings["AudioCodec"];
             mixdownComboBox.Text = CF.DefaultSettings["Mixdown"];
             audioBitrateCombo.Text = CF.DefaultSettings["AudioBitrateCap"];
             sampleRateCombo.Text = CF.DefaultSettings["AudioSampleRate"];
+            
+
 
             if (CF.DefaultSettings["AudioCodec"] == "Filtered Passthru")
             {
@@ -2521,8 +2528,6 @@ namespace MovieDataCollector
             string outputDynamicRange = "--drc 0 --gain 0 ";
 
             string outputBitrate = "";
-            string outputBitrate2 = "";
-            string outputBitrate3 = "";
 
             string mixdown1 = "";
             string mixdown2 = "";
@@ -2923,18 +2928,6 @@ namespace MovieDataCollector
                                     mixdown1 = "dpl2";
                                     userSelectedBitrate = userSelectedBitrate * 2;
                                     break;
-                                case 3:
-                                    mixdown1 = "dpl2";
-                                    userSelectedBitrate = userSelectedBitrate * 2;
-                                    break;
-                                case 4:
-                                    mixdown1 = "dpl2";
-                                    userSelectedBitrate = userSelectedBitrate * 2;
-                                    break;
-                                case 5:
-                                    mixdown1 = "dpl2";
-                                    userSelectedBitrate = userSelectedBitrate * 2;
-                                    break;
                                 case 6:
                                     mixdown1 = "5point1";
                                     userSelectedBitrate = userSelectedBitrate * 6;
@@ -3033,18 +3026,6 @@ namespace MovieDataCollector
                                         mixdown2 = ",dpl2";
                                         userSelectedBitrate2 = userSelectedBitrate2 * 2;
                                         break;
-                                    case 3:
-                                        mixdown2 = ",dpl2";
-                                        userSelectedBitrate2 = userSelectedBitrate2 * 2;
-                                        break;
-                                    case 4:
-                                        mixdown2 = ",dpl2";
-                                        userSelectedBitrate2 = userSelectedBitrate2 * 2;
-                                        break;
-                                    case 5:
-                                        mixdown2 = ",dpl2";
-                                        userSelectedBitrate2 = userSelectedBitrate2 * 2;
-                                        break;
                                     case 6:
                                         mixdown2 = ",5point1";
                                         userSelectedBitrate2 = userSelectedBitrate2 * 6;
@@ -3077,7 +3058,7 @@ namespace MovieDataCollector
                                 }
                                 break;
                             default:
-                                switch (mixdownComboBox.Text)
+                                switch (mixdownComboBox2.Text)
                                 {
                                     case "Dolby ProLogic 2":
                                         mixdown2 = ",dpl2";
@@ -3094,21 +3075,9 @@ namespace MovieDataCollector
                                                 mixdown2 = ",dpl2";
                                                 userSelectedBitrate2 = userSelectedBitrate2 * 2;
                                                 break;
-                                            case 3:
-                                                mixdown2 = ",dpl2";
-                                                userSelectedBitrate2 = userSelectedBitrate2 * 2;
-                                                break;
-                                            case 4:
-                                                mixdown2 = ",dpl2";
-                                                userSelectedBitrate2 = userSelectedBitrate2 * 2;
-                                                break;
-                                            case 5:
-                                                mixdown2 = ",dpl2";
-                                                userSelectedBitrate2 = userSelectedBitrate2 * 2;
-                                                break;
                                             case 6:
                                                 mixdown2 = ",5point1";
-                                                userSelectedBitrate2 = userSelectedBitrate2 * 2;
+                                                userSelectedBitrate2 = userSelectedBitrate2 * 6;
                                                 break;
                                             case 7:
                                                 mixdown2 = ",5point1";
@@ -3140,18 +3109,6 @@ namespace MovieDataCollector
                                             userSelectedBitrate3 = userSelectedBitrate3 * 1;
                                             break;
                                         case 2:
-                                            mixdown3 = ",dpl2";
-                                            userSelectedBitrate3 = userSelectedBitrate3 * 2;
-                                            break;
-                                        case 3:
-                                            mixdown3 = ",dpl2";
-                                            userSelectedBitrate3 = userSelectedBitrate3 * 2;
-                                            break;
-                                        case 4:
-                                            mixdown3 = ",dpl2";
-                                            userSelectedBitrate3 = userSelectedBitrate3 * 2;
-                                            break;
-                                        case 5:
                                             mixdown3 = ",dpl2";
                                             userSelectedBitrate3 = userSelectedBitrate3 * 2;
                                             break;
@@ -3204,21 +3161,9 @@ namespace MovieDataCollector
                                                     mixdown3 = ",dpl2";
                                                     userSelectedBitrate3 = userSelectedBitrate3 * 2;
                                                     break;
-                                                case 3:
-                                                    mixdown3 = ",dpl2";
-                                                    userSelectedBitrate3 = userSelectedBitrate3 * 2;
-                                                    break;
-                                                case 4:
-                                                    mixdown3 = ",dpl2";
-                                                    userSelectedBitrate3 = userSelectedBitrate3 * 2;
-                                                    break;
-                                                case 5:
-                                                    mixdown3 = ",dpl2";
-                                                    userSelectedBitrate3 = userSelectedBitrate3 * 2;
-                                                    break;
                                                 case 6:
                                                     mixdown3 = ",5point1";
-                                                    userSelectedBitrate3 = userSelectedBitrate3 * 2;
+                                                    userSelectedBitrate3 = userSelectedBitrate3 * 6;
                                                     break;
                                                 case 7:
                                                     mixdown3 = ",5point1";
@@ -3247,7 +3192,7 @@ namespace MovieDataCollector
 
                 if(!disableCheckStream2.Checked) //Stream 2 Enabled
                 {
-                    if(!disableCheckStream3.Checked)
+                    if(!disableCheckStream3.Checked) //Stream 2 & 3 enabled
                     {
                         outputBitrate = "--ab " + userSelectedBitrate.ToString() + "," + userSelectedBitrate2.ToString() + "," + userSelectedBitrate3.ToString() + " ";
                     }
@@ -3432,7 +3377,7 @@ namespace MovieDataCollector
             
             /*Passthru Mask***********************************************************************************************************************************************************************************************/
 
-            if(audioCodecComboBox.Text =="Filtered Passthru" || audioCodecComboBox2.Text == "Filtered Passthru" || audioCodecComboBox3.Text == "Filtered Passthru")
+            if(audioCodecComboBox.Text =="Filtered Passthru" || (audioCodecComboBox2.Text == "Filtered Passthru" && !disableCheckStream2.Checked) || (audioCodecComboBox3.Text == "Filtered Passthru" && !disableCheckStream3.Checked))
             {
                 //Check which passthru options are selected
 
