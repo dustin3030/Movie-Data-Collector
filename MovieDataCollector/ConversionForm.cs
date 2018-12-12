@@ -5109,193 +5109,401 @@ namespace MovieDataCollector
         }
         private string RokuCompatibilityCheck(string fileName)
         {
+            //Compatible Values
+            List<string> FileExtention = new List<string>()
+            {
+                ".MP4",
+                ".MOV",
+                ".M4V",
+                ".MKV",
+            };
+
+            List<string> VideoCodecs = new List<string>()
+            {
+                "H264",
+                "X264",
+                "H.264",
+                "AVC",
+                "HEVC",
+                "H265",
+                "H.265",
+                "X265",
+            };
+
+            List<string> AudioCodecs = new List<string>()
+            {
+                "AAC",
+                "HE-AAC",
+                "AAC-LC",
+                "MP3",
+                "WMA",
+                "WAV",
+                "PCM",
+                "AIFF",
+                "FLAC",
+                "ALAC",
+                "AC3",
+                "AC-3",
+                "E-AC3",
+                "DTS"
+            };
+
+            List<double> Framerates = new List<double>()
+            {
+                23.976,
+                24,
+                25,
+                29.97,
+                30,
+                50,
+                60
+            };
+
+            List<string> H264_Profiles = new List<string>()
+            {
+                "MAIN@L1",
+                "MAIN@L1.0",
+                "MAIN@L1.B",
+                "MAINT@L1.1",
+                "MAIN@L1.2",
+                "MAINT@L1.3",
+                "MAINT@L2",
+                "MAIN@L2.2",
+                "MAIN@L3",
+                "MAIN@L3.1",
+                "MAIN@L3.2",
+                "MAIN@L4",
+                "MAIN@L4.0",
+                "MAIN@L4.1",
+                "MAIN@4.2",
+                "HIGH@L1.0",
+                "HIGH@L1.B",
+                "HIGHT@L1.1",
+                "HIGH@L1.2",
+                "HIGHT@L1.3",
+                "HIGHT@L2",
+                "HIGH@L2.2",
+                "HIGH@L3",
+                "HIGH@L3.1",
+                "HIGH@L3.2",
+                "HIGH@L4",
+                "HIGH@L4.0",
+                "HIGH@L4.1",
+                "HIGH@4.2",
+            };
+
+            List<string> H265_Profiles = new List<string>()
+            {
+                "MAIN",
+                "MAINT 10"
+            };
+
+            int maxCompatibleH264StreamingBitrate = 10; //in Mbps
+
+            int maxCompatibleH265StreamingBitrate = 40; //in Mbps
+
+            double peakBitrateMultiplier = 1.5; //must be less than 1.5 * Average bitrate
 
             //File Info
-            decimal fileSize = 0;
             double maxBitrate = 0;
             double bitrate = 0;
             double audioChannels = 0;
             double audioBitrate = 0;
             double audioMaxBitrate = 0;
+
             //Incompatibility Info
             StringBuilder incompatible = new StringBuilder(); //Stores string of why file is incompatile with Roku
 
             NLabelUpdate("Checking if " + fileName + " is compatible with Roku players.", Color.GreenYellow);
 
-            FileInfo fInfo = new FileInfo(fileName);
-            fileSize = Convert.ToDecimal(fInfo.Length);
-            fileSize = decimal.Round(((fileSize / 1024) / 1024), 2); //Bytes Converted to Megabytes
-
             MediaFile videoFile = new MediaFile(fileName);
 
-            /*Video — MKV (H.264), MP4 (H.264), MOV (H.264), WMV (VC-1, firmware 3.1 only)
-            * Audio: AAC, MP3
-            * Must be Deinterlaced video
-            * Max 2channel audio except for passthrough
-            * Framerate must be <= 30 fps
-            * Audio Bitrate 32-256Kbps per channel
-            * AAC LC (CBR), AC3 Passthrough
-            * Max video bitrate 1.5x average
-            * Average video bitrate 1.0Mbps – 10Mbps
-            * h.264 Main or High profile up to 4.1
-            * Video Codec H.264/AVC
-            * Extensions - .mp4, .mov, .m4v
-            * Up to 1920 X 1080 pixel size
+            /*Roku officially supports the following media formats:
+            Video file types: MP4, MOV, M4V, MKV, WebM
+            Video codecs: H.264/AVC, HEVC/H.265, VP9
+            Audio file types: AAC, MP3, WMA, WAV (PCM), AIFF, FLAC, ALAC, AC3, E-AC3
+            Streaming protocols: HLS, Smooth, DASH
             */
+
+
+
+            //Video Stream Check**********************************************************************************************************************************************************************************************
             for (int i = 0; i < videoFile.Video.Count; i++)
             {
-                if (videoFile.Video[i].FormatID != "H264" && videoFile.Video[i].FormatID != "x264" && videoFile.Video[i].FormatID != "h.264")
+                bool extentionMatch = false;
+                //Container Check*********************************************************************************************************************************************************************************************
+                for (int a = 0; a < FileExtention.Count; a++)
                 {
-                    incompatible.Append("\tVideo" + ((i + 1).ToString()).Replace("0", "") + ": Format " + videoFile.Video[i].FormatID + ", must be H264 or X264\n");
+                    if(videoFile.Extension.ToUpper() == FileExtention[a]) { extentionMatch = true; }
                 }
+                //add to incompatible text
+                if (!extentionMatch) { incompatible.Append("\tVideo" + ((i + 1).ToString()).Replace("0", "") + ": Invalid Container: " + videoFile.Extension + "\n"); }
 
-                if (videoFile.Video[i].FrameRate > 30)
+                //Format Check************************************************************************************************************************************************************************************************
+                bool formatMatch = false;
+
+                //loop through format list and check each one
+                for (int a = 0; a < VideoCodecs.Count; a++)
                 {
-                    incompatible.Append("\tVideo" + ((i + 1).ToString()).Replace("0", "") + ": Framerate " + videoFile.Video[i].FrameRate.ToString() + ", must be <= 30 using h264 codec\n");
-                }
-
-                if (videoFile.Video[i].Properties.ContainsKey("Maximum bit rate") && videoFile.Video[i].Properties.ContainsKey("Bit rate"))
-                {
-                    if (double.TryParse(videoFile.Video[i].Properties["Maximum bit rate"].Replace(" ", "").Replace("Kbps", ""), out maxBitrate)) { } else { maxBitrate = 0; }
-
-                    if (videoFile.Video[i].Properties["Bit rate"].Contains("Mbps")) //If file bitrate is in Mbps
+                    if(videoFile.Video[i].FormatID.ToUpper().Contains(VideoCodecs[a]) )
                     {
-                        double.TryParse(videoFile.Video[0].Properties["Bit rate"].Replace(" ", "").Replace("Mbps", ""), out bitrate);
-                        bitrate = bitrate * 1000; //accounts for reading in Mbps rather than Kbps
-                    }
-                    else if (videoFile.Video[i].Properties["Bit rate"].Contains("Kbps")) //If file bitrate is in Mbps
-                    {
-                        double.TryParse(videoFile.Video[0].Properties["Bit rate"].Replace(" ", "").Replace("Kbps", ""), out bitrate);
-                    }
-                    else
-                    {
-                        bitrate = 0;
-                    }
-
-                    if (bitrate > 10000) { incompatible.Append("\tVideo" + ((i + 1).ToString()).Replace("0", "") + ": bitrate " + bitrate + ", Must be < 10000 kbps\n"); }
-                    if (maxBitrate > (bitrate * 1.5)) { incompatible.Append("\tVideo" + ((i + 1).ToString()).Replace("0", "") + ": Max bitrate (" + maxBitrate + ") > 1.5 * Average bitrate (" + bitrate + ")\n"); }
-                }
-
-                if (videoFile.Video[i].Properties.ContainsKey("Bit rate") && !videoFile.Video[i].Properties.ContainsKey("Maximum bit rate"))
-                {
-                    if (videoFile.Video[i].Properties["Bit rate"].Contains("Mbps")) //If file bitrate is in Mbps
-                    {
-                        double.TryParse(videoFile.Video[0].Properties["Bit rate"].Replace(" ", "").Replace("Mbps", ""), out bitrate);
-                        bitrate = bitrate * 1000; //accounts for reading in Mbps rather than Kbps
-                    }
-                    else if (videoFile.Video[i].Properties["Bit rate"].Contains("Kbps")) //If file bitrate is in Mbps
-                    {
-                        double.TryParse(videoFile.Video[0].Properties["Bit rate"].Replace(" ", "").Replace("Kbps", ""), out bitrate);
-                    }
-                    else
-                    {
-                        bitrate = 0;
-                    }
-
-                    if (bitrate > 10000) { incompatible.Append("\tVideo" + ((i + 1).ToString()).Replace("0", "") + ": bitrate " + bitrate + ", Must be < 10000 kbps\n"); }
-                }
-
-                if (videoFile.Video[i].Properties.ContainsKey("Format profile"))
-                {
-                    if (!videoFile.Video[i].Properties["Format profile"].Contains("High")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("Main")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("Baseline")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("L1")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("L1.0")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("L1.B")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("L1")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("L1.1")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("L1.2")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("L1.3")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("L2")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("L2.0")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("L2.1")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("L2.2")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("L3")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("L3.0")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("L3.1")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("L3.2")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("L4")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("L4.0")
-                        & !videoFile.Video[i].Properties["Format profile"].Contains("L4.1"))
-                    {
-                        incompatible.Append("\tVideo" + (((i + 1).ToString())).Replace("0", "") + ":  Profile " + videoFile.Video[i].Properties["Format profile"] + ", Must be High, Main, or Baseline L1-4.1\n");
+                        formatMatch = true;
                     }
                 }
+                //add to incompatible text
+                if (!formatMatch) { incompatible.Append("\tVideo" + ((i + 1).ToString()).Replace("0", "") + ": Invalid Format: " + videoFile.Video[i].FormatID + "\n"); }
+
+                //Framerate Check*********************************************************************************************************************************************************************************************
+                bool frameratecheck = false;
+                for (int a = 0; a < Framerates.Count; a++)
+                {
+                    if(videoFile.Video[i].FrameRate == Framerates[a]) { frameratecheck = true; }
+                }
+                if (!frameratecheck) { incompatible.Append("\tVideo" + ((i + 1).ToString()).Replace("0", "") + ": Invalid Framerate: " + videoFile.Video[i].FrameRate.ToString() + "\n"); }
+
+                //Bitrate Check***********************************************************************************************************************************************************************************************
+                //H264 / AVC
+                if (videoFile.Video[i].Format.ToUpper() =="AVC" || videoFile.Video[i].Format.ToUpper() == "H264" || videoFile.Video[i].Format.ToUpper() == "X264" || videoFile.Video[i].Format.ToUpper() == "H.264")
+                {
+                    if (videoFile.Video[i].Properties.ContainsKey("Maximum bit rate") && videoFile.Video[i].Properties.ContainsKey("Bit rate"))
+                    {
+                        if (double.TryParse(videoFile.Video[i].Properties["Maximum bit rate"].Replace(" ", "").Replace("Kbps", ""), out maxBitrate)) { } else { maxBitrate = 0; }
+
+                        if (videoFile.Video[i].Properties["Bit rate"].Contains("Mbps")) //If file bitrate is in Mbps
+                        {
+                            double.TryParse(videoFile.Video[0].Properties["Bit rate"].Replace(" ", "").Replace("Mbps", ""), out bitrate);
+                            bitrate = bitrate * 1000; //accounts for reading in Mbps rather than Kbps
+                        }
+                        else if (videoFile.Video[i].Properties["Bit rate"].Contains("Kbps")) //If file bitrate is in Mbps
+                        {
+                            double.TryParse(videoFile.Video[0].Properties["Bit rate"].Replace(" ", "").Replace("Kbps", ""), out bitrate);
+                        }
+                        else
+                        {
+                            bitrate = 0;
+                        }
+
+                        if (bitrate > (maxCompatibleH264StreamingBitrate * 1000)) { incompatible.Append("\tVideo" + ((i + 1).ToString()).Replace("0", "") + ": bitrate " + bitrate + ", Must be < " + (maxCompatibleH264StreamingBitrate * 1000).ToString() + " Mbps\n"); }
+                        if (maxBitrate > (bitrate * peakBitrateMultiplier)) { incompatible.Append("\tVideo" + ((i + 1).ToString()).Replace("0", "") + ": Peak bitrate (" + maxBitrate + ") > 1.5 * Average bitrate (" + bitrate + ")\n"); }
+                    }
+
+                    if (videoFile.Video[i].Properties.ContainsKey("Bit rate") && !videoFile.Video[i].Properties.ContainsKey("Maximum bit rate"))
+                    {
+                        if (videoFile.Video[i].Properties["Bit rate"].Contains("Mbps")) //If file bitrate is in Mbps
+                        {
+                            double.TryParse(videoFile.Video[0].Properties["Bit rate"].Replace(" ", "").Replace("Mbps", ""), out bitrate);
+                            bitrate = bitrate * 1000; //accounts for reading in Mbps rather than Kbps
+                        }
+                        else if (videoFile.Video[i].Properties["Bit rate"].Contains("Kbps")) //If file bitrate is in Mbps
+                        {
+                            double.TryParse(videoFile.Video[0].Properties["Bit rate"].Replace(" ", "").Replace("Kbps", ""), out bitrate);
+                        }
+                        else
+                        {
+                            bitrate = 0;
+                        }
+
+                        if (bitrate > (maxCompatibleH264StreamingBitrate * 1000)) { incompatible.Append("\tVideo" + ((i + 1).ToString()).Replace("0", "") + ": bitrate " + bitrate + ", Must be < " + (maxCompatibleH264StreamingBitrate * 1000).ToString() + " kbps\n"); }
+                    }
+
+                    //Check H264 Compatible Profiles
+                    bool compatibleProfileCheck = false;
+                    for (int a = 0; a < H264_Profiles.Count; a++)
+                    {
+                        if(videoFile.Video[i].Properties.ContainsKey("Format profile"))
+                        {
+                            if(videoFile.Video[i].Properties["Format profile"].ToUpper() == H264_Profiles[a]) { compatibleProfileCheck = true; }
+                        }
+                    }
+                    if (!compatibleProfileCheck) { incompatible.Append("\tVideo" + (((i + 1).ToString())).Replace("0", "") + ":  Profile Invalid: " + videoFile.Video[i].Properties["Format profile"] + "\n"); }
+                }
+
+                //H265 / HEVC
+                if (videoFile.Video[i].Format.ToUpper() == "HEVC" || videoFile.Video[i].Format.ToUpper() == "H265" || videoFile.Video[i].Format.ToUpper() == "X265" || videoFile.Video[i].Format.ToUpper() == "H.265")
+                {
+                    if (videoFile.Video[i].Properties.ContainsKey("Maximum bit rate") && videoFile.Video[i].Properties.ContainsKey("Bit rate"))
+                    {
+                        if (double.TryParse(videoFile.Video[i].Properties["Maximum bit rate"].Replace(" ", "").Replace("Kbps", ""), out maxBitrate)) { } else { maxBitrate = 0; }
+
+                        if (videoFile.Video[i].Properties["Bit rate"].Contains("Mbps")) //If file bitrate is in Mbps
+                        {
+                            double.TryParse(videoFile.Video[0].Properties["Bit rate"].Replace(" ", "").Replace("Mbps", ""), out bitrate);
+                            bitrate = bitrate * 1000; //accounts for reading in Mbps rather than Kbps
+                        }
+                        else if (videoFile.Video[i].Properties["Bit rate"].Contains("Kbps")) //If file bitrate is in Mbps
+                        {
+                            double.TryParse(videoFile.Video[0].Properties["Bit rate"].Replace(" ", "").Replace("Kbps", ""), out bitrate);
+                        }
+                        else
+                        {
+                            bitrate = 0;
+                        }
+
+                        if (bitrate > (maxCompatibleH265StreamingBitrate * 1000)) { incompatible.Append("\tVideo" + ((i + 1).ToString()).Replace("0", "") + ": bitrate " + bitrate + ", Must be < " + maxCompatibleH265StreamingBitrate.ToString() + " Mbps\n"); }
+                        if (maxBitrate > (bitrate * peakBitrateMultiplier)) { incompatible.Append("\tVideo" + ((i + 1).ToString()).Replace("0", "") + ": Peak bitrate (" + maxBitrate + ") > 1.5 * Average bitrate (" + bitrate + ")\n"); }
+                    }
+
+                    if (videoFile.Video[i].Properties.ContainsKey("Bit rate") && !videoFile.Video[i].Properties.ContainsKey("Maximum bit rate"))
+                    {
+                        if (videoFile.Video[i].Properties["Bit rate"].Contains("Mbps")) //If file bitrate is in Mbps
+                        {
+                            double.TryParse(videoFile.Video[0].Properties["Bit rate"].Replace(" ", "").Replace("Mbps", ""), out bitrate);
+                            bitrate = bitrate * 1000; //accounts for reading in Mbps rather than Kbps
+                        }
+                        else if (videoFile.Video[i].Properties["Bit rate"].Contains("Kbps")) //If file bitrate is in Mbps
+                        {
+                            double.TryParse(videoFile.Video[0].Properties["Bit rate"].Replace(" ", "").Replace("Kbps", ""), out bitrate);
+                        }
+                        else
+                        {
+                            bitrate = 0;
+                        }
+
+                        if (bitrate > (maxCompatibleH265StreamingBitrate * 1000)) { incompatible.Append("\tVideo" + ((i + 1).ToString()).Replace("0", "") + ": bitrate " + bitrate + ", Must be < " + maxCompatibleH265StreamingBitrate + " Mbps\n"); }
+                    }
+
+                    //Check H265 Compatible Profiles
+                    bool compatibleProfileCheck = false;
+                    for (int a = 0; a < H265_Profiles.Count; a++)
+                    {
+                        if (videoFile.Video[i].Properties.ContainsKey("Format profile"))
+                        {
+                            if (videoFile.Video[i].Properties["Format profile"] == H265_Profiles[a]) { compatibleProfileCheck = true; }
+                        }
+                    }
+
+                    if (!compatibleProfileCheck) { incompatible.Append("\tVideo" + (((i + 1).ToString())).Replace("0", "") + ":  Profile Invalid: " + videoFile.Video[i].Properties["Format profile"] + "\n"); }
+                }
+
+                //Codec Profile***********************************************************************************************************************************************************************************************
+                
 
                 if (videoFile.Video[i].IsInterlaced) { incompatible.Append("\tVideo" + ((i + 1).ToString()).Replace("0", "") + ": File must be Deinterlaced\n"); }
 
                 if (videoFile.Video[i].Width > 1920 | videoFile.Video[i].Height > 1080) { incompatible.Append("\tVideo" + ((i + 1).ToString()).Replace("0", "") + ": Frame size (" + videoFile.Video[i].Width.ToString() + " x " + videoFile.Video[i].Height.ToString() + "), Must be < 1920 x 1080\n"); }
             }
 
+            //Audio Stream Check**********************************************************************************************************************************************************************************************
+            
             for (int i = 0; i < videoFile.Audio.Count; i++)
             {
+                //Audio Codec*************************************************************************************************************************************************************************************************
                 if (videoFile.Audio[i].Properties.ContainsKey("Format"))
                 {
-                    if (!videoFile.Audio[i].Properties["Format"].Contains("AAC")
-                        & !videoFile.Audio[i].Properties["Format"].Contains("MP3")
-                        & !videoFile.Audio[i].Properties["Format"].Contains("MPEG"))
+                    bool audioCodecCheck = false;
+
+                    for (int a = 0; a < AudioCodecs.Count; a++)
                     {
-                        incompatible.Append("\tAudio" + ((i + 1).ToString()).Replace("0", "") + ": format - " + videoFile.Audio[i].Properties["Format"] + ", must be AAC or MP3\n");
+                        if(videoFile.Audio[i].Properties["Format"].Contains(AudioCodecs[a]))
+                        {
+                            audioCodecCheck = true;
+                        }
                     }
+                    if (!audioCodecCheck) { incompatible.Append("\tAudio" + ((i + 1).ToString()).Replace("0", "") + ": format invalid: " + videoFile.Audio[i].Properties["Format"] + "\n"); }
                 }
 
-                if (videoFile.Audio[i].Properties.ContainsKey("Channel(s)"))
+                //Channels Check**********************************************************************************************************************************************************************************************
+
+                //AAC
+                if(videoFile.Audio[i].CodecID.Contains("AAC"))
                 {
                     if (double.TryParse(videoFile.Audio[i].Properties["Channel(s)"].Replace(" ", "").Replace("channels", "").Replace("channel", ""), out audioChannels) && audioChannels > 2)
                     {
                         incompatible.Append("\tAudio" + ((i + 1).ToString()).Replace("0", "") + ": has " + videoFile.Audio[i].Properties["Channel(s)"] + " must be <= 2\n");
                     }
-                }
 
-                if (videoFile.Audio[i].Properties.ContainsKey("Bit rate"))
+                    //Audio Bitrate******************************************************************************************************************************
+                    if (videoFile.Audio[i].Properties.ContainsKey("Bit rate"))
+                    {
+                        if (videoFile.Audio[i].Properties["Bit rate"].Contains("Mbps")) //If file bitrate is in Mbps
+                        {
+                            double.TryParse(videoFile.Audio[i].Properties["Bit rate"].Replace(" ", "").Replace("Mbps", ""), out audioBitrate);
+                            audioBitrate = audioBitrate * 1000; //accounts for reading in Mbps rather than Kbps
+                        }
+                        else if (videoFile.Audio[i].Properties["Bit rate"].Contains("Kbps")) //If file bitrate is in Kbps
+                        {
+                            double.TryParse(videoFile.Audio[i].Properties["Bit rate"].Replace(" ", "").Replace("Kbps", ""), out audioBitrate);
+                        }
+
+                        if (videoFile.Audio[i].Properties.ContainsKey("Maximum bit rate"))
+                        {
+                            if (videoFile.Audio[i].Properties["Maximum bit rate"].Contains("Mbps")) //If file bitrate is in Mbps
+                            {
+                                double.TryParse(videoFile.Audio[i].Properties["Maximum bit rate"].Replace(" ", "").Replace("Mbps", ""), out audioMaxBitrate);
+                                audioMaxBitrate = audioMaxBitrate * 1000; //accounts for reading in Mbps rather than Kbps
+                            }
+                            else if (videoFile.Audio[i].Properties["Maximum bit rate"].Contains("Kbps")) //If file bitrate is in Kbps
+                            {
+                                double.TryParse(videoFile.Audio[i].Properties["Maximum bit rate"].Replace(" ", "").Replace("Kbps", ""), out audioMaxBitrate);
+                            }
+
+                        }
+                        if (videoFile.Audio[i].Description.Contains("ATMOS")) //ATMOS is at least 8 channels but shows 0 because it's object oriented.
+                        {
+                            audioBitrate = audioBitrate / 8;
+                        }
+                        else
+                        {
+                            audioBitrate = audioBitrate / videoFile.Audio[i].Channels; //Converts to bitrate per channel of audio
+                        }
+
+                        if (audioBitrate != 0 & audioBitrate < 32 | audioBitrate > 256)
+                        {
+                            incompatible.Append("\tAudio" + ((i + 1).ToString()).Replace("0", "") + ": bitrate " + audioBitrate.ToString() + ", AAC tracks must be between 32 & 256 kbps\n");
+                        }
+                    }
+                }
+                //AC3
+                if (videoFile.Audio[i].CodecID.Contains("AC3") || videoFile.Audio[i].CodecID.Contains("AC-3"))
                 {
-                    if (videoFile.Audio[i].Properties["Bit rate"].Contains("Mbps")) //If file bitrate is in Mbps
+                    double.TryParse(videoFile.Audio[i].Properties["Channel(s)"].Replace(" ", "").Replace("channels", "").Replace("channel", ""), out audioChannels);
+                    if(audioChannels != 2 && audioChannels != 6 && audioChannels != 8 )
                     {
-                        double.TryParse(videoFile.Audio[i].Properties["Bit rate"].Replace(" ", "").Replace("Mbps", ""), out audioBitrate);
-                        audioBitrate = audioBitrate * 1000; //accounts for reading in Mbps rather than Kbps
+                        incompatible.Append("\tAudio" + ((i + 1).ToString()).Replace("0", "") + ": has " + videoFile.Audio[i].Properties["Channel(s)"] + " must be 2, 6 (5.1), or 8 (7.1)\n");
                     }
-                    else if (videoFile.Audio[i].Properties["Bit rate"].Contains("Kbps")) //If file bitrate is in Kbps
+                    //Audio Bitrate******************************************************************************************************************************
+                    if (videoFile.Audio[i].Properties.ContainsKey("Bit rate"))
                     {
-                        double.TryParse(videoFile.Audio[i].Properties["Bit rate"].Replace(" ", "").Replace("Kbps", ""), out audioBitrate);
-                    }
-
-                    if (videoFile.Audio[i].Properties.ContainsKey("Maximum bit rate"))
-                    {
-                        if (videoFile.Audio[i].Properties["Maximum bit rate"].Contains("Mbps")) //If file bitrate is in Mbps
+                        if (videoFile.Audio[i].Properties["Bit rate"].Contains("Mbps")) //If file bitrate is in Mbps
                         {
-                            double.TryParse(videoFile.Audio[i].Properties["Maximum bit rate"].Replace(" ", "").Replace("Mbps", ""), out audioMaxBitrate);
-                            audioMaxBitrate = audioMaxBitrate * 1000; //accounts for reading in Mbps rather than Kbps
+                            double.TryParse(videoFile.Audio[i].Properties["Bit rate"].Replace(" ", "").Replace("Mbps", ""), out audioBitrate);
+                            audioBitrate = audioBitrate * 1000; //accounts for reading in Mbps rather than Kbps
                         }
-                        else if (videoFile.Audio[i].Properties["Maximum bit rate"].Contains("Kbps")) //If file bitrate is in Kbps
+                        else if (videoFile.Audio[i].Properties["Bit rate"].Contains("Kbps")) //If file bitrate is in Kbps
                         {
-                            double.TryParse(videoFile.Audio[i].Properties["Maximum bit rate"].Replace(" ", "").Replace("Kbps", ""), out audioMaxBitrate);
+                            double.TryParse(videoFile.Audio[i].Properties["Bit rate"].Replace(" ", "").Replace("Kbps", ""), out audioBitrate);
                         }
 
-                    }
-                    if(videoFile.Audio[i].Description.Contains("ATMOS")) //ATMOS is at least 8 channels but shows 0 because it's object oriented.
-                    {
-                        audioBitrate = audioBitrate / 8;
-                    }
-                    else
-                    {
-                        audioBitrate = audioBitrate / videoFile.Audio[i].Channels; //Converts to bitrate per channel of audio
-                    }
-                    
-                    if (audioBitrate != 0 & audioBitrate < 32 | audioBitrate > 256)
-                    {
-                        incompatible.Append("\tAudio" + ((i + 1).ToString()).Replace("0", "") + ": bitrate " + audioBitrate.ToString() + ", must be between 32 & 256 kbps\n");
+                        if (videoFile.Audio[i].Properties.ContainsKey("Maximum bit rate"))
+                        {
+                            if (videoFile.Audio[i].Properties["Maximum bit rate"].Contains("Mbps")) //If file bitrate is in Mbps
+                            {
+                                double.TryParse(videoFile.Audio[i].Properties["Maximum bit rate"].Replace(" ", "").Replace("Mbps", ""), out audioMaxBitrate);
+                                audioMaxBitrate = audioMaxBitrate * 1000; //accounts for reading in Mbps rather than Kbps
+                            }
+                            else if (videoFile.Audio[i].Properties["Maximum bit rate"].Contains("Kbps")) //If file bitrate is in Kbps
+                            {
+                                double.TryParse(videoFile.Audio[i].Properties["Maximum bit rate"].Replace(" ", "").Replace("Kbps", ""), out audioMaxBitrate);
+                            }
+
+                        }
+                        if (videoFile.Audio[i].Description.Contains("ATMOS")) //ATMOS is at least 8 channels but shows 0 because it's object oriented.
+                        {
+                            audioBitrate = audioBitrate / 8;
+                        }
+                        else
+                        {
+                            audioBitrate = audioBitrate / videoFile.Audio[i].Channels; //Converts to bitrate per channel of audio
+                        }
+
+                        if (audioBitrate != 0 & audioBitrate < 96 | audioBitrate > 768)
+                        {
+                            incompatible.Append("\tAudio" + ((i + 1).ToString()).Replace("0", "") + ": bitrate " + audioBitrate.ToString() + ", AC3/E-AC3 tracks must be between 96 & 768 kbps\n");
+                        }
                     }
                 }
-            }
 
-            if (!videoFile.Extension.Contains("mp4")
-                & !videoFile.Extension.Contains("m4v")
-                & !videoFile.Extension.Contains("mov"))
-            {
-                incompatible.Append("\tContainer " + videoFile.Extension + ", conatiner must be mp4, m4v, or mov\n");
             }
-
 
             return incompatible.ToString();
 
