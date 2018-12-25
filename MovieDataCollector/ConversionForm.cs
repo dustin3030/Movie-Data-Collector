@@ -1482,7 +1482,6 @@ namespace MovieDataCollector
 
             if (videoFile.Video.Count > 0) //video stream found
             {
-
                 /*Framerate**********************************************************************************************************************************************************************************************/
                 /*Roku Compliant
                     Same As Source
@@ -4409,7 +4408,6 @@ namespace MovieDataCollector
 
             return "-A " + trackName1 + trackName2 + trackName3 + " " ;
         }
-        
         /// <summary>
         /// Encoder should be based solely on user selection. Other options should be changed upon selection of encoder 
         /// such as selecting AAC then a mixdown of 5.1 should not be available.
