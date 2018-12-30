@@ -2506,1025 +2506,6 @@ namespace MovieDataCollector
         }
 
         /*The following methods are for creating the audio conversion string*/
-        private string AudioConversionString(MediaFile videoFile)
-        {
-            /*12/9/18 - addiing support for secondary 5.1 audio track if file contains a 5.1 or above track. Note* at this time Handbrake is only capable of encoding up to 5.1 in E-AC3 format
-            and ROKU can only decode AAC, AC3, and E-AC3 formats while it can passthrough DTS. Thus to keep files as universal as possible to prevent transcoding on the server
-            we must maintain 5.1 audio as the highest level audio possible in the second stream.*/
-
-            //Users selected variables
-            double userSelectedBitrate = 0; //Bitrate for audio is per channel so stereo audio of 96 bitrate would actually be 96 * 2 = 192
-            double userSelectedBitrate2 = 0; //Bitrate for audio is per channel so stereo audio of 96 bitrate would actually be 96 * 2 = 192
-            double userSelectedBitrate3 = 0; //Bitrate for audio is per channel so stereo audio of 96 bitrate would actually be 96 * 2 = 192
-
-            //Variables derived from file
-            double bitrateOfFile = 0; //used to determine the bitrate of the actual audio.
-            int audioTrackNumber = 0; //Highest bitrate audio track in English
-            double maxBitrate = 0;
-
-            //Variables for output string
-            string outputAudioPassthruMask = "";
-            string outputAudioTrack = "";
-            string outputEncoder = "";
-            string outputFallBack = "";
-            string outputMixdown = "";
-            string outputSampleRate = "--arate 48 "; //Auto is no longer listd as an option in handbrake cli documentation 2/2017.
-            string outputDynamicRange = "--drc 0 --gain 0 ";
-
-            string outputBitrate = "";
-
-            string mixdown1 = "";
-            string mixdown2 = "";
-            string mixdown3 = "";
-            /*****************************************************************************************************************************************************************************************************************************/
-
-            if (videoFile.Audio.Count > 0) //Source Readable
-            {
-                /*Select Audio Track to Use***********************************************************************************************************************************************************************************************/
-                //Select Audio Track to Use - Highest Bitrate Audio in English
-                for (int i = 0; i < videoFile.Audio.Count; i++)
-                {
-                    //Check for English Language Track
-                    if (videoFile.Audio[i].Properties.ContainsKey("Language"))
-                    {
-                        if (videoFile.Audio[i].Properties["Language"].ToUpper() == "ENGLISH" ||
-                            videoFile.Audio[i].Properties["Language"].ToUpper() == "ENG" ||
-                            videoFile.Audio[i].Properties["Language"].ToUpper() == "EN")
-                        {
-                            //Check for Max per channel Bitrate English Track
-                            if(videoFile.Audio[i].Channels > 0)
-                            {
-                                if ((videoFile.Audio[i].Bitrate / videoFile.Audio[i].Channels) > maxBitrate)
-                                {
-                                    maxBitrate = videoFile.Audio[i].Bitrate / videoFile.Audio[i].Channels; //Get the per channel bitrate
-                                    audioTrackNumber = i; //Mark the audio track that has the highest bitrate
-                                }
-                            }
-                            else
-                            {
-                                //ATMOS tracks are object oriented and show 0 channels
-                                if (videoFile.Audio[i].Description.Contains("ATMOS"))
-                                {
-                                    maxBitrate = videoFile.Audio[i].Bitrate / 8; //7.1 audio has 8 channels, ATMOS is at least 7.1 always.
-                                    audioTrackNumber = i; //Mark the audio track that has the highest bitrate
-                                }
-                                else if (videoFile.Audio[audioTrackNumber].Properties.ContainsKey("Channel(s)_Original"))
-                                {
-                                    //Identified as DolbyHD 8 channels
-                                    if ((videoFile.Audio[i].Bitrate / 8) > maxBitrate)
-                                    {
-                                        maxBitrate = videoFile.Audio[i].Bitrate / 8; //7.1 audio has 8 channels, DolbyHD is at least 7.1 always.
-                                        audioTrackNumber = i; //Mark the audio track that has the highest bitrate
-                                    }
-                                }
-                                //Dolby TrueHD tracks are object based and show 0 channels
-                                else if (videoFile.Audio[audioTrackNumber].Properties.ContainsKey("Channel(s)"))
-                                {
-                                    if (videoFile.Audio[audioTrackNumber].Properties["Channel(s)"].Contains("Object Based"))
-                                    {
-                                        maxBitrate = videoFile.Audio[i].Bitrate / 8; //7.1 audio has 8 channels, ATMOS is at least 7.1 always.
-                                        audioTrackNumber = i; //Mark the audio track that has the highest bitrate
-                                    }
-                                }
-                                else if ((videoFile.Audio[i].Bitrate / 2) > maxBitrate) // Assume at least stereo
-                                {
-                                    maxBitrate = videoFile.Audio[i].Bitrate / 2; //Get the per channel bitrate
-                                    audioTrackNumber = i; //Mark the audio track that has the highest bitrate
-                                }
-                            }
-                            
-                        }
-                    }
-                    else //No Language code
-                    {
-                        //Check for Max Bitrate Track
-                        if (videoFile.Audio[i].Channels > 0)
-                        {
-                            if ((videoFile.Audio[i].Bitrate / videoFile.Audio[i].Channels) > maxBitrate)
-                            {
-                                maxBitrate = videoFile.Audio[i].Bitrate / videoFile.Audio[i].Channels; //Get the per channel bitrate
-                                audioTrackNumber = i; //Mark the audio track that has the highest bitrate
-                            }
-                        }
-                        else
-                        {
-                            //ATOMS tracks are object oriented and show 0 channels
-                            if(videoFile.Audio[i].Description.Contains("ATMOS"))
-                            {
-                                //Identified as ATMOS 8 channels
-                                if ((videoFile.Audio[i].Bitrate / 8) > maxBitrate)
-                                {
-                                    maxBitrate = videoFile.Audio[i].Bitrate / 8; //7.1 audio has 8 channels, ATMOS is at least 7.1 always.
-                                    audioTrackNumber = i; //Mark the audio track that has the highest bitrate
-                                }
-                                   
-                            }
-                            else if (videoFile.Audio[audioTrackNumber].Properties.ContainsKey("Channel(s)_Original"))
-                            {
-                                //Identified as DolbyHD 8 channels
-                                if ((videoFile.Audio[i].Bitrate / 8) > maxBitrate)
-                                {
-                                    maxBitrate = videoFile.Audio[i].Bitrate / 8; //7.1 audio has 8 channels, DolbyHD is at least 7.1 always.
-                                    audioTrackNumber = i; //Mark the audio track that has the highest bitrate
-                                }
-                            }
-                            //Dolby TrueHD tracks are object based and show 0 channels
-                            else if (videoFile.Audio[audioTrackNumber].Properties.ContainsKey("Channel(s)"))
-                            {
-                                if (videoFile.Audio[audioTrackNumber].Properties["Channel(s)"].Contains("Object Based"))
-                                {
-                                    //Identified as TrueHD 8 channels
-                                    if ((videoFile.Audio[i].Bitrate / 8) > maxBitrate)
-                                    {
-                                        maxBitrate = videoFile.Audio[i].Bitrate / 8; //7.1 audio has 8 channels, ATMOS is at least 7.1 always.
-                                        audioTrackNumber = i; //Mark the audio track that has the highest bitrate
-                                    }
-                                }
-                            }
-                            else if ((videoFile.Audio[i].Bitrate / 2) > maxBitrate) // Assume at least stereo
-                            {
-                                maxBitrate = videoFile.Audio[i].Bitrate / 2; //Get the per channel bitrate
-                                audioTrackNumber = i; //Mark the audio track that has the highest bitrate
-                            }
-                        }
-                    }
-                }
-
-                if(!disableCheckStream2.Checked) //Track 2 Enabled
-                {
-
-                    if (!disableCheckStream3.Checked) //Track 3 Enabled
-                    {
-                        outputAudioTrack = "--audio " + (audioTrackNumber + 1).ToString() + "," + (audioTrackNumber + 1).ToString() + "," + (audioTrackNumber + 1).ToString() + " ";
-                    }
-                    else //Track 3 Disabled
-                    {
-                        outputAudioTrack = "--audio " + (audioTrackNumber + 1).ToString() + "," + (audioTrackNumber + 1).ToString() + " ";
-                    }
-                }
-                else //Track 2 disabled (Assume Track 3 is disabled also)
-                {
-                    outputAudioTrack = "--audio " + (audioTrackNumber + 1).ToString() + " ";
-                }
-
-
-                /*Samplerate***********************************************************************************************************************************************************************************************/
-                string samplerate1 = "";
-                string samplerate2 = "";
-                string samplerate3 = "";
-
-                //Samplerate1
-                if (string.IsNullOrEmpty(sampleRateCombo.Text))
-                {
-                    if (videoFile.Audio[audioTrackNumber].SamplingRate / 1000 >= 48)
-                    {
-                        samplerate1 = "48"; //Roku Compatible high rate
-                    }
-                    else if(videoFile.Audio[audioTrackNumber].SamplingRate / 1000 == 44.1)
-                    {
-                        samplerate1 = "44.1"; //Roku compatible low rate
-                    }
-                    else
-                    {
-                        samplerate1 = "48"; //Default to 48
-                    }
-                }
-                else //Use user selected samplerate
-                {
-                    samplerate1 = sampleRateCombo.Text;
-                }
-                
-                //Samplerate 2
-                if(!disableCheckStream2.Checked) //Stream 2 enabled
-                {
-                    if (string.IsNullOrEmpty(sampleRateCombo2.Text))
-                    {
-
-                        if (videoFile.Audio[audioTrackNumber].SamplingRate / 1000 >= 48)
-                        {
-                            samplerate2 = ",48"; //Roku Compatible high rate
-                        }
-                        else if (videoFile.Audio[audioTrackNumber].SamplingRate / 1000 == 44.1)
-                        {
-                            samplerate2 = ",44.1"; //Roku compatible low rate
-                        }
-                        else
-                        {
-                            samplerate2 = ",48"; //Default to 48
-                        }
-                    }
-                    else //Use user selected samplerate
-                    {
-                        samplerate2 = "," + sampleRateCombo2.Text;
-                    }
-                }
-
-                //Samplerate 3
-                if (!disableCheckStream3.Checked) //Stream 3 enabled
-                {
-                    if (string.IsNullOrEmpty(sampleRateCombo3.Text))
-                    {
-
-                        if (videoFile.Audio[audioTrackNumber].SamplingRate / 1000 >= 48)
-                        {
-                            samplerate3 = ",48"; //Roku Compatible high rate
-                        }
-                        else if (videoFile.Audio[audioTrackNumber].SamplingRate / 1000 == 44.1)
-                        {
-                            samplerate3 = ",44.1"; //Roku compatible low rate
-                        }
-                        else
-                        {
-                            samplerate3 = ",48"; //Default to 48
-                        }
-                    }
-                    else //Use user selected samplerate
-                    {
-                        samplerate3 = "," + sampleRateCombo3.Text;
-                    }
-                }
-
-                outputSampleRate = "--arate " + samplerate1 + samplerate2 + samplerate3 + " ";
-
-                /*Bitrate***********************************************************************************************************************************************************************************************/
-
-                //Determine per channel Bitrate selected by user
-                try { userSelectedBitrate = int.Parse(audioBitrateCombo.Text); } catch { userSelectedBitrate = 128; }//default value is 128
-                try { userSelectedBitrate2 = int.Parse(audioBitrateCombo2.Text); } catch { userSelectedBitrate2 = 128; }//default value is 128
-                try { userSelectedBitrate3 = int.Parse(audioBitrateCombo3.Text); } catch { userSelectedBitrate3 = 128; }//default value is 128
-
-                //Determine bitrate of file
-                if (videoFile.Audio[audioTrackNumber].Bitrate != 0)
-                {
-                    
-                    if(videoFile.Audio[audioTrackNumber].Channels == 0)
-                    {
-                        //ATOMS tracks are object based and show 0 channels
-                        if (videoFile.Audio[audioTrackNumber].Description.Contains("ATMOS"))
-                        {
-                            bitrateOfFile = videoFile.Audio[audioTrackNumber].Bitrate / 8; //7.1 audio has 8 channels, ATMOS is at least 7.1 always.
-                        }
-                        //Dolby TrueHD tracks are object based and show 0 channels
-                        else if (videoFile.Audio[audioTrackNumber].Properties.ContainsKey("Channel(s)"))
-                        {
-                            if (videoFile.Audio[audioTrackNumber].Properties["Channel(s)"].Contains("Object Based"))
-                            {
-                                bitrateOfFile = videoFile.Audio[audioTrackNumber].Bitrate / 8; //The Dolby TrueHD  detected, 7.1 audio has 8 channels.
-                            }
-                        }
-                        else if (videoFile.Audio[audioTrackNumber].Properties.ContainsKey("Channel(s)_Original"))
-                        {
-                            //Identified as DolbyHD 8 channels
-
-                            bitrateOfFile = videoFile.Audio[audioTrackNumber].Bitrate / 8;
-
-                        }
-                        else
-                        {
-                            bitrateOfFile = videoFile.Audio[audioTrackNumber].Bitrate / 2; //assume at least stereo.
-                        }
-
-                    }
-                    //Valid Bitrate Identified, Valid Channel count identified
-                    else
-                    {
-                        //Determine per channel Bitrate of file
-                        bitrateOfFile = videoFile.Audio[audioTrackNumber].Bitrate / videoFile.Audio[audioTrackNumber].Channels;
-                    }
-                    
-                }
-                else if (videoFile.Audio[audioTrackNumber].Properties.ContainsKey("Bit rate"))
-                {
-                    try { double.TryParse(videoFile.Audio[audioTrackNumber].Properties["Bit rate"].Replace(" ", "").Replace("Unknown/","").Replace("Kbps", ""), out bitrateOfFile); }
-                    catch { bitrateOfFile = 0; }
-
-                    if(videoFile.Audio[audioTrackNumber].Description.Contains("ATMOS"))
-                    {
-                        bitrateOfFile = bitrateOfFile / 8; //ATMOS tracks are object based and are 7.1 (8) channel audio
-                    }
-                    //Dolby TrueHD tracks are object based and show 0 channels
-                    else if (videoFile.Audio[audioTrackNumber].Properties.ContainsKey("Channel(s)"))
-                    {
-                        if (videoFile.Audio[audioTrackNumber].Properties["Channel(s)"].Contains("Object Based"))
-                        {
-                            bitrateOfFile = bitrateOfFile / 8; //The Dolby TrueHD detected, 7.1 audio has 8 channels.
-                        }
-                    }
-                    else if (videoFile.Audio[audioTrackNumber].Properties.ContainsKey("Channel(s)_Original"))
-                    {
-
-                        bitrateOfFile = bitrateOfFile / 8; //The Dolby Audio detected, 7.1 audio has 8 channels.
-
-                    }
-                    else
-                    {
-                        bitrateOfFile = bitrateOfFile / videoFile.Audio[audioTrackNumber].Channels;
-                    }
-                    
-                }
-
-
-                //If per channel Bitrate of file is < Selected Bitrate use the file's bitrate.
-                if ((bitrateOfFile < userSelectedBitrate) && (bitrateOfFile > 0)) { userSelectedBitrate = bitrateOfFile; }
-                if ((bitrateOfFile < userSelectedBitrate2) && (bitrateOfFile > 0)) { userSelectedBitrate2 = bitrateOfFile; }
-                if ((bitrateOfFile < userSelectedBitrate3) && (bitrateOfFile > 0)) { userSelectedBitrate3 = bitrateOfFile; }
-
-
-                /*Fallback***********************************************************************************************************************************************************************************************/
-                /*Set audio codec to use when it is not possible to copy an audio track without re-encoding.*/
-
-                if(audioCodecComboBox.Text == "Filtered Passthru" || audioCodecComboBox2.Text == "Filtered Passthru" || audioCodecComboBox3.Text == "Filtered Passthru")
-                {
-                    if(!disableCheckStream2.Checked) //2nd Stream Enabled
-                    {
-                        outputFallBack = "--audio-fallback ac3 ";
-                    }
-                    else //First stream should always be aac as it's universal.
-                    {
-                        outputFallBack = "--audio-fallback fdk_aac ";
-                    }
-                    
-                }
-
-                /*Mixdown***********************************************************************************************************************************************************************************************/
-
-                //The options are mono, stereo, dpl1 (Dolby Surround), dpl2 (Dolby ProLogic? 2), or 5point1 (5.1).
-                if(videoFile.Audio[audioTrackNumber].Properties.ContainsKey("Channel(s)_Original")) //Assume 8 Channels
-                {
-                    switch (audioCodecComboBox.Text)
-                    {
-                        case "Filtered Passthru":
-                            mixdown1 = "5point1";
-                            userSelectedBitrate = userSelectedBitrate * 8;
-                            break;
-                        case "AAC (FDK)": //only good up to Dolby Pro Logic 2 (2 channel)
-                            mixdown1 = "dpl2";
-                            userSelectedBitrate = userSelectedBitrate * 2;
-                            break;
-                        default:
-                            switch (mixdownComboBox.Text)
-                            {
-                                case "Dolby ProLogic 2":
-                                    mixdown1 = "dpl2";
-                                    userSelectedBitrate = userSelectedBitrate * 2;
-                                    break;
-                                default: //5.1 Audio
-                                    mixdown1 = "5point1";
-                                    userSelectedBitrate = userSelectedBitrate * 6;
-                                    break;
-                            }
-                            break;
-                    }
-
-                    if (!disableCheckStream2.Checked) //Enabled
-                    {
-                        switch (audioCodecComboBox2.Text)
-                        {
-                            case "Filtered Passthru":
-                                mixdown2 = ",5point1";
-                                userSelectedBitrate2 = userSelectedBitrate2 * 8;
-                                break;
-                            case "AAC (FDK)": //only good up to Dolby Pro Logic 2 (2 channel)
-                                mixdown2 = ",dpl2";
-                                userSelectedBitrate2 = userSelectedBitrate2 * 2;
-                                break;
-                            default:
-                                switch (mixdownComboBox2.Text)
-                                {
-                                    case "Dolby ProLogic 2":
-                                        mixdown2 = ",dpl2";
-                                        userSelectedBitrate2 = userSelectedBitrate2 * 2;
-                                        break;
-                                    default: //5.1 Audio
-                                        mixdown2 = ",5point1";
-                                        userSelectedBitrate2 = userSelectedBitrate2 * 6;
-                                        break;
-                                }
-                                break;
-                        }
-
-                        if (!disableCheckStream3.Checked) //Enabled
-                        {
-                            switch (audioCodecComboBox3.Text)
-                            {
-                                case "Filtered Passthru":
-                                    mixdown3 = ",5point1";
-                                    userSelectedBitrate3 = userSelectedBitrate3 * 8;
-                                    break;
-                                case "AAC (FDK)": //only good up to Dolby Pro Logic 2 (2 channel)
-                                    mixdown3 = ",dpl2";
-                                    userSelectedBitrate3 = userSelectedBitrate3 * 2;
-                                    break;
-                                default:
-                                    switch (mixdownComboBox3.Text)
-                                    {
-                                        case "Dolby ProLogic 2":
-                                            mixdown3 = ",dpl2";
-                                            userSelectedBitrate3 = userSelectedBitrate3 * 2;
-                                            break;
-                                        default: //5.1 Audio
-                                            mixdown3 = ",5point1";
-                                            userSelectedBitrate3 = userSelectedBitrate3 * 6;
-                                            break;
-                                    }
-                                    break;
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    switch (audioCodecComboBox.Text)
-                    {
-                        case "Filtered Passthru":
-                            switch (videoFile.Audio[audioTrackNumber].Channels)
-                            {
-                                case 1:
-                                    mixdown1 = "mono";
-                                    userSelectedBitrate = userSelectedBitrate * 1;
-                                    break;
-                                case 2:
-                                    mixdown1 = "dpl2";
-                                    userSelectedBitrate = userSelectedBitrate * 2;
-                                    break;
-                                case 6:
-                                    mixdown1 = "5point1";
-                                    userSelectedBitrate = userSelectedBitrate * 6;
-                                    break;
-                                case 8:
-                                    mixdown1 = "5point1";
-                                    userSelectedBitrate = userSelectedBitrate * 6;
-                                    break;
-                                default:
-                                    mixdown1 = "dpl2";
-                                    userSelectedBitrate = userSelectedBitrate * 2;
-                                    break;
-                            }
-                            break;
-                        case "AAC (FDK)": //only good up to Dolby Pro Logic 2 (2 channel)
-                            switch (videoFile.Audio[audioTrackNumber].Channels)
-                            {
-                                case 1:
-                                    mixdown1 = "mono";
-                                    userSelectedBitrate = userSelectedBitrate * 1; ;
-                                    break;
-                                default:
-                                    mixdown1 = "dpl2";
-                                    userSelectedBitrate = userSelectedBitrate * 2;
-                                    break;
-                            }
-                            break;
-                        default:
-                            switch (mixdownComboBox.Text)
-                            {
-                                case "Dolby ProLogic 2":
-                                    mixdown1 = "dpl2";
-                                    userSelectedBitrate = userSelectedBitrate * 2;
-                                    break;
-                                default: //5.1 Audio
-                                    switch (videoFile.Audio[audioTrackNumber].Channels)
-                                    {
-                                        case 1:
-                                            mixdown1 = "mono";
-                                            userSelectedBitrate = userSelectedBitrate * 1;
-                                            break;
-                                        case 2:
-                                            mixdown1 = "dpl2";
-                                            userSelectedBitrate = userSelectedBitrate * 2;
-                                            break;
-                                        default:
-                                            mixdown1 = "5point1";
-                                            userSelectedBitrate = userSelectedBitrate * 6;
-                                            break;
-                                    }
-                                    break;
-                            }
-                            break;
-                    }
-
-                    if (!disableCheckStream2.Checked) //Enabled
-                    {
-                        switch (audioCodecComboBox2.Text)
-                        {
-                            case "Filtered Passthru":
-                                switch (videoFile.Audio[audioTrackNumber].Channels)
-                                {
-                                    case 1:
-                                        mixdown2 = ",mono";
-                                        userSelectedBitrate2 = userSelectedBitrate2 * 1;
-                                        break;
-                                    case 2:
-                                        mixdown2 = ",dpl2";
-                                        userSelectedBitrate2 = userSelectedBitrate2 * 2;
-                                        break;
-                                    default:
-                                        mixdown2 = ",5point1";
-                                        userSelectedBitrate2 = userSelectedBitrate2 * 6;
-                                        break;
-                                }
-                                break;
-                            case "AAC (FDK)": //only good up to Dolby Pro Logic 2 (2 channel)
-                                switch (videoFile.Audio[audioTrackNumber].Channels)
-                                {
-                                    case 1:
-                                        mixdown2 = ",mono";
-                                        userSelectedBitrate2 = userSelectedBitrate2 * 1; ;
-                                        break;
-                                    default:
-                                        mixdown2 = ",dpl2";
-                                        userSelectedBitrate2 = userSelectedBitrate2 * 2;
-                                        break;
-                                }
-                                break;
-                            default:
-                                switch (mixdownComboBox2.Text)
-                                {
-                                    case "Dolby ProLogic 2":
-                                        mixdown2 = ",dpl2";
-                                        userSelectedBitrate2 = userSelectedBitrate2 * 2;
-                                        break;
-                                    default: //5.1 Audio
-                                        switch (videoFile.Audio[audioTrackNumber].Channels)
-                                        {
-                                            case 1:
-                                                mixdown2 = ",mono";
-                                                userSelectedBitrate2 = userSelectedBitrate2 * 1;
-                                                break;
-                                            case 2:
-                                                mixdown2 = ",dpl2";
-                                                userSelectedBitrate2 = userSelectedBitrate2 * 2;
-                                                break;
-                                            default:
-                                                mixdown2 = ",5point1";
-                                                userSelectedBitrate2 = userSelectedBitrate2 * 6;
-                                                break;
-                                        }
-                                        break;
-                                }
-                                break;
-                        }
-
-                        if (!disableCheckStream3.Checked) //Enabled
-                        {
-                            switch (audioCodecComboBox3.Text)
-                            {
-                                case "Filtered Passthru":
-                                    switch (videoFile.Audio[audioTrackNumber].Channels)
-                                    {
-                                        case 1:
-                                            mixdown3 = ",mono";
-                                            userSelectedBitrate3 = userSelectedBitrate3 * 1;
-                                            break;
-                                        case 2:
-                                            mixdown3 = ",dpl2";
-                                            userSelectedBitrate3 = userSelectedBitrate3 * 2;
-                                            break;
-                                        case 6:
-                                            mixdown3 = ",5point1";
-                                            userSelectedBitrate3 = userSelectedBitrate3 * 6;
-                                            break;
-                                        case 8:
-                                            mixdown3 = ",5point1";
-                                            userSelectedBitrate3 = userSelectedBitrate3 * 6;
-                                            break;
-                                        default:
-                                            mixdown3 = ",dpl2";
-                                            userSelectedBitrate3 = userSelectedBitrate3 * 2;
-                                            break;
-                                    }
-                                    break;
-                                case "AAC (FDK)": //only good up to Dolby Pro Logic 2 (2 channel)
-                                    switch (videoFile.Audio[audioTrackNumber].Channels)
-                                    {
-                                        case 1:
-                                            mixdown3 = ",mono";
-                                            userSelectedBitrate3 = userSelectedBitrate3 * 1; ;
-                                            break;
-                                        default:
-                                            mixdown3 = ",dpl2";
-                                            userSelectedBitrate3 = userSelectedBitrate3 * 2;
-                                            break;
-                                    }
-                                    break;
-                                default:
-                                    switch (mixdownComboBox.Text)
-                                    {
-                                        case "Dolby ProLogic 2":
-                                            mixdown3 = ",dpl2";
-                                            userSelectedBitrate3 = userSelectedBitrate3 * 2;
-                                            break;
-                                        default: //5.1 Audio
-                                            switch (videoFile.Audio[audioTrackNumber].Channels)
-                                            {
-                                                case 1:
-                                                    mixdown3 = ",mono";
-                                                    userSelectedBitrate3 = userSelectedBitrate3 * 1;
-                                                    break;
-                                                case 2:
-                                                    mixdown3 = ",dpl2";
-                                                    userSelectedBitrate3 = userSelectedBitrate3 * 2;
-                                                    break;
-                                                case 6:
-                                                    mixdown3 = ",5point1";
-                                                    userSelectedBitrate3 = userSelectedBitrate3 * 6;
-                                                    break;
-                                                case 8:
-                                                    mixdown3 = ",5point1";
-                                                    userSelectedBitrate3 = userSelectedBitrate3 * 6;
-                                                    break;
-                                                default:
-                                                    mixdown3 = ",5point1";
-                                                    userSelectedBitrate3 = userSelectedBitrate3 * 6;
-                                                    break;
-                                            }
-                                            break;
-                                    }
-                                    break;
-                            }
-                        }
-                    }
-                }
-
-                
-
-                outputMixdown = "--mixdown " + mixdown1 + mixdown2 + mixdown3 + " ";
-
-                if(!disableCheckStream2.Checked) //Stream 2 Enabled
-                {
-                    if(!disableCheckStream3.Checked) //Stream 2 & 3 enabled
-                    {
-                        outputBitrate = "--ab " + userSelectedBitrate.ToString() + "," + userSelectedBitrate2.ToString() + "," + userSelectedBitrate3.ToString() + " ";
-                    }
-                    else
-                    {
-                        outputBitrate = "--ab " + userSelectedBitrate.ToString() + "," + userSelectedBitrate2.ToString() +  " ";
-                    }
-                }
-                else //Stream 2 Disabled
-                {
-                    outputBitrate = "--ab " + userSelectedBitrate.ToString() + " ";
-                }
-                
-            }
-            else //Source Unreadable - Set variables derived from file to user selected values
-            {
-                if(!disableCheckStream2.Checked) //Stream 2 enabled
-                {
-                    if(!disableCheckStream3.Checked) //Stream 3 enabled
-                    {
-                        outputAudioTrack = "--audio 1,1,1 ";//Since no track can be read in, select the first audio track.
-                        try { userSelectedBitrate = int.Parse(audioBitrateCombo.Text); } catch { userSelectedBitrate = 128; }//default value is 128
-                        try { userSelectedBitrate2 = int.Parse(audioBitrateCombo2.Text); } catch { userSelectedBitrate2 = 128; }//default value is 128
-                        try { userSelectedBitrate3 = int.Parse(audioBitrateCombo3.Text); } catch { userSelectedBitrate3 = 128; }//default value is 128
-
-                        maxBitrate = userSelectedBitrate;
-                        outputSampleRate = "--arate " + sampleRateCombo.Text + "," + sampleRateCombo2 + "," + sampleRateCombo3 + " ";
-
-                        if (audioCodecComboBox.Text =="Filtered Passthru" || audioCodecComboBox2.Text == "Filtered Passthru" || audioCodecComboBox3.Text == "Filtered Passthru")
-                        {
-                            if (!disableCheckStream2.Checked) //2nd Stream Enabled
-                            {
-                                outputFallBack = "--audio-fallback ac3 ";
-                            }
-                            else //First stream should always be aac as it's universal.
-                            {
-                                outputFallBack = "--audio-fallback fdk_aac ";
-                            }
-
-                        }
-                    }
-                    else //Stream 3 disabled
-                    {
-                        outputAudioTrack = "--audio 1,1 ";//Since no track can be read in, select the first audio track.
-                        try { userSelectedBitrate = int.Parse(audioBitrateCombo.Text); } catch { userSelectedBitrate = 96; }//default value is 96
-                        try { userSelectedBitrate2 = int.Parse(audioBitrateCombo2.Text); } catch { userSelectedBitrate2 = 96; }//default value is 96
-                        try { userSelectedBitrate3 = int.Parse(audioBitrateCombo3.Text); } catch { userSelectedBitrate3 = 96; }//default value is 96
-
-                        maxBitrate = userSelectedBitrate;
-                        outputSampleRate = "--arate " + sampleRateCombo.Text + "," + sampleRateCombo2 + " ";
-
-                        if (audioCodecComboBox.Text == "Filtered Passthru" || audioCodecComboBox2.Text == "Filtered Passthru" || audioCodecComboBox3.Text == "Filtered Passthru")
-                        {
-                            if (!disableCheckStream2.Checked) //2nd Stream Enabled
-                            {
-                                outputFallBack = "--audio-fallback ac3 ";
-                            }
-                            else //First stream should always be aac as it's universal.
-                            {
-                                outputFallBack = "--audio-fallback fdk_aac ";
-                            }
-
-                        }
-                    }
-                }
-                else
-                {
-                    //bitrateOfFile, audioTrackNumber, maxBitrate
-                    outputAudioTrack = "--audio 1 "; //Since no track can be read in, select the first audio track.
-                    try { userSelectedBitrate = int.Parse(audioBitrateCombo.Text); } catch { userSelectedBitrate = 96; }//default value is 96
-                    maxBitrate = userSelectedBitrate;
-
-                    /*Samplerate***********************************************************************************************************************************************************************************************/
-                    outputSampleRate = "--arate " + sampleRateCombo.Text + " ";
-
-                    /*Fallback***********************************************************************************************************************************************************************************************/
-                    //outputFallBack = "--audio-fallback av_aac "; - Use the FDK encoder it's much better, requires handbrake to be compiled separateley.
-                    outputFallBack = "--audio-fallback fdk_aac ";
-                }
-
-                /*Mixdown***********************************************************************************************************************************************************************************************/
-                //The options are auto, mono, stereo, dpl1 (Dolby Surround), dpl2 (Dolby ProLogic? 2), or 5point1 (5.1).
-                switch (audioCodecComboBox.Text)
-                {
-                    case "Filtered Passthru":
-                        mixdown1 = mixdownComboBox.Text;
-                        userSelectedBitrate = userSelectedBitrate * 6;
-                        break;
-                    case "AAC (FDK)": //only good up to Dolby Pro Logic 2 (2 channel)
-                        mixdown1 = "dpl2";
-                        userSelectedBitrate = userSelectedBitrate * 2;
-                        break;
-                    default:
-                        switch (mixdownComboBox.Text)
-                        {
-                            case "Dolby ProLogic 2":
-                                mixdown1 = "dpl2";
-                                userSelectedBitrate = userSelectedBitrate * 2;
-                                break;
-                            default: //5.1 Audio
-                                mixdown1 = "5point1";
-                                userSelectedBitrate = userSelectedBitrate * 6;
-                                break;
-                        }
-                        break;
-                }
-                if (!disableCheckStream2.Checked)
-                {
-                    switch (audioCodecComboBox2.Text)
-                    {
-                        case "Filtered Passthru":
-                            mixdown2 = mixdownComboBox2.Text;
-                            userSelectedBitrate2 = userSelectedBitrate2 * 6;
-                            break;
-                        case "AAC (FDK)": //only good up to Dolby Pro Logic 2 (2 channel)
-                            mixdown2 = ",dpl2";
-                            userSelectedBitrate2 = userSelectedBitrate2 * 2;
-                            break;
-                        default:
-                            switch (mixdownComboBox2.Text)
-                            {
-                                case "Dolby ProLogic 2":
-                                    mixdown2 = ",dpl2";
-                                    userSelectedBitrate2 = userSelectedBitrate2 * 2;
-                                    break;
-                                default: //5.1 Audio
-                                    mixdown2 = ",5point1";
-                                    userSelectedBitrate2 = userSelectedBitrate2 * 6;
-                                    break;
-                            }
-                            break;
-                    }
-                    if (!disableCheckStream3.Checked) //Enabled
-                    {
-                        switch (audioCodecComboBox3.Text)
-                        {
-                            case "Filtered Passthru":
-                                mixdown3 = mixdownComboBox3.Text;
-                                userSelectedBitrate3 = userSelectedBitrate3 * 6;
-                                break;
-                            case "AAC (FDK)": //only good up to Dolby Pro Logic 2 (2 channel)
-                                mixdown3 = "--mixdown dpl2 ";
-                                userSelectedBitrate3 = userSelectedBitrate3 * 2;
-                                break;
-                            default:
-                                switch (mixdownComboBox3.Text)
-                                {
-                                    case "Dolby ProLogic 3":
-                                        mixdown3 = "--mixdown dpl2 ";
-                                        userSelectedBitrate3 = userSelectedBitrate3 * 2;
-                                        break;
-                                    default: //5.1 Audio
-                                        mixdown3 = "--mixdown 5point1 ";
-                                        userSelectedBitrate3 = userSelectedBitrate3 * 6;
-                                        break;
-                                }
-                                break;
-                        }
-                    }
-                }
-
-
-
-                outputMixdown = "--mixdown " + mixdown1 + mixdown2 + mixdown3 + " ";
-
-                if (!disableCheckStream2.Checked) //Stream 2 Enabled
-                {
-                    if (!disableCheckStream3.Checked)
-                    {
-                        outputBitrate = "--ab " + userSelectedBitrate.ToString() + "," + userSelectedBitrate2.ToString() + "," + userSelectedBitrate3.ToString() + " ";
-                    }
-                    else
-                    {
-                        outputBitrate = "--ab " + userSelectedBitrate.ToString() + "," + userSelectedBitrate2.ToString() + " ";
-                    }
-                }
-                else //Stream 2 Disabled
-                {
-                    outputBitrate = "--ab " + userSelectedBitrate.ToString() + " ";
-                }
-            }
-            
-            /*Passthru Mask***********************************************************************************************************************************************************************************************/
-
-            if(audioCodecComboBox.Text =="Filtered Passthru" || (audioCodecComboBox2.Text == "Filtered Passthru" && !disableCheckStream2.Checked) || (audioCodecComboBox3.Text == "Filtered Passthru" && !disableCheckStream3.Checked))
-            {
-                //Check which passthru options are selected
-
-                if (filteredAACCheck.Checked || filteredAACCheck2.Checked || filteredAACCheck3.Checked)
-                {
-                    if (string.IsNullOrEmpty(outputAudioPassthruMask))
-                    {
-                        outputAudioPassthruMask += "aac";
-                    }
-                    else
-                    {
-                        outputAudioPassthruMask += ",aac";
-                    }
-                    
-                }
-                if (filteredAC3Check.Checked || filteredAC3Check2.Checked || filteredAC3Check3.Checked)
-                {
-                    if (string.IsNullOrEmpty(outputAudioPassthruMask))
-                    {
-                        outputAudioPassthruMask += "ac3";
-                    }
-                    else
-                    {
-                        outputAudioPassthruMask += ",ac3";
-                    }
-                }
-                if (filteredEAC3Check.Checked || filteredEAC3Check2.Checked || filteredEAC3Check3.Checked)
-                {
-                    if (string.IsNullOrEmpty(outputAudioPassthruMask))
-                    {
-                        outputAudioPassthruMask += "eac3";
-                    }
-                    else
-                    {
-                        outputAudioPassthruMask += ",eac3";
-                    }
-                }
-                if (filteredDTSCheck.Checked || filteredDTSCheck2.Checked || filteredDTSCheck3.Checked)
-                {
-                    if (string.IsNullOrEmpty(outputAudioPassthruMask))
-                    {
-                        outputAudioPassthruMask += "dts";
-                    }
-                    else
-                    {
-                        outputAudioPassthruMask += ",dts";
-                    }
-                }
-                if (filteredDTSHDCheck.Checked || filteredDTSHDCheck2.Checked || filteredDTSHDCheck3.Checked)
-                {
-                    if (string.IsNullOrEmpty(outputAudioPassthruMask))
-                    {
-                        outputAudioPassthruMask += "dtshd";
-                    }
-                    else
-                    {
-                        outputAudioPassthruMask += ",dtshd";
-                    }
-                }
-                if (filteredTrueHDCheck.Checked || filteredTrueHDCheck2.Checked || filteredTrueHDCheck3.Checked)
-                {
-                    if (string.IsNullOrEmpty(outputAudioPassthruMask))
-                    {
-                        outputAudioPassthruMask += "truehd";
-                    }
-                    else
-                    {
-                        outputAudioPassthruMask += ",truehd";
-                    }
-                }
-                if (filteredMP3Check.Checked || filteredMP3Check2.Checked || filteredMP3Check3.Checked)
-                {
-                    if (string.IsNullOrEmpty(outputAudioPassthruMask))
-                    {
-                        outputAudioPassthruMask += "mp3";
-                    }
-                    else
-                    {
-                        outputAudioPassthruMask += ",mp3";
-                    }
-                }
-                if (filteredFLACCheck.Checked || filteredFLACCheck2.Checked || filteredFLACCheck3.Checked)
-                {
-                    if (string.IsNullOrEmpty(outputAudioPassthruMask))
-                    {
-                        outputAudioPassthruMask += "flac16,flac24";
-                    }
-                    else
-                    {
-                        outputAudioPassthruMask += ",flac16,flac24";
-                    }
-                }
-                if(!string.IsNullOrEmpty(outputAudioPassthruMask))
-                {
-                    outputAudioPassthruMask = "--audio-copy-mask " + outputAudioPassthruMask + " ";
-                }
-                
-            }
-            else
-            {
-                outputAudioPassthruMask = "";
-            }
-
-            /*Encoder***********************************************************************************************************************************************************************************************/
-            string encoder1 = "";
-            string encoder2 = "";
-            string encoder3 = "";
-
-            switch (audioCodecComboBox.Text)
-            {
-                case "AAC (FDK)":
-                    //outputEncoder = "--audio-fallback av_aac "; - Use the FDK encoder it's much better, requires handbrake to be compiled separateley.
-                    encoder1 = "fdk_aac";
-                    break;
-                case "AC3":
-                    encoder1 = "ac3";
-                    break;
-                case "E-AC3":
-                    encoder1 = "eac3";
-                    break;
-                case "Filtered Passthru":
-                    encoder1 = "copy";
-                    break;
-                default:
-                    //outputEncoder = "--audio-fallback av_aac "; - Use the FDK encoder it's much better, requires handbrake to be compiled separateley.
-                    encoder1 = "fdk_aac";
-                    break;
-            }
-            if(!disableCheckStream2.Checked) //Enabled
-            {
-                switch (audioCodecComboBox2.Text)
-                {
-                    case "AAC (FDK)":
-                        //outputEncoder = "--audio-fallback av_aac "; - Use the FDK encoder it's much better, requires handbrake to be compiled separateley.
-                        encoder2 = ",fdk_aac";
-                        break;
-                    case "AC3":
-                        encoder2 = ",AC3";
-                        break;
-                    case "E-AC3":
-                        encoder2 = ",eac3";
-                        break;
-                    case "Filtered Passthru":
-                        encoder2 = ",copy";
-                        break;
-                    default:
-                        //outputEncoder = "--audio-fallback av_aac "; - Use the FDK encoder it's much better, requires handbrake to be compiled separateley.
-                        encoder2 = ",fdk_aac";
-                        break;
-                }
-                if(!disableCheckStream3.Checked)
-                {
-                    switch (audioCodecComboBox3.Text)
-                    {
-                        case "AAC (FDK)":
-                            //outputEncoder = "--audio-fallback av_aac "; - Use the FDK encoder it's much better, requires handbrake to be compiled separateley.
-                            encoder3 = ",fdk_aac";
-                            break;
-                        case "AC3":
-                            encoder3 = ",ac3";
-                            break;
-                        case "E-AC3":
-                            encoder3 = ",eac3";
-                            break;
-                        case "Filtered Passthru":
-                            encoder3 = ",copy";
-                            break;
-                        default:
-                            //outputEncoder = "--audio-fallback av_aac "; - Use the FDK encoder it's much better, requires handbrake to be compiled separateley.
-                            encoder3 = ",fdk_aac";
-                            break;
-                    }
-                }
-            }
-
-            outputEncoder = "--aencoder " + encoder1 + encoder2 + encoder3 + " ";
-
-            if(!disableCheckStream2.Checked) //Enabled
-            {
-                outputDynamicRange = "--drc 0,0 --gain 0,0 ";
-                if(!disableCheckStream3.Checked) //Enabled
-                {
-                    outputDynamicRange = "--drc 0,0,0 --gain 0,0,0 ";
-                }
-            }
-
-            return outputAudioTrack + outputEncoder + outputAudioPassthruMask + outputFallBack + outputBitrate + outputSampleRate + outputMixdown + outputDynamicRange;
-        } //Researching 2 track audio playability on Roku and Xbox.
         /// <summary>
         /// Build string using the other audio methods.
         /// the goal is to form each part of the command string within the method for that part without requiring additional methods.
@@ -3550,7 +2531,108 @@ namespace MovieDataCollector
 
             audioOutput = audioTrack + trackNames + audioEncoder + copyMask + fallback + sampleRate + mixdown + drc + gain;
 
-            return audioOutput;
+            return CheckforDuplicatedTracks(videoFile, audioTrack, trackNames, audioEncoder, copyMask, fallback, sampleRate, mixdown, drc, gain); //Removes tracks that will result in duplicated audio increasing file size but not gaining anything. (For instance two dolby pro logic tracks of the same bitrate)
+
+            //return audioOutput;
+        }
+        private string CheckforDuplicatedTracks(MediaFile videofile, string audioTrack, string trackNames, string audioEncoder, string copyMask, string fallback, string sampleRate, string mixdown, string drc, string gain)
+        {
+            List<string> audioOutputList = new List<string>
+            { audioTrack,
+                trackNames,
+                audioEncoder,
+                copyMask,
+                fallback,
+                sampleRate,
+                mixdown,
+                drc,
+                gain
+            };
+            string rString = "";
+            string track1Type = "";
+            string track2Type = "";
+            string track3Type = "";
+
+            for (int i = 0; i < surroundTracks.Count; i++)
+            {
+                if (selectedTrack1 == surroundTracks[i]) { track1Type = "surround"; }
+                if (selectedTrack2 == surroundTracks[i]) { track2Type = "surround"; }
+                if (selectedTrack3 == surroundTracks[i]) { track3Type = "surround"; }
+            }
+
+            for (int i = 0; i < stereoTracks.Count; i++)
+            {
+                if (selectedTrack1 == stereoTracks[i]) { track1Type = "stereo"; }
+                if (selectedTrack2 == stereoTracks[i]) { track2Type = "stereo"; }
+                if (selectedTrack3 == stereoTracks[i]) { track3Type = "stereo"; }
+            }
+
+            if (string.IsNullOrEmpty(track1Type)) { track1Type = "unknown"; }
+            if (string.IsNullOrEmpty(track2Type)) { track2Type = "unknown"; }
+            if (string.IsNullOrEmpty(track3Type)) { track3Type = "unknown"; }
+
+            //If only 1 stereo track exists, eliminated tracks 2 & 3. There is no reason to keep multiple stereo tracks
+            if (surroundTracks.Count <=0 && (!disableCheckStream2.Checked || !disableCheckStream3.Checked)) //No surround tracks exist and a second track is enabled either track 2 or 3
+            {
+                for (int i = 0; i < audioOutputList.Count; i++)
+                {
+                    switch (i)
+                        {
+                        case 0: //Audio Track
+                            audioOutputList[i] = "--audio " + Program.GeneralParser(audioTrack, "--audio ", ",");
+                            audioOutputList[i] += " --ab " + Program.GeneralParser(audioTrack, "--ab ", ",");
+                            break;
+                        case 1: //Track Names
+                            audioOutputList[i] = " -A " + Program.GeneralParser(trackNames, "-A ", ",");
+                            break;
+                        case 2: //Audio Encoder
+                            audioOutputList[i] = " --aencoder " + Program.GeneralParser(audioEncoder, "--aencoder ", ",");
+                            break;
+                        case 3: //Copy Mask
+                            if(audioCodecComboBox.Text == "Filtered Passthru")
+                            {
+                                audioOutputList[i] = copyMask;
+                            }
+                            else
+                            {
+                                audioOutputList[i] = "";
+                            }
+                            break;
+                        case 4: //Fallback Encoder
+                            if (track1Type == "surround")
+                            {
+                                audioOutputList[i] = " --audio-fallback eac3 ";
+                            }
+                            else
+                            {
+                                audioOutputList[i] = " --audio-fallback fdk_aac ";
+                            }
+                            break;
+                        case 5: //Sample Rate
+                            audioOutputList[i] = " --arate " + Program.GeneralParser(sampleRate, "--arate ", ",");
+                            break;
+                        case 6: //Mixdown
+                            audioOutputList[i] = " --mixdown " + Program.GeneralParser(mixdown, "--mixdown ", ",");
+                            break;
+                        case 7: //DRC
+                            audioOutputList[i] = " --drc " + Program.GeneralParser(drc, "--drc ", ",");
+                            break;
+                        case 8: //Gain
+                            audioOutputList[i] = " --gain " + Program.GeneralParser(gain, "--gain ", ",");
+                            break;
+                        default:
+                            break;
+
+                    }
+                }
+                
+            }
+            for (int a = 0; a < audioOutputList.Count; a++)
+            {
+                rString += audioOutputList[a];
+            }
+
+            return rString;
         }
         private void GeneratePassthruList()
         {
@@ -3602,7 +2684,7 @@ namespace MovieDataCollector
         /// </summary>
         /// <param name="videofile"></param>
         /// <returns></returns>
-        private string AudioTrack(MediaFile videofile)
+        private string AudioTrack(MediaFile videofile) //Maximum Bitrate for AC3 audio is 640 total. Handbrake will sanitize the audio to 640.
         {
             stereoTracks.Clear();
             surroundTracks.Clear();
@@ -3669,7 +2751,10 @@ namespace MovieDataCollector
                                 {
                                     //add track to Surround List
                                     surroundTracks.Add(i);
-                                    surroundBitrates.Add(AudioBitrate(videofile, i) / 8);
+                                    if (videofile.Audio[i].Properties["Channel(s)_Original"].Contains("8")) { surroundBitrates.Add(AudioBitrate(videofile, i) / 8); }
+                                    else if (videofile.Audio[i].Properties["Channel(s)_Original"].Contains("7")) { surroundBitrates.Add(AudioBitrate(videofile, i) / 7); }
+                                    else if (videofile.Audio[i].Properties["Channel(s)_Original"].Contains("6")) { surroundBitrates.Add(AudioBitrate(videofile, i) / 6); }
+                                    else { surroundBitrates.Add(AudioBitrate(videofile, i) / 5); }
                                 }
                                 break;
                             case 1: //Mono
@@ -3679,8 +2764,20 @@ namespace MovieDataCollector
                                 break;
                             case 2: // L,R
                                     //add track to Stereo List
-                                stereoTracks.Add(i);
-                                stereoBitrates.Add(AudioBitrate(videofile, i) / 2);
+                                if (videofile.Audio[i].Properties.ContainsKey("Channel(s)_Original"))
+                                {
+                                    surroundTracks.Add(i);
+                                    if (videofile.Audio[i].Properties["Channel(s)_Original"].Contains("8")) { surroundBitrates.Add(AudioBitrate(videofile, i) / 8); }
+                                    else if (videofile.Audio[i].Properties["Channel(s)_Original"].Contains("7")) { surroundBitrates.Add(AudioBitrate(videofile, i) / 7); }
+                                    else if (videofile.Audio[i].Properties["Channel(s)_Original"].Contains("6")) { surroundBitrates.Add(AudioBitrate(videofile, i) / 6); }
+                                    else { surroundBitrates.Add(AudioBitrate(videofile, i) / 5); }
+
+                                }
+                                else
+                                {
+                                    stereoTracks.Add(i);
+                                    stereoBitrates.Add(AudioBitrate(videofile, i) / 2);
+                                }
                                 break;
                             case 3: //2.1 L,R + Subwoofer
                                     //add track to Stereo List
@@ -3751,7 +2848,10 @@ namespace MovieDataCollector
                             {
                                 //add track to Surround List
                                 surroundTracks.Add(i);
-                                surroundBitrates.Add(AudioBitrate(videofile, i) / 8);
+                                if (videofile.Audio[i].Properties["Channel(s)_Original"].Contains("8")) { surroundBitrates.Add(AudioBitrate(videofile, i) / 8); }
+                                else if (videofile.Audio[i].Properties["Channel(s)_Original"].Contains("7")) { surroundBitrates.Add(AudioBitrate(videofile, i) / 7); }
+                                else if (videofile.Audio[i].Properties["Channel(s)_Original"].Contains("6")) { surroundBitrates.Add(AudioBitrate(videofile, i) / 6); }
+                                else { surroundBitrates.Add(AudioBitrate(videofile, i) / 5); }
                             }
                             break;
                         case 1: //Mono
@@ -3760,9 +2860,20 @@ namespace MovieDataCollector
                             stereoBitrates.Add(AudioBitrate(videofile, i));
                             break;
                         case 2: // L,R
-                            //add track to Stereo List
-                            stereoTracks.Add(i);
-                            stereoBitrates.Add(AudioBitrate(videofile, i) / 2);
+                                //add track to Stereo List
+                            if (videofile.Audio[i].Properties.ContainsKey("Channel(s)_Original"))
+                            {
+                                surroundTracks.Add(i);
+                                if (videofile.Audio[i].Properties["Channel(s)_Original"].Contains("8")) { surroundBitrates.Add(AudioBitrate(videofile, i) / 8); }
+                                else if (videofile.Audio[i].Properties["Channel(s)_Original"].Contains("7")) { surroundBitrates.Add(AudioBitrate(videofile, i) / 7); }
+                                else if (videofile.Audio[i].Properties["Channel(s)_Original"].Contains("6")) { surroundBitrates.Add(AudioBitrate(videofile, i) / 6); }
+                                else { surroundBitrates.Add(AudioBitrate(videofile, i) / 5); }
+                            }
+                            else
+                            {
+                                stereoTracks.Add(i);
+                                stereoBitrates.Add(AudioBitrate(videofile, i) / 2);
+                            }
                             break;
                         case 3: //2.1 L,R + Subwoofer
                             //add track to Stereo List
@@ -3953,7 +3064,9 @@ namespace MovieDataCollector
             {
                 switch (mixdownComboBox2.Text)
                 {
-                    case "Dolby ProLogic 2":
+ 
+                    case "Dolby ProLogic 2": //This may result in the same track twice...
+                        
                         if (stereoBitrates.Count > 0 && surroundBitrates.Count > 0)
                         {
                             if (stereoBitrates[bestStereoTrack] > surroundBitrates[bestSurroundTrack])
@@ -4300,7 +3413,7 @@ namespace MovieDataCollector
                     case "AC3":
                         if(track1Type == "surround") { trackName1 = "\"Surround - AC3\""; }
                         else if(track1Type == "stereo") { trackName1 = "\"Stereo - AC3\""; }
-                        else { trackName1 = "Unknown - AC3"; }
+                        else { trackName1 = "\"Unknown - AC3\""; }
                         break;
                     case "E-AC3":
                         if (track1Type == "surround") { trackName1 = "\"Surround - E-AC3\""; }
@@ -4332,7 +3445,7 @@ namespace MovieDataCollector
                                     passthru = true;
 
                                     if (track2Type == "surround") { trackName2 = ",\"Surround - " + PassthruList[i] + "\""; }
-                                    else if (track2Type == "stereo") { trackName2 = ",Stero - " + PassthruList[i] + "\""; }
+                                    else if (track2Type == "stereo") { trackName2 = ",\"Stereo - " + PassthruList[i] + "\""; }
                                 }
                             }
                         }
@@ -4342,16 +3455,16 @@ namespace MovieDataCollector
                             if (track2Type == "stereo") { trackName2 = ",\"Unknown\""; }
                         }
 
-                        trackName2 = ",Dolby Pro Logic 2 - AAC";
+                        trackName2 = ",\"Dolby Pro Logic 2 - AAC\"";
                         break;
                     case "AC3":
                         if (track2Type == "surround") { trackName2 = ",\"Surround - AC3\""; }
                         else if (track2Type == "stereo") { trackName2 = ",\"Stereo - AC3\""; }
-                        else { trackName2 = "Unknown - AC3"; }
+                        else { trackName2 = ",\"Unknown - AC3\""; }
                         break;
                     case "E-AC3":
                         if (track2Type == "surround") { trackName2 = ",\"Surround - E-AC3\""; }
-                        else if (track2Type == "stereo") { trackName2 = "\"Stereo - E-AC3\""; }
+                        else if (track2Type == "stereo") { trackName2 = ",\"Stereo - E-AC3\""; }
                         else { trackName2 = ",\"Unknown - E-AC3\""; }
                         break;
                     default:
@@ -4379,7 +3492,7 @@ namespace MovieDataCollector
                                     passthru = true;
 
                                     if (track3Type == "surround") { trackName3 = ",\"Surround - " + PassthruList[i] + "\""; }
-                                    else if (track3Type == "stereo") { trackName3 = ",Stero - " + PassthruList[i] + "\""; }
+                                    else if (track3Type == "stereo") { trackName3 = ",\"Stereo - " + PassthruList[i] + "\""; }
                                 }
                             }
                         }
