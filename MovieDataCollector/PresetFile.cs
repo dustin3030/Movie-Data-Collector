@@ -93,7 +93,7 @@ namespace MovieDataCollector
 
             "false", //EnableTrack2
             "E-AC3", //AudioCodecAAC2
-            "5.1", //AudioMixdown2
+            "5.1 Audio", //AudioMixdown2
             "48", //AudioSampleRate2
             "false", //FilteredAACCheck2
             "false", //FilteredAC3Check2
@@ -107,7 +107,7 @@ namespace MovieDataCollector
 
             "false", //EnableTrack3
             "Filtered Passthru", //AudioCodecAAC3
-            "5.1", //AudioMixdown3
+            "5.1 Audio", //AudioMixdown3
             "48", //AudioSampleRate3
             "false", //FilteredAACCheck3
             "false", //FilteredAC3Check3
@@ -151,7 +151,7 @@ namespace MovieDataCollector
 
             "true", //EnableTrack2
             "E-AC3", //AudioCodecAAC2
-            "5.1", //AudioMixdown2
+            "5.1 Audio", //AudioMixdown2
             "48", //AudioSampleRate2
             "false", //FilteredAACCheck2
             "false", //FilteredAC3Check2
@@ -165,7 +165,7 @@ namespace MovieDataCollector
 
             "false", //EnableTrack3
             "Filtered Passthru", //AudioCodecAAC3
-            "5.1", //AudioMixdown3
+            "5.1 Audio", //AudioMixdown3
             "48", //AudioSampleRate3
             "false", //FilteredAACCheck3
             "true", //FilteredAC3Check3
@@ -209,7 +209,7 @@ namespace MovieDataCollector
 
             "false", //EnableTrack2
             "E-AC3", //AudioCodecAAC2
-            "5.1", //AudioMixdown2
+            "5.1 Audio", //AudioMixdown2
             "48", //AudioSampleRate2
             "false", //FilteredAACCheck2
             "false", //FilteredAC3Check2
@@ -223,7 +223,7 @@ namespace MovieDataCollector
 
             "false", //EnableTrack3
             "Filtered Passthru", //AudioCodecAAC3
-            "5.1", //AudioMixdown3
+            "5.1 Audio", //AudioMixdown3
             "48", //AudioSampleRate3
             "false", //FilteredAACCheck3
             "true", //FilteredAC3Check3
@@ -267,7 +267,7 @@ namespace MovieDataCollector
 
             "true", //EnableTrack2
             "E-AC3", //AudioCodecAAC2
-            "5.1", //AudioMixdown2
+            "5.1 Audio", //AudioMixdown2
             "48", //AudioSampleRate2
             "false", //FilteredAACCheck2
             "false", //FilteredAC3Check2
@@ -281,7 +281,7 @@ namespace MovieDataCollector
 
             "true", //EnableTrack3
             "Filtered Passthru", //AudioCodecAAC3
-            "5.1", //AudioMixdown3
+            "5.1 Audio", //AudioMixdown3
             "48", //AudioSampleRate3
             "false", //FilteredAACCheck3
             "true", //FilteredAC3Check3

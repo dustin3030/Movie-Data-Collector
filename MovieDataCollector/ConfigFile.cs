@@ -144,7 +144,7 @@ namespace MovieDataCollector
                 "False", //"MP3_Passthru2"
                 "False", //"FLAC_Passthru2"
 
-                "5.1", //Mixdown2
+                "5.1 Audio", //Mixdown2
                 "128", //AudioBitrateCap2
                 "48", //AudioSampleRate2
 
@@ -159,7 +159,7 @@ namespace MovieDataCollector
                 "False", //"MP3_Passthru3"
                 "False", //"FLAC_Passthru3"
 
-                "5.1", //Mixdown3
+                "5.1 Audio", //Mixdown3
                 "128", //AudioBitrateCap3
                 "48", //AudioSampleRate3
             };

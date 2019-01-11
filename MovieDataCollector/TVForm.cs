@@ -48,8 +48,6 @@ namespace MovieDataCollector
         bool changedFileNamesListboxFlag = false;
 
         int filenameListboxLastIndex = 0;
-        int changedFileNamesListboxLastIndex = 0;
-
         public TVForm()
         {
             InitializeComponent();
