@@ -72,6 +72,7 @@
             this.tmdbPictureBox = new System.Windows.Forms.PictureBox();
             this.backDropPictureBox = new System.Windows.Forms.PictureBox();
             this.InvisibleCloseButton = new System.Windows.Forms.Button();
+            this.metadataCb = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.backdropNumericUpDown)).BeginInit();
@@ -263,7 +264,7 @@
             // formatLabel
             // 
             this.formatLabel.AutoSize = true;
-            this.formatLabel.Location = new System.Drawing.Point(439, 294);
+            this.formatLabel.Location = new System.Drawing.Point(439, 285);
             this.formatLabel.Name = "formatLabel";
             this.formatLabel.Size = new System.Drawing.Size(49, 13);
             this.formatLabel.TabIndex = 11;
@@ -278,7 +279,7 @@
             "PLEX",
             "KODI",
             "Synology"});
-            this.formatComboBox.Location = new System.Drawing.Point(494, 291);
+            this.formatComboBox.Location = new System.Drawing.Point(494, 282);
             this.formatComboBox.Name = "formatComboBox";
             this.formatComboBox.Size = new System.Drawing.Size(100, 21);
             this.formatComboBox.TabIndex = 12;
@@ -288,11 +289,11 @@
             // 
             this.createFilesButton.BackColor = System.Drawing.Color.GreenYellow;
             this.createFilesButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.createFilesButton.Location = new System.Drawing.Point(442, 329);
+            this.createFilesButton.Location = new System.Drawing.Point(442, 331);
             this.createFilesButton.Name = "createFilesButton";
-            this.createFilesButton.Size = new System.Drawing.Size(146, 30);
+            this.createFilesButton.Size = new System.Drawing.Size(152, 30);
             this.createFilesButton.TabIndex = 14;
-            this.createFilesButton.Text = "Create / &Rename Files";
+            this.createFilesButton.Text = "&Create / Rename Files";
             this.createFilesButton.UseVisualStyleBackColor = false;
             this.createFilesButton.Click += new System.EventHandler(this.CreateFilesButton_Click);
             // 
@@ -300,7 +301,7 @@
             // 
             this.clearButton.BackColor = System.Drawing.Color.GreenYellow;
             this.clearButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.clearButton.Location = new System.Drawing.Point(603, 329);
+            this.clearButton.Location = new System.Drawing.Point(603, 331);
             this.clearButton.Name = "clearButton";
             this.clearButton.Size = new System.Drawing.Size(75, 30);
             this.clearButton.TabIndex = 15;
@@ -340,7 +341,7 @@
             this.panel2.BackColor = System.Drawing.Color.Transparent;
             this.panel2.Controls.Add(this.posterNumberLabel);
             this.panel2.Controls.Add(this.posterNumericUpDown);
-            this.panel2.Location = new System.Drawing.Point(579, 655);
+            this.panel2.Location = new System.Drawing.Point(579, 656);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(99, 26);
             this.panel2.TabIndex = 18;
@@ -555,6 +556,21 @@
             this.InvisibleCloseButton.UseVisualStyleBackColor = true;
             this.InvisibleCloseButton.Click += new System.EventHandler(this.InvisibleCloseButton_Click);
             // 
+            // metadataCb
+            // 
+            this.metadataCb.BackColor = System.Drawing.Color.Transparent;
+            this.metadataCb.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.metadataCb.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.metadataCb.Checked = true;
+            this.metadataCb.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.metadataCb.ForeColor = System.Drawing.Color.GreenYellow;
+            this.metadataCb.Location = new System.Drawing.Point(442, 309);
+            this.metadataCb.Name = "metadataCb";
+            this.metadataCb.Size = new System.Drawing.Size(152, 17);
+            this.metadataCb.TabIndex = 34;
+            this.metadataCb.Text = "Add &Metadata To File";
+            this.metadataCb.UseVisualStyleBackColor = false;
+            // 
             // MovieForm
             // 
             this.AcceptButton = this.getHTMLButton;
@@ -563,6 +579,7 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.CancelButton = this.InvisibleCloseButton;
             this.ClientSize = new System.Drawing.Size(690, 688);
+            this.Controls.Add(this.metadataCb);
             this.Controls.Add(this.genresLabel);
             this.Controls.Add(this.mpaaLabel);
             this.Controls.Add(this.runTimeLabel);
@@ -666,5 +683,6 @@
         private System.Windows.Forms.Label genresLabel;
         private System.Windows.Forms.Button InvisibleCloseButton;
         private System.Windows.Forms.ToolStripMenuItem theMovieDBorgToolStripMenuItem;
+        private System.Windows.Forms.CheckBox metadataCb;
     }
 }

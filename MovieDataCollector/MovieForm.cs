@@ -1571,13 +1571,17 @@ namespace MovieDataCollector
             }
 
             //Write Metadata to file
-            NLabelUpdate("Writing Metadata...This may take a while");
 
-            char[] delim = { ',' }; //using ',' as the delimiter splits each genre out
-            string[] generes = genresTextBox.Text.Split(delim);
+            if(metadataCb.Checked)
+            {
+                NLabelUpdate("Writing Metadata...This may take a while");
 
-            Write_Metadata(outputvideopath,titleComboBox.Text,yearTextBox.Text,outputposterpath,setTextBox.Text,generes, Movie.StaticProperties["Tag_Line"]);
+                char[] delim = { ',' }; //using ',' as the delimiter splits each genre out
+                string[] generes = genresTextBox.Text.Split(delim);
 
+                Write_Metadata(outputvideopath, titleComboBox.Text, yearTextBox.Text, outputposterpath, setTextBox.Text, generes, Movie.StaticProperties["Tag_Line"]);
+            }
+            
             NLabelUpdate("Finished");
             ClearAll();
             notificationLabel.Visible = false;
@@ -1785,25 +1789,6 @@ namespace MovieDataCollector
             Process.Start("http://www.TheMovieDB.org");
         }
 
-
-        private void Purge_Metadata(string filepath)
-        {
-            //This seems to break windows compatibility of tags
-            TagLib.Id3v2.Tag.DefaultVersion = 3;
-            TagLib.Id3v2.Tag.ForceDefaultVersion = true;
-
-            using (var file = TagLib.File.Create(filepath))
-            {
-                //Clear Tag Information
-                //file.RemoveTags(TagLib.TagTypes.AllTags);
-                file.Tag.Clear();
-                file.Tag.Comment = "";
-
-
-                file.Save();
-            }
-        }
-
         private void Write_Metadata(string filepath, string title, string yearstring, string posterpath, string grouping, string[] genres, string comment)
         {
             uint year = uint.Parse(yearstring);
@@ -1835,5 +1820,6 @@ namespace MovieDataCollector
             }
 
         }
+
     }
 }
