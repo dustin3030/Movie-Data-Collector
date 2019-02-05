@@ -8,6 +8,7 @@ using System.Net; //Allows for Web Useage
 using System.Text.RegularExpressions; //string manipulations
 using System.Diagnostics; //Allows for using Process.Start codes lines
 using System.Text;
+using TagLib;
 
 namespace MovieDataCollector
 {
@@ -243,76 +244,76 @@ namespace MovieDataCollector
                                         if (subfilesList[i].ToLower().Contains("forced"))
                                         {
                                             //Check to see if file exists using 3 character sub code before writing
-                                            if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".FORCED" + subExtensions[i]))
+                                            if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".FORCED" + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".FORCED" + subExtensions[i]); //move file to new folder
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".FORCED" + subExtensions[i]); //move file to new folder
                                             }
                                             //Check to see if file exists using 2 character sub code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".FORCED" + subExtensions[i]))
+                                            else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".FORCED" + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".FORCED" + subExtensions[i]);
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".FORCED" + subExtensions[i]);
                                             }
                                             //Check to see if file exists using long language code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".FORCED" + subExtensions[i]))
+                                            else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".FORCED" + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".FORCED" + subExtensions[i]);
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".FORCED" + subExtensions[i]);
                                             }
                                         }
 
                                         else if (subfilesList[i].ToLower().Contains("sdh")) //subtitles for the deaf and hard of hearing
                                         {
                                             //Check to see if file exists using 3 character sub code before writing
-                                            if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".(SDH)" + subExtensions[i]))
+                                            if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".(SDH)" + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".(SDH)" + subExtensions[i]); //move file to new folder
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".(SDH)" + subExtensions[i]); //move file to new folder
                                             }
                                             //Check to see if file exists using 2 character sub code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".(SDH)" + subExtensions[i]))
+                                            else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".(SDH)" + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".(SDH)" + subExtensions[i]);
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".(SDH)" + subExtensions[i]);
                                             }
                                             //Check to see if file exists using long language code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".(SDH)" + subExtensions[i]))
+                                            else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".(SDH)" + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".(SDH)" + subExtensions[i]);
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".(SDH)" + subExtensions[i]);
                                             }
                                         }
 
                                         else if (subfilesList[i].ToLower().Contains("cc"))//CC - Closed Captioning
                                         {
                                             //Check to see if file exists using 3 character sub code before writing
-                                            if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".(CC)" + subExtensions[i]))
+                                            if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".(CC)" + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".(CC)" + subExtensions[i]); //move file to new folder
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".(CC)" + subExtensions[i]); //move file to new folder
                                             }
                                             //Check to see if file exists using 2 character sub code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".(CC)" + subExtensions[i]))
+                                            else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".(CC)" + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".(CC)" + subExtensions[i]);
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".(CC)" + subExtensions[i]);
                                             }
                                             //Check to see if file exists using long language code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".(CC)" + subExtensions[i]))
+                                            else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".(CC)" + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".(CC)" + subExtensions[i]);
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".(CC)" + subExtensions[i]);
                                             }
                                         }
 
                                         else
                                         {
                                             //Check to see if file exists using 3 character sub code before writing
-                                            if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + subExtensions[i]))
+                                            if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + subExtensions[i]); //move file to new folder
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + subExtensions[i]); //move file to new folder
                                             }
                                             //Check to see if file exists using 2 character sub code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + subExtensions[i]))
+                                            else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + subExtensions[i]);
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + subExtensions[i]);
                                             }
                                             //Check to see if file exists using long language code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + subExtensions[i]))
+                                            else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + subExtensions[i]);
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + subExtensions[i]);
                                             }
                                         }
                                     }
@@ -322,7 +323,7 @@ namespace MovieDataCollector
                                     }
                                 }
                             }
-                            if (File.Exists(CF.DefaultSettings["MFPath"] + subfilesList[i])) //If language code wasn't found get file anyway and name it as a standard movietitle.srt
+                            if (System.IO.File.Exists(CF.DefaultSettings["MFPath"] + subfilesList[i])) //If language code wasn't found get file anyway and name it as a standard movietitle.srt
                             {
                                 try
                                 {
@@ -331,17 +332,17 @@ namespace MovieDataCollector
                                         subfilesList[i].Contains("FORCED"))
                                     {
                                         //check to see if file exists before writing.
-                                        if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.FORCED" + subExtensions[i]))
+                                        if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.FORCED" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.FORCED" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.FORCED" + subExtensions[i]); //move file to new folder
                                         }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.FORCED-2" + subExtensions[i]))
+                                        else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.FORCED-2" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.FORCED-2" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.FORCED-2" + subExtensions[i]); //move file to new folder
                                         }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.FORCED-3" + subExtensions[i]))
+                                        else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.FORCED-3" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.FORCED-3" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.FORCED-3" + subExtensions[i]); //move file to new folder
                                         }
                                     }
 
@@ -350,17 +351,17 @@ namespace MovieDataCollector
                                             subfilesList[i].Contains("Sdh"))
                                     {
                                         //check to see if file exists before writing.
-                                        if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.SDH" + subExtensions[i]))
+                                        if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.SDH" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.SDH" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.SDH" + subExtensions[i]); //move file to new folder
                                         }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.SDH-2" + subExtensions[i]))
+                                        else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.SDH-2" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.SDH-2" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.SDH-2" + subExtensions[i]); //move file to new folder
                                         }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.SDH-3" + subExtensions[i]))
+                                        else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.SDH-3" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.SDH-3" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.SDH-3" + subExtensions[i]); //move file to new folder
                                         }
                                     }
 
@@ -368,34 +369,34 @@ namespace MovieDataCollector
                                             subfilesList[i].Contains("cc"))
                                     {
                                         //check to see if file exists before writing.
-                                        if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.CC" + subExtensions[i]))
+                                        if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.CC" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.CC" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.CC" + subExtensions[i]); //move file to new folder
                                         }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.CC-2" + subExtensions[i]))
+                                        else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.CC-2" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.CC-2" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.CC-2" + subExtensions[i]); //move file to new folder
                                         }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.CC-3" + subExtensions[i]))
+                                        else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.CC-3" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.CC-3" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.CC-3" + subExtensions[i]); //move file to new folder
                                         }
                                     }
 
                                     else
                                     {
                                         //check to see if file exists before writing.
-                                        if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG" + subExtensions[i]))
+                                        if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG" + subExtensions[i]); //move file to new folder
                                         }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.(2)" + subExtensions[i]))
+                                        else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.(2)" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.(2)" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.(2)" + subExtensions[i]); //move file to new folder
                                         }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.(3)" + subExtensions[i]))
+                                        else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.(3)" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.(3)" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.(3)" + subExtensions[i]); //move file to new folder
                                         }
 
                                     }
@@ -450,76 +451,76 @@ namespace MovieDataCollector
                                         if (subfilesList[i].ToLower().Contains("forced"))
                                         {
                                             //Check to see if file exists using 3 character sub code before writing
-                                            if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".FORCED" + subExtensions[i]))
+                                            if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".FORCED" + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".FORCED" + subExtensions[i]); //move file to new folder
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".FORCED" + subExtensions[i]); //move file to new folder
                                             }
                                             //Check to see if file exists using 2 character sub code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".FORCED" + subExtensions[i]))
+                                            else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".FORCED" + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".FORCED" + subExtensions[i]);
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".FORCED" + subExtensions[i]);
                                             }
                                             //Check to see if file exists using long language code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".FORCED" + subExtensions[i]))
+                                            else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".FORCED" + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".FORCED" + subExtensions[i]);
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".FORCED" + subExtensions[i]);
                                             }
                                         }
 
                                         else if (subfilesList[i].ToLower().Contains("sdh")) //subtitles for the deaf and hard of hearing
                                         {
                                             //Check to see if file exists using 3 character sub code before writing
-                                            if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".(SDH)" + subExtensions[i]))
+                                            if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".(SDH)" + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".(SDH)" + subExtensions[i]); //move file to new folder
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".(SDH)" + subExtensions[i]); //move file to new folder
                                             }
                                             //Check to see if file exists using 2 character sub code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".(SDH)" + subExtensions[i]))
+                                            else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".(SDH)" + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".(SDH)" + subExtensions[i]);
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".(SDH)" + subExtensions[i]);
                                             }
                                             //Check to see if file exists using long language code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".(SDH)" + subExtensions[i]))
+                                            else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".(SDH)" + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".(SDH)" + subExtensions[i]);
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".(SDH)" + subExtensions[i]);
                                             }
                                         }
 
                                         else if (subfilesList[i].ToLower().Contains("cc"))//CC - Closed Captioning
                                         {
                                             //Check to see if file exists using 3 character sub code before writing
-                                            if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".(CC)" + subExtensions[i]))
+                                            if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".(CC)" + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".(CC)" + subExtensions[i]); //move file to new folder
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + ".(CC)" + subExtensions[i]); //move file to new folder
                                             }
                                             //Check to see if file exists using 2 character sub code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".(CC)" + subExtensions[i]))
+                                            else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".(CC)" + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".(CC)" + subExtensions[i]);
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + ".(CC)" + subExtensions[i]);
                                             }
                                             //Check to see if file exists using long language code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".(CC)" + subExtensions[i]))
+                                            else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".(CC)" + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".(CC)" + subExtensions[i]);
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + ".(CC)" + subExtensions[i]);
                                             }
                                         }
 
                                         else
                                         {
                                             //Check to see if file exists using 3 character sub code before writing
-                                            if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + subExtensions[i]))
+                                            if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + subExtensions[i]); //move file to new folder
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + subExtensions[i]); //move file to new folder
                                             }
                                             //Check to see if file exists using 2 character sub code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + subExtensions[i]))
+                                            else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + subExtensions[i]);
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + subExtensions[i]);
                                             }
                                             //Check to see if file exists using long language code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + subExtensions[i]))
+                                            else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + subExtensions[i]);
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + subExtensions[i]);
                                             }
                                         }
                                     }
@@ -529,7 +530,7 @@ namespace MovieDataCollector
                                     }
                                 }
                             }
-                            if (File.Exists(CF.DefaultSettings["MFPath"] + subfilesList[i])) //If language code wasn't found get file anyway and name it as a standard movietitle.srt
+                            if (System.IO.File.Exists(CF.DefaultSettings["MFPath"] + subfilesList[i])) //If language code wasn't found get file anyway and name it as a standard movietitle.srt
                             {
                                 try
                                 {
@@ -538,17 +539,17 @@ namespace MovieDataCollector
                                         subfilesList[i].Contains("FORCED"))
                                     {
                                         //check to see if file exists before writing.
-                                        if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.FORCED" + subExtensions[i]))
+                                        if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.FORCED" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.FORCED" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.FORCED" + subExtensions[i]); //move file to new folder
                                         }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.FORCED-2" + subExtensions[i]))
+                                        else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.FORCED-2" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.FORCED-2" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.FORCED-2" + subExtensions[i]); //move file to new folder
                                         }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.FORCED-3" + subExtensions[i]))
+                                        else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.FORCED-3" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.FORCED-3" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.FORCED-3" + subExtensions[i]); //move file to new folder
                                         }
                                     }
 
@@ -557,17 +558,17 @@ namespace MovieDataCollector
                                             subfilesList[i].Contains("Sdh"))
                                     {
                                         //check to see if file exists before writing.
-                                        if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.SDH" + subExtensions[i]))
+                                        if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.SDH" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.SDH" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.SDH" + subExtensions[i]); //move file to new folder
                                         }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.SDH-2" + subExtensions[i]))
+                                        else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.SDH-2" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.SDH-2" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.SDH-2" + subExtensions[i]); //move file to new folder
                                         }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.SDH-3" + subExtensions[i]))
+                                        else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.SDH-3" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.SDH-3" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.SDH-3" + subExtensions[i]); //move file to new folder
                                         }
                                     }
 
@@ -575,34 +576,34 @@ namespace MovieDataCollector
                                             subfilesList[i].Contains("cc"))
                                     {
                                         //check to see if file exists before writing.
-                                        if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.CC" + subExtensions[i]))
+                                        if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.CC" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.CC" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.CC" + subExtensions[i]); //move file to new folder
                                         }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.CC-2" + subExtensions[i]))
+                                        else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.CC-2" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.CC-2" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.CC-2" + subExtensions[i]); //move file to new folder
                                         }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.CC-3" + subExtensions[i]))
+                                        else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.CC-3" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.CC-3" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.CC-3" + subExtensions[i]); //move file to new folder
                                         }
                                     }
 
                                     else
                                     {
                                         //check to see if file exists before writing.
-                                        if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG" + subExtensions[i]))
+                                        if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG" + subExtensions[i]); //move file to new folder
                                         }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.(2)" + subExtensions[i]))
+                                        else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.(2)" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.(2)" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.(2)" + subExtensions[i]); //move file to new folder
                                         }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.(3)" + subExtensions[i]))
+                                        else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.(3)" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.(3)" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG.(3)" + subExtensions[i]); //move file to new folder
                                         }
 
                                     }
@@ -666,19 +667,19 @@ namespace MovieDataCollector
                                             subfilesList[i].Contains("FORCED"))
                                         {
                                             //Check to see if file exists using 3 character sub code before writing
-                                            if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + "(FORCED)" + subExtensions[i]))
+                                            if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + "(FORCED)" + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + "(FORCED)" + subExtensions[i]); //move file to new folder
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + "(FORCED)" + subExtensions[i]); //move file to new folder
                                             }
                                             //Check to see if file exists using 2 character sub code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + "(FORCED)" + subExtensions[i]))
+                                            else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + "(FORCED)" + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + "(FORCED)" + subExtensions[i]);
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + "(FORCED)" + subExtensions[i]);
                                             }
                                             //Check to see if file exists using long language code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + "(FORCED)" + subExtensions[i]))
+                                            else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + "(FORCED)" + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + "(FORCED)" + subExtensions[i]);
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + "(FORCED)" + subExtensions[i]);
                                             }
                                         }
 
@@ -687,19 +688,19 @@ namespace MovieDataCollector
                                                 subfilesList[i].Contains("Sdh"))
                                         {
                                             //Check to see if file exists using 3 character sub code before writing
-                                            if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + "(SDH)" + subExtensions[i]))
+                                            if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + "(SDH)" + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + "(SDH)" + subExtensions[i]); //move file to new folder
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + "(SDH)" + subExtensions[i]); //move file to new folder
                                             }
                                             //Check to see if file exists using 2 character sub code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + "(SDH)" + subExtensions[i]))
+                                            else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + "(SDH)" + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + "(SDH)" + subExtensions[i]);
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + "(SDH)" + subExtensions[i]);
                                             }
                                             //Check to see if file exists using long language code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + "(SDH)" + subExtensions[i]))
+                                            else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + "(SDH)" + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + "(SDH)" + subExtensions[i]);
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + "(SDH)" + subExtensions[i]);
                                             }
                                         }
 
@@ -707,38 +708,38 @@ namespace MovieDataCollector
                                                 subfilesList[i].Contains("cc"))
                                         {
                                             //Check to see if file exists using 3 character sub code before writing
-                                            if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + "(CC)" + subExtensions[i]))
+                                            if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + "(CC)" + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + "(CC)" + subExtensions[i]); //move file to new folder
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + "(CC)" + subExtensions[i]); //move file to new folder
                                             }
                                             //Check to see if file exists using 2 character sub code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + "(CC)" + subExtensions[i]))
+                                            else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + "(CC)" + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + "(CC)" + subExtensions[i]);
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + "(CC)" + subExtensions[i]);
                                             }
                                             //Check to see if file exists using long language code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + "(CC)" + subExtensions[i]))
+                                            else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + "(CC)" + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + "(CC)" + subExtensions[i]);
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + "(CC)" + subExtensions[i]);
                                             }
                                         }
 
                                         else
                                         {
                                             //Check to see if file exists using 3 character sub code before writing
-                                            if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + subExtensions[i]))
+                                            if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + subExtensions[i]); //move file to new folder
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + subExtensions[i]); //move file to new folder
                                             }
                                             //Check to see if file exists using 2 character sub code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + subExtensions[i]))
+                                            else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + subExtensions[i]);
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + subExtensions[i]);
                                             }
                                             //Check to see if file exists using long language code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + subExtensions[i]))
+                                            else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + subExtensions[i]);
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + subExtensions[i]);
                                             }
                                         }
                                     }
@@ -748,7 +749,7 @@ namespace MovieDataCollector
                                     }
                                 }
                             }
-                            if (File.Exists(CF.DefaultSettings["MFPath"] + subfilesList[i])) //If language code wasn't found get file anyway and name it as a standard movietitle.srt
+                            if (System.IO.File.Exists(CF.DefaultSettings["MFPath"] + subfilesList[i])) //If language code wasn't found get file anyway and name it as a standard movietitle.srt
                             {
                                 try
                                 {
@@ -757,17 +758,17 @@ namespace MovieDataCollector
                                         subfilesList[i].Contains("FORCED"))
                                     {
                                         //check to see if file exists before writing.
-                                        if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(FORCED)" + subExtensions[i]))
+                                        if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(FORCED)" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(FORCED)" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(FORCED)" + subExtensions[i]); //move file to new folder
                                         }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(FORCED-2)" + subExtensions[i]))
+                                        else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(FORCED-2)" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(FORCED-2)" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(FORCED-2)" + subExtensions[i]); //move file to new folder
                                         }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(FORCED-3)" + subExtensions[i]))
+                                        else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(FORCED-3)" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(FORCED-3)" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(FORCED-3)" + subExtensions[i]); //move file to new folder
                                         }
                                     }
 
@@ -776,17 +777,17 @@ namespace MovieDataCollector
                                             subfilesList[i].Contains("Sdh"))
                                     {
                                         //check to see if file exists before writing.
-                                        if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(SDH)" + subExtensions[i]))
+                                        if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(SDH)" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(SDH)" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(SDH)" + subExtensions[i]); //move file to new folder
                                         }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(SDH-2)" + subExtensions[i]))
+                                        else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(SDH-2)" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(SDH-2)" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(SDH-2)" + subExtensions[i]); //move file to new folder
                                         }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(SDH-3)" + subExtensions[i]))
+                                        else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(SDH-3)" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(SDH-3)" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(SDH-3)" + subExtensions[i]); //move file to new folder
                                         }
                                     }
 
@@ -794,34 +795,34 @@ namespace MovieDataCollector
                                             subfilesList[i].Contains("cc"))
                                     {
                                         //check to see if file exists before writing.
-                                        if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(CC)" + subExtensions[i]))
+                                        if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(CC)" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(CC)" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(CC)" + subExtensions[i]); //move file to new folder
                                         }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(CC-2)" + subExtensions[i]))
+                                        else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(CC-2)" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(CC-2)" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(CC-2)" + subExtensions[i]); //move file to new folder
                                         }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(CC-3)" + subExtensions[i]))
+                                        else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(CC-3)" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(CC-3)" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(CC-3)" + subExtensions[i]); //move file to new folder
                                         }
                                     }
 
                                     else
                                     {
                                         //check to see if file exists before writing.
-                                        if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG" + subExtensions[i]))
+                                        if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG" + subExtensions[i]); //move file to new folder
                                         }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(2)" + subExtensions[i]))
+                                        else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(2)" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(2)" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(2)" + subExtensions[i]); //move file to new folder
                                         }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(3)" + subExtensions[i]))
+                                        else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(3)" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(3)" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(3)" + subExtensions[i]); //move file to new folder
                                         }
 
                                     }
@@ -885,19 +886,19 @@ namespace MovieDataCollector
                                             subfilesList[i].Contains("FORCED"))
                                         {
                                             //Check to see if file exists using 3 character sub code before writing
-                                            if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + "(FORCED)" + subExtensions[i]))
+                                            if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + "(FORCED)" + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + "(FORCED)" + subExtensions[i]); //move file to new folder
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + "(FORCED)" + subExtensions[i]); //move file to new folder
                                             }
                                             //Check to see if file exists using 2 character sub code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + "(FORCED)" + subExtensions[i]))
+                                            else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + "(FORCED)" + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + "(FORCED)" + subExtensions[i]);
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + "(FORCED)" + subExtensions[i]);
                                             }
                                             //Check to see if file exists using long language code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + "(FORCED)" + subExtensions[i]))
+                                            else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + "(FORCED)" + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + "(FORCED)" + subExtensions[i]);
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + "(FORCED)" + subExtensions[i]);
                                             }
                                         }
 
@@ -906,19 +907,19 @@ namespace MovieDataCollector
                                                 subfilesList[i].Contains("Sdh"))
                                         {
                                             //Check to see if file exists using 3 character sub code before writing
-                                            if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + "(SDH)" + subExtensions[i]))
+                                            if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + "(SDH)" + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + "(SDH)" + subExtensions[i]); //move file to new folder
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + "(SDH)" + subExtensions[i]); //move file to new folder
                                             }
                                             //Check to see if file exists using 2 character sub code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + "(SDH)" + subExtensions[i]))
+                                            else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + "(SDH)" + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + "(SDH)" + subExtensions[i]);
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + "(SDH)" + subExtensions[i]);
                                             }
                                             //Check to see if file exists using long language code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + "(SDH)" + subExtensions[i]))
+                                            else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + "(SDH)" + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + "(SDH)" + subExtensions[i]);
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + "(SDH)" + subExtensions[i]);
                                             }
                                         }
 
@@ -926,38 +927,38 @@ namespace MovieDataCollector
                                                 subfilesList[i].Contains("cc"))
                                         {
                                             //Check to see if file exists using 3 character sub code before writing
-                                            if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + "(CC)" + subExtensions[i]))
+                                            if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + "(CC)" + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + "(CC)" + subExtensions[i]); //move file to new folder
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + "(CC)" + subExtensions[i]); //move file to new folder
                                             }
                                             //Check to see if file exists using 2 character sub code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + "(CC)" + subExtensions[i]))
+                                            else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + "(CC)" + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + "(CC)" + subExtensions[i]);
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + "(CC)" + subExtensions[i]);
                                             }
                                             //Check to see if file exists using long language code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + "(CC)" + subExtensions[i]))
+                                            else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + "(CC)" + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + "(CC)" + subExtensions[i]);
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + "(CC)" + subExtensions[i]);
                                             }
                                         }
 
                                         else
                                         {
                                             //Check to see if file exists using 3 character sub code before writing
-                                            if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + subExtensions[i]))
+                                            if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + subExtensions[i]); //move file to new folder
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 2].ToUpper() + subExtensions[i]); //move file to new folder
                                             }
                                             //Check to see if file exists using 2 character sub code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + subExtensions[i]))
+                                            else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + subExtensions[i]);
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 1].ToUpper() + subExtensions[i]);
                                             }
                                             //Check to see if file exists using long language code before writing
-                                            else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + subExtensions[i]))
+                                            else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + subExtensions[i]))
                                             {
-                                                File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + subExtensions[i]);
+                                                System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "." + subLanguageCodes[b, 0].ToUpper() + subExtensions[i]);
                                             }
                                         }
                                     }
@@ -967,7 +968,7 @@ namespace MovieDataCollector
                                     }
                                 }
                             }
-                            if (File.Exists(CF.DefaultSettings["MFPath"] + subfilesList[i])) //If language code wasn't found get file anyway and name it as a standard movietitle.srt
+                            if (System.IO.File.Exists(CF.DefaultSettings["MFPath"] + subfilesList[i])) //If language code wasn't found get file anyway and name it as a standard movietitle.srt
                             {
                                 try
                                 {
@@ -976,17 +977,17 @@ namespace MovieDataCollector
                                         subfilesList[i].Contains("FORCED"))
                                     {
                                         //check to see if file exists before writing.
-                                        if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(FORCED)" + subExtensions[i]))
+                                        if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(FORCED)" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(FORCED)" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(FORCED)" + subExtensions[i]); //move file to new folder
                                         }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(FORCED-2)" + subExtensions[i]))
+                                        else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(FORCED-2)" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(FORCED-2)" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(FORCED-2)" + subExtensions[i]); //move file to new folder
                                         }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(FORCED-3)" + subExtensions[i]))
+                                        else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(FORCED-3)" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(FORCED-3)" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(FORCED-3)" + subExtensions[i]); //move file to new folder
                                         }
                                     }
 
@@ -995,17 +996,17 @@ namespace MovieDataCollector
                                             subfilesList[i].Contains("Sdh"))
                                     {
                                         //check to see if file exists before writing.
-                                        if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(SDH)" + subExtensions[i]))
+                                        if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(SDH)" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(SDH)" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(SDH)" + subExtensions[i]); //move file to new folder
                                         }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(SDH-2)" + subExtensions[i]))
+                                        else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(SDH-2)" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(SDH-2)" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(SDH-2)" + subExtensions[i]); //move file to new folder
                                         }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(SDH-3)" + subExtensions[i]))
+                                        else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(SDH-3)" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(SDH-3)" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(SDH-3)" + subExtensions[i]); //move file to new folder
                                         }
                                     }
 
@@ -1013,34 +1014,34 @@ namespace MovieDataCollector
                                             subfilesList[i].Contains("cc"))
                                     {
                                         //check to see if file exists before writing.
-                                        if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(CC)" + subExtensions[i]))
+                                        if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(CC)" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(CC)" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(CC)" + subExtensions[i]); //move file to new folder
                                         }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(CC-2)" + subExtensions[i]))
+                                        else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(CC-2)" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(CC-2)" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(CC-2)" + subExtensions[i]); //move file to new folder
                                         }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(CC-3)" + subExtensions[i]))
+                                        else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(CC-3)" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(CC-3)" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(CC-3)" + subExtensions[i]); //move file to new folder
                                         }
                                     }
 
                                     else
                                     {
                                         //check to see if file exists before writing.
-                                        if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG" + subExtensions[i]))
+                                        if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG" + subExtensions[i]); //move file to new folder
                                         }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(2)" + subExtensions[i]))
+                                        else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(2)" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(2)" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(2)" + subExtensions[i]); //move file to new folder
                                         }
-                                        else if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(3)" + subExtensions[i]))
+                                        else if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(3)" + subExtensions[i]))
                                         {
-                                            File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(3)" + subExtensions[i]); //move file to new folder
+                                            System.IO.File.Move(CF.DefaultSettings["MFPath"] + subfilesList[i], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".ENG(3)" + subExtensions[i]); //move file to new folder
                                         }
 
                                     }
@@ -1208,6 +1209,9 @@ namespace MovieDataCollector
             notificationLabel.Visible = true;
             NLabelUpdate("Start");
 
+            string outputvideopath = "";
+            string outputposterpath = "";
+
 
 
             if (!string.IsNullOrEmpty(videoPathTextBox.Text) && (!string.IsNullOrEmpty(titleComboBox.Text)))
@@ -1246,11 +1250,12 @@ namespace MovieDataCollector
                     DirectoryInfo di = Directory.CreateDirectory(newDirectoryName);
                     NLabelUpdate("Checking for existing video file");
 
-                    if (File.Exists(videoPathTextBox.Text))
+                    if (System.IO.File.Exists(videoPathTextBox.Text))
                     {
                         NLabelUpdate("Renaming video file");
                         string moveToPath = CF.DefaultSettings["MFPath"] + Movie.StaticProperties["FormattedTitle"] + videoExtension; //uses validTitle method to remove illegal characters
-                        File.Move(videoPathTextBox.Text, moveToPath); //renames file if in the same directory
+                        System.IO.File.Move(videoPathTextBox.Text, moveToPath); //renames file if in the same directory
+                        
                     }
                     else
                     {
@@ -1259,11 +1264,12 @@ namespace MovieDataCollector
 
                     NLabelUpdate("Checking for existing file in folder");
 
-                    if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + videoExtension)) //Check that file isn't already in folder
+                    if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + videoExtension)) //Check that file isn't already in folder
                     {
                         NLabelUpdate("Moving file to folder");
                         
-                        File.Move(videoPath, newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + videoExtension); //move file to new folder
+                        System.IO.File.Move(videoPath, newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + videoExtension); //move file to new folder
+                        outputvideopath = newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + videoExtension; //Set this value for use in metadata writing
                     }
                     else
                     {
@@ -1290,9 +1296,9 @@ namespace MovieDataCollector
                         Movie.StaticProperties["BackDropPath"] = Movie.StaticProperties["BackDropPath"].Replace("/w300/", "/original/");
                     }
 
-                    if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".jpg")
-                        & !File.Exists(newDirectoryName + "\\" + "poster.jpg")
-                        & !File.Exists(newDirectoryName + "\\" + "Folder.jpg")
+                    if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".jpg")
+                        & !System.IO.File.Exists(newDirectoryName + "\\" + "poster.jpg")
+                        & !System.IO.File.Exists(newDirectoryName + "\\" + "Folder.jpg")
                         & !string.IsNullOrEmpty(Movie.StaticProperties["PosterPath"]))
                     {
                         NLabelUpdate("Downloading Poster");
@@ -1308,15 +1314,19 @@ namespace MovieDataCollector
                                 {
                                     case 0: //Plex
                                         wc.DownloadFile(Movie.StaticProperties["PosterPath"], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".jpg");
+                                        outputposterpath = newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".jpg"; //For metadata use
                                         break;
                                     case 1: //KODI
-                                        wc.DownloadFile(Movie.StaticProperties["PosterPath"], newDirectoryName + "\\" + "poster.jpg");                                 
+                                        wc.DownloadFile(Movie.StaticProperties["PosterPath"], newDirectoryName + "\\" + "poster.jpg");
+                                        outputposterpath = newDirectoryName + "\\" + "poster.jpg"; //For metadata use
                                         break;
                                     case 2: // Synology
                                         wc.DownloadFile(Movie.StaticProperties["PosterPath"], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".jpg");
+                                        outputposterpath = newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".jpg"; //For metadata use
                                         break;
                                     default:
                                         wc.DownloadFile(Movie.StaticProperties["PosterPath"], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".jpg");
+                                        outputposterpath = newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".jpg"; //For metadata use
                                         break;
                                 }
 
@@ -1330,15 +1340,19 @@ namespace MovieDataCollector
                                     {
                                         case 0: //Plex
                                             wc.DownloadFile(Movie.StaticProperties["PosterPath"], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".jpg");
+                                            outputposterpath = newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".jpg"; //For metadata use
                                             break;
                                         case 1: //KODI
                                             wc.DownloadFile(Movie.StaticProperties["PosterPath"], newDirectoryName + "\\" + "poster.jpg");
+                                            outputposterpath = newDirectoryName + "\\" + "poster.jpg";//For metadata use
                                             break;
                                         case 2: //Synology
                                             wc.DownloadFile(Movie.StaticProperties["PosterPath"], newDirectoryName + "\\" + "Folder.jpg");
+                                            outputposterpath = newDirectoryName + "\\" + "Folder.jpg";//For metadata use
                                             break;
                                         default:
                                             wc.DownloadFile(Movie.StaticProperties["PosterPath"], newDirectoryName + "\\" + "Folder.jpg");
+                                            outputposterpath = newDirectoryName + "\\" + "Folder.jpg";//For metadata use
                                             break;
                                     }
                                 }
@@ -1351,15 +1365,19 @@ namespace MovieDataCollector
                                         {
                                             case 0: //PLEX
                                                 wc.DownloadFile(Movie.StaticProperties["PosterPath"], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".jpg");
+                                                outputposterpath = newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".jpg"; //For metadata use
                                                 break;
                                             case 1: //KODI
                                                 wc.DownloadFile(Movie.StaticProperties["PosterPath"], newDirectoryName + "\\" + "poster.jpg");
+                                                outputposterpath = newDirectoryName + "\\" + "poster.jpg";//For metadata use
                                                 break;
                                             case 2: //Synology
                                                 wc.DownloadFile(Movie.StaticProperties["PosterPath"], newDirectoryName + "\\" + "Folder.jpg");
+                                                outputposterpath = newDirectoryName + "\\" + "Folder.jpg";//For metadata use
                                                 break;
                                             default: 
                                                 wc.DownloadFile(Movie.StaticProperties["PosterPath"], newDirectoryName + "\\" + "Folder.jpg");
+                                                outputposterpath = newDirectoryName + "\\" + "Folder.jpg";//For metadata use
                                                 break;
                                         }
                                     }
@@ -1372,15 +1390,19 @@ namespace MovieDataCollector
                                             {
                                                 case 0: //PLEX
                                                     wc.DownloadFile(Movie.StaticProperties["PosterPath"], newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".jpg");
+                                                    outputposterpath = newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".jpg";//For metadata use
                                                     break;
                                                 case 1: //KODI
                                                     wc.DownloadFile(Movie.StaticProperties["PosterPath"], newDirectoryName + "\\" + "poster.jpg");
+                                                    outputposterpath = newDirectoryName + "\\" + "poster.jpg";//For metadata use
                                                     break;
                                                 case 2: //Synology
                                                     wc.DownloadFile(Movie.StaticProperties["PosterPath"], newDirectoryName + "\\" + "Folder.jpg");
+                                                    outputposterpath = newDirectoryName + "\\" + "Folder.jpg";//For metadata use
                                                     break;
                                                 default:
                                                     wc.DownloadFile(Movie.StaticProperties["PosterPath"], newDirectoryName + "\\" + "Folder.jpg");
+                                                    outputposterpath = newDirectoryName + "\\" + "Folder.jpg";//For metadata use
                                                     break;
                                             }
                                         }
@@ -1393,8 +1415,8 @@ namespace MovieDataCollector
                             }
                         }
                     }
-                    if (!File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "-fanart.jpg")
-                        & !File.Exists(newDirectoryName + "\\" + "fanart.jpg")
+                    if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + "-fanart.jpg")
+                        & !System.IO.File.Exists(newDirectoryName + "\\" + "fanart.jpg")
                         & !string.IsNullOrEmpty(Movie.StaticProperties["BackDropPath"]))
                     {
                         NLabelUpdate("Downloading Backdrop/Fanart");
@@ -1504,19 +1526,19 @@ namespace MovieDataCollector
                         switch (formatComboBox.SelectedIndex) //Formats title to plex, kodi, or synology spec
                         {
                             case 0: //Plex
-                                using (StreamWriter sw = File.CreateText(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".nfo"))
+                                using (StreamWriter sw = System.IO.File.CreateText(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".nfo"))
                                 {
                                     sw.Write(CreateNFO());
                                 }
                                 break;
                             case 1: //KODI
-                                using (StreamWriter sw = File.CreateText(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".nfo"))
+                                using (StreamWriter sw = System.IO.File.CreateText(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".nfo"))
                                 {
                                     sw.Write(CreateNFO());
                                 }
                                 break;
                             case 2: //Synology
-                                using (StreamWriter sw = File.CreateText(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".nfo"))
+                                using (StreamWriter sw = System.IO.File.CreateText(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + ".nfo"))
                                 {
                                     sw.Write(CreateNFO());
                                 }
@@ -1547,6 +1569,14 @@ namespace MovieDataCollector
             {
                 CustomMessageBox.Show("Video information not yet gathered", 133, 270);
             }
+
+            //Write Metadata to file
+            NLabelUpdate("Writing Metadata...This may take a while");
+
+            char[] delim = { ',' }; //using ',' as the delimiter splits each genre out
+            string[] generes = genresTextBox.Text.Split(delim);
+
+            Write_Metadata(outputvideopath,titleComboBox.Text,yearTextBox.Text,outputposterpath,setTextBox.Text,generes, Movie.StaticProperties["Tag_Line"]);
 
             NLabelUpdate("Finished");
             ClearAll();
@@ -1753,6 +1783,57 @@ namespace MovieDataCollector
         private void TheMovieDBorgToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Process.Start("http://www.TheMovieDB.org");
+        }
+
+
+        private void Purge_Metadata(string filepath)
+        {
+            //This seems to break windows compatibility of tags
+            TagLib.Id3v2.Tag.DefaultVersion = 3;
+            TagLib.Id3v2.Tag.ForceDefaultVersion = true;
+
+            using (var file = TagLib.File.Create(filepath))
+            {
+                //Clear Tag Information
+                //file.RemoveTags(TagLib.TagTypes.AllTags);
+                file.Tag.Clear();
+                file.Tag.Comment = "";
+
+
+                file.Save();
+            }
+        }
+
+        private void Write_Metadata(string filepath, string title, string yearstring, string posterpath, string grouping, string[] genres, string comment)
+        {
+            uint year = uint.Parse(yearstring);
+
+            TagLib.Id3v2.Tag.DefaultVersion = 3;
+            TagLib.Id3v2.Tag.ForceDefaultVersion = true;
+
+            using (var file = TagLib.File.Create(filepath))
+            {
+                //Clear Tags
+                file.Tag.Clear();
+
+                //Add Tag Info
+                file.Tag.Comment = comment;
+                file.Tag.Title = title;
+                file.Tag.Year = year;
+                file.Tag.Grouping = setTextBox.Text;
+                file.Tag.Genres = genres;
+
+                //Add Image
+                Picture picture = new Picture(posterpath);
+                picture.Type = PictureType.FrontCover;
+                picture.MimeType = "image/jpeg";
+                picture.Description = "Front Cover";
+                file.Tag.Pictures = new IPicture[1] { picture };
+
+                //Save File
+                file.Save();
+            }
+
         }
     }
 }
