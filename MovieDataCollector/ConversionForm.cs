@@ -1406,15 +1406,15 @@ namespace MovieDataCollector
             double totalBitrate = 0;
             bool outputLargerThan4GB = false;
             string AudioString = "";
-            int audioTrack = 0;
+            //int audioTrack = 0;
             string VideoString = "";
             string sourceOptions = "";
             string crop = "";
 
             MediaFile videoFile = new MediaFile(filepath);
-            AudioString = AudioConverstionString2(videoFile);
+            AudioString = AudioConversionString2(videoFile);
 
-            VideoString = VideoConversionString(videoFile, audioTrack);
+            VideoString = VideoConversionString(videoFile);
 
             if (videoFile.Audio.Count > 0 && videoFile.Video.Count > 0) //Only use if both video and auto streams are visible
             {
@@ -1448,7 +1448,7 @@ namespace MovieDataCollector
             return "--verbose 1 " + sourceOptions + VideoString + AudioString + crop;
 
         }
-        private string VideoConversionString(MediaFile videoFile, int audioTrack)
+        private string VideoConversionString(MediaFile videoFile)
         {
             //Calculation Variables
             double videoBitrate = 0.0;
@@ -1804,7 +1804,7 @@ namespace MovieDataCollector
                 if (videoBitrate == 0 && videoFile.General.Bitrate > 0)
                 {
                     //check for audio bitrate and subtract from general bitrate
-                    videoBitrate = videoFile.General.Bitrate - videoFile.Audio[audioTrack - 1].Bitrate;
+                    videoBitrate = videoFile.General.Bitrate; //- videoFile.Audio[audioTrack - 1].Bitrate; - Audio Track info changed in previous version. This breaks the code. use gneral bitrate if no other is foudn.
                 }
 
                 if (videoBitrate == 0 && videoFile.General.Properties.ContainsKey("Overall bit rate"))
@@ -2512,7 +2512,7 @@ namespace MovieDataCollector
         /// </summary>
         /// <param name="videoFile"></param>
         /// <returns></returns>
-        private string AudioConverstionString2(MediaFile videoFile)
+        private string AudioConversionString2(MediaFile videoFile)
         {
             string audioOutput = "";
             //Generate audioPassthru list
