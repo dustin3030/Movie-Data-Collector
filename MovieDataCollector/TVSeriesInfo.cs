@@ -23,9 +23,9 @@ namespace MovieDataCollector
         }
         private void GatherSeriesInfo()
         {
-
+            System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls11 | System.Net.SecurityProtocolType.Tls12;
             string responseContent; //stores response from web request
-            string URL = "http://thetvdb.com/api/" + API_Key + "/series/" + Series_ID + "/all";
+            string URL = "https://thetvdb.com/api/" + API_Key + "/series/" + Series_ID + "/all";
 
             responseContent = MyWebRequest(URL);
             //Replace xml escape characters

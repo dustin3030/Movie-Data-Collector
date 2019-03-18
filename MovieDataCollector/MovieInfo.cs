@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Net;
 
 namespace MovieDataCollector
 {
@@ -15,6 +16,7 @@ namespace MovieDataCollector
         public Dictionary<string, List<string>> ListProperties { get; set; }
         //Contains all statics
         public Dictionary<string,string> StaticProperties { get; set; }
+        
 
         List<string> ListDictKeyList = new List<string>()
         {"ActorName",
@@ -63,6 +65,8 @@ namespace MovieDataCollector
                                           /// </summary>
         public MovieInfo(string TMDBID, string APIKey)
         {
+            System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls11 | System.Net.SecurityProtocolType.Tls12;
+
             ListProperties = new Dictionary<string, List<string>>(); //Instantiate Dictionary
             for (int i = 0; i < ListDictKeyList.Count ; i++)
             {
@@ -89,6 +93,7 @@ namespace MovieDataCollector
             string responseContent;
             string URL = "https://api.themoviedb.org/3/movie/" + StaticProperties["TMDB_ID"] + "/releases?api_key=" + StaticProperties["API_Key"];
             responseContent = MyWebRequest(URL,"getRating");
+            //responseContent = RestRequest(URL, "getRating");
 
             //With a null response there is nothing to parse so escape the method on set StaticProperties["MPAA_Rating"] to Error
             if (string.IsNullOrEmpty(responseContent)) { StaticProperties["MPAA_Rating"] = "Error"; return; }
@@ -368,6 +373,7 @@ namespace MovieDataCollector
             string responseContent;
             string URL = "https://api.themoviedb.org/3/movie/" + StaticProperties["TMDB_ID"] + "/credits?api_key=" + StaticProperties["API_Key"] + "&language=en&include_image_language=en,null";
             responseContent = MyWebRequest(URL,"getCredits");
+            //responseContent = RestRequest(URL, "getCredits");
 
             //Create castJson string using parser
             castJson = GeneralParser(responseContent, "\"cast\":[", "]", "\"cast\":null");
@@ -478,14 +484,14 @@ namespace MovieDataCollector
             {
                 if (s.Contains("\"file_path\":\"/"))
                 {
-                    ListProperties["Backdrops"].Add("http://image.tmdb.org/t/p/w300/" + GeneralParser(s, "\"file_path\":\"/", "\",", "\"file_path\":null"));
+                    ListProperties["Backdrops"].Add("https://image.tmdb.org/t/p/w300/" + GeneralParser(s, "\"file_path\":\"/", "\",", "\"file_path\":null"));
                 }
             }
             foreach (string s in posterTokens)
             {
                 if (s.Contains("\"file_path\":\"/"))
                 {
-                    ListProperties["Posters"].Add("http://image.tmdb.org/t/p/w154/" + GeneralParser(s, "\"file_path\":\"/", "\",", "\"file_path\":null"));
+                    ListProperties["Posters"].Add("https://image.tmdb.org/t/p/w154/" + GeneralParser(s, "\"file_path\":\"/", "\",", "\"file_path\":null"));
                 }
             }
 
@@ -501,12 +507,13 @@ namespace MovieDataCollector
         {
             if (string.IsNullOrEmpty(URL)) { return ""; }
 
+            
             var request = System.Net.WebRequest.Create(URL) as System.Net.HttpWebRequest;
             request.Method = "GET";
             request.Accept = "application/json";
             request.ContentLength = 0;
             string responseContent = "";
-            int retries = 10;
+            int retries = 2;
             string exception = "";
 
             for (int i = 0; i < retries; i++)
@@ -532,18 +539,13 @@ namespace MovieDataCollector
                     {
                         exception = callingMethod + " ----- " + URL;
                         ListProperties["Errors"].Add(exception);
-                        /*if (exception.ToString().Contains("404") && !ListProperties["Errors"].Contains("Request to TMDB.org Failed"))
-                        {
-                            ListProperties["Errors"].Add("Request to TMDB.org Failed");
-                        }
-                        if (!ListProperties["Errors"].Contains(exception.ToString())) { ListProperties["Errors"].Add(exception.ToString()); }*/
                     }
                     //Wait 1 second when encoutering error
                     System.Threading.Thread.Sleep(1000);
                 }
             }
+
             return responseContent;
-            
 
         }
 

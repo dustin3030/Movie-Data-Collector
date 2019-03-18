@@ -16,9 +16,11 @@ namespace MovieDataCollector
         }
         private void ReturnSeriesInfo()
         {
+            System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls11 | System.Net.SecurityProtocolType.Tls12;
+
             string responseContent;
-            //http://thetvdb.com/api/GetSeries.php?seriesname=
-            string URL = "http://thetvdb.com/api/GetSeries.php?seriesname=" + InputString;
+            //https://thetvdb.com/api/GetSeries.php?seriesname=
+            string URL = "https://thetvdb.com/api/GetSeries.php?seriesname=" + InputString;
 
             responseContent = MyWebRequest(URL);
             //Replace xml escape characters

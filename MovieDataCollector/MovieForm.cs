@@ -96,6 +96,7 @@ namespace MovieDataCollector
         ConfigFile CF = new ConfigFile();
         public MovieForm()
         {
+            System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls11 | System.Net.SecurityProtocolType.Tls12;
             //Initiallizes components of form
             InitializeComponent();
 
@@ -1627,7 +1628,7 @@ namespace MovieDataCollector
         }
         private void IMDBcomToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Process.Start("http://www.imdb.com");
+            Process.Start("https://www.imdb.com");
         }
         private void ClearButton_Click(object sender, EventArgs e)
         {
@@ -1786,7 +1787,7 @@ namespace MovieDataCollector
 
         private void TheMovieDBorgToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Process.Start("http://www.TheMovieDB.org");
+            Process.Start("https://www.TheMovieDB.org");
         }
 
         private void Write_Metadata(string filepath, string title, string yearstring, string posterpath, string grouping, string[] genres, string comment)
@@ -1796,28 +1797,45 @@ namespace MovieDataCollector
             TagLib.Id3v2.Tag.DefaultVersion = 3;
             TagLib.Id3v2.Tag.ForceDefaultVersion = true;
 
-            using (var file = TagLib.File.Create(filepath))
+
+            try
             {
-                //Clear Tags
-                file.Tag.Clear();
+                using (var file = TagLib.File.Create(filepath))
+                {
+                    //Clear Tags
+                    file.Tag.Clear();
 
-                //Add Tag Info
-                file.Tag.Comment = comment;
-                file.Tag.Title = title;
-                file.Tag.Year = year;
-                file.Tag.Grouping = setTextBox.Text;
-                file.Tag.Genres = genres;
+                    //Add Tag Info
+                    file.Tag.Comment = comment;
+                    file.Tag.Title = title;
+                    file.Tag.Year = year;
+                    file.Tag.Grouping = setTextBox.Text;
+                    file.Tag.Genres = genres;
 
-                //Add Image
-                Picture picture = new Picture(posterpath);
-                picture.Type = PictureType.FrontCover;
-                picture.MimeType = "image/jpeg";
-                picture.Description = "Front Cover";
-                file.Tag.Pictures = new IPicture[1] { picture };
+                    //Add Image
+                    Picture picture = new Picture(posterpath);
+                    picture.Type = PictureType.FrontCover;
+                    picture.MimeType = "image/jpeg";
+                    picture.Description = "Front Cover";
+                    file.Tag.Pictures = new IPicture[1] { picture };
 
-                //Save File
-                file.Save();
+                    //Save File
+                    file.Save();
+                }
             }
+            catch (Exception e)
+            {
+                if(string.IsNullOrEmpty(e.ToString()))
+                {
+                    CustomMessageBox.Show("Tagging Failed - " + e.ToString(), 125, 236, "Tagging Failed");
+                }
+                else
+                {
+                    CustomMessageBox.Show("Tagging Failed ", 125, 236, "Tagging Failed");
+                }
+                
+            }
+            
 
         }
 

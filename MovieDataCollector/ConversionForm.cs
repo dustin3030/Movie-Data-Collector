@@ -8,7 +8,7 @@ using System.Drawing;
 using System.IO; //allows for file manipulation
 using System.Text;
 using System.Net.Mail; // For Notification
-using MediaInfoNET; /* http://teejeetech.blogspot.com/2013/01/mediainfo-wrapper-for-net-projects.html Copyright (c) 2013 Tony George (teejee2008@gmail.com)
+using MediaInfoNET; /* https://teejeetech.blogspot.com/2013/01/mediainfo-wrapper-for-net-projects.html Copyright (c) 2013 Tony George (teejee2008@gmail.com)
                       GNU General Public License version 2.0 (GPLv2)
                       Downloaded Wrapper for returning media info from files.
                       Need to have both the wrapper (MediaInfoNet.dll) and the DLL (MediaInfo.dll) saved in the
@@ -962,7 +962,7 @@ namespace MovieDataCollector
             AudioInfo.Clear();
             SubtitleInfo.Clear();
         }
-        private async void QuickInfobutton_Click(object sender, EventArgs e)
+        private void QuickInfobutton_Click(object sender, EventArgs e)
         {
 
             if (VideoFilesList.Count > 0 & filesListBox.Items.Count > 0)
@@ -1823,7 +1823,7 @@ namespace MovieDataCollector
                 double.TryParse(avgBitrateCombo.Text, out avgBitrateCap);
                 avgBitrateCap = avgBitrateCap * 1000; //This changes the value in the dropdown from Mbps to Kbps
 
-                /*http://www.chaneru.com/Roku/HLS/X264_Settings.htm#vbv-maxrate
+                /*https://www.chaneru.com/Roku/HLS/X264_Settings.htm#vbv-maxrate
                   vbv-maxrate
                   Default: 0
                   Sets the maximum rate the VBV buffer should be assumed to refill at.
