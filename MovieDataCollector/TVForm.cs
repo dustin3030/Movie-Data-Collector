@@ -463,72 +463,156 @@ namespace MovieDataCollector
                         season = CheckSeason(fileNamesListbox.Items[i].ToString().ToUpper(), maxSeason); //tries to parse season info from filename
                         episode = CheckEpisode(fileNamesListbox.Items[i].ToString().ToUpper(), maxEpisode); //tries to parse episode info from filename
                     }
-                    
 
-                    
 
-                    if ((string.IsNullOrEmpty(season) | string.IsNullOrEmpty(episode)) & titleCb.Checked)
+                    if ((string.IsNullOrEmpty(season) | season == "-1" | string.IsNullOrEmpty(episode) | episode == "-1") & titleCb.Checked)
                     {
-                        //Add loop for each episode to see if an episode title in the SeriesInfo object matches a filename. If so return the episode and season from that.
-                        for (int a = 0; a < SeriesInfo.episodes.Count; a++)
+                        if (fileNamesListbox.SelectedIndices.Count > 0)
                         {
-                            if (SeriesInfo.episodes[a].ContainsKey("EpisodeName"))
+
+                            for (int a = 0; a < fileNamesListbox.SelectedIndices.Count; a++)
                             {
-                                if ((fileNamesListbox.Items[i].ToString().ToUpper()).Contains(SeriesInfo.episodes[a]["EpisodeName"].ToUpper()))
+                                //If its found to exist in the selected indices
+                                if (fileNamesListbox.SelectedIndices[a] == i)
                                 {
-
-                                    if (int.Parse(SeriesInfo.episodes[a]["SeasonNumber"]) < 10)
-                                    {
-                                        season = "S0" + SeriesInfo.episodes[a]["SeasonNumber"];
-                                    }
-                                    else
-                                    {
-                                        season = "S" + SeriesInfo.episodes[a]["SeasonNumber"];
-                                    }
-
-                                    if (int.Parse(SeriesInfo.episodes[a]["EpisodeNumber"]) < 10)
-                                    {
-                                        episode = "E0" + SeriesInfo.episodes[a]["EpisodeNumber"];
-                                    }
-                                    else
-                                    {
-                                        episode = "E" + SeriesInfo.episodes[a]["EpisodeNumber"];
-                                    }
-
-                                    //add episode and season info to the newTitle variable;
-
-                                    /*TitleFormats
-                                        Plex: ShowName - sXXeYY - Optional_info.ext
-                                            Grey's Anatomy - S01e02 - The First Cut is the Deepest.avi
-                                        
-                                        Synology: ShowName.sXXeYY.ext
-                                            Grey's Anatomy.S01.E02.avi
-                                            Grey's Anatomy.S01.E02.The First Cut is the Deepest.avi
-
-                                        Kodi/XBMC: ShowName_sXXeYY.ext
-                                            Grey's Anatomy_S01E02.avi
-                                            Grey's Anatomy_S01E02_The First Cut is the Deepest.avi
-                                     */
-                                    switch (formatCombo.SelectedIndex)
-                                    {
-                                        
-                                        case 0: //PLEX
-                                            newTitle = SeriesInfo.series["SeriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
-                                            break;
-                                        case 1: //KODI
-                                            newTitle = SeriesInfo.series["SeriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
-                                            break;
-                                        case 2: //Synology
-                                            newTitle = SeriesInfo.series["SeriesName"] + "." + season + "." + episode + "." + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
-                                            break;
-                                        default: //Plex
-                                            newTitle = SeriesInfo.series["SeriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
-                                            break;
-                                    }
-                                    //newTitle = SeriesInfo.series["SeriesName"] + " " + season + episode + " " + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
+                                    isSelected = true;
                                 }
                             }
+                            if (isSelected)
+                            {
+                                //Add loop for each episode to see if an episode title in the SeriesInfo object matches a filename. If so return the episode and season from that.
+                                for (int a = 0; a < SeriesInfo.episodes.Count; a++)
+                                {
+                                    if (SeriesInfo.episodes[a].ContainsKey("EpisodeName"))
+                                    {
+                                        if ((fileNamesListbox.Items[i].ToString().ToUpper()).Contains(FormatFileName(SeriesInfo.episodes[a]["EpisodeName"]).ToUpper()))
+                                        {
+
+                                            if (int.Parse(SeriesInfo.episodes[a]["SeasonNumber"]) < 10)
+                                            {
+                                                season = "S0" + SeriesInfo.episodes[a]["SeasonNumber"];
+                                            }
+                                            else
+                                            {
+                                                season = "S" + SeriesInfo.episodes[a]["SeasonNumber"];
+                                            }
+
+                                            if (int.Parse(SeriesInfo.episodes[a]["EpisodeNumber"]) < 10)
+                                            {
+                                                episode = "E0" + SeriesInfo.episodes[a]["EpisodeNumber"];
+                                            }
+                                            else
+                                            {
+                                                episode = "E" + SeriesInfo.episodes[a]["EpisodeNumber"];
+                                            }
+
+                                            //add episode and season info to the newTitle variable;
+
+                                            /*TitleFormats
+                                                Plex: ShowName - sXXeYY - Optional_info.ext
+                                                    Grey's Anatomy - S01e02 - The First Cut is the Deepest.avi
+
+                                                Synology: ShowName.sXXeYY.ext
+                                                    Grey's Anatomy.S01.E02.avi
+                                                    Grey's Anatomy.S01.E02.The First Cut is the Deepest.avi
+
+                                                Kodi/XBMC: ShowName_sXXeYY.ext
+                                                    Grey's Anatomy_S01E02.avi
+                                                    Grey's Anatomy_S01E02_The First Cut is the Deepest.avi
+                                             */
+                                            switch (formatCombo.SelectedIndex)
+                                            {
+
+                                                case 0: //PLEX
+                                                    newTitle = SeriesInfo.series["SeriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
+                                                    break;
+                                                case 1: //KODI
+                                                    newTitle = SeriesInfo.series["SeriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
+                                                    break;
+                                                case 2: //Synology
+                                                    newTitle = SeriesInfo.series["SeriesName"] + "." + season + "." + episode + "." + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
+                                                    break;
+                                                default: //Plex
+                                                    newTitle = SeriesInfo.series["SeriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
+                                                    break;
+                                            }
+                                            //newTitle = SeriesInfo.series["SeriesName"] + " " + season + episode + " " + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                season = "-1";
+                                episode = "-1";
+                            }
+ 
                         }
+                        else
+                        {
+                            //Add loop for each episode to see if an episode title in the SeriesInfo object matches a filename. If so return the episode and season from that.
+                            for (int a = 0; a < SeriesInfo.episodes.Count; a++)
+                            {
+                                if (SeriesInfo.episodes[a].ContainsKey("EpisodeName"))
+                                {
+                                    if ((fileNamesListbox.Items[i].ToString().ToUpper()).Contains(SeriesInfo.episodes[a]["EpisodeName"].ToUpper()))
+                                    {
+
+                                        if (int.Parse(SeriesInfo.episodes[a]["SeasonNumber"]) < 10)
+                                        {
+                                            season = "S0" + SeriesInfo.episodes[a]["SeasonNumber"];
+                                        }
+                                        else
+                                        {
+                                            season = "S" + SeriesInfo.episodes[a]["SeasonNumber"];
+                                        }
+
+                                        if (int.Parse(SeriesInfo.episodes[a]["EpisodeNumber"]) < 10)
+                                        {
+                                            episode = "E0" + SeriesInfo.episodes[a]["EpisodeNumber"];
+                                        }
+                                        else
+                                        {
+                                            episode = "E" + SeriesInfo.episodes[a]["EpisodeNumber"];
+                                        }
+
+                                        //add episode and season info to the newTitle variable;
+
+                                        /*TitleFormats
+                                            Plex: ShowName - sXXeYY - Optional_info.ext
+                                                Grey's Anatomy - S01e02 - The First Cut is the Deepest.avi
+
+                                            Synology: ShowName.sXXeYY.ext
+                                                Grey's Anatomy.S01.E02.avi
+                                                Grey's Anatomy.S01.E02.The First Cut is the Deepest.avi
+
+                                            Kodi/XBMC: ShowName_sXXeYY.ext
+                                                Grey's Anatomy_S01E02.avi
+                                                Grey's Anatomy_S01E02_The First Cut is the Deepest.avi
+                                         */
+                                        switch (formatCombo.SelectedIndex)
+                                        {
+
+                                            case 0: //PLEX
+                                                newTitle = SeriesInfo.series["SeriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
+                                                break;
+                                            case 1: //KODI
+                                                newTitle = SeriesInfo.series["SeriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
+                                                break;
+                                            case 2: //Synology
+                                                newTitle = SeriesInfo.series["SeriesName"] + "." + season + "." + episode + "." + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
+                                                break;
+                                            default: //Plex
+                                                newTitle = SeriesInfo.series["SeriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
+                                                break;
+                                        }
+                                        //newTitle = SeriesInfo.series["SeriesName"] + " " + season + episode + " " + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
+                                    }
+                                }
+                            }
+
+                        }
+                        
                     }
                     //Selections made, other items are marked with -1 and then skipped
                     if (season == "-1") { newTitle = "SKIPPED"; }
