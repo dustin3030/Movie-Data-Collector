@@ -39,8 +39,10 @@ namespace MovieDataCollector
                 "Framerate", //Roku Compliant
                 "FramerateMode", //Constant, Peak, Variable
                 "ConversionPreset", //Roku Compliant
-                "GmailAccount", //Left blank as default
-                "Password", //Left blank as Default
+                "SMTP_Port", //Left blank as default
+                "SMTP_Server", //Left blank as default
+                "SMTP_Account", //Left blank as default
+                "SMTP_Password", //Left blank as Default
                 "NotifyAddress", //Left blank as default
                 "SubtitleSelection", //None
                 "ForcedSubtitleBurnIn", //False
@@ -113,8 +115,10 @@ namespace MovieDataCollector
                 "Roku Compliant", //Framerate
                 "Peak", //FramerateMode
                 "", //ConversionPreset is blank by default
-                "", //GmailAccount
-                "", //Password
+                "", //SMTP_Port
+                "", //SMTP_Server
+                "", //SMTP_Account
+                "", //SMTP_Password
                 "", //NotifyAddress
                 "None", //SubtitleSelection
                 "False", //ForcedSubtitleBurnIn

@@ -279,8 +279,10 @@ namespace MovieDataCollector
             if (CF.DefaultSettings["CompatibilitySelector"] == "Xbox") { compatibilityCombo.SelectedIndex = 1; }
 
             /*Email Settings*/
-            usernameBox.Text = CF.DefaultSettings["GmailAccount"];
-            passwordBox.Text = CF.DefaultSettings["Password"];
+            SMTPPortTB.Text = CF.DefaultSettings["SMTP_Port"];
+            SMTPSeverTB.Text = CF.DefaultSettings["SMTP_Server"];
+            usernameBox.Text = CF.DefaultSettings["SMTP_Account"];
+            passwordBox.Text = CF.DefaultSettings["SMTP_Password"];
             sendToBox.Text = CF.DefaultSettings["NotifyAddress"];
 
             /*Audio Settings*/
@@ -969,7 +971,6 @@ namespace MovieDataCollector
             {
                 tabControl1.SelectedIndex = 0; //Selects Media Info Tab
                 MediaInfoTB.Clear();
-                notificationLabel.Visible = true;
                 if(filesListBox.SelectedIndices.Count > 0) //selected items
                 {
                     for (int i = 0; i < filesListBox.SelectedIndices.Count; i++)
@@ -1297,6 +1298,8 @@ namespace MovieDataCollector
 
                             if (notificationCheck.Checked)
                             {
+                                Int32 port = Int32.Parse(SMTPPortTB.Text);
+                                string server = SMTPSeverTB.Text;
                                 string username = usernameBox.Text;
                                 string password = passwordBox.Text;
                                 string sendTo = sendToBox.Text;
@@ -1305,7 +1308,7 @@ namespace MovieDataCollector
                                 {
                                     await Task.Run(() =>
                                    {
-                                       SendNotification(username, password, sendTo, "Movie Data Collector Notification", "The transcoding que initiated " + startTime.ToString() + " failed. HandbrakeCLI exited with code" + exitCode.ToString());
+                                       SendNotification(server, port, username, password, sendTo, "Movie Data Collector Notification", "The transcoding que initiated " + startTime.ToString() + " failed. HandbrakeCLI exited with code" + exitCode.ToString());
                                    });
                                     
                                 }
@@ -1313,7 +1316,7 @@ namespace MovieDataCollector
                                 {
                                     await Task.Run(() =>
                                     {
-                                        SendNotification(username, password, sendTo, "Movie Data Collector Notification", "The transcoding que initiated " + startTime.ToString() + " is now complete. " + (VideoFilesList.Count() - Errors.Count()).ToString() + " of " + VideoFilesList.Count().ToString() + " files processed successfully in " + totalProcessingTime);
+                                        SendNotification(server, port, username, password, sendTo, "Movie Data Collector Notification", "The transcoding que initiated " + startTime.ToString() + " is now complete. " + (VideoFilesList.Count() - Errors.Count()).ToString() + " of " + VideoFilesList.Count().ToString() + " files processed successfully in " + totalProcessingTime);
                                     });
                                 }
                             }
@@ -1327,12 +1330,14 @@ namespace MovieDataCollector
 
                             if (notificationCheck.Checked)
                             {
+                                Int32 port = Int32.Parse(SMTPPortTB.Text);
+                                string server = SMTPSeverTB.Text;
                                 string username = usernameBox.Text;
                                 string password = passwordBox.Text;
                                 string sendTo = sendToBox.Text;
 
-                                if (filesListBox.SelectedIndices.Count == 1) { SendNotification(username, password, sendTo, "Movie Data Collector Notification", "The transcoding que initiated " + startTime.ToString() + " is now complete. The file was processed in " + totalProcessingTime); }
-                                if (filesListBox.SelectedIndices.Count > 1) { SendNotification(username, password, sendTo, "Movie Data Collector Notification", "The transcoding que initiated " + startTime.ToString() + " is now complete. " + filesListBox.SelectedIndices.Count.ToString() + " files were processed in " + totalProcessingTime); }
+                                if (filesListBox.SelectedIndices.Count == 1) { SendNotification(server, port, username, password, sendTo, "Movie Data Collector Notification", "The transcoding que initiated " + startTime.ToString() + " is now complete. The file was processed in " + totalProcessingTime); }
+                                if (filesListBox.SelectedIndices.Count > 1) { SendNotification(server, port, username, password, sendTo, "Movie Data Collector Notification", "The transcoding que initiated " + startTime.ToString() + " is now complete. " + filesListBox.SelectedIndices.Count.ToString() + " files were processed in " + totalProcessingTime); }
                             }
                         }
                         else
@@ -1344,12 +1349,14 @@ namespace MovieDataCollector
 
                             if (notificationCheck.Checked)
                             {
+                                Int32 port = Int32.Parse(SMTPPortTB.Text);
+                                string server = SMTPSeverTB.Text;
                                 string username = usernameBox.Text;
                                 string password = passwordBox.Text;
                                 string sendTo = sendToBox.Text;
 
-                                if (VideoFilesList.Count == 1) { SendNotification(username, password, sendTo, "Movie Data Collector Notification", "The transcoding que initiated " + startTime.ToString() + " is now complete. The file was processed in " + totalProcessingTime); }
-                                if (VideoFilesList.Count > 1) { SendNotification(username, password, sendTo, "Movie Data Collector Notification", "The transcoding que initiated " + startTime.ToString() + " is now complete. " + VideoFilesList.Count().ToString() + " files were processed in " + totalProcessingTime); }
+                                if (VideoFilesList.Count == 1) { SendNotification(server, port, username, password, sendTo, "Movie Data Collector Notification", "The transcoding que initiated " + startTime.ToString() + " is now complete. The file was processed in " + totalProcessingTime); }
+                                if (VideoFilesList.Count > 1) { SendNotification(server, port, username, password, sendTo, "Movie Data Collector Notification", "The transcoding que initiated " + startTime.ToString() + " is now complete. " + VideoFilesList.Count().ToString() + " files were processed in " + totalProcessingTime); }
                             }
                         }
                     }
@@ -1383,7 +1390,6 @@ namespace MovieDataCollector
                     break;
             }
 
-            notificationLabel.Visible = true;
             return checksPassed;
         }
         private string CheckForHandbrakeCLI()
@@ -4006,22 +4012,17 @@ namespace MovieDataCollector
             {
                 case "Same As Source":
                     NLabelUpdate("Framerates > 30 are not ROKU Compliant!", Color.Red);
-                    notificationLabel.Visible = true;
                     break;
                 case "50":
                     NLabelUpdate("Framerates > 30 are not ROKU Compliant!", Color.Red);
-                    notificationLabel.Visible = true;
                     break;
                 case "59.94":
                     NLabelUpdate("Framerates > 30 are not ROKU Compliant!", Color.Red);
-                    notificationLabel.Visible = true;
                     break;
                 case "60":
                     NLabelUpdate("Framerates > 30 are not ROKU Compliant!", Color.Red);
-                    notificationLabel.Visible = true;
                     break;
                 default:
-                    notificationLabel.Visible = true;
                     break;
             }
         }
@@ -5206,22 +5207,49 @@ namespace MovieDataCollector
 
 
         /*These methods are used to send notifications to the user*/
-        private void SendNotification(string userName, string password, string sendTo, string subject, string message)
+        /*private void SendNotification(string server, string userName, string password, string sendTo, string subject, string message)
         {
             //If this doesnt work it's because the gmail account needs to allow less secure apps access to send email
             //https://support.google.com/accounts/answer/6010255?hl=en
             if (notificationCheck.Checked) //Ensures that a notification doesn't try to send unless the user intends it.
             {
-                if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(sendTo))
+                if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(sendTo) && !string.IsNullOrEmpty(server))
                 {
                     //NLabelUpdate("Attempting to send notification", Color.GreenYellow);
 
-                    if (!userName.ToUpper().Contains("@GMAIL.COM")) { userName += "@gmail.com"; }
+                    //smtp.gmail.com
+                    if (SMTPSeverTB.Text.ToUpper().Contains("GMAIL"))
+                    {
+                        if (!userName.ToUpper().Contains("@GMAIL.COM")) { userName += "@gmail.com"; }
+                        server = "smtp.gmail.com";
+                    }
+
+                    //smtp.mail.yahoo.com
+                    if (SMTPSeverTB.Text.ToUpper().Contains("YAHOO"))
+                    {
+                        if (!userName.ToUpper().Contains("@YAHOO.COM")) { userName += "@yahoo.com"; }
+                        server = "smtp.mail.yahoo.com";
+                    }
+
+                    //smtp-mail.outlook.com
+                    if (SMTPSeverTB.Text.ToUpper().Contains("HOTMAIL"))
+                    {
+                        if (!userName.ToUpper().Contains("@HOTMAIL.COM")) { userName += "@hotmail.com"; }
+                        server = "smtp-mail.outlook.com";
+                    }
+
+                    //smtp.live.com
+                    if (SMTPSeverTB.Text.ToUpper().Contains("MSN"))
+                    {
+                        if (!userName.ToUpper().Contains("@MSN.COM")) { userName += "@msn.com"; }
+                        server = "smtp.live.com";
+                    }
+
 
                     try
                     {
                         MailMessage mail = new MailMessage();
-                        SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+                        SmtpClient SmtpServer = new SmtpClient(server);
 
                         mail.From = new MailAddress(userName);
                         mail.To.Add(sendTo);
@@ -5255,6 +5283,8 @@ namespace MovieDataCollector
                         SmtpServer.Port = 587;
                         SmtpServer.Credentials = new System.Net.NetworkCredential(userName, password);
                         SmtpServer.EnableSsl = true;
+                        SmtpServer.UseDefaultCredentials = false;
+
 
                         SmtpServer.Send(mail);
                         CustomMessageBox.Show("Notification Sent!", 120, 230, "Notification Message");
@@ -5264,7 +5294,7 @@ namespace MovieDataCollector
                     }
                     catch (Exception ex)
                     {
-                        CustomMessageBox.Show("You may have to enable less secure apps access to gmail. See https://support.google.com/accounts/answer/6010255?hl=en" + "/r/n" + ex.ToString(), 600, 300);
+                        CustomMessageBox.Show(ex.ToString(), 600, 300);
                         //NLabelUpdate("Notification failed to send.", Color.Red);
                     }
                 }
@@ -5274,23 +5304,133 @@ namespace MovieDataCollector
                     //NLabelUpdate("Missing Notification Parameters", Color.Red);
                 }
             }
-        }
-        private async void TestNotificationButton_Click(object sender, EventArgs e)
-        {
-            string username = usernameBox.Text;
-            string password = passwordBox.Text;
-            string sendTo = sendToBox.Text;
+        }*/
 
-            await Task.Run(() =>
+        private void SendNotification(string server, Int32 port, string userName, string password, string sendTo, string subject, string message)
+        {
+            NLabelUpdate("Sending Notification to " + sendTo, Color.GreenYellow);
+
+            //Separate Domain from server address
+            char delim = '.';
+            string[] Tokens = server.Split(delim);
+            string domain = Tokens[Tokens.Count()-2] + "." + Tokens[Tokens.Count()-1];
+
+            //Check if recipient is a cellphone, if so remove the subject
+            if (sendTo.ToUpper().Contains("@VTEXT.COM") ||
+                sendTo.ToUpper().Contains("@MMS.ATT.NET") ||
+                sendTo.ToUpper().Contains("@TXT.ATT.NET") ||
+                sendTo.ToUpper().Contains("@TMOMAIL.NET") ||
+                sendTo.ToUpper().Contains("@SPRINTPCS.COM") ||
+                sendTo.ToUpper().Contains("@PM.SPRINT.COM") ||
+                sendTo.ToUpper().Contains("@VMOBL.COM") ||
+                sendTo.ToUpper().Contains("@MMST5.TRACFONE.COM") ||
+                sendTo.ToUpper().Contains("@MYMETROPCS.COM") ||
+                sendTo.ToUpper().Contains("@MYBOOSTMOBILE.COM") ||
+                sendTo.ToUpper().Contains("@SMS.MYCRICKET.COM") ||
+                sendTo.ToUpper().Contains("@PTEL.COM") ||
+                sendTo.ToUpper().Contains("@TEXT.REPUBLICWIRELESS.COM") ||
+                sendTo.ToUpper().Contains("@TMS.SUNCOM.COM") ||
+                sendTo.ToUpper().Contains("@MESSAGE.TING.COM") ||
+                sendTo.ToUpper().Contains("@EMAIL.USCC.NET") ||
+                sendTo.ToUpper().Contains("@CINGULARME.COM") ||
+                sendTo.ToUpper().Contains("@CSPIRE1.COM"))
             {
-                SendNotification(username, password, sendTo, "Test Notification", "Notification Test from Movie Data Collector");
-            });
+                subject = "";
+            }
+
+
+            try
+            {
+                MailMessage mail = new MailMessage();
+                SmtpClient SmtpServer = new SmtpClient(server);
+
+
+                mail.From = new MailAddress(userName + "@" + domain);
+                mail.To.Add(sendTo);
+                mail.Subject = subject;
+                mail.Body = message;
+
+                SmtpServer.Port = port;
+                SmtpServer.Credentials = new System.Net.NetworkCredential(userName, password);
+                SmtpServer.EnableSsl = true;
+
+                SmtpServer.Send(mail);
+
+                NLabelUpdate("Notification Sent Successfully",Color.GreenYellow);
+                CF.UpdateDefaults(); //Stores info in config file
+
+            }
+            catch (Exception ex)
+            {
+                NLabelUpdate(ex.Message.ToString(), Color.Red);
+                //CustomMessageBox.Show(ex.Message.ToString(), 300, 600, "Error on SMTP Connection");
+            }
+        }
+        private void TestNotificationButton_Click(object sender, EventArgs e)
+        {
+            //Check that all boxes are filled
+            bool portValue = false;
+            bool serverValue = false;
+            bool userNameValue = false;
+            bool passwordValue = false;
+            bool sendToValue = false;
+
+            Int32 portNum = -1;
+
+            //Verify Port number
+            Int32.TryParse(SMTPPortTB.Text, out portNum);
+            if(portNum != -1) { portValue = true; }
+            if(portNum != 587) { NLabelUpdate("Port 587 is generally used for Secure SMTP transmissions, not port " + portNum.ToString() + ".", Color.Red); }
+
+            //Verify Server
+            if (!string.IsNullOrEmpty(SMTPSeverTB.Text)) { serverValue = true; }
+
+            //Verify User Name
+            if (!string.IsNullOrEmpty(usernameBox.Text)) { userNameValue = true; }
+
+            //Verify Password
+            if (!string.IsNullOrEmpty(passwordBox.Text)) { passwordValue = true; }
+
+            //Verify Recipient / Send To
+            if (!string.IsNullOrEmpty(sendToBox.Text) && sendToBox.Text.Contains("@") && sendToBox.Text.Contains(".")) { sendToValue = true; }
+
+        
+
+            if (portValue && serverValue && userNameValue && passwordValue & sendToValue)
+            {
+                Int32 port = Int32.Parse(SMTPPortTB.Text);
+                string server = SMTPSeverTB.Text;
+                string username = usernameBox.Text;
+                string password = passwordBox.Text;
+                string sendTo = sendToBox.Text;
+
+                SendNotification(server, port, username, password, sendTo, "Test Notification", "Notification Test from Movie Data Collector");
+            }
+            else
+            {
+                string invalidValues = "";
+
+                if (string.IsNullOrEmpty(invalidValues) && !portValue) { invalidValues += "Port"; } else if(!string.IsNullOrEmpty(invalidValues) && !portValue) { invalidValues += ", Port"; }
+                if (string.IsNullOrEmpty(invalidValues) && !serverValue) { invalidValues += "Server"; } else if (!string.IsNullOrEmpty(invalidValues) && !serverValue) { invalidValues += ", Server"; }
+                if (string.IsNullOrEmpty(invalidValues) && !userNameValue) { invalidValues += "Username"; } else if (!string.IsNullOrEmpty(invalidValues) && !userNameValue) { invalidValues += ", Username"; }
+                if (string.IsNullOrEmpty(invalidValues) && !passwordValue) { invalidValues += "Password"; } else if (!string.IsNullOrEmpty(invalidValues) && !passwordValue) { invalidValues += ", Password"; }
+                if (string.IsNullOrEmpty(invalidValues) && !sendToValue) { invalidValues += "Send To"; } else if (!string.IsNullOrEmpty(invalidValues) && !sendToValue) { invalidValues += ", Send To"; }
+
+                if(!string.IsNullOrEmpty(invalidValues))
+                {
+                    NLabelUpdate("Some information is either missing or invalid: " + invalidValues + ".", Color.Red);
+                }
+            }
 
         }
         private void NotificationCheck_CheckedChanged(object sender, EventArgs e)
         {
             if(notificationCheck.Checked)
             {
+                SMTPPortLbl.Visible = true;
+                SMTPPortTB.Visible = true;
+                SMTPServerLbl.Visible = true;
+                SMTPSeverTB.Visible = true;
                 userNameLabel.Visible = true;
                 usernameBox.Visible = true;
                 passwordLabel.Visible = true;
@@ -5301,6 +5441,10 @@ namespace MovieDataCollector
             }
             else
             {
+                SMTPPortLbl.Visible = false;
+                SMTPPortTB.Visible = false;
+                SMTPServerLbl.Visible = false;
+                SMTPSeverTB.Visible = false;
                 userNameLabel.Visible = false;
                 usernameBox.Visible = false;
                 passwordLabel.Visible = false;
@@ -5349,19 +5493,39 @@ namespace MovieDataCollector
         }
         private void NLabelUpdate(string notificationText, Color color)
         {
+            notificationLabel.Visible = true;
             notificationLabel.ForeColor = color;
             notificationLabel.Text = notificationText;
             notificationLabel.Invalidate();
             notificationLabel.Update();
-            notificationLabel.Visible = true;
+        }
+        private void SMTPPortTB_Leave(object sender, EventArgs e)
+        {
+            Int32 result = -1;
+            Int32.TryParse(SMTPSeverTB.Text, out result);
+
+            if(result != -1)
+            {
+                CF.DefaultSettings["SMTP_Port"] = SMTPPortTB.Text;
+            }
+            else
+            {
+                SMTPPortTB.Text = "";
+                NLabelUpdate("SMTP Port must be a valid port number.", Color.Red);
+            }
+        }
+        private void SMTPSeverTB_Leave(object sender, EventArgs e)
+        {
+
+            CF.DefaultSettings["SMTP_Server"] = SMTPSeverTB.Text;
         }
         private void UsernameBox_Leave(object sender, EventArgs e)
         {
-            CF.DefaultSettings["GmailAccount"] = usernameBox.Text;
+            CF.DefaultSettings["SMTP_Account"] = usernameBox.Text;
         }
         private void PasswordBox_Leave(object sender, EventArgs e)
         {
-            CF.DefaultSettings["Password"] = passwordBox.Text;
+            CF.DefaultSettings["SMTP_Password"] = passwordBox.Text;
         }
         private void SendToBox_Leave(object sender, EventArgs e)
         {
@@ -6604,6 +6768,6 @@ namespace MovieDataCollector
             }
         }
 
-   
+     
     }
 }

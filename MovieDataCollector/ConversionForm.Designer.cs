@@ -116,8 +116,10 @@
             this.presetLabel = new System.Windows.Forms.Label();
             this.sendToBox = new System.Windows.Forms.TextBox();
             this.passwordBox = new System.Windows.Forms.TextBox();
+            this.SMTPSeverTB = new System.Windows.Forms.TextBox();
             this.usernameBox = new System.Windows.Forms.TextBox();
             this.sendToLabel = new System.Windows.Forms.Label();
+            this.SMTPServerLbl = new System.Windows.Forms.Label();
             this.passwordLabel = new System.Windows.Forms.Label();
             this.userNameLabel = new System.Windows.Forms.Label();
             this.notificationCheck = new System.Windows.Forms.CheckBox();
@@ -156,6 +158,8 @@
             this.conversionSettingsLabel = new System.Windows.Forms.Label();
             this.compatibilitySelectionLabel = new System.Windows.Forms.Label();
             this.invisibleCloseButton = new System.Windows.Forms.Button();
+            this.SMTPPortLbl = new System.Windows.Forms.Label();
+            this.SMTPPortTB = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.selectionPicturebox)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -240,6 +244,7 @@
             this.compatibilityCombo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.compatibilityCombo.ForeColor = System.Drawing.Color.GreenYellow;
             this.compatibilityCombo.FormattingEnabled = true;
+            this.compatibilityCombo.ItemHeight = 13;
             this.compatibilityCombo.Items.AddRange(new object[] {
             "Roku",
             "Xbox"});
@@ -267,7 +272,7 @@
             this.listAllVideosButton.Location = new System.Drawing.Point(154, 64);
             this.listAllVideosButton.Name = "listAllVideosButton";
             this.listAllVideosButton.Size = new System.Drawing.Size(121, 32);
-            this.listAllVideosButton.TabIndex = 5;
+            this.listAllVideosButton.TabIndex = 4;
             this.listAllVideosButton.Text = "&List All Videos";
             this.listAllVideosButton.UseVisualStyleBackColor = false;
             this.listAllVideosButton.Click += new System.EventHandler(this.ListAllVideosButton_Click);
@@ -280,7 +285,7 @@
             this.listIncompatibleButton.Location = new System.Drawing.Point(154, 102);
             this.listIncompatibleButton.Name = "listIncompatibleButton";
             this.listIncompatibleButton.Size = new System.Drawing.Size(121, 32);
-            this.listIncompatibleButton.TabIndex = 6;
+            this.listIncompatibleButton.TabIndex = 5;
             this.listIncompatibleButton.Text = "List &Incompatible";
             this.listIncompatibleButton.UseVisualStyleBackColor = false;
             this.listIncompatibleButton.Click += new System.EventHandler(this.ListIncompatibleButton_Click);
@@ -293,7 +298,7 @@
             this.exportButton.Location = new System.Drawing.Point(154, 140);
             this.exportButton.Name = "exportButton";
             this.exportButton.Size = new System.Drawing.Size(121, 32);
-            this.exportButton.TabIndex = 7;
+            this.exportButton.TabIndex = 6;
             this.exportButton.Text = "&Export File List";
             this.exportButton.UseVisualStyleBackColor = false;
             this.exportButton.Click += new System.EventHandler(this.ExportButton_Click);
@@ -306,7 +311,7 @@
             this.quickInfoButton.Location = new System.Drawing.Point(365, 64);
             this.quickInfoButton.Name = "quickInfoButton";
             this.quickInfoButton.Size = new System.Drawing.Size(121, 32);
-            this.quickInfoButton.TabIndex = 8;
+            this.quickInfoButton.TabIndex = 7;
             this.quickInfoButton.Text = "&Quick Info";
             this.quickInfoButton.UseVisualStyleBackColor = false;
             this.quickInfoButton.Click += new System.EventHandler(this.QuickInfobutton_Click);
@@ -319,7 +324,7 @@
             this.detailInfoButton.Location = new System.Drawing.Point(365, 102);
             this.detailInfoButton.Name = "detailInfoButton";
             this.detailInfoButton.Size = new System.Drawing.Size(121, 32);
-            this.detailInfoButton.TabIndex = 9;
+            this.detailInfoButton.TabIndex = 8;
             this.detailInfoButton.Text = "&Detailed Info";
             this.detailInfoButton.UseVisualStyleBackColor = false;
             this.detailInfoButton.Click += new System.EventHandler(this.DetailInfoButton_Click);
@@ -331,7 +336,7 @@
             this.listboxLabel.Location = new System.Drawing.Point(12, 184);
             this.listboxLabel.Name = "listboxLabel";
             this.listboxLabel.Size = new System.Drawing.Size(51, 13);
-            this.listboxLabel.TabIndex = 10;
+            this.listboxLabel.TabIndex = 0;
             this.listboxLabel.Text = "All Files";
             // 
             // filesListBox
@@ -344,7 +349,7 @@
             this.filesListBox.Name = "filesListBox";
             this.filesListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.filesListBox.Size = new System.Drawing.Size(474, 381);
-            this.filesListBox.TabIndex = 11;
+            this.filesListBox.TabIndex = 9;
             this.filesListBox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.FilesListBox_MouseDoubleClick);
             // 
             // notificationLabel
@@ -354,7 +359,7 @@
             this.notificationLabel.Location = new System.Drawing.Point(12, 590);
             this.notificationLabel.Name = "notificationLabel";
             this.notificationLabel.Size = new System.Drawing.Size(107, 13);
-            this.notificationLabel.TabIndex = 12;
+            this.notificationLabel.TabIndex = 0;
             this.notificationLabel.Text = "Notification Label";
             this.notificationLabel.Visible = false;
             // 
@@ -368,7 +373,7 @@
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(542, 521);
-            this.tabControl1.TabIndex = 13;
+            this.tabControl1.TabIndex = 0;
             // 
             // mediaInfoPage
             // 
@@ -389,7 +394,7 @@
             this.MediaInfoTB.Location = new System.Drawing.Point(3, 6);
             this.MediaInfoTB.Name = "MediaInfoTB";
             this.MediaInfoTB.Size = new System.Drawing.Size(531, 441);
-            this.MediaInfoTB.TabIndex = 2;
+            this.MediaInfoTB.TabIndex = 0;
             this.MediaInfoTB.Text = "";
             // 
             // exportInfoButton
@@ -414,8 +419,12 @@
             this.conversionSettingsPage.Controls.Add(this.presetLabel);
             this.conversionSettingsPage.Controls.Add(this.sendToBox);
             this.conversionSettingsPage.Controls.Add(this.passwordBox);
+            this.conversionSettingsPage.Controls.Add(this.SMTPPortTB);
+            this.conversionSettingsPage.Controls.Add(this.SMTPSeverTB);
             this.conversionSettingsPage.Controls.Add(this.usernameBox);
             this.conversionSettingsPage.Controls.Add(this.sendToLabel);
+            this.conversionSettingsPage.Controls.Add(this.SMTPPortLbl);
+            this.conversionSettingsPage.Controls.Add(this.SMTPServerLbl);
             this.conversionSettingsPage.Controls.Add(this.passwordLabel);
             this.conversionSettingsPage.Controls.Add(this.userNameLabel);
             this.conversionSettingsPage.Controls.Add(this.notificationCheck);
@@ -442,7 +451,7 @@
             this.audioSetingTabControl.Name = "audioSetingTabControl";
             this.audioSetingTabControl.SelectedIndex = 0;
             this.audioSetingTabControl.Size = new System.Drawing.Size(514, 120);
-            this.audioSetingTabControl.TabIndex = 8;
+            this.audioSetingTabControl.TabIndex = 12;
             // 
             // audioPage1
             // 
@@ -478,7 +487,7 @@
             this.codecLabel.Location = new System.Drawing.Point(67, 14);
             this.codecLabel.Name = "codecLabel";
             this.codecLabel.Size = new System.Drawing.Size(43, 13);
-            this.codecLabel.TabIndex = 2;
+            this.codecLabel.TabIndex = 0;
             this.codecLabel.Text = "Codec";
             // 
             // filteredFLACCheck
@@ -487,7 +496,7 @@
             this.filteredFLACCheck.Location = new System.Drawing.Point(446, 39);
             this.filteredFLACCheck.Name = "filteredFLACCheck";
             this.filteredFLACCheck.Size = new System.Drawing.Size(56, 17);
-            this.filteredFLACCheck.TabIndex = 7;
+            this.filteredFLACCheck.TabIndex = 11;
             this.filteredFLACCheck.Text = "FLAC";
             this.filteredFLACCheck.UseVisualStyleBackColor = true;
             this.filteredFLACCheck.Visible = false;
@@ -499,7 +508,7 @@
             this.filteredMP3Check.Location = new System.Drawing.Point(446, 19);
             this.filteredMP3Check.Name = "filteredMP3Check";
             this.filteredMP3Check.Size = new System.Drawing.Size(51, 17);
-            this.filteredMP3Check.TabIndex = 7;
+            this.filteredMP3Check.TabIndex = 10;
             this.filteredMP3Check.Text = "MP3";
             this.filteredMP3Check.UseVisualStyleBackColor = true;
             this.filteredMP3Check.Visible = false;
@@ -511,7 +520,7 @@
             this.filteredEAC3Check.Location = new System.Drawing.Point(314, 19);
             this.filteredEAC3Check.Name = "filteredEAC3Check";
             this.filteredEAC3Check.Size = new System.Drawing.Size(61, 17);
-            this.filteredEAC3Check.TabIndex = 7;
+            this.filteredEAC3Check.TabIndex = 6;
             this.filteredEAC3Check.Text = "E-AC3";
             this.filteredEAC3Check.UseVisualStyleBackColor = true;
             this.filteredEAC3Check.Visible = false;
@@ -523,7 +532,7 @@
             this.filteredTrueHDCheck.Location = new System.Drawing.Point(374, 41);
             this.filteredTrueHDCheck.Name = "filteredTrueHDCheck";
             this.filteredTrueHDCheck.Size = new System.Drawing.Size(70, 17);
-            this.filteredTrueHDCheck.TabIndex = 7;
+            this.filteredTrueHDCheck.TabIndex = 9;
             this.filteredTrueHDCheck.Text = "TrueHD";
             this.filteredTrueHDCheck.UseVisualStyleBackColor = true;
             this.filteredTrueHDCheck.Visible = false;
@@ -535,7 +544,7 @@
             this.filteredDTSHDCheck.Location = new System.Drawing.Point(374, 19);
             this.filteredDTSHDCheck.Name = "filteredDTSHDCheck";
             this.filteredDTSHDCheck.Size = new System.Drawing.Size(73, 17);
-            this.filteredDTSHDCheck.TabIndex = 7;
+            this.filteredDTSHDCheck.TabIndex = 8;
             this.filteredDTSHDCheck.Text = "DTS-HD";
             this.filteredDTSHDCheck.UseVisualStyleBackColor = true;
             this.filteredDTSHDCheck.Visible = false;
@@ -559,7 +568,7 @@
             this.mixdownLabel.Location = new System.Drawing.Point(54, 42);
             this.mixdownLabel.Name = "mixdownLabel";
             this.mixdownLabel.Size = new System.Drawing.Size(56, 13);
-            this.mixdownLabel.TabIndex = 3;
+            this.mixdownLabel.TabIndex = 0;
             this.mixdownLabel.Text = "Mixdown";
             // 
             // filteredAC3Check
@@ -568,7 +577,7 @@
             this.filteredAC3Check.Location = new System.Drawing.Point(265, 41);
             this.filteredAC3Check.Name = "filteredAC3Check";
             this.filteredAC3Check.Size = new System.Drawing.Size(49, 17);
-            this.filteredAC3Check.TabIndex = 7;
+            this.filteredAC3Check.TabIndex = 5;
             this.filteredAC3Check.Text = "AC3";
             this.filteredAC3Check.UseVisualStyleBackColor = true;
             this.filteredAC3Check.Visible = false;
@@ -579,6 +588,7 @@
             this.audioCodecComboBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.audioCodecComboBox.ForeColor = System.Drawing.Color.GreenYellow;
             this.audioCodecComboBox.FormattingEnabled = true;
+            this.audioCodecComboBox.ItemHeight = 13;
             this.audioCodecComboBox.Items.AddRange(new object[] {
             "AAC (FDK)",
             "AC3",
@@ -587,7 +597,7 @@
             this.audioCodecComboBox.Location = new System.Drawing.Point(116, 11);
             this.audioCodecComboBox.Name = "audioCodecComboBox";
             this.audioCodecComboBox.Size = new System.Drawing.Size(133, 21);
-            this.audioCodecComboBox.TabIndex = 0;
+            this.audioCodecComboBox.TabIndex = 1;
             this.audioCodecComboBox.SelectedIndexChanged += new System.EventHandler(this.AudioCodecComboBox_SelectedIndexChanged);
             this.audioCodecComboBox.TextChanged += new System.EventHandler(this.AudioCodecComboBox_TextChanged);
             this.audioCodecComboBox.Leave += new System.EventHandler(this.AudioCodecComboBox_Leave);
@@ -598,7 +608,7 @@
             this.filteredAACCheck.Location = new System.Drawing.Point(265, 19);
             this.filteredAACCheck.Name = "filteredAACCheck";
             this.filteredAACCheck.Size = new System.Drawing.Size(50, 17);
-            this.filteredAACCheck.TabIndex = 7;
+            this.filteredAACCheck.TabIndex = 4;
             this.filteredAACCheck.Text = "AAC";
             this.filteredAACCheck.UseVisualStyleBackColor = true;
             this.filteredAACCheck.Visible = false;
@@ -610,7 +620,7 @@
             this.sampleRateLabel.Location = new System.Drawing.Point(31, 67);
             this.sampleRateLabel.Name = "sampleRateLabel";
             this.sampleRateLabel.Size = new System.Drawing.Size(79, 13);
-            this.sampleRateLabel.TabIndex = 4;
+            this.sampleRateLabel.TabIndex = 0;
             this.sampleRateLabel.Text = "Sample Rate";
             // 
             // kbpsLabel
@@ -619,7 +629,7 @@
             this.kbpsLabel.Location = new System.Drawing.Point(465, 69);
             this.kbpsLabel.Name = "kbpsLabel";
             this.kbpsLabel.Size = new System.Drawing.Size(35, 13);
-            this.kbpsLabel.TabIndex = 5;
+            this.kbpsLabel.TabIndex = 0;
             this.kbpsLabel.Text = "Kbps";
             // 
             // mixdownComboBox
@@ -633,7 +643,7 @@
             this.mixdownComboBox.Location = new System.Drawing.Point(116, 37);
             this.mixdownComboBox.Name = "mixdownComboBox";
             this.mixdownComboBox.Size = new System.Drawing.Size(133, 21);
-            this.mixdownComboBox.TabIndex = 0;
+            this.mixdownComboBox.TabIndex = 2;
             this.mixdownComboBox.SelectedIndexChanged += new System.EventHandler(this.MixdownComboBox_SelectedIndexChanged);
             this.mixdownComboBox.TextChanged += new System.EventHandler(this.MixdownComboBox_TextChanged);
             this.mixdownComboBox.Leave += new System.EventHandler(this.MixdownComboBox_Leave);
@@ -660,7 +670,7 @@
             this.audioBitrateCombo.Location = new System.Drawing.Point(412, 65);
             this.audioBitrateCombo.Name = "audioBitrateCombo";
             this.audioBitrateCombo.Size = new System.Drawing.Size(47, 21);
-            this.audioBitrateCombo.TabIndex = 6;
+            this.audioBitrateCombo.TabIndex = 0;
             this.audioBitrateCombo.SelectedIndexChanged += new System.EventHandler(this.AudioBitrateCombo_SelectedIndexChanged);
             this.audioBitrateCombo.TextChanged += new System.EventHandler(this.AudioBitrateCombo_TextChanged);
             this.audioBitrateCombo.Leave += new System.EventHandler(this.AudioBitrateCombo_Leave);
@@ -676,7 +686,7 @@
             this.sampleRateCombo.Location = new System.Drawing.Point(116, 64);
             this.sampleRateCombo.Name = "sampleRateCombo";
             this.sampleRateCombo.Size = new System.Drawing.Size(54, 21);
-            this.sampleRateCombo.TabIndex = 0;
+            this.sampleRateCombo.TabIndex = 3;
             this.sampleRateCombo.SelectedIndexChanged += new System.EventHandler(this.SampleRateCombo_SelectedIndexChanged);
             this.sampleRateCombo.TextChanged += new System.EventHandler(this.SampleRateCombo_TextChanged);
             this.sampleRateCombo.Leave += new System.EventHandler(this.SampleRateCombo_Leave);
@@ -697,7 +707,7 @@
             this.ABitrateLabel.Location = new System.Drawing.Point(262, 69);
             this.ABitrateLabel.Name = "ABitrateLabel";
             this.ABitrateLabel.Size = new System.Drawing.Size(143, 13);
-            this.ABitrateLabel.TabIndex = 4;
+            this.ABitrateLabel.TabIndex = 0;
             this.ABitrateLabel.Text = "Bitrate Per Channel Cap";
             // 
             // audioPage2
@@ -738,7 +748,7 @@
             this.disableCheckStream2.Location = new System.Drawing.Point(3, 4);
             this.disableCheckStream2.Name = "disableCheckStream2";
             this.disableCheckStream2.Size = new System.Drawing.Size(59, 23);
-            this.disableCheckStream2.TabIndex = 21;
+            this.disableCheckStream2.TabIndex = 0;
             this.disableCheckStream2.Text = "Disable";
             this.disableCheckStream2.UseVisualStyleBackColor = false;
             this.disableCheckStream2.CheckedChanged += new System.EventHandler(this.disableCheckStream2_CheckedChanged);
@@ -758,7 +768,7 @@
             this.filteredDTSHDCheck2.Location = new System.Drawing.Point(374, 19);
             this.filteredDTSHDCheck2.Name = "filteredDTSHDCheck2";
             this.filteredDTSHDCheck2.Size = new System.Drawing.Size(73, 17);
-            this.filteredDTSHDCheck2.TabIndex = 18;
+            this.filteredDTSHDCheck2.TabIndex = 8;
             this.filteredDTSHDCheck2.Text = "DTS-HD";
             this.filteredDTSHDCheck2.UseVisualStyleBackColor = true;
             this.filteredDTSHDCheck2.Visible = false;
@@ -770,7 +780,7 @@
             this.filteredFLACCheck2.Location = new System.Drawing.Point(446, 39);
             this.filteredFLACCheck2.Name = "filteredFLACCheck2";
             this.filteredFLACCheck2.Size = new System.Drawing.Size(56, 17);
-            this.filteredFLACCheck2.TabIndex = 18;
+            this.filteredFLACCheck2.TabIndex = 11;
             this.filteredFLACCheck2.Text = "FLAC";
             this.filteredFLACCheck2.UseVisualStyleBackColor = true;
             this.filteredFLACCheck2.Visible = false;
@@ -782,7 +792,7 @@
             this.filteredMP3Check2.Location = new System.Drawing.Point(446, 19);
             this.filteredMP3Check2.Name = "filteredMP3Check2";
             this.filteredMP3Check2.Size = new System.Drawing.Size(51, 17);
-            this.filteredMP3Check2.TabIndex = 18;
+            this.filteredMP3Check2.TabIndex = 10;
             this.filteredMP3Check2.Text = "MP3";
             this.filteredMP3Check2.UseVisualStyleBackColor = true;
             this.filteredMP3Check2.Visible = false;
@@ -794,7 +804,7 @@
             this.filteredDTSCheck2.Location = new System.Drawing.Point(315, 42);
             this.filteredDTSCheck2.Name = "filteredDTSCheck2";
             this.filteredDTSCheck2.Size = new System.Drawing.Size(51, 17);
-            this.filteredDTSCheck2.TabIndex = 18;
+            this.filteredDTSCheck2.TabIndex = 7;
             this.filteredDTSCheck2.Text = "DTS";
             this.filteredDTSCheck2.UseVisualStyleBackColor = true;
             this.filteredDTSCheck2.Visible = false;
@@ -815,7 +825,7 @@
             this.filteredEAC3Check2.Location = new System.Drawing.Point(314, 19);
             this.filteredEAC3Check2.Name = "filteredEAC3Check2";
             this.filteredEAC3Check2.Size = new System.Drawing.Size(61, 17);
-            this.filteredEAC3Check2.TabIndex = 19;
+            this.filteredEAC3Check2.TabIndex = 6;
             this.filteredEAC3Check2.Text = "E-AC3";
             this.filteredEAC3Check2.UseVisualStyleBackColor = true;
             this.filteredEAC3Check2.Visible = false;
@@ -827,7 +837,7 @@
             this.filteredTrueHDCheck2.Location = new System.Drawing.Point(374, 41);
             this.filteredTrueHDCheck2.Name = "filteredTrueHDCheck2";
             this.filteredTrueHDCheck2.Size = new System.Drawing.Size(70, 17);
-            this.filteredTrueHDCheck2.TabIndex = 19;
+            this.filteredTrueHDCheck2.TabIndex = 9;
             this.filteredTrueHDCheck2.Text = "TrueHD";
             this.filteredTrueHDCheck2.UseVisualStyleBackColor = true;
             this.filteredTrueHDCheck2.Visible = false;
@@ -839,7 +849,7 @@
             this.filteredAC3Check2.Location = new System.Drawing.Point(265, 41);
             this.filteredAC3Check2.Name = "filteredAC3Check2";
             this.filteredAC3Check2.Size = new System.Drawing.Size(49, 17);
-            this.filteredAC3Check2.TabIndex = 19;
+            this.filteredAC3Check2.TabIndex = 5;
             this.filteredAC3Check2.Text = "AC3";
             this.filteredAC3Check2.UseVisualStyleBackColor = true;
             this.filteredAC3Check2.Visible = false;
@@ -858,7 +868,7 @@
             this.audioCodecComboBox2.Location = new System.Drawing.Point(116, 11);
             this.audioCodecComboBox2.Name = "audioCodecComboBox2";
             this.audioCodecComboBox2.Size = new System.Drawing.Size(133, 21);
-            this.audioCodecComboBox2.TabIndex = 8;
+            this.audioCodecComboBox2.TabIndex = 1;
             this.audioCodecComboBox2.SelectedIndexChanged += new System.EventHandler(this.audioCodecComboBox2_SelectedIndexChanged);
             this.audioCodecComboBox2.TextChanged += new System.EventHandler(this.AudioCodecComboBox2_TextChanged);
             this.audioCodecComboBox2.Leave += new System.EventHandler(this.AudioCodecComboBox2_Leave);
@@ -869,7 +879,7 @@
             this.filteredAACCheck2.Location = new System.Drawing.Point(265, 19);
             this.filteredAACCheck2.Name = "filteredAACCheck2";
             this.filteredAACCheck2.Size = new System.Drawing.Size(50, 17);
-            this.filteredAACCheck2.TabIndex = 20;
+            this.filteredAACCheck2.TabIndex = 4;
             this.filteredAACCheck2.Text = "AAC";
             this.filteredAACCheck2.UseVisualStyleBackColor = true;
             this.filteredAACCheck2.Visible = false;
@@ -904,7 +914,7 @@
             this.mixdownComboBox2.Location = new System.Drawing.Point(116, 37);
             this.mixdownComboBox2.Name = "mixdownComboBox2";
             this.mixdownComboBox2.Size = new System.Drawing.Size(133, 21);
-            this.mixdownComboBox2.TabIndex = 9;
+            this.mixdownComboBox2.TabIndex = 2;
             this.mixdownComboBox2.SelectedIndexChanged += new System.EventHandler(this.MixdownComboBox2_SelectedIndexChanged);
             this.mixdownComboBox2.TextChanged += new System.EventHandler(this.MixdownComboBox2_TextChanged);
             this.mixdownComboBox2.Leave += new System.EventHandler(this.MixdownComboBox2_Leave);
@@ -931,7 +941,7 @@
             this.audioBitrateCombo2.Location = new System.Drawing.Point(412, 65);
             this.audioBitrateCombo2.Name = "audioBitrateCombo2";
             this.audioBitrateCombo2.Size = new System.Drawing.Size(47, 21);
-            this.audioBitrateCombo2.TabIndex = 16;
+            this.audioBitrateCombo2.TabIndex = 12;
             this.audioBitrateCombo2.SelectedIndexChanged += new System.EventHandler(this.AudioBitrateCombo2_SelectedIndexChanged);
             this.audioBitrateCombo2.TextChanged += new System.EventHandler(this.AudioBitrateCombo2_TextChanged);
             this.audioBitrateCombo2.Leave += new System.EventHandler(this.AudioBitrateCombo2_Leave);
@@ -947,7 +957,7 @@
             this.sampleRateCombo2.Location = new System.Drawing.Point(116, 64);
             this.sampleRateCombo2.Name = "sampleRateCombo2";
             this.sampleRateCombo2.Size = new System.Drawing.Size(54, 21);
-            this.sampleRateCombo2.TabIndex = 10;
+            this.sampleRateCombo2.TabIndex = 3;
             this.sampleRateCombo2.SelectedIndexChanged += new System.EventHandler(this.SampleRateCombo2_SelectedIndexChanged);
             this.sampleRateCombo2.TextChanged += new System.EventHandler(this.SampleRateCombo2_TextChanged);
             this.sampleRateCombo2.Leave += new System.EventHandler(this.SampleRateCombo2_Leave);
@@ -1008,7 +1018,7 @@
             this.disableCheckStream3.Location = new System.Drawing.Point(3, 4);
             this.disableCheckStream3.Name = "disableCheckStream3";
             this.disableCheckStream3.Size = new System.Drawing.Size(59, 23);
-            this.disableCheckStream3.TabIndex = 22;
+            this.disableCheckStream3.TabIndex = 0;
             this.disableCheckStream3.Text = "Disable";
             this.disableCheckStream3.UseVisualStyleBackColor = false;
             this.disableCheckStream3.CheckedChanged += new System.EventHandler(this.disableCheckStream3_CheckedChanged);
@@ -1028,7 +1038,7 @@
             this.filteredDTSCheck3.Location = new System.Drawing.Point(315, 42);
             this.filteredDTSCheck3.Name = "filteredDTSCheck3";
             this.filteredDTSCheck3.Size = new System.Drawing.Size(51, 17);
-            this.filteredDTSCheck3.TabIndex = 18;
+            this.filteredDTSCheck3.TabIndex = 7;
             this.filteredDTSCheck3.Text = "DTS";
             this.filteredDTSCheck3.UseVisualStyleBackColor = true;
             this.filteredDTSCheck3.Visible = false;
@@ -1049,7 +1059,7 @@
             this.filteredFLACCheck3.Location = new System.Drawing.Point(446, 39);
             this.filteredFLACCheck3.Name = "filteredFLACCheck3";
             this.filteredFLACCheck3.Size = new System.Drawing.Size(56, 17);
-            this.filteredFLACCheck3.TabIndex = 19;
+            this.filteredFLACCheck3.TabIndex = 11;
             this.filteredFLACCheck3.Text = "FLAC";
             this.filteredFLACCheck3.UseVisualStyleBackColor = true;
             this.filteredFLACCheck3.Visible = false;
@@ -1061,7 +1071,7 @@
             this.filteredMP3Check3.Location = new System.Drawing.Point(446, 19);
             this.filteredMP3Check3.Name = "filteredMP3Check3";
             this.filteredMP3Check3.Size = new System.Drawing.Size(51, 17);
-            this.filteredMP3Check3.TabIndex = 19;
+            this.filteredMP3Check3.TabIndex = 10;
             this.filteredMP3Check3.Text = "MP3";
             this.filteredMP3Check3.UseVisualStyleBackColor = true;
             this.filteredMP3Check3.Visible = false;
@@ -1073,7 +1083,7 @@
             this.filteredTrueHDCheck3.Location = new System.Drawing.Point(374, 41);
             this.filteredTrueHDCheck3.Name = "filteredTrueHDCheck3";
             this.filteredTrueHDCheck3.Size = new System.Drawing.Size(70, 17);
-            this.filteredTrueHDCheck3.TabIndex = 19;
+            this.filteredTrueHDCheck3.TabIndex = 9;
             this.filteredTrueHDCheck3.Text = "TrueHD";
             this.filteredTrueHDCheck3.UseVisualStyleBackColor = true;
             this.filteredTrueHDCheck3.Visible = false;
@@ -1085,7 +1095,7 @@
             this.filteredDTSHDCheck3.Location = new System.Drawing.Point(374, 19);
             this.filteredDTSHDCheck3.Name = "filteredDTSHDCheck3";
             this.filteredDTSHDCheck3.Size = new System.Drawing.Size(73, 17);
-            this.filteredDTSHDCheck3.TabIndex = 19;
+            this.filteredDTSHDCheck3.TabIndex = 8;
             this.filteredDTSHDCheck3.Text = "DTS-HD";
             this.filteredDTSHDCheck3.UseVisualStyleBackColor = true;
             this.filteredDTSHDCheck3.Visible = false;
@@ -1097,7 +1107,7 @@
             this.filteredEAC3Check3.Location = new System.Drawing.Point(314, 19);
             this.filteredEAC3Check3.Name = "filteredEAC3Check3";
             this.filteredEAC3Check3.Size = new System.Drawing.Size(61, 17);
-            this.filteredEAC3Check3.TabIndex = 19;
+            this.filteredEAC3Check3.TabIndex = 6;
             this.filteredEAC3Check3.Text = "E-AC3";
             this.filteredEAC3Check3.UseVisualStyleBackColor = true;
             this.filteredEAC3Check3.Visible = false;
@@ -1109,7 +1119,7 @@
             this.filteredAC3Check3.Location = new System.Drawing.Point(265, 41);
             this.filteredAC3Check3.Name = "filteredAC3Check3";
             this.filteredAC3Check3.Size = new System.Drawing.Size(49, 17);
-            this.filteredAC3Check3.TabIndex = 19;
+            this.filteredAC3Check3.TabIndex = 5;
             this.filteredAC3Check3.Text = "AC3";
             this.filteredAC3Check3.UseVisualStyleBackColor = true;
             this.filteredAC3Check3.Visible = false;
@@ -1128,7 +1138,7 @@
             this.audioCodecComboBox3.Location = new System.Drawing.Point(116, 11);
             this.audioCodecComboBox3.Name = "audioCodecComboBox3";
             this.audioCodecComboBox3.Size = new System.Drawing.Size(133, 21);
-            this.audioCodecComboBox3.TabIndex = 8;
+            this.audioCodecComboBox3.TabIndex = 1;
             this.audioCodecComboBox3.SelectedIndexChanged += new System.EventHandler(this.audioCodecComboBox3_SelectedIndexChanged);
             this.audioCodecComboBox3.TextChanged += new System.EventHandler(this.AudioCodecComboBox3_TextChanged);
             this.audioCodecComboBox3.Leave += new System.EventHandler(this.AudioCodecComboBox3_Leave);
@@ -1139,7 +1149,7 @@
             this.filteredAACCheck3.Location = new System.Drawing.Point(265, 19);
             this.filteredAACCheck3.Name = "filteredAACCheck3";
             this.filteredAACCheck3.Size = new System.Drawing.Size(50, 17);
-            this.filteredAACCheck3.TabIndex = 20;
+            this.filteredAACCheck3.TabIndex = 4;
             this.filteredAACCheck3.Text = "AAC";
             this.filteredAACCheck3.UseVisualStyleBackColor = true;
             this.filteredAACCheck3.Visible = false;
@@ -1174,7 +1184,7 @@
             this.mixdownComboBox3.Location = new System.Drawing.Point(116, 37);
             this.mixdownComboBox3.Name = "mixdownComboBox3";
             this.mixdownComboBox3.Size = new System.Drawing.Size(133, 21);
-            this.mixdownComboBox3.TabIndex = 9;
+            this.mixdownComboBox3.TabIndex = 2;
             this.mixdownComboBox3.SelectedIndexChanged += new System.EventHandler(this.MixdownComboBox3_SelectedIndexChanged);
             this.mixdownComboBox3.TextChanged += new System.EventHandler(this.MixdownComboBox3_TextChanged);
             this.mixdownComboBox3.Leave += new System.EventHandler(this.MixdownComboBox3_Leave);
@@ -1201,7 +1211,7 @@
             this.audioBitrateCombo3.Location = new System.Drawing.Point(412, 65);
             this.audioBitrateCombo3.Name = "audioBitrateCombo3";
             this.audioBitrateCombo3.Size = new System.Drawing.Size(47, 21);
-            this.audioBitrateCombo3.TabIndex = 16;
+            this.audioBitrateCombo3.TabIndex = 12;
             this.audioBitrateCombo3.SelectedIndexChanged += new System.EventHandler(this.AudioBitrateCombo3_SelectedIndexChanged);
             this.audioBitrateCombo3.TextChanged += new System.EventHandler(this.AudioBitrateCombo3_TextChanged);
             this.audioBitrateCombo3.Leave += new System.EventHandler(this.AudioBitrateCombo3_Leave);
@@ -1217,7 +1227,7 @@
             this.sampleRateCombo3.Location = new System.Drawing.Point(116, 64);
             this.sampleRateCombo3.Name = "sampleRateCombo3";
             this.sampleRateCombo3.Size = new System.Drawing.Size(54, 21);
-            this.sampleRateCombo3.TabIndex = 10;
+            this.sampleRateCombo3.TabIndex = 3;
             this.sampleRateCombo3.SelectedIndexChanged += new System.EventHandler(this.SampleRateCombo3_SelectedIndexChanged);
             this.sampleRateCombo3.TextChanged += new System.EventHandler(this.SampleRateCombo3_TextChanged);
             this.sampleRateCombo3.Leave += new System.EventHandler(this.SampleRateCombo3_Leave);
@@ -1248,7 +1258,7 @@
             this.removePresetButton.Location = new System.Drawing.Point(461, 4);
             this.removePresetButton.Name = "removePresetButton";
             this.removePresetButton.Size = new System.Drawing.Size(67, 23);
-            this.removePresetButton.TabIndex = 18;
+            this.removePresetButton.TabIndex = 11;
             this.removePresetButton.Text = "Remove";
             this.removePresetButton.UseVisualStyleBackColor = false;
             this.removePresetButton.Click += new System.EventHandler(this.RemovePresetButton_Click);
@@ -1260,7 +1270,7 @@
             this.addPresetButton.Location = new System.Drawing.Point(408, 4);
             this.addPresetButton.Name = "addPresetButton";
             this.addPresetButton.Size = new System.Drawing.Size(47, 23);
-            this.addPresetButton.TabIndex = 18;
+            this.addPresetButton.TabIndex = 10;
             this.addPresetButton.Text = "Add";
             this.addPresetButton.UseVisualStyleBackColor = false;
             this.addPresetButton.Click += new System.EventHandler(this.AddPresetButton_Click);
@@ -1273,7 +1283,7 @@
             this.presetComboBox.Location = new System.Drawing.Point(281, 6);
             this.presetComboBox.Name = "presetComboBox";
             this.presetComboBox.Size = new System.Drawing.Size(121, 21);
-            this.presetComboBox.TabIndex = 17;
+            this.presetComboBox.TabIndex = 9;
             this.presetComboBox.SelectedIndexChanged += new System.EventHandler(this.PresetComboBox_SelectedIndexChanged);
             this.presetComboBox.Leave += new System.EventHandler(this.PresetComboBox_Leave);
             // 
@@ -1283,17 +1293,17 @@
             this.presetLabel.Location = new System.Drawing.Point(232, 9);
             this.presetLabel.Name = "presetLabel";
             this.presetLabel.Size = new System.Drawing.Size(43, 13);
-            this.presetLabel.TabIndex = 16;
+            this.presetLabel.TabIndex = 0;
             this.presetLabel.Text = "Preset";
             // 
             // sendToBox
             // 
             this.sendToBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.sendToBox.ForeColor = System.Drawing.Color.GreenYellow;
-            this.sendToBox.Location = new System.Drawing.Point(144, 416);
+            this.sendToBox.Location = new System.Drawing.Point(150, 464);
             this.sendToBox.Name = "sendToBox";
             this.sendToBox.Size = new System.Drawing.Size(158, 20);
-            this.sendToBox.TabIndex = 16;
+            this.sendToBox.TabIndex = 5;
             this.sendToBox.Visible = false;
             this.sendToBox.Leave += new System.EventHandler(this.SendToBox_Leave);
             // 
@@ -1301,53 +1311,74 @@
             // 
             this.passwordBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.passwordBox.ForeColor = System.Drawing.Color.GreenYellow;
-            this.passwordBox.Location = new System.Drawing.Point(310, 374);
+            this.passwordBox.Location = new System.Drawing.Point(316, 422);
             this.passwordBox.Name = "passwordBox";
             this.passwordBox.Size = new System.Drawing.Size(158, 20);
-            this.passwordBox.TabIndex = 15;
+            this.passwordBox.TabIndex = 4;
             this.passwordBox.UseSystemPasswordChar = true;
             this.passwordBox.Visible = false;
             this.passwordBox.Leave += new System.EventHandler(this.PasswordBox_Leave);
+            // 
+            // SMTPSeverTB
+            // 
+            this.SMTPSeverTB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.SMTPSeverTB.ForeColor = System.Drawing.Color.GreenYellow;
+            this.SMTPSeverTB.Location = new System.Drawing.Point(149, 383);
+            this.SMTPSeverTB.Name = "SMTPSeverTB";
+            this.SMTPSeverTB.Size = new System.Drawing.Size(159, 20);
+            this.SMTPSeverTB.TabIndex = 1;
+            this.SMTPSeverTB.Visible = false;
+            this.SMTPSeverTB.Leave += new System.EventHandler(this.SMTPSeverTB_Leave);
             // 
             // usernameBox
             // 
             this.usernameBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.usernameBox.ForeColor = System.Drawing.Color.GreenYellow;
-            this.usernameBox.Location = new System.Drawing.Point(143, 374);
+            this.usernameBox.Location = new System.Drawing.Point(149, 422);
             this.usernameBox.Name = "usernameBox";
             this.usernameBox.Size = new System.Drawing.Size(158, 20);
-            this.usernameBox.TabIndex = 14;
+            this.usernameBox.TabIndex = 3;
             this.usernameBox.Visible = false;
             this.usernameBox.Leave += new System.EventHandler(this.UsernameBox_Leave);
             // 
             // sendToLabel
             // 
             this.sendToLabel.AutoSize = true;
-            this.sendToLabel.Location = new System.Drawing.Point(141, 400);
+            this.sendToLabel.Location = new System.Drawing.Point(147, 448);
             this.sendToLabel.Name = "sendToLabel";
             this.sendToLabel.Size = new System.Drawing.Size(59, 13);
             this.sendToLabel.TabIndex = 13;
             this.sendToLabel.Text = "Send To:";
             this.sendToLabel.Visible = false;
             // 
+            // SMTPServerLbl
+            // 
+            this.SMTPServerLbl.AutoSize = true;
+            this.SMTPServerLbl.Location = new System.Drawing.Point(147, 367);
+            this.SMTPServerLbl.Name = "SMTPServerLbl";
+            this.SMTPServerLbl.Size = new System.Drawing.Size(131, 13);
+            this.SMTPServerLbl.TabIndex = 11;
+            this.SMTPServerLbl.Text = "SMTP Server Address";
+            this.SMTPServerLbl.Visible = false;
+            // 
             // passwordLabel
             // 
             this.passwordLabel.AutoSize = true;
-            this.passwordLabel.Location = new System.Drawing.Point(307, 358);
+            this.passwordLabel.Location = new System.Drawing.Point(313, 406);
             this.passwordLabel.Name = "passwordLabel";
-            this.passwordLabel.Size = new System.Drawing.Size(96, 13);
+            this.passwordLabel.Size = new System.Drawing.Size(61, 13);
             this.passwordLabel.TabIndex = 12;
-            this.passwordLabel.Text = "Gmail Password";
+            this.passwordLabel.Text = "Password";
             this.passwordLabel.Visible = false;
             // 
             // userNameLabel
             // 
             this.userNameLabel.AutoSize = true;
-            this.userNameLabel.Location = new System.Drawing.Point(141, 358);
+            this.userNameLabel.Location = new System.Drawing.Point(147, 406);
             this.userNameLabel.Name = "userNameLabel";
-            this.userNameLabel.Size = new System.Drawing.Size(98, 13);
+            this.userNameLabel.Size = new System.Drawing.Size(63, 13);
             this.userNameLabel.TabIndex = 11;
-            this.userNameLabel.Text = "Gmail Username";
+            this.userNameLabel.Text = "Username";
             this.userNameLabel.Visible = false;
             // 
             // notificationCheck
@@ -1361,7 +1392,7 @@
             this.notificationCheck.Location = new System.Drawing.Point(6, 375);
             this.notificationCheck.Name = "notificationCheck";
             this.notificationCheck.Size = new System.Drawing.Size(125, 62);
-            this.notificationCheck.TabIndex = 10;
+            this.notificationCheck.TabIndex = 0;
             this.notificationCheck.Text = "Notification Toggle";
             this.notificationCheck.UseVisualStyleBackColor = false;
             this.notificationCheck.CheckedChanged += new System.EventHandler(this.NotificationCheck_CheckedChanged);
@@ -1370,10 +1401,10 @@
             // 
             this.testNotificationButton.BackColor = System.Drawing.Color.GreenYellow;
             this.testNotificationButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.testNotificationButton.Location = new System.Drawing.Point(329, 414);
+            this.testNotificationButton.Location = new System.Drawing.Point(317, 448);
             this.testNotificationButton.Name = "testNotificationButton";
-            this.testNotificationButton.Size = new System.Drawing.Size(121, 23);
-            this.testNotificationButton.TabIndex = 9;
+            this.testNotificationButton.Size = new System.Drawing.Size(158, 37);
+            this.testNotificationButton.TabIndex = 6;
             this.testNotificationButton.Text = "Test Notification";
             this.testNotificationButton.UseVisualStyleBackColor = false;
             this.testNotificationButton.Visible = false;
@@ -1386,7 +1417,7 @@
             this.convertAllButton.Location = new System.Drawing.Point(6, 457);
             this.convertAllButton.Name = "convertAllButton";
             this.convertAllButton.Size = new System.Drawing.Size(121, 32);
-            this.convertAllButton.TabIndex = 8;
+            this.convertAllButton.TabIndex = 7;
             this.convertAllButton.Text = "Convert";
             this.convertAllButton.UseVisualStyleBackColor = false;
             this.convertAllButton.Click += new System.EventHandler(this.ConvertAllButton_Click);
@@ -1437,7 +1468,7 @@
             this.subtitleInfoLabel.Location = new System.Drawing.Point(31, 62);
             this.subtitleInfoLabel.Name = "subtitleInfoLabel";
             this.subtitleInfoLabel.Size = new System.Drawing.Size(166, 13);
-            this.subtitleInfoLabel.TabIndex = 19;
+            this.subtitleInfoLabel.TabIndex = 3;
             this.subtitleInfoLabel.Text = "*Also Filename + -Forced.srt";
             // 
             // subIncludeLabel
@@ -1455,7 +1486,7 @@
             this.burnInSubtitlesCheck.Location = new System.Drawing.Point(6, 42);
             this.burnInSubtitlesCheck.Name = "burnInSubtitlesCheck";
             this.burnInSubtitlesCheck.Size = new System.Drawing.Size(163, 17);
-            this.burnInSubtitlesCheck.TabIndex = 17;
+            this.burnInSubtitlesCheck.TabIndex = 2;
             this.burnInSubtitlesCheck.Text = "Burn In Forced Subtitles";
             this.burnInSubtitlesCheck.UseVisualStyleBackColor = true;
             this.burnInSubtitlesCheck.CheckedChanged += new System.EventHandler(this.BurnInSubtitlesCheck_CheckedChanged);
@@ -1474,6 +1505,7 @@
             this.subtitleCombo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.subtitleCombo.ForeColor = System.Drawing.Color.GreenYellow;
             this.subtitleCombo.FormattingEnabled = true;
+            this.subtitleCombo.ItemHeight = 13;
             this.subtitleCombo.Items.AddRange(new object[] {
             "None",
             "All",
@@ -1495,7 +1527,7 @@
             this.subtitleCombo.Location = new System.Drawing.Point(65, 18);
             this.subtitleCombo.Name = "subtitleCombo";
             this.subtitleCombo.Size = new System.Drawing.Size(150, 21);
-            this.subtitleCombo.TabIndex = 12;
+            this.subtitleCombo.TabIndex = 1;
             this.subtitleCombo.SelectedIndexChanged += new System.EventHandler(this.SubtitleCombo_SelectedIndexChanged);
             this.subtitleCombo.TextChanged += new System.EventHandler(this.SubtitleCombo_TextChanged);
             this.subtitleCombo.Leave += new System.EventHandler(this.SubtitleCombo_Leave_1);
@@ -1512,7 +1544,7 @@
             this.frameRateModeCombo.Location = new System.Drawing.Point(296, 20);
             this.frameRateModeCombo.Name = "frameRateModeCombo";
             this.frameRateModeCombo.Size = new System.Drawing.Size(85, 21);
-            this.frameRateModeCombo.TabIndex = 15;
+            this.frameRateModeCombo.TabIndex = 2;
             this.frameRateModeCombo.SelectedIndexChanged += new System.EventHandler(this.FrameRateModeCombo_SelectedIndexChanged);
             this.frameRateModeCombo.TextChanged += new System.EventHandler(this.FrameRateModeCombo_TextChanged);
             this.frameRateModeCombo.Leave += new System.EventHandler(this.FrameRateModeCombo_Leave);
@@ -1540,7 +1572,7 @@
             this.framerateCombo.Location = new System.Drawing.Point(393, 20);
             this.framerateCombo.Name = "framerateCombo";
             this.framerateCombo.Size = new System.Drawing.Size(120, 21);
-            this.framerateCombo.TabIndex = 14;
+            this.framerateCombo.TabIndex = 3;
             this.framerateCombo.SelectedIndexChanged += new System.EventHandler(this.FramerateCombo_SelectedIndexChanged);
             this.framerateCombo.TextChanged += new System.EventHandler(this.FramerateCombo_TextChanged);
             this.framerateCombo.Leave += new System.EventHandler(this.FramerateCombo_Leave);
@@ -1574,7 +1606,7 @@
             this.avgBitrateCombo.Location = new System.Drawing.Point(321, 51);
             this.avgBitrateCombo.Name = "avgBitrateCombo";
             this.avgBitrateCombo.Size = new System.Drawing.Size(51, 21);
-            this.avgBitrateCombo.TabIndex = 13;
+            this.avgBitrateCombo.TabIndex = 5;
             this.avgBitrateCombo.SelectedIndexChanged += new System.EventHandler(this.AvgBitrateCombo_SelectedIndexChanged);
             this.avgBitrateCombo.TextChanged += new System.EventHandler(this.AvgBitrateCombo_TextChanged);
             this.avgBitrateCombo.Leave += new System.EventHandler(this.AvgBitrateCombo_Leave);
@@ -1602,7 +1634,7 @@
             this.encoderLevelComboBox.Location = new System.Drawing.Point(238, 84);
             this.encoderLevelComboBox.Name = "encoderLevelComboBox";
             this.encoderLevelComboBox.Size = new System.Drawing.Size(52, 21);
-            this.encoderLevelComboBox.TabIndex = 12;
+            this.encoderLevelComboBox.TabIndex = 7;
             this.encoderLevelComboBox.SelectedIndexChanged += new System.EventHandler(this.EncoderLevelComboBox_SelectedIndexChanged);
             this.encoderLevelComboBox.TextChanged += new System.EventHandler(this.EncoderLevelComboBox_TextChanged);
             this.encoderLevelComboBox.Leave += new System.EventHandler(this.EncoderLevelComboBox_Leave);
@@ -1619,7 +1651,7 @@
             this.encoderProfileComboBox.Location = new System.Drawing.Point(112, 84);
             this.encoderProfileComboBox.Name = "encoderProfileComboBox";
             this.encoderProfileComboBox.Size = new System.Drawing.Size(76, 21);
-            this.encoderProfileComboBox.TabIndex = 11;
+            this.encoderProfileComboBox.TabIndex = 6;
             this.encoderProfileComboBox.SelectedIndexChanged += new System.EventHandler(this.EncoderProfileComboBox_SelectedIndexChanged);
             this.encoderProfileComboBox.TextChanged += new System.EventHandler(this.EncoderProfileComboBox_TextChanged);
             this.encoderProfileComboBox.Leave += new System.EventHandler(this.EncoderProfileComboBox_Leave);
@@ -1640,7 +1672,7 @@
             this.encoderTuneComboBox.Location = new System.Drawing.Point(112, 51);
             this.encoderTuneComboBox.Name = "encoderTuneComboBox";
             this.encoderTuneComboBox.Size = new System.Drawing.Size(105, 21);
-            this.encoderTuneComboBox.TabIndex = 10;
+            this.encoderTuneComboBox.TabIndex = 4;
             this.encoderTuneComboBox.SelectedIndexChanged += new System.EventHandler(this.EncoderTuneComboBox_SelectedIndexChanged);
             this.encoderTuneComboBox.TextChanged += new System.EventHandler(this.EncoderTuneComboBox_TextChanged);
             this.encoderTuneComboBox.Leave += new System.EventHandler(this.EncoderTuneComboBox_Leave);
@@ -1664,7 +1696,7 @@
             this.encoderSpeedCombo.Location = new System.Drawing.Point(112, 20);
             this.encoderSpeedCombo.Name = "encoderSpeedCombo";
             this.encoderSpeedCombo.Size = new System.Drawing.Size(105, 21);
-            this.encoderSpeedCombo.TabIndex = 9;
+            this.encoderSpeedCombo.TabIndex = 1;
             this.encoderSpeedCombo.SelectedIndexChanged += new System.EventHandler(this.EncoderSpeedCombo_SelectedIndexChanged);
             this.encoderSpeedCombo.TextUpdate += new System.EventHandler(this.EncoderSpeedCombo_TextUpdate);
             this.encoderSpeedCombo.Leave += new System.EventHandler(this.EncoderSpeedCombo_Leave);
@@ -1678,7 +1710,7 @@
             this.turboCheckBox.Location = new System.Drawing.Point(53, 157);
             this.turboCheckBox.Name = "turboCheckBox";
             this.turboCheckBox.Size = new System.Drawing.Size(118, 17);
-            this.turboCheckBox.TabIndex = 8;
+            this.turboCheckBox.TabIndex = 10;
             this.turboCheckBox.Text = "Turbo First Pass";
             this.turboCheckBox.UseVisualStyleBackColor = true;
             this.turboCheckBox.CheckedChanged += new System.EventHandler(this.TurboCheckBox_CheckedChanged);
@@ -1690,7 +1722,7 @@
             this.autoCropCB.Location = new System.Drawing.Point(208, 111);
             this.autoCropCB.Name = "autoCropCB";
             this.autoCropCB.Size = new System.Drawing.Size(82, 17);
-            this.autoCropCB.TabIndex = 8;
+            this.autoCropCB.TabIndex = 11;
             this.autoCropCB.Text = "Auto Crop";
             this.autoCropCB.UseVisualStyleBackColor = true;
             this.autoCropCB.CheckedChanged += new System.EventHandler(this.autoCropCB_CheckedChanged_1);
@@ -1705,7 +1737,7 @@
             this.twoPassCheckbox.Location = new System.Drawing.Point(60, 134);
             this.twoPassCheckbox.Name = "twoPassCheckbox";
             this.twoPassCheckbox.Size = new System.Drawing.Size(111, 17);
-            this.twoPassCheckbox.TabIndex = 8;
+            this.twoPassCheckbox.TabIndex = 9;
             this.twoPassCheckbox.Text = "2 Pass Encode";
             this.twoPassCheckbox.UseVisualStyleBackColor = true;
             this.twoPassCheckbox.CheckStateChanged += new System.EventHandler(this.TwoPassCheckbox_CheckStateChanged);
@@ -1719,7 +1751,7 @@
             this.optimizeStreamingCheckBox.Location = new System.Drawing.Point(15, 111);
             this.optimizeStreamingCheckBox.Name = "optimizeStreamingCheckBox";
             this.optimizeStreamingCheckBox.Size = new System.Drawing.Size(156, 17);
-            this.optimizeStreamingCheckBox.TabIndex = 7;
+            this.optimizeStreamingCheckBox.TabIndex = 8;
             this.optimizeStreamingCheckBox.Text = "Optimize For Streaming";
             this.optimizeStreamingCheckBox.UseVisualStyleBackColor = true;
             this.optimizeStreamingCheckBox.CheckedChanged += new System.EventHandler(this.OptimizeStreamingCheckBox_CheckedChanged);
@@ -1802,7 +1834,7 @@
             this.audioSettingsLabel.Location = new System.Drawing.Point(7, 20);
             this.audioSettingsLabel.Name = "audioSettingsLabel";
             this.audioSettingsLabel.Size = new System.Drawing.Size(156, 13);
-            this.audioSettingsLabel.TabIndex = 1;
+            this.audioSettingsLabel.TabIndex = 0;
             this.audioSettingsLabel.Text = "Audio Conversion Settings";
             // 
             // audioSettinsPanel
@@ -1840,7 +1872,7 @@
             this.conversionSettingsLabel.Location = new System.Drawing.Point(495, 41);
             this.conversionSettingsLabel.Name = "conversionSettingsLabel";
             this.conversionSettingsLabel.Size = new System.Drawing.Size(157, 13);
-            this.conversionSettingsLabel.TabIndex = 14;
+            this.conversionSettingsLabel.TabIndex = 0;
             this.conversionSettingsLabel.Text = "Info && Conversion Settings";
             // 
             // compatibilitySelectionLabel
@@ -1850,7 +1882,7 @@
             this.compatibilitySelectionLabel.Location = new System.Drawing.Point(12, 72);
             this.compatibilitySelectionLabel.Name = "compatibilitySelectionLabel";
             this.compatibilitySelectionLabel.Size = new System.Drawing.Size(135, 13);
-            this.compatibilitySelectionLabel.TabIndex = 15;
+            this.compatibilitySelectionLabel.TabIndex = 0;
             this.compatibilitySelectionLabel.Text = "Compatibility Selection";
             // 
             // invisibleCloseButton
@@ -1859,10 +1891,31 @@
             this.invisibleCloseButton.Location = new System.Drawing.Point(1001, 558);
             this.invisibleCloseButton.Name = "invisibleCloseButton";
             this.invisibleCloseButton.Size = new System.Drawing.Size(10, 10);
-            this.invisibleCloseButton.TabIndex = 16;
+            this.invisibleCloseButton.TabIndex = 0;
             this.invisibleCloseButton.Text = "button1";
             this.invisibleCloseButton.UseVisualStyleBackColor = true;
             this.invisibleCloseButton.Click += new System.EventHandler(this.InvisibleCloseButton_Click);
+            // 
+            // SMTPPortLbl
+            // 
+            this.SMTPPortLbl.AutoSize = true;
+            this.SMTPPortLbl.Location = new System.Drawing.Point(314, 367);
+            this.SMTPPortLbl.Name = "SMTPPortLbl";
+            this.SMTPPortLbl.Size = new System.Drawing.Size(30, 13);
+            this.SMTPPortLbl.TabIndex = 11;
+            this.SMTPPortLbl.Text = "Port";
+            this.SMTPPortLbl.Visible = false;
+            // 
+            // SMTPPortTB
+            // 
+            this.SMTPPortTB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.SMTPPortTB.ForeColor = System.Drawing.Color.GreenYellow;
+            this.SMTPPortTB.Location = new System.Drawing.Point(316, 383);
+            this.SMTPPortTB.Name = "SMTPPortTB";
+            this.SMTPPortTB.Size = new System.Drawing.Size(86, 20);
+            this.SMTPPortTB.TabIndex = 2;
+            this.SMTPPortTB.Visible = false;
+            this.SMTPPortTB.Leave += new System.EventHandler(this.SMTPPortTB_Leave);
             // 
             // ConversionForm
             // 
@@ -1892,7 +1945,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "ConversionForm";
-            this.Text = "Conversion Form";
+            this.Text = "0";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.selectionPicturebox)).EndInit();
@@ -2046,5 +2099,9 @@
         private System.Windows.Forms.CheckBox filteredTrueHDCheck3;
         private System.Windows.Forms.CheckBox filteredDTSHDCheck3;
         private System.Windows.Forms.CheckBox filteredEAC3Check3;
+        private System.Windows.Forms.TextBox SMTPSeverTB;
+        private System.Windows.Forms.Label SMTPServerLbl;
+        private System.Windows.Forms.TextBox SMTPPortTB;
+        private System.Windows.Forms.Label SMTPPortLbl;
     }
 }
