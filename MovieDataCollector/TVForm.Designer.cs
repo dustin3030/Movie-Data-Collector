@@ -54,8 +54,6 @@
             this.removeItemLabel = new System.Windows.Forms.Label();
             this.manualRenameLabel = new System.Windows.Forms.Label();
             this.previewChangesButton = new System.Windows.Forms.Button();
-            this.absoluteCb = new System.Windows.Forms.CheckBox();
-            this.titleCb = new System.Windows.Forms.CheckBox();
             this.notificationLabel = new System.Windows.Forms.Label();
             this.SeriesImagePicturebox = new System.Windows.Forms.PictureBox();
             this.changeFileNamesButton = new System.Windows.Forms.Button();
@@ -359,32 +357,6 @@
             this.previewChangesButton.UseVisualStyleBackColor = false;
             this.previewChangesButton.Click += new System.EventHandler(this.PreviewChangesButton_Click);
             // 
-            // absoluteCb
-            // 
-            this.absoluteCb.AutoSize = true;
-            this.absoluteCb.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.absoluteCb.ForeColor = System.Drawing.Color.GreenYellow;
-            this.absoluteCb.Location = new System.Drawing.Point(154, 460);
-            this.absoluteCb.Name = "absoluteCb";
-            this.absoluteCb.Size = new System.Drawing.Size(177, 17);
-            this.absoluteCb.TabIndex = 21;
-            this.absoluteCb.Text = "Absolute Episode Numbers";
-            this.absoluteCb.UseVisualStyleBackColor = true;
-            this.absoluteCb.CheckedChanged += new System.EventHandler(this.AbsoluteCb_CheckedChanged);
-            // 
-            // titleCb
-            // 
-            this.titleCb.AutoSize = true;
-            this.titleCb.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.titleCb.ForeColor = System.Drawing.Color.GreenYellow;
-            this.titleCb.Location = new System.Drawing.Point(154, 479);
-            this.titleCb.Name = "titleCb";
-            this.titleCb.Size = new System.Drawing.Size(119, 17);
-            this.titleCb.TabIndex = 22;
-            this.titleCb.Text = "Title in Filename";
-            this.titleCb.UseVisualStyleBackColor = true;
-            this.titleCb.CheckedChanged += new System.EventHandler(this.TitleCb_CheckedChanged);
-            // 
             // notificationLabel
             // 
             this.notificationLabel.AutoSize = true;
@@ -468,9 +440,7 @@
             this.ClientSize = new System.Drawing.Size(832, 522);
             this.Controls.Add(this.changeFileNamesButton);
             this.Controls.Add(this.notificationLabel);
-            this.Controls.Add(this.titleCb);
             this.Controls.Add(this.recursiveCB);
-            this.Controls.Add(this.absoluteCb);
             this.Controls.Add(this.previewChangesButton);
             this.Controls.Add(this.manualRenameLabel);
             this.Controls.Add(this.removeItemLabel);
@@ -535,8 +505,6 @@
         private System.Windows.Forms.Label removeItemLabel;
         private System.Windows.Forms.Label manualRenameLabel;
         private System.Windows.Forms.Button previewChangesButton;
-        private System.Windows.Forms.CheckBox absoluteCb;
-        private System.Windows.Forms.CheckBox titleCb;
         private System.Windows.Forms.Label notificationLabel;
         private System.Windows.Forms.Button changeFileNamesButton;
         private System.Windows.Forms.Button InvisibleCloseButton;

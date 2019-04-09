@@ -24,8 +24,6 @@ namespace MovieDataCollector
                 "OutputFilePath", //C:\\
                 "ExportFilePath", //C:\\
                 "CompatibilitySelector", //Roku
-                "TVAbsoluteNumbersCheck", //False
-                "TVTitleInFilenameCheck", //False
                 "DefaultFormat", //Plex
                 "TwoPass", //True
                 "TurboFirstPass", //True
@@ -100,8 +98,6 @@ namespace MovieDataCollector
                 "C:\\", //OutputFilePath
                 "C:\\", //ExportFilePath
                 "Roku", //Compatibility Selector
-                "False", //TVAbsoluteNumbersCheck
-                "False", //TVTitleInFilenameCheck
                 "Synology", //DefaultFormat
                 "True", //TwoPass
                 "True", //TurboFirstPass
