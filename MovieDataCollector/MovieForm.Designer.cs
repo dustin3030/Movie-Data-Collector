@@ -619,7 +619,7 @@
             this.Location = new System.Drawing.Point(453, 43);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MovieForm";
-            this.Text = "Movie Form";
+            this.Text = "Movie Naming & Packaging";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.panel1.ResumeLayout(false);

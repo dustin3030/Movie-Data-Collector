@@ -53,7 +53,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(12, 4, 0, 4);
-            this.menuStrip1.Size = new System.Drawing.Size(263, 27);
+            this.menuStrip1.Size = new System.Drawing.Size(265, 27);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -121,7 +121,7 @@
             this.tvButton.Location = new System.Drawing.Point(15, 46);
             this.tvButton.Margin = new System.Windows.Forms.Padding(6);
             this.tvButton.Name = "tvButton";
-            this.tvButton.Size = new System.Drawing.Size(233, 59);
+            this.tvButton.Size = new System.Drawing.Size(235, 59);
             this.tvButton.TabIndex = 1;
             this.tvButton.Text = "&TV Shows";
             this.tvButton.UseVisualStyleBackColor = false;
@@ -135,7 +135,7 @@
             this.movieButton.Location = new System.Drawing.Point(15, 117);
             this.movieButton.Margin = new System.Windows.Forms.Padding(6);
             this.movieButton.Name = "movieButton";
-            this.movieButton.Size = new System.Drawing.Size(233, 67);
+            this.movieButton.Size = new System.Drawing.Size(235, 67);
             this.movieButton.TabIndex = 1;
             this.movieButton.Text = "&Movies";
             this.movieButton.UseVisualStyleBackColor = false;
@@ -149,7 +149,7 @@
             this.CompatibilityCheckerButton.Location = new System.Drawing.Point(15, 196);
             this.CompatibilityCheckerButton.Margin = new System.Windows.Forms.Padding(6);
             this.CompatibilityCheckerButton.Name = "CompatibilityCheckerButton";
-            this.CompatibilityCheckerButton.Size = new System.Drawing.Size(233, 68);
+            this.CompatibilityCheckerButton.Size = new System.Drawing.Size(235, 68);
             this.CompatibilityCheckerButton.TabIndex = 1;
             this.CompatibilityCheckerButton.Text = "&Convert";
             this.CompatibilityCheckerButton.UseVisualStyleBackColor = false;
@@ -173,7 +173,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.CancelButton = this.invisibleCloseButton;
-            this.ClientSize = new System.Drawing.Size(263, 282);
+            this.ClientSize = new System.Drawing.Size(265, 282);
             this.Controls.Add(this.CompatibilityCheckerButton);
             this.Controls.Add(this.movieButton);
             this.Controls.Add(this.tvButton);

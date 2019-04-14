@@ -116,9 +116,11 @@
             this.presetLabel = new System.Windows.Forms.Label();
             this.sendToBox = new System.Windows.Forms.TextBox();
             this.passwordBox = new System.Windows.Forms.TextBox();
+            this.SMTPPortTB = new System.Windows.Forms.TextBox();
             this.SMTPSeverTB = new System.Windows.Forms.TextBox();
             this.usernameBox = new System.Windows.Forms.TextBox();
             this.sendToLabel = new System.Windows.Forms.Label();
+            this.SMTPPortLbl = new System.Windows.Forms.Label();
             this.SMTPServerLbl = new System.Windows.Forms.Label();
             this.passwordLabel = new System.Windows.Forms.Label();
             this.userNameLabel = new System.Windows.Forms.Label();
@@ -158,8 +160,6 @@
             this.conversionSettingsLabel = new System.Windows.Forms.Label();
             this.compatibilitySelectionLabel = new System.Windows.Forms.Label();
             this.invisibleCloseButton = new System.Windows.Forms.Button();
-            this.SMTPPortLbl = new System.Windows.Forms.Label();
-            this.SMTPPortTB = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.selectionPicturebox)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -1319,6 +1319,17 @@
             this.passwordBox.Visible = false;
             this.passwordBox.Leave += new System.EventHandler(this.PasswordBox_Leave);
             // 
+            // SMTPPortTB
+            // 
+            this.SMTPPortTB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.SMTPPortTB.ForeColor = System.Drawing.Color.GreenYellow;
+            this.SMTPPortTB.Location = new System.Drawing.Point(316, 383);
+            this.SMTPPortTB.Name = "SMTPPortTB";
+            this.SMTPPortTB.Size = new System.Drawing.Size(86, 20);
+            this.SMTPPortTB.TabIndex = 2;
+            this.SMTPPortTB.Visible = false;
+            this.SMTPPortTB.Leave += new System.EventHandler(this.SMTPPortTB_Leave);
+            // 
             // SMTPSeverTB
             // 
             this.SMTPSeverTB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
@@ -1350,6 +1361,16 @@
             this.sendToLabel.TabIndex = 13;
             this.sendToLabel.Text = "Send To:";
             this.sendToLabel.Visible = false;
+            // 
+            // SMTPPortLbl
+            // 
+            this.SMTPPortLbl.AutoSize = true;
+            this.SMTPPortLbl.Location = new System.Drawing.Point(314, 367);
+            this.SMTPPortLbl.Name = "SMTPPortLbl";
+            this.SMTPPortLbl.Size = new System.Drawing.Size(30, 13);
+            this.SMTPPortLbl.TabIndex = 11;
+            this.SMTPPortLbl.Text = "Port";
+            this.SMTPPortLbl.Visible = false;
             // 
             // SMTPServerLbl
             // 
@@ -1509,8 +1530,6 @@
             this.subtitleCombo.Items.AddRange(new object[] {
             "None",
             "All",
-            "Default",
-            "First",
             "Chinese",
             "Czech",
             "English",
@@ -1523,7 +1542,8 @@
             "Portuguese",
             "Russian",
             "Spanish",
-            "Swedish"});
+            "Swedish",
+            "First"});
             this.subtitleCombo.Location = new System.Drawing.Point(65, 18);
             this.subtitleCombo.Name = "subtitleCombo";
             this.subtitleCombo.Size = new System.Drawing.Size(150, 21);
@@ -1896,27 +1916,6 @@
             this.invisibleCloseButton.UseVisualStyleBackColor = true;
             this.invisibleCloseButton.Click += new System.EventHandler(this.InvisibleCloseButton_Click);
             // 
-            // SMTPPortLbl
-            // 
-            this.SMTPPortLbl.AutoSize = true;
-            this.SMTPPortLbl.Location = new System.Drawing.Point(314, 367);
-            this.SMTPPortLbl.Name = "SMTPPortLbl";
-            this.SMTPPortLbl.Size = new System.Drawing.Size(30, 13);
-            this.SMTPPortLbl.TabIndex = 11;
-            this.SMTPPortLbl.Text = "Port";
-            this.SMTPPortLbl.Visible = false;
-            // 
-            // SMTPPortTB
-            // 
-            this.SMTPPortTB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.SMTPPortTB.ForeColor = System.Drawing.Color.GreenYellow;
-            this.SMTPPortTB.Location = new System.Drawing.Point(316, 383);
-            this.SMTPPortTB.Name = "SMTPPortTB";
-            this.SMTPPortTB.Size = new System.Drawing.Size(86, 20);
-            this.SMTPPortTB.TabIndex = 2;
-            this.SMTPPortTB.Visible = false;
-            this.SMTPPortTB.Leave += new System.EventHandler(this.SMTPPortTB_Leave);
-            // 
             // ConversionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1945,7 +1944,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "ConversionForm";
-            this.Text = "0";
+            this.Text = "Conversion Form";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.selectionPicturebox)).EndInit();

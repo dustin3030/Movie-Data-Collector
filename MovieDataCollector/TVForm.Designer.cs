@@ -467,7 +467,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "TVForm";
-            this.Text = "TV Form";
+            this.Text = "TV Episode Identification & Naming";
             this.Load += new System.EventHandler(this.TVForm_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
