@@ -1314,10 +1314,9 @@ namespace MovieDataCollector
                                 }
                                 if (VideoFilesList.Count > 1)
                                 {
-                                    await Task.Run(() =>
                                     {
                                         SendNotification(server, port, username, password, sendTo, "Movie Data Collector Notification", "The transcoding que initiated " + startTime.ToString() + " is now complete. " + (VideoFilesList.Count() - Errors.Count()).ToString() + " of " + VideoFilesList.Count().ToString() + " files processed successfully in " + totalProcessingTime);
-                                    });
+                                    }
                                 }
                             }
                         }
@@ -1456,34 +1455,28 @@ namespace MovieDataCollector
         }
         private string VideoConversionString(MediaFile videoFile)
         {
-            //Calculation Variables
-            double videoBitrate = 0.0;
-            string MaxBitrate = "";
-            string BufferSize = "";
-            double BitrateMultiplier = 1.5; //Size of the Maximum bitrate for the video portion of the file
-            double BufferMultiplier = 2; //Size of the buffer
-
-            //Variables from Form
-            double avgBitrateCap = 0.0;
-            bool burnForcedSubs = false;
-            string subsToInclude = subtitleCombo.Text;
-            if (burnInSubtitlesCheck.Checked) { burnForcedSubs = true; }
-
             //Output Variables
-            string outputEncoder = ""; //encoder and speed preset
-            string outputEncoderSpeed = "";
-            string outputEncoderTune = ""; //Encoder tune
-            string outputEncoderProfile = "";
-            string outputEncoderLevel = "";
-            string outputEncopts = ""; //advanced encoder settings
-            string outputVideoBitrate = "";
+            string outputEncoder = BuildEncoderString(videoFile); //Encoder, level, tune, 
+            string outputEncopts = BuildEncoptsString(videoFile); //Encopts & Video Bitrate
+            string outputFrameRate = BuildFramerateString(videoFile); //Video Framerate
+            string subtitleString = BuildSubString(videoFile);
+
             string outputTwoPass = "";
             string outputTurbo = "";
-            string outputFrameRate = "";
-            string subtitleString = "";
-            string subtitleBurnString = "";
-            //string subtitleSubString = "";
+
             
+            /*TwoPass & Turbo First***********************************************************************************************************************************************************************************************/
+            if (twoPassCheckbox.Checked) { outputTwoPass = "--two-pass "; }
+            if (turboCheckBox.Checked) { outputTurbo = "--turbo "; }
+
+            return outputEncoder + subtitleString + outputEncopts + outputTwoPass + outputTurbo + outputFrameRate ;
+        }
+
+        //Framrate string
+        private string BuildFramerateString(MediaFile videoFile)
+        {
+
+            string outputFrameRate = "";
 
 
             if (videoFile.Video.Count > 0) //video stream found
@@ -1792,124 +1785,9 @@ namespace MovieDataCollector
                         outputFrameRate = "--vfr"; ////preserves the source timing.
                         break;
                 }
-
-                /*Encopts***********************************************************************************************************************************************************************************************/
-                if (videoFile.Video[0].Properties.ContainsKey("Bit rate"))
-                {
-                    if (videoFile.Video[0].Properties["Bit rate"].Contains("Mbps")) //If file bitrate is in Mbps
-                    {
-                        double.TryParse(videoFile.Video[0].Properties["Bit rate"].Replace(" ", "").Replace("Mbps", ""), out videoBitrate);
-                        videoBitrate = videoBitrate * 1000; //accounts for reading in Mbps rather than Kbps
-                    }
-                    else if (videoFile.Video[0].Properties["Bit rate"].Contains("Kbps")) //If file bitrate is in Mbps
-                    {
-                        double.TryParse(videoFile.Video[0].Properties["Bit rate"].Replace(" ", "").Replace("Kbps", ""), out videoBitrate);
-                    }
-                }
-
-                if (videoBitrate == 0 && videoFile.General.Bitrate > 0)
-                {
-                    //check for audio bitrate and subtract from general bitrate
-                    videoBitrate = videoFile.General.Bitrate; //- videoFile.Audio[audioTrack - 1].Bitrate; - Audio Track info changed in previous version. This breaks the code. use gneral bitrate if no other is foudn.
-                }
-
-                if (videoBitrate == 0 && videoFile.General.Properties.ContainsKey("Overall bit rate"))
-                {
-                    if (videoFile.General.Properties["Overall bit rate"].Contains("Mbps"))
-                    {
-                        double.TryParse(videoFile.General.Properties["Overall bit rate"].Replace(" ", "").Replace("Mbps", ""), out videoBitrate);
-                        videoBitrate = videoBitrate * 1000; //accounts for reading in Mbps rather than Kbps
-                    }
-                    else if (videoFile.General.Properties["Overall bit rate"].Contains("Kbps"))
-                    {
-                        double.TryParse(videoFile.General.Properties["Overall bit rate"].Replace(" ", "").Replace("Kbps", ""), out videoBitrate);
-                    }
-                }
-
-                double.TryParse(avgBitrateCombo.Text, out avgBitrateCap);
-                avgBitrateCap = avgBitrateCap * 1000; //This changes the value in the dropdown from Mbps to Kbps
-
-                /*https://www.chaneru.com/Roku/HLS/X264_Settings.htm#vbv-maxrate
-                  vbv-maxrate
-                  Default: 0
-                  Sets the maximum rate the VBV buffer should be assumed to refill at.
-                  VBV reduces quality, so you should only use this if you're encoding for a playback scenario that requires it.
-                  See also: --vbv-bufsize, --vbv-init, VBV Encoding Suggestions
-
-                  vbv-bufsize
-                  Default: 0
-                  Sets the size of the VBV buffer in kilobits.
-                  VBV reduces quality, so you should only use this if you're encoding for a playback scenario that requires it.
-                  See also: --vbv-maxsize, --vbv-init, VBV Encoding Suggestions
-
-                  vbv-init
-                  Default: 0.9
-                  Sets how full the VBV Buffer must be before playback starts.
-                  If it is less than 1, the the initial fill is: vbv-init * vbv-bufsize. Otherwise it is interpreted as the initial fill in kbits.
-                  See also: --vbv-maxsize, --vbv-bufsize, VBV Encoding Suggestions*/
-
-                //Abide by avgBitrateCap value                   
-                if (videoBitrate > avgBitrateCap)
-                {
-                    outputVideoBitrate = "--vb " + avgBitrateCap + " ";
-                    if (Math.Floor(avgBitrateCap * BitrateMultiplier) < 10000)
-                    {
-                        MaxBitrate = Math.Floor(avgBitrateCap * BitrateMultiplier).ToString();
-                        BufferSize = Math.Floor((avgBitrateCap * BitrateMultiplier) * BufferMultiplier).ToString(); //Buffer of 2 seconds
-                    }
-                    else
-                    {
-                        MaxBitrate = "10000"; //Max value for Roku Players
-                        BufferSize = "20000"; // buffer of 2 seconds
-                    }
-                }
-                else
-                {
-                    outputVideoBitrate = "--vb " + videoBitrate.ToString() + " ";
-
-                    if (Math.Floor(videoBitrate * BitrateMultiplier) < 10000)
-                    {
-                        MaxBitrate = Math.Floor(videoBitrate * BitrateMultiplier).ToString();
-                        BufferSize = Math.Floor((videoBitrate * BitrateMultiplier) * BufferMultiplier).ToString();
-                    }
-                    else
-                    {
-                        MaxBitrate = "10000";
-                        BufferSize = "20000";
-                    }
-
-                }
-
-                //These settings set the buffer size and maximum video bitrate, also setting the encoder level
-                outputEncopts = "--encopts level=" + encoderLevelComboBox.Text + ":vbv-bufsize=" + BufferSize + ":vbv-maxrate=" + MaxBitrate + " --verbose=1 --encoder-level=\"" + encoderLevelComboBox.Text + "\" --encoder-profile=" + encoderProfileComboBox.Text.ToLower() + "--verbose=1 ";
             }
-            else //Video stream is unreadable - set user selected values or defaults
+            else
             {
-
-                /*Encopts***********************************************************************************************************************************************************************************************/
-                //Need to adjust for number of channels of audio, currently it is the value for mono not stereo which is typical.
-
-                double.TryParse(avgBitrateCombo.Text, out avgBitrateCap);
-                avgBitrateCap = avgBitrateCap * 1000; //This changes the value in the dropdown from Mbps to Kbps
-                videoBitrate = avgBitrateCap;
-                double.TryParse(audioBitrateCombo.Text, out double audioBitrate);
-
-                outputVideoBitrate = "--vb " + videoBitrate.ToString() + " ";
-
-                if (Math.Floor(videoBitrate * BitrateMultiplier) < 10000) //Ensures max bitrate doesn't go over 10 which is the limit for Roku compatibility
-                {
-                    MaxBitrate = Math.Floor(videoBitrate * BitrateMultiplier).ToString();
-                    BufferSize = Math.Floor((videoBitrate * BitrateMultiplier) * BufferMultiplier).ToString();
-                }
-                else
-                {
-                    MaxBitrate = "10000"; //Max for Roku Devices
-                    BufferSize = "20000"; //2 times the MaxBitrate
-                }
-
-                //These settings set the buffer size and maximum video bitrate, also setting the encoder level
-                outputEncopts = "--encopts level=" + encoderLevelComboBox.Text + ":vbv-bufsize=" + BufferSize + ":vbv-maxrate=" + MaxBitrate + " --verbose=1 --encoder-level=\"" + encoderLevelComboBox.Text + "\" --encoder-profile=" + encoderProfileComboBox.Text.ToLower() + "--verbose=1 ";
-
                 /*Framerate***********************************************************************************************************************************************************************************************/
                 /*Framerate***********************************************************************************************************************************************************************************************/
                 /*Roku Compliant
@@ -2216,9 +2094,150 @@ namespace MovieDataCollector
                         break;
                 }
             }
-            /*TwoPass & Turbo First***********************************************************************************************************************************************************************************************/
-            if (twoPassCheckbox.Checked) { outputTwoPass = "--two-pass "; }
-            if (turboCheckBox.Checked) { outputTurbo = "--turbo "; }
+            return outputFrameRate;
+        }
+
+        //Encopts String & Video Bitrate
+        private string BuildEncoptsString(MediaFile videoFile)
+        {
+            double avgBitrateCap = 0.0;
+            string MaxBitrate = "";
+            string BufferSize = "";
+            double BitrateMultiplier = 1.5; //Size of the Maximum bitrate for the video portion of the file
+            double BufferMultiplier = 2; //Size of the buffer
+            string outputEncopts = "";
+            double videoBitrate = 0.0;
+            string outputVideoBitrate = "";
+
+            if (videoFile.Video.Count > 0) //video stream found
+            {
+                /*Encopts***********************************************************************************************************************************************************************************************/
+                if (videoFile.Video[0].Properties.ContainsKey("Bit rate"))
+                {
+                    if (videoFile.Video[0].Properties["Bit rate"].Contains("Mbps")) //If file bitrate is in Mbps
+                    {
+                        double.TryParse(videoFile.Video[0].Properties["Bit rate"].Replace(" ", "").Replace("Mbps", ""), out videoBitrate);
+                        videoBitrate = videoBitrate * 1000; //accounts for reading in Mbps rather than Kbps
+                    }
+                    else if (videoFile.Video[0].Properties["Bit rate"].Contains("Kbps")) //If file bitrate is in Mbps
+                    {
+                        double.TryParse(videoFile.Video[0].Properties["Bit rate"].Replace(" ", "").Replace("Kbps", ""), out videoBitrate);
+                    }
+                }
+
+                if (videoBitrate == 0 && videoFile.General.Bitrate > 0)
+                {
+                    //check for audio bitrate and subtract from general bitrate
+                    videoBitrate = videoFile.General.Bitrate; //- videoFile.Audio[audioTrack - 1].Bitrate; - Audio Track info changed in previous version. This breaks the code. use gneral bitrate if no other is foudn.
+                }
+
+                if (videoBitrate == 0 && videoFile.General.Properties.ContainsKey("Overall bit rate"))
+                {
+                    if (videoFile.General.Properties["Overall bit rate"].Contains("Mbps"))
+                    {
+                        double.TryParse(videoFile.General.Properties["Overall bit rate"].Replace(" ", "").Replace("Mbps", ""), out videoBitrate);
+                        videoBitrate = videoBitrate * 1000; //accounts for reading in Mbps rather than Kbps
+                    }
+                    else if (videoFile.General.Properties["Overall bit rate"].Contains("Kbps"))
+                    {
+                        double.TryParse(videoFile.General.Properties["Overall bit rate"].Replace(" ", "").Replace("Kbps", ""), out videoBitrate);
+                    }
+                }
+
+                double.TryParse(avgBitrateCombo.Text, out avgBitrateCap);
+                avgBitrateCap = avgBitrateCap * 1000; //This changes the value in the dropdown from Mbps to Kbps
+
+                /*https://www.chaneru.com/Roku/HLS/X264_Settings.htm#vbv-maxrate
+                  vbv-maxrate
+                  Default: 0
+                  Sets the maximum rate the VBV buffer should be assumed to refill at.
+                  VBV reduces quality, so you should only use this if you're encoding for a playback scenario that requires it.
+                  See also: --vbv-bufsize, --vbv-init, VBV Encoding Suggestions
+
+                  vbv-bufsize
+                  Default: 0
+                  Sets the size of the VBV buffer in kilobits.
+                  VBV reduces quality, so you should only use this if you're encoding for a playback scenario that requires it.
+                  See also: --vbv-maxsize, --vbv-init, VBV Encoding Suggestions
+
+                  vbv-init
+                  Default: 0.9
+                  Sets how full the VBV Buffer must be before playback starts.
+                  If it is less than 1, the the initial fill is: vbv-init * vbv-bufsize. Otherwise it is interpreted as the initial fill in kbits.
+                  See also: --vbv-maxsize, --vbv-bufsize, VBV Encoding Suggestions*/
+
+                //Abide by avgBitrateCap value                   
+                if (videoBitrate > avgBitrateCap)
+                {
+                    outputVideoBitrate = "--vb " + avgBitrateCap + " ";
+                    if (Math.Floor(avgBitrateCap * BitrateMultiplier) < 10000)
+                    {
+                        MaxBitrate = Math.Floor(avgBitrateCap * BitrateMultiplier).ToString();
+                        BufferSize = Math.Floor((avgBitrateCap * BitrateMultiplier) * BufferMultiplier).ToString(); //Buffer of 2 seconds
+                    }
+                    else
+                    {
+                        MaxBitrate = "10000"; //Max value for Roku Players
+                        BufferSize = "20000"; // buffer of 2 seconds
+                    }
+                }
+                else
+                {
+                    outputVideoBitrate = "--vb " + videoBitrate.ToString() + " ";
+
+                    if (Math.Floor(videoBitrate * BitrateMultiplier) < 10000)
+                    {
+                        MaxBitrate = Math.Floor(videoBitrate * BitrateMultiplier).ToString();
+                        BufferSize = Math.Floor((videoBitrate * BitrateMultiplier) * BufferMultiplier).ToString();
+                    }
+                    else
+                    {
+                        MaxBitrate = "10000";
+                        BufferSize = "20000";
+                    }
+
+                }
+            }
+            else
+            {
+                /*Encopts***********************************************************************************************************************************************************************************************/
+                //Need to adjust for number of channels of audio, currently it is the value for mono not stereo which is typical.
+
+                double.TryParse(avgBitrateCombo.Text, out avgBitrateCap);
+                avgBitrateCap = avgBitrateCap * 1000; //This changes the value in the dropdown from Mbps to Kbps
+                videoBitrate = avgBitrateCap;
+                double.TryParse(audioBitrateCombo.Text, out double audioBitrate);
+
+                outputVideoBitrate = "--vb " + videoBitrate.ToString() + " ";
+
+                if (Math.Floor(videoBitrate * BitrateMultiplier) < 10000) //Ensures max bitrate doesn't go over 10 which is the limit for Roku compatibility
+                {
+                    MaxBitrate = Math.Floor(videoBitrate * BitrateMultiplier).ToString();
+                    BufferSize = Math.Floor((videoBitrate * BitrateMultiplier) * BufferMultiplier).ToString();
+                }
+                else
+                {
+                    MaxBitrate = "10000"; //Max for Roku Devices
+                    BufferSize = "20000"; //2 times the MaxBitrate
+                }
+
+                //These settings set the buffer size and maximum video bitrate, also setting the encoder level
+                outputEncopts = "--encopts level=" + encoderLevelComboBox.Text + ":vbv-bufsize=" + BufferSize + ":vbv-maxrate=" + MaxBitrate + " --verbose=1 --encoder-level=\"" + encoderLevelComboBox.Text + "\" --encoder-profile=" + encoderProfileComboBox.Text.ToLower() + " --verbose=1 ";
+
+            }
+
+            //These settings set the buffer size and maximum video bitrate, also setting the encoder level
+            outputEncopts = "--encopts level=" + encoderLevelComboBox.Text + ":vbv-bufsize=" + BufferSize + ":vbv-maxrate=" + MaxBitrate + " --verbose=1 --encoder-level=\"" + encoderLevelComboBox.Text + "\" --encoder-profile=" + encoderProfileComboBox.Text.ToLower() + " --verbose=1 ";
+            return outputEncopts + outputVideoBitrate;
+        }
+
+        private string BuildEncoderString(MediaFile vidoeFile)
+        {
+            string outputEncoder = ""; //encoder and speed preset
+            string outputEncoderSpeed = "";
+            string outputEncoderTune = ""; //Encoder tune
+            string outputEncoderProfile = "";
+            string outputEncoderLevel = "";
 
             /*Encoder * **********************************************************************************************************************************************************************************************/
             outputEncoder = "--encoder x264 ";
@@ -2353,407 +2372,251 @@ namespace MovieDataCollector
                     break;
             }
 
-            //Subtitle Options
-            //burnForcedSubs
-            //subsToInclude
-            //Determine number of subtitle streams
+            return outputEncoder + outputEncoderLevel + outputEncoderProfile + outputEncoderSpeed + outputEncoderTune;
+        }
+        //The following methods are for creating the command string for subtitle Selection
 
-            /*None
-            All
-            Default
-            First
-            Chinese
-            Czech
-            English
-            Finnish
-            French
-            German
-            Greek
-            Japanese
-            Korean
-            Portuguese
-            Russian
-            Spanish
-            Swedish*/
+        private string BuildSubString(MediaFile videoFile)
+        {
+            int forcedStreamIndex = IdenfityForcedSubIndex(videoFile); //This checks for the burn in forced subs checkbox also. Will return -1 if that isn't check or if no subs are found
+            string subString = "";
+            List<int> nonPGSIndexes = new List<int> { };
+            List<int> nonPGSLanguageMatchIndexes = new List<int> { };
+            bool ForcedIndexFound = false;
 
-            //PGS can only be burned into video, not passed through. Ignore PGS here.
-            if (videoFile.Text.Count() > 0)
+            //Build list of nonPGSIndexes
+            for (int i = 0; i < videoFile.Text.Count(); i++)
             {
-
-                switch(subtitleCombo.Text)
+                if (videoFile.Text[i].Properties.ContainsKey("Format"))
                 {
-                    case "None":
-                        subtitleString = "--subtitle none "; //If None is selected, and burn in is checked, this changes to --subtitle + whatever the forced track is.
-                        break;
-                    case "All": //PGS subtitles cannot be passed through to MP4 so only include them if they are also flagged as forced.
+                    if (videoFile.Text[i].Properties["Format"] != "PGS")
+                    {
+                        nonPGSIndexes.Add(i);
+                    }
+                }
+                if (i == forcedStreamIndex) { ForcedIndexFound = true; }
+            }
 
-                        for (int i = 0; i < videoFile.Text.Count(); i++)
+
+            /*None,  All, Default, First, Chinese, Czech, English, Finnish, French, German, Greek, Japanese, Korean, Portuguese, Russian, Spanish, Swedish */
+
+            if (forcedStreamIndex != -1) //Forced English subtitles found and burn forced subs checkbox selected
+            {
+                switch (subtitleCombo.Text)
+                {
+                    case "None": //Don't add any subtitles, but burn in forced track.
+                        subString = "--subtitle \"" + (forcedStreamIndex + 1).ToString() +  "\" --subtitle-burned=" + (forcedStreamIndex + 1).ToString() + " ";
+                        break;
+                    case "All": //Include all non PGS tracks, PGS Tracks can't be added to MP4 unless they are burned in.
+                        
+                        if(nonPGSIndexes.Count > 0)
                         {
-                            if(videoFile.Text[i].Properties.ContainsKey("Format"))
+
+                            for (int i = 0; i < nonPGSIndexes.Count(); i++)
                             {
-                                if(videoFile.Text[i].Properties["Format"] == "PGS") //PGS subs are only added if they are marked as Forced
+                                if (string.IsNullOrEmpty(subString))
                                 {
-                                    if (videoFile.Text[i].Properties.ContainsKey("Forced"))
-                                    {
-                                        if (videoFile.Text[i].Properties["Forced"] == "Yes")
-                                        {
-                                            if (videoFile.Text[i].Properties.ContainsKey("Language"))
-                                            {
-                                                if (videoFile.Text[i].Properties["Language"] == "English")
-                                                {
-                                                    if (string.IsNullOrEmpty(subtitleString))
-                                                    {
-                                                        subtitleString = "--subtitle \"" + (i + 1).ToString();
-                                                    }
-                                                    else
-                                                    {
-                                                        subtitleString += "," + (i + 1).ToString();
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    if(!subtitleString.Contains(i.ToString())) // subtitle skipped for some reason
-                                    {
-                                        if(videoFile.Text[i].Properties.ContainsKey("Title"))
-                                        {
-                                            if(videoFile.Text[i].Properties["Title"].ToUpper().Contains("FORCED"))
-                                            {
-                                                if (videoFile.Text[i].Properties.ContainsKey("Language"))
-                                                {
-                                                    if (videoFile.Text[i].Properties["Language"] == "English")
-                                                    {
-                                                        if (string.IsNullOrEmpty(subtitleString))
-                                                        {
-                                                            subtitleString = "--subtitle \"" + (i + 1).ToString();
-                                                        }
-                                                        else
-                                                        {
-                                                            subtitleString += "," + (i + 1).ToString();
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
+                                    subString = "--subtitle \"" + (nonPGSIndexes[i] + 1).ToString();
                                 }
-                                else //Non PGS subs are added to file
+                                else
                                 {
-                                    if (string.IsNullOrEmpty(subtitleString))
-                                    {
-                                        subtitleString = "--subtitle \"" + (i + 1).ToString();
-                                    }
-                                    else
-                                    {
-                                        subtitleString += "," + (i + 1).ToString();
-                                    }
+                                    subString += ", " + (nonPGSIndexes[i] + 1).ToString();
                                 }
                             }
-                        }
-                        subtitleString += "\" "; //Add last quote and space
-                        break;
-                    case "First": 
-                        subtitleString = "--first-subtitle "; //only works if the first track is the forced track, which it usually is.
-                        break;
-                    default: //All other language codes
-                        for (int i = 0; i < videoFile.Text.Count(); i++)
-                        {
-                            if (videoFile.Text[i].Properties.ContainsKey("Format"))
+                            if (ForcedIndexFound)
                             {
-                                if (videoFile.Text[i].Properties["Format"] == "PGS") //PGS subs are only added if they are marked as Forced
+                                subString += "\" --subtitle-burned=" + (forcedStreamIndex + 1).ToString() + " ";
+                            }
+                            else //Selected forced subtitle index not found in list, must be added.
+                            {
+                                if (string.IsNullOrEmpty(subString))
                                 {
-                                    if (videoFile.Text[i].Properties.ContainsKey("Forced"))
-                                    {
-                                        if (videoFile.Text[i].Properties["Forced"] == "Yes")
-                                        {
-                                            if (videoFile.Text[i].Properties.ContainsKey("Language"))
-                                            {
-                                                if (videoFile.Text[i].Properties["Language"] == subsToInclude)
-                                                {
-                                                    if (string.IsNullOrEmpty(subtitleString))
-                                                    {
-                                                        subtitleString = "--subtitle \"" + (i + 1).ToString();
-                                                    }
-                                                    else
-                                                    {
-                                                        subtitleString += "," + (i + 1).ToString();
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    if (!subtitleString.Contains(i.ToString())) // subtitle skipped for some reason
-                                    {
-                                        if (videoFile.Text[i].Properties.ContainsKey("Title"))
-                                        {
-                                            if (videoFile.Text[i].Properties["Title"].ToUpper().Contains("FORCED"))
-                                            {
-                                                if (videoFile.Text[i].Properties.ContainsKey("Language"))
-                                                {
-                                                    if (videoFile.Text[i].Properties["Language"] == subsToInclude)
-                                                    {
-                                                        if (string.IsNullOrEmpty(subtitleString))
-                                                        {
-                                                            subtitleString = "--subtitle \"" + (i + 1).ToString();
-                                                        }
-                                                        else
-                                                        {
-                                                            subtitleString += "," + (i + 1).ToString();
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
+                                    subString = "--subtitle \"" + (forcedStreamIndex + 1).ToString() + "\" --subtitle-burned=" + (forcedStreamIndex + 1).ToString() + " ";
                                 }
-                                else //Non PGS subs are added to file
+                                else
                                 {
-                                    if (string.IsNullOrEmpty(subtitleString))
-                                    {
-                                        subtitleString = "--subtitle \"" + (i + 1).ToString();
-                                    }
-                                    else
-                                    {
-                                        subtitleString += "," + (i + 1).ToString();
-                                    }
+                                    subString += ", " + (forcedStreamIndex + 1).ToString() + "\" ";
                                 }
                             }
 
                         }
-                        if(string.IsNullOrEmpty(subtitleString)) //gives string a value even if no subtitles are found to match criteria
+                        else //No subtitles streams can be added, they are either all PGS or don't exist.
+                        { 
+                            subString = "--subtitle \"" + (forcedStreamIndex + 1).ToString() + "\" --subtitle-burned=" + (forcedStreamIndex + 1).ToString() + " ";
+                        }
+                        
+                        break;
+                    case "First":
+                        if(forcedStreamIndex == 0)
                         {
-                            subtitleString = "--subtitle none ";
+                            subString = "--subtitle \"1\" --subtitle-burned=1 ";
+                        }
+                        else
+                        {
+                            subString = "--subtitle \"1\" --subtitle-burned=" + (forcedStreamIndex + 1).ToString() + " ";
+                        }
+                        break;
+                    default:
+                        for (int i = 0; i < nonPGSIndexes.Count(); i++)
+                        {
+                            if(videoFile.Text[nonPGSIndexes[i]].Properties.ContainsKey("Language"))
+                            {
+                                if (videoFile.Text[nonPGSIndexes[i]].Properties["Language"] == subtitleCombo.Text)
+                                {
+                                    //Non PGS Subtitle Found with matching language
+                                    nonPGSLanguageMatchIndexes.Add(nonPGSIndexes[i]);
+                                    if (nonPGSIndexes[i] == forcedStreamIndex) { ForcedIndexFound = true; }
+                                }
+                            }
+                        }
+                        if(nonPGSLanguageMatchIndexes.Count() > 0)
+                        {
+                            for (int i = 0; i < nonPGSLanguageMatchIndexes.Count(); i++)
+                            {
+                                if(string.IsNullOrEmpty(subString))
+                                {
+                                    subString = "--subtitle \"" + (nonPGSLanguageMatchIndexes[i] + 1).ToString();
+                                }
+                                else
+                                {
+                                    subString += ", " + (nonPGSLanguageMatchIndexes[i] + 1).ToString();
+                                }
+                                
+                            }
+
+                            if(string.IsNullOrEmpty(subString))
+                            {
+                                subString = "--subtitle \"" + (forcedStreamIndex + 1).ToString() + "\" --subtitle-burned=" + (forcedStreamIndex + 1).ToString() + " ";
+                            }
+                            else
+                            {
+                                if(ForcedIndexFound)
+                                {
+                                    subString += "\" --subtitle-burned=" + (forcedStreamIndex + 1).ToString() + " ";
+                                }
+                                else
+                                {
+                                    subString += ", " + (forcedStreamIndex + 1).ToString() + "\" --subtitle-burned=" + (forcedStreamIndex + 1).ToString() + " ";
+                                }                  
+                            }
+                        
+                        }
+                        else
+                        {
+                            subString = "--subtitle \"" + (forcedStreamIndex + 1).ToString() + "\" --subtitle-burned=" + (forcedStreamIndex + 1).ToString() + " ";
                         }
                         break;
                 }
 
-                //Burn Forced Subtitles Checked, Requires subtitle to be in a selected list of subtitles using the --subtitle options above or it won't work.
-                if(burnForcedSubs)
+
+            }
+            else //No Forced English Subtitles Found, or burn forced subs not selected.
+            {
+                switch (subtitleCombo.Text)
                 {
-                    switch(subtitleCombo.Text)
-                    {
-                        case "None": //This selection will cause no subtitles to be added as streams. But if he forced option is checked, it will burn in the Forced Track.
-                            for (int i = 0; i < videoFile.Text.Count(); i++)
-                            {
-                                if (string.IsNullOrEmpty(subtitleBurnString))
-                                {
-                                    if (videoFile.Text[i].Properties.ContainsKey("Forced"))
-                                    {
-                                        if (videoFile.Text[i].Properties["Forced"] == "Yes")
-                                        {
-                                            if (videoFile.Text[i].Properties.ContainsKey("Language"))
-                                            {
-                                                if (videoFile.Text[i].Properties["Language"] == "English")
-                                                {
-                                                    subtitleString = "--subtitle " + (i + 1).ToString() + " "; //includes the subtitle going to be burned in the list of subtitle tracks to pull from 
-                                                    subtitleBurnString = "--subtitle-burned=" + (i + 1).ToString() + " ";
-                                                }
-                                            }
-                                        }
-                                    }
-                                    //Some subtitles are not flagged as forced but are titled as such, check for those also.
-                                    if(string.IsNullOrEmpty(subtitleBurnString))
-                                    {
-                                        //Check for title property
-                                        if(videoFile.Text[i].Properties.ContainsKey("Title"))
-                                        {   //Check that title contains "Forced" keyword
-                                            if(videoFile.Text[i].Properties["Title"].ToUpper().Contains("FORCED"))
-                                            {   //Check the subtitle language
-                                                if (videoFile.Text[i].Properties.ContainsKey("Language"))
-                                                {   //Only burn in subtitles for English Language
-                                                    if (videoFile.Text[i].Properties["Language"] == "English")
-                                                    {
-                                                        subtitleString = "--subtitle " + (i + 1).ToString() + " "; //includes the subtitle going to be burned in the list of subtitle tracks to pull from 
-                                                        subtitleBurnString = "--subtitle-burned=" + (i + 1).ToString() + " ";
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-
-                            }
-                            break;
-                        case "All": //Since all tracks are selected, the track marked as Forced=yes will already be in the list and will cause no issue.
-                            //Check for forced flag, and English since only one track can be burned in.
-                            for (int i = 0; i < videoFile.Text.Count(); i++)
-                            {
-
-                                if (string.IsNullOrEmpty(subtitleBurnString))
-                                {
-                                    if (videoFile.Text[i].Properties.ContainsKey("Forced"))
-                                    {
-                                        if (videoFile.Text[i].Properties["Forced"] == "Yes")
-                                        {
-                                            if (videoFile.Text[i].Properties.ContainsKey("Language"))
-                                            {
-                                                if (videoFile.Text[i].Properties["Language"] == "English")
-                                                {
-                                                    subtitleBurnString = "--subtitle-burned=" + (i + 1).ToString() + " ";
-                                                }
-                                            }
-                                        }
-                                    }
-                                    //Check for "Forced" in the subtitles stream name, If it exists, treat that as the forced subtitle.
-                                    if(string.IsNullOrEmpty(subtitleBurnString))
-                                    {
-                                        if(videoFile.Text[i].Properties.ContainsKey("Title"))
-                                        {
-                                            if(videoFile.Text[i].Properties["Title"].ToUpper().Contains("FORCED"))
-                                            {
-                                                if (videoFile.Text[i].Properties.ContainsKey("Language"))
-                                                {
-                                                    if (videoFile.Text[i].Properties["Language"] == "English")
-                                                    {
-                                                        subtitleBurnString = "--subtitle-burned=" + (i + 1).ToString() + " ";
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-
-                            }
-                            break;
-                        case "First": //Must modify if you are to also burn in the forced english track.
-                            //Check for forced flag, and English since only one track can be burned in.
-                            for (int i = 0; i < videoFile.Text.Count(); i++)
-                            {
-                                if (string.IsNullOrEmpty(subtitleBurnString))
-                                {
-                                    if (videoFile.Text[i].Properties.ContainsKey("Forced"))
-                                    {
-                                        if (videoFile.Text[i].Properties["Forced"] == "Yes")
-                                        {
-                                            if (videoFile.Text[i].Properties.ContainsKey("Language"))
-                                            {
-                                                if (videoFile.Text[i].Properties["Language"] == "English")
-                                                {
-                                                    if( i == 0) //if the first track is also the Forced track, no need to alter the subtitle string to include the track being burned in
-                                                    {
-                                                        subtitleBurnString = "--subtitle-burned=" + (i + 1).ToString() + " ";
-                                                    }
-                                                    else //Forced track isn't the first track so the subtitle string needs to be altered to include the track being burned in.
-                                                    {
-                                                        subtitleString = "--subtitle \"1," + (i + 1).ToString() + "\" ";
-                                                        subtitleBurnString = "--subtitle-burned=" + (i + 1).ToString() + " ";
-                                                    }
-                                                    
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                    if(string.IsNullOrEmpty(subtitleBurnString))
-                                    {
-                                        if(videoFile.Text[i].Properties.ContainsKey("Title"))
-                                        {
-                                            if (videoFile.Text[i].Properties["Title"].ToUpper().Contains("FORCED"))
-                                            {
-                                                if (videoFile.Text[i].Properties.ContainsKey("Language"))
-                                                {
-                                                    if (videoFile.Text[i].Properties["Language"] == "English")
-                                                    {
-                                                        if (i == 0) //if the first track is also the Forced track, no need to alter the subtitle string to include the track being burned in
-                                                        {
-                                                            subtitleBurnString = "--subtitle-burned=" + (i + 1).ToString() + " ";
-                                                        }
-                                                        else //Forced track isn't the first track so the subtitle string needs to be altered to include the track being burned in.
-                                                        {
-                                                            subtitleString = "--subtitle \"1," + (i + 1).ToString() + "\" ";
-                                                            subtitleBurnString = "--subtitle-burned=" + (i + 1).ToString() + " ";
-                                                        }
-
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-
-                            }
-                            break;
-
-                        default: //No subtitles or all other language codes, Only Tracks that are flagged Forced = Yes and all in the language list selected are burned in.
-                            //Check for forced flag, and English since only one track can be burned in.
-                            for (int i = 0; i < videoFile.Text.Count(); i++)
-                            {
-                                if (string.IsNullOrEmpty(subtitleBurnString))
-                                {
-                                    if (videoFile.Text[i].Properties.ContainsKey("Forced"))
-                                    {
-                                        if (videoFile.Text[i].Properties["Forced"] == "Yes")
-                                        {
-                                            if (videoFile.Text[i].Properties.ContainsKey("Language"))
-                                            {
-                                                if (videoFile.Text[i].Properties["Language"] == subsToInclude)
-                                                {
-                                                    if(subtitleString.Contains((i+1).ToString())) //Rare Case, but found in list so burn in normally
-                                                    {
-                                                        subtitleBurnString = "--subtitle-burned=" + (i + 1).ToString() + " ";
-                                                    }
-                                                    else //Not found in list, recreate the subtitle string to include the english forced sub as a burn in option
-                                                    {
-                                                        //removes the last two characters which should be a " and space.
-                                                        subtitleString = subtitleString.Substring(0, subtitleString.Length - 2);
-
-                                                        //rebuild string by adding a comma and the current subtitle stream number followed by a " and a space
-                                                        subtitleString += "," + (i + 1).ToString() + "\" ";
-                                                    }
-
-                                                }
-                                            }
-                                        }
-                                    }
-                                    if(videoFile.Text[i].Properties.ContainsKey("Title"))
-                                    {
-                                        if(videoFile.Text[i].Properties["Title"].ToUpper().Contains("FORCED"))
-                                        {
-                                            if (videoFile.Text[i].Properties.ContainsKey("Language"))
-                                            {
-                                                if (videoFile.Text[i].Properties["Language"] == subsToInclude)
-                                                {
-                                                    if (subtitleString.Contains((i + 1).ToString())) //Rare Case, but found in list so burn in normally
-                                                    {
-                                                        subtitleBurnString = "--subtitle-burned=" + (i + 1).ToString() + " ";
-                                                    }
-                                                    else //Not found in list, recreate the subtitle string to include the english forced sub as a burn in option
-                                                    {
-                                                        //removes the last two characters which should be a " and space.
-                                                        subtitleString = subtitleString.Substring(0, subtitleString.Length - 2);
-
-                                                        //rebuild string by adding a comma and the current subtitle stream number followed by a " and a space
-                                                        subtitleString += "," + (i + 1).ToString() + "\" ";
-                                                    }
-
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-
-                            }
-                            break;
-                    }
-                    //Prioritize forced subtitles that are already part of the file because theoretically anyway, these will be synced properly whereas added separate srt files may not be.
-                    if(string.IsNullOrEmpty(subtitleBurnString)) //Search for srt file in the same folder named the same as the file with a -Forced on the end.
-                    {
-                        char delim = '.';
-                        string[] Tokens = videoFile.File.Split(delim);
-
-                        //This looks weird because handbrake doesn't properly handle the \ escape character in the input srt string. I had to add extra so the output would have double \\ instead.
-                        string forcedSRTFileName = videoFile.File.Replace("\\","\\\\").Replace("." + Tokens[Tokens.Count() - 1].ToString(), "-Forced.srt");
-
-                        if(System.IO.File.Exists(forcedSRTFileName))
+                    case "None": //Don't add any subtitles or burn in any tracks
+                        subString = "";
+                        break;
+                    case "All":
+                        if(nonPGSIndexes.Count > 0)
                         {
-                            subtitleBurnString = "--srt-file \"" + forcedSRTFileName + "\" --srt-burn " + "--srt-codeset UTF-8 ";
+                            for (int i = 0; i < nonPGSIndexes.Count(); i++)
+                            {
+                                if (string.IsNullOrEmpty(subString))
+                                {
+                                    subString = "--subtitle \"" + (nonPGSIndexes[i] + 1).ToString();
+                                }
+                                else
+                                {
+                                    subString += ", " + (nonPGSIndexes[i] + 1).ToString();
+                                }
+                            }
+                            subString += "\" ";
+                        }
+                        else //Nothing to add
+                        {
+                            subString = "";
+                        }
+                        break;
+                    case "First":
+                        subString = "--first-subtitle ";
+                        break;
+                    default:
+                        for (int i = 0; i < nonPGSIndexes.Count(); i++)
+                        {
+                            if(videoFile.Text[nonPGSIndexes[i]].Properties.ContainsKey("Language"))
+                            {
+                                if(videoFile.Text[nonPGSIndexes[i]].Properties["Language"] == subtitleCombo.Text)
+                                {
+                                    if (string.IsNullOrEmpty(subString))
+                                    {
+                                        subString = "--subtitle \"" + (nonPGSIndexes[i] + 1).ToString();
+                                    }
+                                    else
+                                    {
+                                        subString += ", " + (nonPGSIndexes[i] + 1).ToString();
+                                    }
+                                }
+                            }
+                            
+                        }
+                        subString += "\" ";
+                        break;
+                }
+            }
+
+            nonPGSIndexes.Clear();
+            nonPGSLanguageMatchIndexes.Clear();
+
+            return subString;
+        }
+        private int IdenfityForcedSubIndex(MediaFile videoFile)
+        {
+            int subStreamIndex = -1;
+           
+            //User selected to burn in forced subtitles.
+            if (burnInSubtitlesCheck.Checked)
+            {
+                //Check that forced subs exist
+                for (int i = 0; i < videoFile.Text.Count(); i++)
+                {
+                    if(subStreamIndex == -1)
+                    {
+                        if (videoFile.Text[i].Properties.ContainsKey("Language"))
+                        {
+                            if (videoFile.Text[i].Properties["Language"] == "English")
+                            {
+                                if (videoFile.Text[i].Properties.ContainsKey("Forced"))
+                                {
+                                    if (videoFile.Text[i].Properties["Forced"] == "Yes")
+                                    {
+                                        subStreamIndex = i;
+                                    }
+                                }
+                                if (subStreamIndex == -1)
+                                {
+                                    if (videoFile.Text[i].Properties.ContainsKey("Title"))
+                                    {
+                                        if (videoFile.Text[i].Properties["Title"].ToUpper().Contains("FORCED"))
+                                        {
+                                            subStreamIndex = i;
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
+                    
                 }
 
             }
+            else
+            {
+                return subStreamIndex;
+            }
 
-            return outputEncoder + outputEncoderSpeed + outputEncoderTune + subtitleString + subtitleBurnString + outputEncopts + outputEncoderProfile + outputEncoderLevel + outputVideoBitrate + outputTwoPass + outputTurbo + outputFrameRate ;
+
+            return subStreamIndex;
         }
 
         /*The following methods are for creating the audio conversion string*/
