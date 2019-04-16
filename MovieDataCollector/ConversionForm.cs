@@ -2393,19 +2393,47 @@ namespace MovieDataCollector
                             {
                                 if(videoFile.Text[i].Properties["Format"] == "PGS") //PGS subs are only added if they are marked as Forced
                                 {
-                                    if(videoFile.Text[i].Properties.ContainsKey("Forced"))
+                                    if (videoFile.Text[i].Properties.ContainsKey("Forced"))
                                     {
-                                        if(videoFile.Text[i].Properties["Forced"] == "Yes")
+                                        if (videoFile.Text[i].Properties["Forced"] == "Yes")
                                         {
-                                            if(string.IsNullOrEmpty(subtitleString))
+                                            if (videoFile.Text[i].Properties.ContainsKey("Language"))
                                             {
-                                               subtitleString = "--subtitle \"" + (i + 1).ToString();
+                                                if (videoFile.Text[i].Properties["Language"] == "English")
+                                                {
+                                                    if (string.IsNullOrEmpty(subtitleString))
+                                                    {
+                                                        subtitleString = "--subtitle \"" + (i + 1).ToString();
+                                                    }
+                                                    else
+                                                    {
+                                                        subtitleString += "," + (i + 1).ToString();
+                                                    }
+                                                }
                                             }
-                                            else
+                                        }
+                                    }
+                                    if(!subtitleString.Contains(i.ToString())) // subtitle skipped for some reason
+                                    {
+                                        if(videoFile.Text[i].Properties.ContainsKey("Title"))
+                                        {
+                                            if(videoFile.Text[i].Properties["Title"].ToUpper().Contains("FORCED"))
                                             {
-                                                subtitleString += "," + (i + 1).ToString();
+                                                if (videoFile.Text[i].Properties.ContainsKey("Language"))
+                                                {
+                                                    if (videoFile.Text[i].Properties["Language"] == "English")
+                                                    {
+                                                        if (string.IsNullOrEmpty(subtitleString))
+                                                        {
+                                                            subtitleString = "--subtitle \"" + (i + 1).ToString();
+                                                        }
+                                                        else
+                                                        {
+                                                            subtitleString += "," + (i + 1).ToString();
+                                                        }
+                                                    }
+                                                }
                                             }
-
                                         }
                                     }
                                 }
@@ -2430,9 +2458,55 @@ namespace MovieDataCollector
                     default: //All other language codes
                         for (int i = 0; i < videoFile.Text.Count(); i++)
                         {
-                            if (videoFile.Text[i].Properties.ContainsKey("Language"))
+                            if (videoFile.Text[i].Properties.ContainsKey("Format"))
                             {
-                                if (videoFile.Text[i].Properties["Language"] == subsToInclude)
+                                if (videoFile.Text[i].Properties["Format"] == "PGS") //PGS subs are only added if they are marked as Forced
+                                {
+                                    if (videoFile.Text[i].Properties.ContainsKey("Forced"))
+                                    {
+                                        if (videoFile.Text[i].Properties["Forced"] == "Yes")
+                                        {
+                                            if (videoFile.Text[i].Properties.ContainsKey("Language"))
+                                            {
+                                                if (videoFile.Text[i].Properties["Language"] == subsToInclude)
+                                                {
+                                                    if (string.IsNullOrEmpty(subtitleString))
+                                                    {
+                                                        subtitleString = "--subtitle \"" + (i + 1).ToString();
+                                                    }
+                                                    else
+                                                    {
+                                                        subtitleString += "," + (i + 1).ToString();
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (!subtitleString.Contains(i.ToString())) // subtitle skipped for some reason
+                                    {
+                                        if (videoFile.Text[i].Properties.ContainsKey("Title"))
+                                        {
+                                            if (videoFile.Text[i].Properties["Title"].ToUpper().Contains("FORCED"))
+                                            {
+                                                if (videoFile.Text[i].Properties.ContainsKey("Language"))
+                                                {
+                                                    if (videoFile.Text[i].Properties["Language"] == subsToInclude)
+                                                    {
+                                                        if (string.IsNullOrEmpty(subtitleString))
+                                                        {
+                                                            subtitleString = "--subtitle \"" + (i + 1).ToString();
+                                                        }
+                                                        else
+                                                        {
+                                                            subtitleString += "," + (i + 1).ToString();
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                else //Non PGS subs are added to file
                                 {
                                     if (string.IsNullOrEmpty(subtitleString))
                                     {
@@ -2444,6 +2518,7 @@ namespace MovieDataCollector
                                     }
                                 }
                             }
+
                         }
                         if(string.IsNullOrEmpty(subtitleString)) //gives string a value even if no subtitles are found to match criteria
                         {
@@ -2457,7 +2532,7 @@ namespace MovieDataCollector
                 {
                     switch(subtitleCombo.Text)
                     {
-                        case "None": //This selection will cause no subtitles to be burned in even if the Burn in options is selected. Must changed to match Forced Track.
+                        case "None": //This selection will cause no subtitles to be added as streams. But if he forced option is checked, it will burn in the Forced Track.
                             for (int i = 0; i < videoFile.Text.Count(); i++)
                             {
                                 if (string.IsNullOrEmpty(subtitleBurnString))
@@ -2472,6 +2547,25 @@ namespace MovieDataCollector
                                                 {
                                                     subtitleString = "--subtitle " + (i + 1).ToString() + " "; //includes the subtitle going to be burned in the list of subtitle tracks to pull from 
                                                     subtitleBurnString = "--subtitle-burned=" + (i + 1).ToString() + " ";
+                                                }
+                                            }
+                                        }
+                                    }
+                                    //Some subtitles are not flagged as forced but are titled as such, check for those also.
+                                    if(string.IsNullOrEmpty(subtitleBurnString))
+                                    {
+                                        //Check for title property
+                                        if(videoFile.Text[i].Properties.ContainsKey("Title"))
+                                        {   //Check that title contains "Forced" keyword
+                                            if(videoFile.Text[i].Properties["Title"].ToUpper().Contains("FORCED"))
+                                            {   //Check the subtitle language
+                                                if (videoFile.Text[i].Properties.ContainsKey("Language"))
+                                                {   //Only burn in subtitles for English Language
+                                                    if (videoFile.Text[i].Properties["Language"] == "English")
+                                                    {
+                                                        subtitleString = "--subtitle " + (i + 1).ToString() + " "; //includes the subtitle going to be burned in the list of subtitle tracks to pull from 
+                                                        subtitleBurnString = "--subtitle-burned=" + (i + 1).ToString() + " ";
+                                                    }
                                                 }
                                             }
                                         }
@@ -2496,6 +2590,23 @@ namespace MovieDataCollector
                                                 if (videoFile.Text[i].Properties["Language"] == "English")
                                                 {
                                                     subtitleBurnString = "--subtitle-burned=" + (i + 1).ToString() + " ";
+                                                }
+                                            }
+                                        }
+                                    }
+                                    //Check for "Forced" in the subtitles stream name, If it exists, treat that as the forced subtitle.
+                                    if(string.IsNullOrEmpty(subtitleBurnString))
+                                    {
+                                        if(videoFile.Text[i].Properties.ContainsKey("Title"))
+                                        {
+                                            if(videoFile.Text[i].Properties["Title"].ToUpper().Contains("FORCED"))
+                                            {
+                                                if (videoFile.Text[i].Properties.ContainsKey("Language"))
+                                                {
+                                                    if (videoFile.Text[i].Properties["Language"] == "English")
+                                                    {
+                                                        subtitleBurnString = "--subtitle-burned=" + (i + 1).ToString() + " ";
+                                                    }
                                                 }
                                             }
                                         }
@@ -2532,12 +2643,38 @@ namespace MovieDataCollector
                                             }
                                         }
                                     }
+
+                                    if(string.IsNullOrEmpty(subtitleBurnString))
+                                    {
+                                        if(videoFile.Text[i].Properties.ContainsKey("Title"))
+                                        {
+                                            if (videoFile.Text[i].Properties["Title"].ToUpper().Contains("FORCED"))
+                                            {
+                                                if (videoFile.Text[i].Properties.ContainsKey("Language"))
+                                                {
+                                                    if (videoFile.Text[i].Properties["Language"] == "English")
+                                                    {
+                                                        if (i == 0) //if the first track is also the Forced track, no need to alter the subtitle string to include the track being burned in
+                                                        {
+                                                            subtitleBurnString = "--subtitle-burned=" + (i + 1).ToString() + " ";
+                                                        }
+                                                        else //Forced track isn't the first track so the subtitle string needs to be altered to include the track being burned in.
+                                                        {
+                                                            subtitleString = "--subtitle \"1," + (i + 1).ToString() + "\" ";
+                                                            subtitleBurnString = "--subtitle-burned=" + (i + 1).ToString() + " ";
+                                                        }
+
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
 
                             }
                             break;
 
-                        default: //No subtitles or all other language codes, Only Tracks that are flagged Forced = Yes and fall in the language list selected are burned in.
+                        default: //No subtitles or all other language codes, Only Tracks that are flagged Forced = Yes and all in the language list selected are burned in.
                             //Check for forced flag, and English since only one track can be burned in.
                             for (int i = 0; i < videoFile.Text.Count(); i++)
                             {
@@ -2549,9 +2686,34 @@ namespace MovieDataCollector
                                         {
                                             if (videoFile.Text[i].Properties.ContainsKey("Language"))
                                             {
-                                                if (videoFile.Text[i].Properties["Language"] == "English")
+                                                if (videoFile.Text[i].Properties["Language"] == subsToInclude)
                                                 {
                                                     if(subtitleString.Contains((i+1).ToString())) //Rare Case, but found in list so burn in normally
+                                                    {
+                                                        subtitleBurnString = "--subtitle-burned=" + (i + 1).ToString() + " ";
+                                                    }
+                                                    else //Not found in list, recreate the subtitle string to include the english forced sub as a burn in option
+                                                    {
+                                                        //removes the last two characters which should be a " and space.
+                                                        subtitleString = subtitleString.Substring(0, subtitleString.Length - 2);
+
+                                                        //rebuild string by adding a comma and the current subtitle stream number followed by a " and a space
+                                                        subtitleString += "," + (i + 1).ToString() + "\" ";
+                                                    }
+
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if(videoFile.Text[i].Properties.ContainsKey("Title"))
+                                    {
+                                        if(videoFile.Text[i].Properties["Title"].ToUpper().Contains("FORCED"))
+                                        {
+                                            if (videoFile.Text[i].Properties.ContainsKey("Language"))
+                                            {
+                                                if (videoFile.Text[i].Properties["Language"] == subsToInclude)
+                                                {
+                                                    if (subtitleString.Contains((i + 1).ToString())) //Rare Case, but found in list so burn in normally
                                                     {
                                                         subtitleBurnString = "--subtitle-burned=" + (i + 1).ToString() + " ";
                                                     }
@@ -2573,7 +2735,7 @@ namespace MovieDataCollector
                             }
                             break;
                     }
-                    //Prioritize forced subtitles that are already part of the file because theoretically anyway, these will be synced properly whereas added srt files may not be.
+                    //Prioritize forced subtitles that are already part of the file because theoretically anyway, these will be synced properly whereas added separate srt files may not be.
                     if(string.IsNullOrEmpty(subtitleBurnString)) //Search for srt file in the same folder named the same as the file with a -Forced on the end.
                     {
                         char delim = '.';
