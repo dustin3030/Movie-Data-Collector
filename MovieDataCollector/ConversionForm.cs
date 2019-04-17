@@ -265,6 +265,9 @@ namespace MovieDataCollector
         public ConversionForm()
         {
             InitializeComponent(); //Initializes components.
+            this.filesListBox.DragDrop += new System.Windows.Forms.DragEventHandler(this.filesListBox_DragDrop);
+            this.filesListBox.DragEnter += new System.Windows.Forms.DragEventHandler(this.filesListBox_DragEnter);
+
             ApplyConfigDefaults();
             PopulatePresets();
             ApplyPreset(); // Applies the preset corresponding to the text in the preset combobox.
@@ -1051,6 +1054,48 @@ namespace MovieDataCollector
                 CustomMessageBox.Show("Detailed info can only be provided for 1 item at a time.", 150, 300, "Error");
             }
             
+        }
+
+        //Drag and Drop functionality
+        private void filesListBox_DragEnter(object sender, System.Windows.Forms.DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.All;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }  
+        }
+        private void filesListBox_DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
+        {
+            string[] s = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+            int loopcount = 0;
+            string fileName = "";
+
+            foreach (string file in s) //loops through files, pulls out file names and adds them to filenameslistbox
+            {
+                loopcount = loopcount + 1;
+
+                NLabelUpdate("Processing file " + loopcount.ToString() + " of " + s.Count().ToString() + " - " + file, Color.GreenYellow);
+
+                fileName = file;
+                while (fileName.Contains(@"\"))
+                {
+                    fileName = fileName.Remove(0, 1);
+                }
+
+                CF.UpdateDefaults();
+                CF.DefaultSettings["InputFilePath"] = file.Replace(fileName, "");
+
+                filesListBox.Items.Add(fileName);
+                filesListBox.Update();
+                VideoFilesList.Add(file);
+                filenameTextBox.Text = CF.DefaultSettings["InputFilePath"];
+
+            }
+
         }
 
 
@@ -2230,7 +2275,6 @@ namespace MovieDataCollector
             outputEncopts = "--encopts level=" + encoderLevelComboBox.Text + ":vbv-bufsize=" + BufferSize + ":vbv-maxrate=" + MaxBitrate + " --verbose=1 --encoder-level=\"" + encoderLevelComboBox.Text + "\" --encoder-profile=" + encoderProfileComboBox.Text.ToLower() + " --verbose=1 ";
             return outputEncopts + outputVideoBitrate;
         }
-
         private string BuildEncoderString(MediaFile vidoeFile)
         {
             string outputEncoder = ""; //encoder and speed preset
@@ -2374,8 +2418,8 @@ namespace MovieDataCollector
 
             return outputEncoder + outputEncoderLevel + outputEncoderProfile + outputEncoderSpeed + outputEncoderTune;
         }
+        
         //The following methods are for creating the command string for subtitle Selection
-
         private string BuildSubString(MediaFile videoFile)
         {
             int forcedStreamIndex = IdenfityForcedSubIndex(videoFile); //This checks for the burn in forced subs checkbox also. Will return -1 if that isn't check or if no subs are found
@@ -2383,6 +2427,20 @@ namespace MovieDataCollector
             List<int> nonPGSIndexes = new List<int> { };
             List<int> nonPGSLanguageMatchIndexes = new List<int> { };
             bool ForcedIndexFound = false;
+            bool forcedSRTExists = false;
+
+            char delim = '.';
+            string[] Tokens = videoFile.File.Split(delim);
+            //This looks weird because handbrake doesn't properly handle the \ escape character in the input srt string. I had to add extra so the output would have double \\ instead.
+            string forcedSRTFileName = videoFile.File.Replace("\\", "\\\\").Replace("." + Tokens[Tokens.Count() - 1].ToString(), "-Forced.srt");
+
+
+            //Check if external srt exists
+            //Check for external subtitle with the same name as the video file except -Forced.
+            if (System.IO.File.Exists(forcedSRTFileName))
+            {
+                forcedSRTExists = true;
+            }
 
             //Build list of nonPGSIndexes
             for (int i = 0; i < videoFile.Text.Count(); i++)
@@ -2397,19 +2455,29 @@ namespace MovieDataCollector
                 if (i == forcedStreamIndex) { ForcedIndexFound = true; }
             }
 
-
             /*None,  All, Default, First, Chinese, Czech, English, Finnish, French, German, Greek, Japanese, Korean, Portuguese, Russian, Spanish, Swedish */
 
             if (forcedStreamIndex != -1) //Forced English subtitles found and burn forced subs checkbox selected
             {
+                
                 switch (subtitleCombo.Text)
                 {
                     case "None": //Don't add any subtitles, but burn in forced track.
-                        subString = "--subtitle \"" + (forcedStreamIndex + 1).ToString() +  "\" --subtitle-burned=" + (forcedStreamIndex + 1).ToString() + " ";
+
+                        //Check for external subtitle with the same name as the video file except -Forced.
+                        if (forcedSRTExists)
+                        {
+                            subString = "--srt-file \"" + forcedSRTFileName + "\" --srt-burn " + "--srt-codeset UTF-8 ";
+                        }
+                        else
+                        {
+                            subString = "--subtitle \"" + (forcedStreamIndex + 1).ToString() + "\" --subtitle-burned=" + (forcedStreamIndex + 1).ToString() + " ";
+                        }
+                            
                         break;
                     case "All": //Include all non PGS tracks, PGS Tracks can't be added to MP4 unless they are burned in.
-                        
-                        if(nonPGSIndexes.Count > 0)
+
+                        if (nonPGSIndexes.Count > 0)
                         {
 
                             for (int i = 0; i < nonPGSIndexes.Count(); i++)
@@ -2423,7 +2491,12 @@ namespace MovieDataCollector
                                     subString += ", " + (nonPGSIndexes[i] + 1).ToString();
                                 }
                             }
-                            if (ForcedIndexFound)
+                            //Check for external subtitle with the same name as the video file except -Forced.
+                            if (forcedSRTExists)
+                            {
+                                subString += "\" --srt-file \"" + forcedSRTFileName + "\" --srt-burn " + "--srt-codeset UTF-8 ";
+                            }
+                            else if(ForcedIndexFound)
                             {
                                 subString += "\" --subtitle-burned=" + (forcedStreamIndex + 1).ToString() + " ";
                             }
@@ -2441,25 +2514,41 @@ namespace MovieDataCollector
 
                         }
                         else //No subtitles streams can be added, they are either all PGS or don't exist.
-                        { 
-                            subString = "--subtitle \"" + (forcedStreamIndex + 1).ToString() + "\" --subtitle-burned=" + (forcedStreamIndex + 1).ToString() + " ";
+                        {
+                            //Check for external subtitle with the same name as the video file except -Forced.
+                            if (forcedSRTExists)
+                            {
+                                subString = "--srt-file \"" + forcedSRTFileName + "\" --srt-burn " + "--srt-codeset UTF-8 ";
+                            }
+                            else
+                            {
+                                subString = "--subtitle \"" + (forcedStreamIndex + 1).ToString() + "\" --subtitle-burned=" + (forcedStreamIndex + 1).ToString() + " ";
+                            }
                         }
-                        
+
                         break;
                     case "First":
-                        if(forcedStreamIndex == 0)
+
+                        //Check for external subtitle with the same name as the video file except -Forced.
+                        if (forcedSRTExists)
+                        {
+                            subString = "--subtitle \"1\" --srt-file \"" + forcedSRTFileName + "\" --srt-burn " + "--srt-codeset UTF-8 ";
+                        }
+                        else if (forcedStreamIndex == 0)
                         {
                             subString = "--subtitle \"1\" --subtitle-burned=1 ";
                         }
                         else
                         {
-                            subString = "--subtitle \"1\" --subtitle-burned=" + (forcedStreamIndex + 1).ToString() + " ";
+                            subString = "--subtitle \"1, " + (forcedStreamIndex + 1).ToString() + "\" --subtitle-burned=" + (forcedStreamIndex + 1).ToString() + " ";
                         }
                         break;
                     default:
+
+                        //Find non pgs subs that match user selected language and add them to the list
                         for (int i = 0; i < nonPGSIndexes.Count(); i++)
                         {
-                            if(videoFile.Text[nonPGSIndexes[i]].Properties.ContainsKey("Language"))
+                            if (videoFile.Text[nonPGSIndexes[i]].Properties.ContainsKey("Language"))
                             {
                                 if (videoFile.Text[nonPGSIndexes[i]].Properties["Language"] == subtitleCombo.Text)
                                 {
@@ -2469,11 +2558,13 @@ namespace MovieDataCollector
                                 }
                             }
                         }
-                        if(nonPGSLanguageMatchIndexes.Count() > 0)
+
+
+                        if (nonPGSLanguageMatchIndexes.Count() > 0) //non pgs subtitles that match user selected language found
                         {
                             for (int i = 0; i < nonPGSLanguageMatchIndexes.Count(); i++)
                             {
-                                if(string.IsNullOrEmpty(subString))
+                                if (string.IsNullOrEmpty(subString))
                                 {
                                     subString = "--subtitle \"" + (nonPGSLanguageMatchIndexes[i] + 1).ToString();
                                 }
@@ -2481,33 +2572,56 @@ namespace MovieDataCollector
                                 {
                                     subString += ", " + (nonPGSLanguageMatchIndexes[i] + 1).ToString();
                                 }
-                                
+
                             }
 
-                            if(string.IsNullOrEmpty(subString))
+
+                            if (string.IsNullOrEmpty(subString))
                             {
-                                subString = "--subtitle \"" + (forcedStreamIndex + 1).ToString() + "\" --subtitle-burned=" + (forcedStreamIndex + 1).ToString() + " ";
+                                //Check for external subtitle with the same name as the video file except -Forced.
+                                if (forcedSRTExists)
+                                {
+                                    subString = "--srt-file \"" + forcedSRTFileName + "\" --srt-burn " + "--srt-codeset UTF-8 ";
+                                }
+                                else
+                                {
+                                    subString = "--subtitle \"" + (forcedStreamIndex + 1).ToString() + "\" --subtitle-burned=" + (forcedStreamIndex + 1).ToString() + " ";
+                                }
+                                
                             }
                             else
                             {
-                                if(ForcedIndexFound)
+                                //Check for external subtitle with the same name as the video file except -Forced.
+                                if (forcedSRTExists)
+                                {
+                                    subString += "\" --srt-file \"" + forcedSRTFileName + "\" --srt-burn " + "--srt-codeset UTF-8 ";
+                                }
+                                else if (ForcedIndexFound)
                                 {
                                     subString += "\" --subtitle-burned=" + (forcedStreamIndex + 1).ToString() + " ";
                                 }
                                 else
                                 {
                                     subString += ", " + (forcedStreamIndex + 1).ToString() + "\" --subtitle-burned=" + (forcedStreamIndex + 1).ToString() + " ";
-                                }                  
+                                }
                             }
-                        
+
                         }
-                        else
+                        else //No non pgs subs found that match user language selection
                         {
-                            subString = "--subtitle \"" + (forcedStreamIndex + 1).ToString() + "\" --subtitle-burned=" + (forcedStreamIndex + 1).ToString() + " ";
+                            //Check for external subtitle with the same name as the video file except -Forced.
+                            if (forcedSRTExists)
+                            {
+                                subString = "--srt-file \"" + forcedSRTFileName + "\" --srt-burn " + "--srt-codeset UTF-8 ";
+                            }
+                            else //No overfiding external subtitle found
+                            {
+                                subString = "--subtitle \"" + (forcedStreamIndex + 1).ToString() + "\" --subtitle-burned=" + (forcedStreamIndex + 1).ToString() + " ";
+                            }
+                            
                         }
                         break;
                 }
-
 
             }
             else //No Forced English Subtitles Found, or burn forced subs not selected.
@@ -4057,7 +4171,6 @@ namespace MovieDataCollector
             return "--gain 0" + gain2 + gain3 + " ";
         }
 
-
         private string SourceDestinationOptionsString(string filepath, string filename, string outputPath, bool outputLargerThan4Gb)
         {
             string inputFileExt = "";
@@ -4101,7 +4214,6 @@ namespace MovieDataCollector
 
             return inputFile + outputFile;
         }
-
 
 
         /*The following methods are to ensure user input is valid*/

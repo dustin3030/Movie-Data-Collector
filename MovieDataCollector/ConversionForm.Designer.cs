@@ -341,6 +341,7 @@
             // 
             // filesListBox
             // 
+            this.filesListBox.AllowDrop = true;
             this.filesListBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.filesListBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.filesListBox.ForeColor = System.Drawing.Color.GreenYellow;
