@@ -230,6 +230,7 @@
             // 
             // filenameTextBox
             // 
+            this.filenameTextBox.AllowDrop = true;
             this.filenameTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.filenameTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.filenameTextBox.ForeColor = System.Drawing.Color.GreenYellow;

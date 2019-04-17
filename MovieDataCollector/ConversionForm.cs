@@ -21,6 +21,8 @@ namespace MovieDataCollector
     {
         //string folderPath = ""; //Contains path for parent directory
         List<string> VideoFilesList = new List<string>(); //Contains File Paths for video files 
+        List<string> ParentDirectoryList = new List<string>();
+
         StringBuilder incompatible = new StringBuilder();
         string separator = "========================================================================\n"; //When the scroll bar in a few characters get squished onto the next line. Don't modify unless you change the size of the control.
         string separator2 = "\n.........................................................................................................................\r\n \r\n";
@@ -267,6 +269,9 @@ namespace MovieDataCollector
             InitializeComponent(); //Initializes components.
             this.filesListBox.DragDrop += new System.Windows.Forms.DragEventHandler(this.filesListBox_DragDrop);
             this.filesListBox.DragEnter += new System.Windows.Forms.DragEventHandler(this.filesListBox_DragEnter);
+
+            this.filenameTextBox.DragDrop += new System.Windows.Forms.DragEventHandler(this.filenameTextBox_DragDrop);
+            this.filenameTextBox.DragEnter += new System.Windows.Forms.DragEventHandler(this.filenameTextBox_DragEnter);
 
             ApplyConfigDefaults();
             PopulatePresets();
@@ -1068,33 +1073,90 @@ namespace MovieDataCollector
                 e.Effect = DragDropEffects.None;
             }  
         }
+
+        private void filenameTextBox_DragEnter(object sender, System.Windows.Forms.DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.All;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+
+        private void filenameTextBox_DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
+        {
+            string fileName = "";
+            string[] s = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+
+            if (s.Count() == 1 && Directory.Exists(s[0].ToString()))
+            {
+                fileName = s[0].ToString();
+
+                CF.DefaultSettings["InputFilePath"] = s[0].ToString();
+                CF.UpdateDefaults();
+                filenameTextBox.Text = CF.DefaultSettings["InputFilePath"];
+                ReturnAllVideoFiles();
+
+            }
+        }
         private void filesListBox_DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
         {
             string[] s = (string[])e.Data.GetData(DataFormats.FileDrop, false);
             int loopcount = 0;
             string fileName = "";
 
-            foreach (string file in s) //loops through files, pulls out file names and adds them to filenameslistbox
+            filesListBox.Items.Clear();
+            filesListBox.Update();
+            MediaInfoTB.Clear();
+            VideoFilesList.Clear();
+            IncompatibilityInfo.Clear();
+
+            if (s.Count() == 1 && Directory.Exists(s[0].ToString()))
             {
-                loopcount = loopcount + 1;
+                fileName = s[0].ToString();
 
-                NLabelUpdate("Processing file " + loopcount.ToString() + " of " + s.Count().ToString() + " - " + file, Color.GreenYellow);
-
-                fileName = file;
-                while (fileName.Contains(@"\"))
-                {
-                    fileName = fileName.Remove(0, 1);
-                }
-
+                CF.DefaultSettings["InputFilePath"] = s[0].ToString();
                 CF.UpdateDefaults();
-                CF.DefaultSettings["InputFilePath"] = file.Replace(fileName, "");
-
-                filesListBox.Items.Add(fileName);
-                filesListBox.Update();
-                VideoFilesList.Add(file);
                 filenameTextBox.Text = CF.DefaultSettings["InputFilePath"];
+                ReturnAllVideoFiles();
 
             }
+            else
+            {
+
+                foreach (string file in s) //loops through files, pulls out file names and adds them to filenameslistbox
+                {
+                    loopcount = loopcount + 1;
+                    NLabelUpdate("Processing file " + loopcount.ToString() + " of " + s.Count().ToString() + " - " + file, Color.GreenYellow);
+
+
+                    if(!Directory.Exists(file))
+                    {
+                        fileName = file;
+                        while (fileName.Contains(@"\"))
+                        {
+                            fileName = fileName.Remove(0, 1);
+                        }
+
+
+                        CF.DefaultSettings["InputFilePath"] = file.Replace(fileName, "");
+                        CF.UpdateDefaults();
+
+                        filesListBox.Items.Add(fileName);
+                        filesListBox.Update();
+                        VideoFilesList.Add(file);
+                        ParentDirectoryList.Add(file);
+
+                        filenameTextBox.Text = CF.DefaultSettings["InputFilePath"];
+                    }
+
+                }
+            }
+
+            NLabelUpdate("Listing " + filesListBox.Items.Count.ToString() + " Video Files", Color.GreenYellow);
 
         }
 
