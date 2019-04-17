@@ -1073,7 +1073,6 @@ namespace MovieDataCollector
                 e.Effect = DragDropEffects.None;
             }  
         }
-
         private void filenameTextBox_DragEnter(object sender, System.Windows.Forms.DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
@@ -1085,7 +1084,6 @@ namespace MovieDataCollector
                 e.Effect = DragDropEffects.None;
             }
         }
-
         private void filenameTextBox_DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
         {
             string fileName = "";
