@@ -1073,33 +1073,6 @@ namespace MovieDataCollector
                 e.Effect = DragDropEffects.None;
             }  
         }
-        private void filenameTextBox_DragEnter(object sender, System.Windows.Forms.DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-            {
-                e.Effect = DragDropEffects.All;
-            }
-            else
-            {
-                e.Effect = DragDropEffects.None;
-            }
-        }
-        private void filenameTextBox_DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
-        {
-            string fileName = "";
-            string[] s = (string[])e.Data.GetData(DataFormats.FileDrop, false);
-
-            if (s.Count() == 1 && Directory.Exists(s[0].ToString()))
-            {
-                fileName = s[0].ToString();
-
-                CF.DefaultSettings["InputFilePath"] = s[0].ToString();
-                CF.UpdateDefaults();
-                filenameTextBox.Text = CF.DefaultSettings["InputFilePath"];
-                ReturnAllVideoFiles();
-
-            }
-        }
         private void filesListBox_DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
         {
             string[] s = (string[])e.Data.GetData(DataFormats.FileDrop, false);
@@ -1131,7 +1104,7 @@ namespace MovieDataCollector
                     NLabelUpdate("Processing file " + loopcount.ToString() + " of " + s.Count().ToString() + " - " + file, Color.GreenYellow);
 
 
-                    if(!Directory.Exists(file))
+                    if (!Directory.Exists(file))
                     {
                         fileName = file;
                         while (fileName.Contains(@"\"))
@@ -1158,6 +1131,34 @@ namespace MovieDataCollector
 
         }
 
+        private void filenameTextBox_DragEnter(object sender, System.Windows.Forms.DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.All;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+        private void filenameTextBox_DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
+        {
+            string fileName = "";
+            string[] s = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+
+            if (s.Count() == 1 && Directory.Exists(s[0].ToString()))
+            {
+                fileName = s[0].ToString();
+
+                CF.DefaultSettings["InputFilePath"] = s[0].ToString();
+                CF.UpdateDefaults();
+                filenameTextBox.Text = CF.DefaultSettings["InputFilePath"];
+                ReturnAllVideoFiles();
+
+            }
+        }
+        
 
         /*The following methods are for converting video files*/
         private async void ConvertAllButton_Click(object sender, EventArgs e)

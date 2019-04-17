@@ -224,6 +224,7 @@
             // 
             // videoPathTextBox
             // 
+            this.videoPathTextBox.AllowDrop = true;
             this.videoPathTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.videoPathTextBox.ForeColor = System.Drawing.Color.GreenYellow;
             this.videoPathTextBox.Location = new System.Drawing.Point(194, 258);

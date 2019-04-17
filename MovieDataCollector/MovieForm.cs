@@ -100,6 +100,9 @@ namespace MovieDataCollector
             //Initiallizes components of form
             InitializeComponent();
 
+            this.videoPathTextBox.DragDrop += new System.Windows.Forms.DragEventHandler(this.videoPathTextBox_DragDrop);
+            this.videoPathTextBox.DragEnter += new System.Windows.Forms.DragEventHandler(this.videoPathTextBox_DragEnter);
+
             posterNumberLabel.Text = "of 1"; //Sets label to 1 representing the number of poster images available to select from
             backdropNumberLabel.Text = "of 1"; //Sets the label to 1 representing the number of backdrop images to select from
             formatPicturebox.Visible = true; //displays the Universal image since it is the default for that control
@@ -127,6 +130,52 @@ namespace MovieDataCollector
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+        private void videoPathTextBox_DragEnter(object sender, System.Windows.Forms.DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.All;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+        private void videoPathTextBox_DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
+        {
+            string fileName = "";
+            string[] s = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+
+            if (s.Count() == 1 && !Directory.Exists(s[0].ToString()))
+            {
+                fileName = s[0].ToString();
+
+                try //Try block, incase of file error
+                {
+                    CF.DefaultSettings["MFPath"] = (Directory.GetParent(fileName)).ToString();
+                    CF.DefaultSettings["MFPath"] += "\\";
+                    videoPath = fileName;
+                    videoPathTextBox.Text = videoPath;
+
+                    char[] delim = { '.' }; //using '.' as the delimiter splits the extension from the filepath
+                    string[] Tokens = fileName.Split(delim);
+
+                    //Token[Tokens.Count()-1] - File extension without the . 
+                    videoExtension = "." + Tokens[Tokens.Count() - 1]; //Last Token in the array - the file extension
+                    videoFileName = videoPath.Replace(CF.DefaultSettings["MFPath"], "");
+                    videoFileName = videoFileName.Replace(Tokens[Tokens.Count() - 1], "");
+                    CF.UpdateDefaults();
+                }
+                catch //displays messagebox if error occurs while opening file
+                {
+                    CustomMessageBox.Show("Failed to retrieve file information", 125, 236);
+                }
+            }
+
+
+        }
+
+
         private void OpenVideoFileButton_Click(object sender, EventArgs e)
         {
             OpenVideoFile();
@@ -139,7 +188,7 @@ namespace MovieDataCollector
             {
                 OFD.InitialDirectory = CF.DefaultSettings["MFPath"];
             }
-            try //Try block incase of file error
+            try //Try block, incase of file error
             {
                 OFD.Filter = videoTypeFilter;
                 if (OFD.ShowDialog() == DialogResult.OK) //If user clicks ok...
