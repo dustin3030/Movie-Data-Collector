@@ -233,6 +233,7 @@
             // 
             // parentPathLabel
             // 
+            this.parentPathLabel.AllowDrop = true;
             this.parentPathLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.parentPathLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.parentPathLabel.ForeColor = System.Drawing.Color.GreenYellow;
@@ -294,6 +295,7 @@
             // 
             // fileNamesListbox
             // 
+            this.fileNamesListbox.AllowDrop = true;
             this.fileNamesListbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.fileNamesListbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.fileNamesListbox.ForeColor = System.Drawing.Color.GreenYellow;

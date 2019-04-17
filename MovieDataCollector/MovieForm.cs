@@ -9,6 +9,7 @@ using System.Text.RegularExpressions; //string manipulations
 using System.Diagnostics; //Allows for using Process.Start codes lines
 using System.Text;
 using TagLib;
+using System.Drawing;
 
 namespace MovieDataCollector
 {
@@ -171,6 +172,14 @@ namespace MovieDataCollector
                     CustomMessageBox.Show("Failed to retrieve file information", 125, 236);
                 }
             }
+            else if (s.Count() > 1)
+            {
+                NLabelUpdate("Only one item can be dropped at a time", Color.Red);
+            }
+            else if (!Directory.Exists(s[0].ToString())) //Not a directory
+            {
+                NLabelUpdate("Only directories can be dropped on form", Color.Red);
+            }
 
 
         }
@@ -259,7 +268,7 @@ namespace MovieDataCollector
                     for (int i = 0; i < subfilesList.Count(); i++)
                     {
 
-                        NLabelUpdate("Searching for subtitle matches ");
+                        NLabelUpdate("Searching for subtitle matches ", Color.GreenYellow);
 
                         if (subfilesList[i].Contains(videoFileName)) //If the subtitle file contains the movie filename
                         {
@@ -288,7 +297,7 @@ namespace MovieDataCollector
                                 {
                                     try //if a match is found move the file to the new folder named movietitle.languagecode.ext
                                     {
-                                        NLabelUpdate("Match Discovered: " + subfilesList[i].ToString());
+                                        NLabelUpdate("Match Discovered: " + subfilesList[i].ToString(), Color.GreenYellow);
 
                                         //check to see if subfile contains forced and a language code
                                         if (subfilesList[i].ToLower().Contains("forced"))
@@ -466,7 +475,7 @@ namespace MovieDataCollector
                     for (int i = 0; i < subfilesList.Count(); i++)
                     {
 
-                        NLabelUpdate("Searching for subtitle matches ");
+                        NLabelUpdate("Searching for subtitle matches ", Color.GreenYellow);
 
                         if (subfilesList[i].Contains(videoFileName)) //If the subtitle file contains the movie filename
                         {
@@ -495,7 +504,7 @@ namespace MovieDataCollector
                                 {
                                     try //if a match is found move the file to the new folder named movietitle.languagecode.ext
                                     {
-                                        NLabelUpdate("Match Discovered: " + subfilesList[i].ToString());
+                                        NLabelUpdate("Match Discovered: " + subfilesList[i].ToString(), Color.GreenYellow);
 
                                         //check to see if subfile contains forced and a language code
                                         if (subfilesList[i].ToLower().Contains("forced"))
@@ -680,7 +689,7 @@ namespace MovieDataCollector
                     for (int i = 0; i < subfilesList.Count(); i++)
                     {
 
-                        NLabelUpdate("Searching for subtitle matches ");
+                        NLabelUpdate("Searching for subtitle matches ", Color.GreenYellow);
 
                         if (subfilesList[i].Contains(videoFileName)) //If the subtitle file contains the movie filename
                         {
@@ -709,7 +718,7 @@ namespace MovieDataCollector
                                 {
                                     try //if a match is found move the file to the new folder named movietitle.languagecode.ext
                                     {
-                                        NLabelUpdate("Match Discovered: " + subfilesList[i].ToString());
+                                        NLabelUpdate("Match Discovered: " + subfilesList[i].ToString(), Color.GreenYellow);
 
                                         //check to see if subfile contains forced and a language code
                                         if (subfilesList[i].Contains("forced") ||
@@ -899,7 +908,7 @@ namespace MovieDataCollector
                     for (int i = 0; i < subfilesList.Count(); i++)
                     {
 
-                        NLabelUpdate("Searching for subtitle matches ");
+                        NLabelUpdate("Searching for subtitle matches ", Color.GreenYellow);
 
                         if (subfilesList[i].Contains(videoFileName)) //If the subtitle file contains the movie filename
                         {
@@ -928,7 +937,7 @@ namespace MovieDataCollector
                                 {
                                     try //if a match is found move the file to the new folder named movietitle.languagecode.ext
                                     {
-                                        NLabelUpdate("Match Discovered: " + subfilesList[i].ToString());
+                                        NLabelUpdate("Match Discovered: " + subfilesList[i].ToString(), Color.GreenYellow);
 
                                         //check to see if subfile contains forced and a language code
                                         if (subfilesList[i].Contains("forced") ||
@@ -1110,20 +1119,20 @@ namespace MovieDataCollector
         private void GetHTMLButton_Click(object sender, EventArgs e)
         {
             notificationLabel.Visible = true;
-            NLabelUpdate("Performing Search");
+            NLabelUpdate("Performing Search", Color.GreenYellow);
 
             if (!string.IsNullOrEmpty(imdbIDTextBox.Text))
             {
                 //Check for IMDBID
                 if (imdbIDTextBox.Text.Length < 10 & imdbIDTextBox.Text.Length > 8 & imdbIDTextBox.Text.Contains("tt"))
                 {
-                    NLabelUpdate("Building Movie Objects");
+                    NLabelUpdate("Building Movie Objects", Color.GreenYellow);
                     Movie = new MovieInfo(imdbIDTextBox.Text, APIKey); //Create Movie Object using IMDBID number from textbox
 
                 }
                 else
                 {
-                    NLabelUpdate("Performing Search");
+                    NLabelUpdate("Performing Search", Color.GreenYellow);
                     MovieSelection M = new MovieSelection(APIKey, imdbIDTextBox.Text);
 
                     if (M.MovieList.Count > 1)
@@ -1131,7 +1140,7 @@ namespace MovieDataCollector
                         M.ShowDialog();
                         if (M.DialogResult == DialogResult.OK)
                         {
-                            NLabelUpdate("Building Movie Objects");
+                            NLabelUpdate("Building Movie Objects", Color.GreenYellow);
                             Movie = new MovieInfo(M.SelectedID, APIKey); //Create Movie Object using IMDBID number from textbox
                         }
                         if (M.DialogResult == DialogResult.Cancel) { ClearAll(); notificationLabel.Visible = false; return; }
@@ -1139,7 +1148,7 @@ namespace MovieDataCollector
                     }
                     else if (M.MovieList.Count == 1)
                     {
-                        NLabelUpdate("Building Movie Objects");
+                        NLabelUpdate("Building Movie Objects", Color.GreenYellow);
                         Movie = new MovieInfo(M.MovieList[0]["ID"], APIKey); //Create Movie Object using IMDBID number from textbox
                     }
                     else
@@ -1168,28 +1177,28 @@ namespace MovieDataCollector
             make it so we can use the progress bar. The order doesn't matter as these
             methods for the object don't need to be called in order*/
 
-            NLabelUpdate("Gathering Film Credits");
+            NLabelUpdate("Gathering Film Credits", Color.GreenYellow);
 
             Movie.GetCredits();
 
-            NLabelUpdate("Retrieving Film MPAA Rating");
+            NLabelUpdate("Retrieving Film MPAA Rating", Color.GreenYellow);
 
             Movie.GetRating(); //Returns the MPAA Rating 
 
-            NLabelUpdate("Retrieving Alternate US Titles");
+            NLabelUpdate("Retrieving Alternate US Titles", Color.GreenYellow);
 
             Movie.GetUSTitles(); //Builds list of US versions of the film title
 
-            NLabelUpdate("Gathering US and Non-Region Coded Film Images");
+            NLabelUpdate("Gathering US and Non-Region Coded Film Images", Color.GreenYellow);
             Movie.GetFilmImages(); //Gathers film image URLs
 
-            NLabelUpdate("Gathering Plot, Title, Genre, etc");
+            NLabelUpdate("Gathering Plot, Title, Genre, etc", Color.GreenYellow);
 
             Movie.GetBasicInfo(); //Returns basic film info
             imdbIDTextBox.Text = Movie.StaticProperties["IMDB_ID"]; //adds the IMDBID back to the form
 
 
-            NLabelUpdate("Adding Alternate Titles");
+            NLabelUpdate("Adding Alternate Titles", Color.GreenYellow);
 
             //Loop to add movie titles from movie object to the combo box
             for (int i = 0; i < Movie.ListProperties["USTitles"].Count; i++)
@@ -1208,7 +1217,7 @@ namespace MovieDataCollector
             }
             SetTitleComboBoxWidth();
 
-            NLabelUpdate("Filling in Form Data");
+            NLabelUpdate("Filling in Form Data", Color.GreenYellow);
             titleComboBox.Text = Movie.StaticProperties["Title"]; //uses the first title in the list as the default title;
             setTextBox.Text = Movie.StaticProperties["Collection"]; //uses the Collection information from the movie object to fill in the collection information
             yearTextBox.Text = Movie.StaticProperties["ReleaseYear"]; //uses the release year information from the movie object to fill in the year
@@ -1220,7 +1229,7 @@ namespace MovieDataCollector
             else { plotTextBox.Text = Movie.StaticProperties["Tag_Line"] + "..\r\n\r\n" + Movie.StaticProperties["Plot"]; }
 
 
-            NLabelUpdate("Setting up images");
+            NLabelUpdate("Setting up images", Color.GreenYellow);
 
             posterNumericUpDown.Maximum = Movie.ListProperties["Posters"].Count() + 1;
             posterNumericUpDown.Minimum = 0;
@@ -1235,7 +1244,7 @@ namespace MovieDataCollector
             backDropPictureBox.ImageLocation = Movie.StaticProperties["BackDropPath"];
             moviePosterPictureBox.ImageLocation = Movie.StaticProperties["PosterPath"];
 
-            NLabelUpdate("Gathering Film Credits");
+            NLabelUpdate("Gathering Film Credits", Color.GreenYellow);
             notificationLabel.Visible = false;
 
             //Determine if errors were encountered
@@ -1257,7 +1266,7 @@ namespace MovieDataCollector
         {
             Cursor.Current = Cursors.WaitCursor; //sets cursor to waitcursor
             notificationLabel.Visible = true;
-            NLabelUpdate("Start");
+            NLabelUpdate("Start", Color.GreenYellow);
 
             string outputvideopath = "";
             string outputposterpath = "";
@@ -1266,7 +1275,7 @@ namespace MovieDataCollector
 
             if (!string.IsNullOrEmpty(videoPathTextBox.Text) && (!string.IsNullOrEmpty(titleComboBox.Text)))
             {
-                NLabelUpdate("Checking Format Selection");
+                NLabelUpdate("Checking Format Selection", Color.GreenYellow);
 
                 switch (formatComboBox.SelectedIndex) //Formats title to plex, kodi, or synology spec
                 {
@@ -1285,24 +1294,24 @@ namespace MovieDataCollector
                         break;
                 }
 
-                NLabelUpdate("Setting Video Path");
+                NLabelUpdate("Setting Video Path", Color.GreenYellow);
 
                 videoPath = CF.DefaultSettings["MFPath"] + Movie.StaticProperties["FormattedTitle"] + videoExtension;
                 newDirectoryName = CF.DefaultSettings["MFPath"] + Movie.StaticProperties["FormattedTitle"];
 
-                NLabelUpdate("Checking for existing directory");
+                NLabelUpdate("Checking for existing directory", Color.GreenYellow);
                 
                 
                 //add code to check for directory prior to doing anything
                 if (!Directory.Exists(newDirectoryName))
                 {
-                    NLabelUpdate("Creating Directory");
+                    NLabelUpdate("Creating Directory", Color.GreenYellow);
                     DirectoryInfo di = Directory.CreateDirectory(newDirectoryName);
-                    NLabelUpdate("Checking for existing video file");
+                    NLabelUpdate("Checking for existing video file", Color.GreenYellow);
 
                     if (System.IO.File.Exists(videoPathTextBox.Text))
                     {
-                        NLabelUpdate("Renaming video file");
+                        NLabelUpdate("Renaming video file", Color.GreenYellow);
                         string moveToPath = CF.DefaultSettings["MFPath"] + Movie.StaticProperties["FormattedTitle"] + videoExtension; //uses validTitle method to remove illegal characters
                         System.IO.File.Move(videoPathTextBox.Text, moveToPath); //renames file if in the same directory
                         
@@ -1312,11 +1321,11 @@ namespace MovieDataCollector
                         CustomMessageBox.Show("File: " + videoPathTextBox.Text + "\n Does not exist.", 200, 380);
                     }
 
-                    NLabelUpdate("Checking for existing file in folder");
+                    NLabelUpdate("Checking for existing file in folder", Color.GreenYellow);
 
                     if (!System.IO.File.Exists(newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + videoExtension)) //Check that file isn't already in folder
                     {
-                        NLabelUpdate("Moving file to folder");
+                        NLabelUpdate("Moving file to folder", Color.GreenYellow);
                         
                         System.IO.File.Move(videoPath, newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + videoExtension); //move file to new folder
                         outputvideopath = newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + videoExtension; //Set this value for use in metadata writing
@@ -1326,12 +1335,12 @@ namespace MovieDataCollector
                         CustomMessageBox.Show("File: " + newDirectoryName + "\\" + Movie.StaticProperties["FormattedTitle"] + videoExtension + ".\n Already exists!", 200, 380);
                     }
 
-                    NLabelUpdate("Checking for subtitle files");
+                    NLabelUpdate("Checking for subtitle files", Color.GreenYellow);
 
                     FindSubtitlesInFile();
                     //subTitleNamer(formatComboBox.SelectedIndex);
 
-                    NLabelUpdate("Formatting artwork URLs");
+                    NLabelUpdate("Formatting artwork URLs", Color.GreenYellow);
                     
                     //add images
                     if (Movie.ListProperties["Posters"].Count > 0)
@@ -1351,7 +1360,7 @@ namespace MovieDataCollector
                         & !System.IO.File.Exists(newDirectoryName + "\\" + "Folder.jpg")
                         & !string.IsNullOrEmpty(Movie.StaticProperties["PosterPath"]))
                     {
-                        NLabelUpdate("Downloading Poster");
+                        NLabelUpdate("Downloading Poster", Color.GreenYellow);
                         
                         using (WebClient wc = new WebClient())
                         {
@@ -1469,7 +1478,7 @@ namespace MovieDataCollector
                         & !System.IO.File.Exists(newDirectoryName + "\\" + "fanart.jpg")
                         & !string.IsNullOrEmpty(Movie.StaticProperties["BackDropPath"]))
                     {
-                        NLabelUpdate("Downloading Backdrop/Fanart");
+                        NLabelUpdate("Downloading Backdrop/Fanart", Color.GreenYellow);
                         
                         using (WebClient wc = new WebClient())
                         {
@@ -1569,7 +1578,7 @@ namespace MovieDataCollector
                     }
                     try
                     {
-                        NLabelUpdate("Creating NFO Metadata file");
+                        NLabelUpdate("Creating NFO Metadata file", Color.GreenYellow);
                         
                         
 
@@ -1624,7 +1633,7 @@ namespace MovieDataCollector
 
             if(metadataCb.Checked)
             {
-                NLabelUpdate("Writing Metadata...This may take a while");
+                NLabelUpdate("Writing Metadata...This may take a while", Color.GreenYellow);
 
                 char[] delim = { ',' }; //using ',' as the delimiter splits each genre out
                 string[] generes = genresTextBox.Text.Split(delim);
@@ -1632,7 +1641,7 @@ namespace MovieDataCollector
                 Write_Metadata(outputvideopath, titleComboBox.Text, yearTextBox.Text, outputposterpath, setTextBox.Text, generes, Movie.StaticProperties["Tag_Line"]);
             }
             
-            NLabelUpdate("Finished");
+            NLabelUpdate("Finished", Color.GreenYellow);
             ClearAll();
             notificationLabel.Visible = false;
 
@@ -1812,7 +1821,7 @@ namespace MovieDataCollector
                     break;
             }
         }
-        private void NLabelUpdate(string Msg)
+        private void NLabelUpdate(string Msg, Color color)
         {
             notificationLabel.Text = Msg;
             notificationLabel.Invalidate();

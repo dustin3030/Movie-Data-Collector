@@ -52,16 +52,309 @@ namespace MovieDataCollector
         {
             System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls11 | System.Net.SecurityProtocolType.Tls12;
             InitializeComponent();
+
+            this.fileNamesListbox.DragDrop += new System.Windows.Forms.DragEventHandler(this.fileNamesListbox_DragDrop);
+            this.fileNamesListbox.DragEnter += new System.Windows.Forms.DragEventHandler(this.fileNamesListbox_DragEnter);
+
+            this.parentPathLabel.DragDrop += new System.Windows.Forms.DragEventHandler(this.parentPathLabel_DragDrop);
+            this.parentPathLabel.DragEnter += new System.Windows.Forms.DragEventHandler(this.parentPathLabel_DragEnter);
         }
+
+
+        private void fileNamesListbox_DragEnter(object sender, System.Windows.Forms.DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.All;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+        private void fileNamesListbox_DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
+        {
+            string[] s = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+            string fileName = "";
+
+            if (s.Count() == 1 && Directory.Exists(s[0].ToString())) //Single Directory Dropped
+            {
+                EpisodePathList.Clear();
+
+                NLabelUpdate("Querying Files",Color.GreenYellow);
+
+                fileNamesListbox.Items.Clear();
+
+                cf.DefaultSettings["TFPath"] = s[0].ToString();
+                cf.UpdateDefaults();
+
+                parentPathLabel.Text = s[0].ToString() + "\\"; //adds a \ to the end of folderpath, double backslash required to add a single one to a string
+
+                if (recursiveCB.Checked)
+                {
+                    string[] fileNames = Directory
+                    .GetFiles(cf.DefaultSettings["TFPath"], "*.*", SearchOption.AllDirectories)
+                    .Where(file => file.ToLower().EndsWith(".mpg")
+                    || file.ToLower().EndsWith(".mpeg")
+                    || file.ToLower().EndsWith(".vob")
+                    || file.ToLower().EndsWith(".mod")
+                    || file.ToLower().EndsWith(".ts")
+                    || file.ToLower().EndsWith(".m2ts")
+                    || file.ToLower().EndsWith(".mp4")
+                    || file.ToLower().EndsWith(".m4v")
+                    || file.ToLower().EndsWith(".mov")
+                    || file.ToLower().EndsWith("avi")
+                    || file.ToLower().EndsWith(".divx")
+                    || file.ToLower().EndsWith(".wmv")
+                    || file.ToLower().EndsWith(".asf")
+                    || file.ToLower().EndsWith(".mkv")
+                    || file.ToLower().EndsWith(".flv")
+                    || file.ToLower().EndsWith(".f4v")
+                    || file.ToLower().EndsWith(".dvr")
+                    || file.ToLower().EndsWith(".dvr-ms")
+                    || file.ToLower().EndsWith(".wtv")
+                    || file.ToLower().EndsWith(".ogv")
+                    || file.ToLower().EndsWith(".ogm")
+                    || file.ToLower().EndsWith(".3gp")
+                    || file.ToLower().EndsWith(".rm")
+                    || file.ToLower().EndsWith(".rmvb")
+                    || file.ToLower().EndsWith(".srt")  //Add Subtitle File Extensions also
+                    || file.ToLower().EndsWith(".sub")
+                    || file.ToLower().EndsWith(".idx")
+                    || file.ToLower().EndsWith(".ssa")
+                    || file.ToLower().EndsWith(".ass")
+                    || file.ToLower().EndsWith(".smi")
+                    || file.ToLower().EndsWith(".vtt")).ToArray();
+
+                    foreach (string file in fileNames) //loops through files, pulls out file names and adds them to filenameslistbox
+                    {
+                        EpisodePathList.Add(file);
+
+                        fileName = file.Replace(cf.DefaultSettings["TFPath"] + "\\", "");
+
+                        if (!fileName.StartsWith("._"))
+                        {
+                            fileNamesListbox.Items.Add(fileName);
+                        }
+                    }
+                }
+                else
+                {
+                    string[] fileNames = Directory
+                    .GetFiles(cf.DefaultSettings["TFPath"], "*.*")
+                    .Where(file => file.ToLower().EndsWith(".mpg")
+                    || file.ToLower().EndsWith(".mpeg")
+                    || file.ToLower().EndsWith(".vob")
+                    || file.ToLower().EndsWith(".mod")
+                    || file.ToLower().EndsWith(".ts")
+                    || file.ToLower().EndsWith(".m2ts")
+                    || file.ToLower().EndsWith(".mp4")
+                    || file.ToLower().EndsWith(".m4v")
+                    || file.ToLower().EndsWith(".mov")
+                    || file.ToLower().EndsWith("avi")
+                    || file.ToLower().EndsWith(".divx")
+                    || file.ToLower().EndsWith(".wmv")
+                    || file.ToLower().EndsWith(".asf")
+                    || file.ToLower().EndsWith(".mkv")
+                    || file.ToLower().EndsWith(".flv")
+                    || file.ToLower().EndsWith(".f4v")
+                    || file.ToLower().EndsWith(".dvr")
+                    || file.ToLower().EndsWith(".dvr-ms")
+                    || file.ToLower().EndsWith(".wtv")
+                    || file.ToLower().EndsWith(".ogv")
+                    || file.ToLower().EndsWith(".ogm")
+                    || file.ToLower().EndsWith(".3gp")
+                    || file.ToLower().EndsWith(".rm")
+                    || file.ToLower().EndsWith(".rmvb")
+                    || file.ToLower().EndsWith(".srt")  //Add Subtitle File Extensions also
+                    || file.ToLower().EndsWith(".sub")
+                    || file.ToLower().EndsWith(".idx")
+                    || file.ToLower().EndsWith(".ssa")
+                    || file.ToLower().EndsWith(".ass")
+                    || file.ToLower().EndsWith(".smi")
+                    || file.ToLower().EndsWith(".vtt")).ToArray();
+
+                    foreach (string file in fileNames) //loops through files, pulls out file names and adds them to filenameslistbox
+                    {
+                        EpisodePathList.Add(file);
+                        fileName = file.Replace(cf.DefaultSettings["TFPath"] + "\\", "");
+
+                        if (!fileName.StartsWith("._"))
+                        {
+                            fileNamesListbox.Items.Add(fileName);
+                        }
+                    }
+                }
+
+                notificationLabel.Visible = false;
+
+            }
+            else if(s.Count() > 1)
+            {
+                NLabelUpdate("Only one item can be dropped at a time", Color.Red);
+            }
+            else if(!Directory.Exists(s[0].ToString())) //Not a directory
+            {
+                NLabelUpdate("Only directories can be dropped on form",Color.Red);
+            }
+        }
+
+
+        private void parentPathLabel_DragEnter(object sender, System.Windows.Forms.DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.All;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+        private void parentPathLabel_DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
+        {
+            string[] s = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+            string fileName = "";
+
+            if (s.Count() == 1 && Directory.Exists(s[0].ToString())) //Single Directory Dropped
+            {
+                EpisodePathList.Clear();
+
+                NLabelUpdate("Querying Files", Color.GreenYellow);
+
+                fileNamesListbox.Items.Clear();
+
+                cf.DefaultSettings["TFPath"] = s[0].ToString();
+                cf.UpdateDefaults();
+
+                parentPathLabel.Text = s[0].ToString() + "\\"; //adds a \ to the end of folderpath, double backslash required to add a single one to a string
+
+                if (recursiveCB.Checked)
+                {
+                    string[] fileNames = Directory
+                    .GetFiles(cf.DefaultSettings["TFPath"], "*.*", SearchOption.AllDirectories)
+                    .Where(file => file.ToLower().EndsWith(".mpg")
+                    || file.ToLower().EndsWith(".mpeg")
+                    || file.ToLower().EndsWith(".vob")
+                    || file.ToLower().EndsWith(".mod")
+                    || file.ToLower().EndsWith(".ts")
+                    || file.ToLower().EndsWith(".m2ts")
+                    || file.ToLower().EndsWith(".mp4")
+                    || file.ToLower().EndsWith(".m4v")
+                    || file.ToLower().EndsWith(".mov")
+                    || file.ToLower().EndsWith("avi")
+                    || file.ToLower().EndsWith(".divx")
+                    || file.ToLower().EndsWith(".wmv")
+                    || file.ToLower().EndsWith(".asf")
+                    || file.ToLower().EndsWith(".mkv")
+                    || file.ToLower().EndsWith(".flv")
+                    || file.ToLower().EndsWith(".f4v")
+                    || file.ToLower().EndsWith(".dvr")
+                    || file.ToLower().EndsWith(".dvr-ms")
+                    || file.ToLower().EndsWith(".wtv")
+                    || file.ToLower().EndsWith(".ogv")
+                    || file.ToLower().EndsWith(".ogm")
+                    || file.ToLower().EndsWith(".3gp")
+                    || file.ToLower().EndsWith(".rm")
+                    || file.ToLower().EndsWith(".rmvb")
+                    || file.ToLower().EndsWith(".srt")  //Add Subtitle File Extensions also
+                    || file.ToLower().EndsWith(".sub")
+                    || file.ToLower().EndsWith(".idx")
+                    || file.ToLower().EndsWith(".ssa")
+                    || file.ToLower().EndsWith(".ass")
+                    || file.ToLower().EndsWith(".smi")
+                    || file.ToLower().EndsWith(".vtt")).ToArray();
+
+                    foreach (string file in fileNames) //loops through files, pulls out file names and adds them to filenameslistbox
+                    {
+                        EpisodePathList.Add(file);
+
+                        fileName = file.Replace(cf.DefaultSettings["TFPath"] + "\\", "");
+
+                        if (!fileName.StartsWith("._"))
+                        {
+                            fileNamesListbox.Items.Add(fileName);
+                        }
+                    }
+                }
+                else
+                {
+                    string[] fileNames = Directory
+                    .GetFiles(cf.DefaultSettings["TFPath"], "*.*")
+                    .Where(file => file.ToLower().EndsWith(".mpg")
+                    || file.ToLower().EndsWith(".mpeg")
+                    || file.ToLower().EndsWith(".vob")
+                    || file.ToLower().EndsWith(".mod")
+                    || file.ToLower().EndsWith(".ts")
+                    || file.ToLower().EndsWith(".m2ts")
+                    || file.ToLower().EndsWith(".mp4")
+                    || file.ToLower().EndsWith(".m4v")
+                    || file.ToLower().EndsWith(".mov")
+                    || file.ToLower().EndsWith("avi")
+                    || file.ToLower().EndsWith(".divx")
+                    || file.ToLower().EndsWith(".wmv")
+                    || file.ToLower().EndsWith(".asf")
+                    || file.ToLower().EndsWith(".mkv")
+                    || file.ToLower().EndsWith(".flv")
+                    || file.ToLower().EndsWith(".f4v")
+                    || file.ToLower().EndsWith(".dvr")
+                    || file.ToLower().EndsWith(".dvr-ms")
+                    || file.ToLower().EndsWith(".wtv")
+                    || file.ToLower().EndsWith(".ogv")
+                    || file.ToLower().EndsWith(".ogm")
+                    || file.ToLower().EndsWith(".3gp")
+                    || file.ToLower().EndsWith(".rm")
+                    || file.ToLower().EndsWith(".rmvb")
+                    || file.ToLower().EndsWith(".srt")  //Add Subtitle File Extensions also
+                    || file.ToLower().EndsWith(".sub")
+                    || file.ToLower().EndsWith(".idx")
+                    || file.ToLower().EndsWith(".ssa")
+                    || file.ToLower().EndsWith(".ass")
+                    || file.ToLower().EndsWith(".smi")
+                    || file.ToLower().EndsWith(".vtt")).ToArray();
+
+                    foreach (string file in fileNames) //loops through files, pulls out file names and adds them to filenameslistbox
+                    {
+                        EpisodePathList.Add(file);
+                        fileName = file.Replace(cf.DefaultSettings["TFPath"] + "\\", "");
+
+                        if (!fileName.StartsWith("._"))
+                        {
+                            fileNamesListbox.Items.Add(fileName);
+                        }
+                    }
+                }
+
+                notificationLabel.Visible = false;
+
+            }
+            else if (s.Count() > 1)
+            {
+                NLabelUpdate("Only one item can be dropped at a time", Color.Red);
+            }
+            else if (!Directory.Exists(s[0].ToString())) //Not a directory
+            {
+                NLabelUpdate("Only directories can be dropped on form", Color.Red);
+            }
+        }
+
+
+        private void NLabelUpdate(string notificationText, Color color)
+        {
+            notificationLabel.Visible = true;
+            notificationLabel.ForeColor = color;
+            notificationLabel.Text = notificationText;
+            notificationLabel.Invalidate();
+            notificationLabel.Update();
+        }
+
         private void GetHTML()
         {
 
             string TitleBox = SeriesIDTitleTextbox.Text;
 
-            notificationLabel.Visible = true;
-            notificationLabel.Text = "Searching..." + SeriesIDTitleTextbox.Text;
-            notificationLabel.Invalidate();
-            notificationLabel.Update();
+            NLabelUpdate("Searching..." + SeriesIDTitleTextbox.Text, Color.GreenYellow);
+
 
             //Keeps episode names list clear in cases of searching many Series in one session.
             KODIEpisodeNames.Clear();
@@ -73,9 +366,7 @@ namespace MovieDataCollector
             {
                 try
                 { 
-                    notificationLabel.Text = "ID found, gathering Series info.";
-                    notificationLabel.Invalidate();
-                    notificationLabel.Update();
+                    NLabelUpdate("ID found, gathering Series info.",Color.GreenYellow);
 
                     TVSeriesInfo T = new TVSeriesInfo(APIKey, ID.ToString());
                     SeriesImagePicturebox.ImageLocation = "https://thetvdb.com/banners/" + T.series["banner"];
@@ -85,27 +376,23 @@ namespace MovieDataCollector
                 }
                 catch //ID Search returned error, attempt search as a Series title instead.
                 {
-                    notificationLabel.Text = "ID search failed, searching " + TitleBox + "as text";
-                    notificationLabel.Invalidate();
-                    notificationLabel.Update();
+                    NLabelUpdate("ID search failed, searching " + TitleBox + "as text", Color.Red);
 
                     //Create object that looks up possible TV Series based on text in SeriesURLBox
                     TVSeriesSearch S = new TVSeriesSearch(TitleBox);
                     //Create form object to hold results from search
                     if (S.SeriesList.Count > 1)
                     {
-                        notificationLabel.Text = "Multiple Series Identified";
-                        notificationLabel.Invalidate();
-                        notificationLabel.Update();
+                        NLabelUpdate("Multiple Series Identified", Color.GreenYellow);
+
                         TVSeriesSelection M = new TVSeriesSelection(S.SeriesList);
                         //Show form as dialog to prevent further code from running until option selected.
                         M.ShowDialog();
 
                         if (M.DialogResult == DialogResult.OK)
                         {
-                            notificationLabel.Text = "Selection Accepted, gathering Series info";
-                            notificationLabel.Invalidate();
-                            notificationLabel.Update();
+                            NLabelUpdate("Selection Accepted, gathering Series info", Color.GreenYellow);
+
 
                             //Once show is selected, use selected shows ID to gather episode information
                             TVSeriesInfo T = new TVSeriesInfo(APIKey, M.SelectedID);
@@ -119,9 +406,8 @@ namespace MovieDataCollector
                     }
                     else if (S.SeriesList.Count == 1)
                     {
-                        notificationLabel.Text = "Series Identified, gathering Series info";
-                        notificationLabel.Invalidate();
-                        notificationLabel.Update();
+                        NLabelUpdate("Series Identified, gathering Series info", Color.GreenYellow);
+
 
                         TVSeriesInfo T = new TVSeriesInfo(APIKey, S.SeriesList[0]["seriesid"]);
                         SeriesImagePicturebox.ImageLocation = "https://thetvdb.com/banners/" + T.series["banner"];
@@ -135,27 +421,22 @@ namespace MovieDataCollector
             //Create object that looks up possible TV Series based on the text in the Series Title Box
             else if (!string.IsNullOrEmpty(TitleBox))
             {
-                notificationLabel.Text = "Searching..." + SeriesIDTitleTextbox.Text;
-                notificationLabel.Invalidate();
-                notificationLabel.Update();
+                NLabelUpdate("Searching..." + SeriesIDTitleTextbox.Text, Color.GreenYellow);
 
                 //Create object that looks up possible TV Series based on text in SeriesURLBox
                 TVSeriesSearch S = new TVSeriesSearch(TitleBox);
                 //Create form object to hold results from search
                 if (S.SeriesList.Count > 1)
                 {
-                    notificationLabel.Text = "Multiple Series Identified";
-                    notificationLabel.Invalidate();
-                    notificationLabel.Update();
+                    NLabelUpdate("Multiple Series Identified", Color.GreenYellow);
+
                     TVSeriesSelection M = new TVSeriesSelection(S.SeriesList);
                     //Show form as dialog to prevent further code from running until option selected.
                     M.ShowDialog();
 
                     if (M.DialogResult == DialogResult.OK)
                     {
-                        notificationLabel.Text = "Selection Accepted, gathering Series info";
-                        notificationLabel.Invalidate();
-                        notificationLabel.Update();
+                        NLabelUpdate("Selection Accepted, gathering Series info", Color.GreenYellow);
 
                         //Once show is selected, use selected shows ID to gather episode information
                         TVSeriesInfo T = new TVSeriesInfo(APIKey, M.SelectedID);
@@ -172,9 +453,7 @@ namespace MovieDataCollector
                 }
                 else if (S.SeriesList.Count == 1)
                 {
-                    notificationLabel.Text = "Series Identified, gathering Series info";
-                    notificationLabel.Invalidate();
-                    notificationLabel.Update();
+                    NLabelUpdate("Series Identified, gathering Series info", Color.GreenYellow);
 
                     TVSeriesInfo T = new TVSeriesInfo(APIKey, S.SeriesList[0]["seriesid"]);
                     if (T.series.ContainsKey("banner"))
@@ -221,20 +500,14 @@ namespace MovieDataCollector
                 }
             }
 
-            notificationLabel.Text = "";
-            notificationLabel.Visible = false;
-            notificationLabel.Invalidate();
-            notificationLabel.Update();
+            NLabelUpdate("", Color.GreenYellow);
         }
         private void GetHTMLButton_Click(object sender, EventArgs e) { GetHTML(); }
         private void GetFileNames()
         {
             EpisodePathList.Clear();
 
-            notificationLabel.Visible = true;
-            notificationLabel.Text = "Querying Files";
-            notificationLabel.Invalidate();
-            notificationLabel.Update();
+            NLabelUpdate("Querying Files", Color.GreenYellow);
 
             string fileName = "";
             fileNamesListbox.Items.Clear();
@@ -364,18 +637,14 @@ namespace MovieDataCollector
         }
         private void PreviewChanges()
         {
-            notificationLabel.Visible = true;
-            notificationLabel.Text = "";
-            notificationLabel.Invalidate();
-            notificationLabel.Update();
+            NLabelUpdate("", Color.GreenYellow);
+
 
             if (fileNamesListbox.Items.Count > 0 && SeriesInfo != null)
             {
                 changedFileNamesListbox.Items.Clear(); //clears listbox
 
-                notificationLabel.Text = "Determining Episode Numbers from Filename";
-                notificationLabel.Invalidate();
-                notificationLabel.Update();
+                NLabelUpdate("Determining Episode Numbers from Filename", Color.GreenYellow);
 
                 DetermineEpisodeFromFileName(); //sets season and episode from filename
                 for (int i = 0; i < fileNamesListbox.SelectedIndices.Count; i++)
@@ -1133,10 +1402,7 @@ namespace MovieDataCollector
         }
         private void ChangeFileNamesButton_Click(object sender, EventArgs e)
         {
-            notificationLabel.Visible = true;
-            notificationLabel.Text = "Processing File Names";
-            notificationLabel.Invalidate();
-            notificationLabel.Update();
+            NLabelUpdate("Processing File Names", Color.GreenYellow);
 
             string errorList = "";
             if (!string.IsNullOrEmpty(parentPathLabel.Text))
@@ -1173,9 +1439,7 @@ namespace MovieDataCollector
                                 //If the names are the same, don't bother doing anything else.
                                 if (EpisodePathList[i].ToString().Replace(EpisodeParentPath, "") != changedFileNamesListbox.Items[i].ToString())
                                 {
-                                    notificationLabel.Text = "Re-Naming File - " + fileNamesListbox.Items[i].ToString();
-                                    notificationLabel.Invalidate();
-                                    notificationLabel.Update();
+                                    NLabelUpdate("Re-Naming File - " + fileNamesListbox.Items[i].ToString(), Color.GreenYellow);
 
                                     if (changedFileNamesListbox.Items[i].ToString().Contains("EPISODE COULD NOT BE DETERMINED") ||
                                         changedFileNamesListbox.Items[i].ToString().Contains("NO SUCH EPISODE FOUND"))
@@ -1234,9 +1498,7 @@ namespace MovieDataCollector
                         //If the names are the same, don't bother doing anything else.
                         if (EpisodePathList[i].ToString().Replace(EpisodeParentPath, "") != changedFileNamesListbox.Items[i].ToString())
                         {
-                            notificationLabel.Text = "Re-Naming File - " + fileNamesListbox.Items[i].ToString();
-                            notificationLabel.Invalidate();
-                            notificationLabel.Update();
+                            NLabelUpdate("Re-Naming File - " + fileNamesListbox.Items[i].ToString(), Color.GreenYellow);
 
                             if (changedFileNamesListbox.Items[i].ToString().Contains("EPISODE COULD NOT BE DETERMINED") ||
                                 changedFileNamesListbox.Items[i].ToString().Contains("NO SUCH EPISODE FOUND"))
@@ -1282,9 +1544,7 @@ namespace MovieDataCollector
                 fileNamesListbox.Items.Clear(); //clears the fileNamesListbox so it can be refreshed with current data
 
 
-                notificationLabel.Text = "Re-Querying Files ";
-                notificationLabel.Invalidate();
-                notificationLabel.Update();
+                NLabelUpdate("Re-Querying Files ", Color.GreenYellow);
 
                 /*pulls in the video files located in the folderPath directory
                  These files are the newly renamed files*/
@@ -1806,10 +2066,7 @@ namespace MovieDataCollector
             //Make sure there are files populated in the list else error out.
             if((fileNamesListbox.Items.Count > 0) & (cf.FavoriteTitles.Count > 0)) //Check that file list is populated, and the Favorites list is populated
             {
-                notificationLabel.Visible = true;
-                notificationLabel.Text = "Matching files to favorites list.";
-                notificationLabel.Invalidate();
-                notificationLabel.Update();
+                NLabelUpdate("Matching files to favorites list.", Color.GreenYellow);
 
                 changedFileNamesListbox.Items.Clear(); //clear out the preview listbox.
                 //Start Loop
@@ -1826,9 +2083,7 @@ namespace MovieDataCollector
 
                             if (fileNameString.ToUpper().Contains(testString.ToUpper())) //Exact Match
                             {
-                                notificationLabel.Text = "Match found, " + cf.FavoriteTitles[b].ToString() + ".";
-                                notificationLabel.Invalidate();
-                                notificationLabel.Update();
+                                NLabelUpdate("Match found, " + cf.FavoriteTitles[b].ToString() + ".", Color.GreenYellow);
 
                                 favoriteMatchFound = true;
                             }
@@ -1841,9 +2096,7 @@ namespace MovieDataCollector
 
                                 if (fileNameString.ToUpper().Contains(testString.ToUpper()))
                                 {
-                                    notificationLabel.Text = "Match found, " + cf.FavoriteTitles[b].ToString() + ".";
-                                    notificationLabel.Invalidate();
-                                    notificationLabel.Update();
+                                    NLabelUpdate("Match found, " + cf.FavoriteTitles[b].ToString() + ".", Color.GreenYellow);
 
                                     favoriteMatchFound = true;
                                 }
@@ -1852,9 +2105,7 @@ namespace MovieDataCollector
 
                                 if (fileNameString.ToUpper().Contains(testString.ToUpper()))
                                 {
-                                    notificationLabel.Text = "Match found, " + cf.FavoriteTitles[b].ToString() + ".";
-                                    notificationLabel.Invalidate();
-                                    notificationLabel.Update();
+                                    NLabelUpdate("Match found, " + cf.FavoriteTitles[b].ToString() + ".", Color.GreenYellow);
 
                                     favoriteMatchFound = true;
                                 }
@@ -1863,9 +2114,7 @@ namespace MovieDataCollector
 
                                 if (fileNameString.ToUpper().Contains(testString.ToUpper()))
                                 {
-                                    notificationLabel.Text = "Match found, " + cf.FavoriteTitles[b].ToString() + ".";
-                                    notificationLabel.Invalidate();
-                                    notificationLabel.Update();
+                                    NLabelUpdate("Match found, " + cf.FavoriteTitles[b].ToString() + ".", Color.GreenYellow);
 
                                     favoriteMatchFound = true;
                                 }
@@ -1880,9 +2129,7 @@ namespace MovieDataCollector
 
                                 if (fileNameString.ToUpper().Contains(testString.ToUpper()))
                                 {
-                                    notificationLabel.Text = "Match found, " + cf.FavoriteTitles[b].ToString() + ".";
-                                    notificationLabel.Invalidate();
-                                    notificationLabel.Update();
+                                    NLabelUpdate("Match found, " + cf.FavoriteTitles[b].ToString() + ".", Color.GreenYellow);
 
                                     favoriteMatchFound = true;
                                 }
@@ -1890,9 +2137,7 @@ namespace MovieDataCollector
 
                             if (favoriteMatchFound) //Match found, proceed looking up info and populating form with suggested name
                             {
-                                notificationLabel.Text = "Match found! Identifyting episode.";
-                                notificationLabel.Invalidate();
-                                notificationLabel.Update();
+                                NLabelUpdate("Match found! Identifyting episode.", Color.GreenYellow);
 
                                 TVSeriesInfo SI = new TVSeriesInfo(APIKey, cf.FavoriteIDs[b].ToString());
                                 SeriesInfo = SI; //Makes the seriesinfo global
@@ -1900,15 +2145,11 @@ namespace MovieDataCollector
                                 //Scrub incompatible characters from file name
                                 title = FormatFileName(title);
 
-                                notificationLabel.Text = "Match found, " + title;
-                                notificationLabel.Invalidate();
-                                notificationLabel.Update();
+                                NLabelUpdate("Match found, " + title, Color.GreenYellow);
 
                                 if (!string.IsNullOrEmpty(title))
                                 {
-                                    notificationLabel.Text = "Match Found!";
-                                    notificationLabel.Invalidate();
-                                    notificationLabel.Update();
+                                    NLabelUpdate("Match Found!", Color.GreenYellow);
 
                                     Titles.Insert(i, title); //insert the title in the appropriate spot in the list
                                 }
