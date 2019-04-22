@@ -2532,6 +2532,10 @@ namespace MovieDataCollector
                         {
                             subString = "--srt-file \"" + forcedSRTFileName + "\" --srt-burn " + "--srt-codeset UTF-8 ";
                         }
+                        else if(ForcedIndexFound)
+                        {
+                            subString = "--subtitle \"" + (forcedStreamIndex + 1).ToString() + "\" --subtitle-burned=1 "; //Only add the forced track
+                        }
 
                     break;
                     case "All": //Include all non PGS tracks, PGS Tracks can't be added to MP4 unless they are burned in.
@@ -2770,36 +2774,36 @@ namespace MovieDataCollector
                                     {
                                         subStreamIndex = i;
                                     }
-                                }
-                                else if (subStreamIndex == -1)
-                                {
-                                    if (videoFile.Text[i].Properties.ContainsKey("Title"))
+                                    else if (subStreamIndex == -1)
                                     {
-                                        if (videoFile.Text[i].Properties["Title"].ToUpper().Contains("FORCED"))
+                                        if (videoFile.Text[i].Properties.ContainsKey("Title"))
                                         {
-                                            subStreamIndex = i;
+                                            if (videoFile.Text[i].Properties["Title"].ToUpper().Contains("FORCED"))
+                                            {
+                                                subStreamIndex = i;
+                                            }
                                         }
                                     }
-                                }
-                                else if (subStreamIndex == -1)
-                                {
-                                    if (videoFile.Text[i].Properties.ContainsKey("Title"))
+                                    else if (subStreamIndex == -1)
                                     {
-                                        if (videoFile.Text[i].Properties["Title"].ToUpper().Contains("FOREIGN") 
-                                            && videoFile.Text[i].Properties["Title"].ToUpper().Contains("ONLY"))
+                                        if (videoFile.Text[i].Properties.ContainsKey("Title"))
                                         {
-                                            subStreamIndex = i;
+                                            if (videoFile.Text[i].Properties["Title"].ToUpper().Contains("FOREIGN")
+                                                && videoFile.Text[i].Properties["Title"].ToUpper().Contains("ONLY"))
+                                            {
+                                                subStreamIndex = i;
+                                            }
                                         }
                                     }
-                                }
-                                else if (subStreamIndex == -1)
-                                {
-                                    if (videoFile.Text[i].Properties.ContainsKey("Title"))
+                                    else if (subStreamIndex == -1)
                                     {
-                                        if (videoFile.Text[i].Properties["Title"].ToUpper().Contains("PARTS")
-                                            && videoFile.Text[i].Properties["Title"].ToUpper().Contains("ONLY"))
+                                        if (videoFile.Text[i].Properties.ContainsKey("Title"))
                                         {
-                                            subStreamIndex = i;
+                                            if (videoFile.Text[i].Properties["Title"].ToUpper().Contains("PARTS")
+                                                && videoFile.Text[i].Properties["Title"].ToUpper().Contains("ONLY"))
+                                            {
+                                                subStreamIndex = i;
+                                            }
                                         }
                                     }
                                 }
