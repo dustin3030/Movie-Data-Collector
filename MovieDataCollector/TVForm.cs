@@ -830,7 +830,7 @@ namespace MovieDataCollector
                         {
                             if (SeriesInfo.episodes[a].ContainsKey("EpisodeName"))
                             {
-                                if ((cleanString(fileNamesListbox.Items[i].ToString()).ToUpper()).Contains(cleanString(SeriesInfo.episodes[a]["EpisodeName"]).ToUpper()))
+                                if ((cleanString(fileNamesListbox.Items[i].ToString()).ToUpper()).Contains(" " + cleanString(SeriesInfo.episodes[a]["EpisodeName"]).ToUpper() + " "))
                                 {
 
                                     if (int.Parse(SeriesInfo.episodes[a]["SeasonNumber"]) < 10)
@@ -2170,7 +2170,8 @@ namespace MovieDataCollector
                 notificationLabel.Visible = false;
 
             }
-
+            else if (fileNamesListbox.Items.Count > 0) { NLabelUpdate("Auto Feature dependent on \"Favorites List\". No \"Favorites\" saved to check against.",Color.Red; }
+            else if(cf.FavoriteTitles.Count > 0) { NLabelUpdate("No files in list",Color.Red); }
         }
 
         private void recursiveCB_CheckedChanged(object sender, EventArgs e)
