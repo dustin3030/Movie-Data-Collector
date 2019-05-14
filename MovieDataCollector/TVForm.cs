@@ -2070,14 +2070,120 @@ namespace MovieDataCollector
 
                 changedFileNamesListbox.Items.Clear(); //clear out the preview listbox.
                 //Start Loop
-
-
+                if(fileNamesListbox.SelectedIndices.Count > 0)
+                {
+                    // Run for all files
                     for (int i = 0; i < fileNamesListbox.Items.Count; i++) //Loop through filenamesListBox
                     {
-                        fileNameString = fileNamesListbox.Items[i].ToString(); //Store filename from listbox, make uppercase to eliminae possibilities
                         Titles.Insert(i, ""); //increases list size as fileNameString increases
 
-                        for (int b = 0; b < cf.FavoriteTitles.Count; b++) //Loop through each name in listbox to see if it matchs the filename in the listbox.
+                        bool isSelected = false;
+                        for (int a = 0; a < fileNamesListbox.SelectedIndices.Count; a++)
+                        {
+                            //If its found to exist in the selected indices
+                            if (fileNamesListbox.SelectedIndices[a] == i)
+                            {
+                                isSelected = true;
+                            }
+                        }
+                        if (isSelected)
+                        {
+                            fileNameString = fileNamesListbox.Items[i].ToString(); //Store filename from listbox, make uppercase to eliminate possibilities
+                            
+
+                            for (int b = 0; b < cf.FavoriteTitles.Count; b++) //Loop through each name in listbox to see if it matches the filename in the listbox.
+                            {
+                                testString = cf.FavoriteTitles[b]; //make uppercase to eliminate possibilities
+
+                                if (fileNameString.ToUpper().Contains(testString.ToUpper())) //Exact Match
+                                {
+                                    NLabelUpdate("Match found, " + cf.FavoriteTitles[b].ToString() + ".", Color.GreenYellow);
+
+                                    favoriteMatchFound = true;
+                                }
+
+                                if (!favoriteMatchFound) //Remove spaces and apostrophes
+                                {
+                                    testString = FormatFileName(cf.FavoriteTitles[b]);
+                                    testString = testString.Replace(" ", ".");
+                                    testString = testString.Replace("'", "");
+
+                                    if (fileNameString.ToUpper().Contains(testString.ToUpper()))
+                                    {
+                                        NLabelUpdate("Match found, " + cf.FavoriteTitles[b].ToString() + ".", Color.GreenYellow);
+
+                                        favoriteMatchFound = true;
+                                    }
+
+                                    testString = testString.Replace("&", "and");
+
+                                    if (fileNameString.ToUpper().Contains(testString.ToUpper()))
+                                    {
+                                        NLabelUpdate("Match found, " + cf.FavoriteTitles[b].ToString() + ".", Color.GreenYellow);
+
+                                        favoriteMatchFound = true;
+                                    }
+
+                                    testString = testString.Replace("AND", "&");
+
+                                    if (fileNameString.ToUpper().Contains(testString.ToUpper()))
+                                    {
+                                        NLabelUpdate("Match found, " + cf.FavoriteTitles[b].ToString() + ".", Color.GreenYellow);
+
+                                        favoriteMatchFound = true;
+                                    }
+
+                                }
+
+                                if (!favoriteMatchFound) //Change and to & and vice versa
+                                {
+                                    testString = FormatFileName(cf.FavoriteTitles[b]);
+                                    testString = testString.Replace(" ", ".");
+                                    testString = testString.Replace("'", "");
+
+                                    if (fileNameString.ToUpper().Contains(testString.ToUpper()))
+                                    {
+                                        NLabelUpdate("Match found, " + cf.FavoriteTitles[b].ToString() + ".", Color.GreenYellow);
+
+                                        favoriteMatchFound = true;
+                                    }
+                                }
+
+                                if (favoriteMatchFound) //Match found, proceed looking up info and populating form with suggested name
+                                {
+                                    NLabelUpdate("Match found! Identifyting episode.", Color.GreenYellow);
+
+                                    TVSeriesInfo SI = new TVSeriesInfo(APIKey, cf.FavoriteIDs[b].ToString());
+                                    SeriesInfo = SI; //Makes the seriesinfo global
+                                    title = AutoDetermineEpisodeFromFileName(fileNameString);
+                                    //Scrub incompatible characters from file name
+                                    title = FormatFileName(title);
+
+                                    NLabelUpdate("Match found, " + title, Color.GreenYellow);
+
+                                    if (!string.IsNullOrEmpty(title))
+                                    {
+                                        NLabelUpdate("Match Found! " + title, Color.GreenYellow);
+
+                                        Titles.Insert(i, title); //insert the title in the appropriate spot in the list
+                                    }
+                                }
+
+                                favoriteMatchFound = false;
+                            }
+                        }
+
+                    }
+                }
+                else
+                {
+                    // Run for all files
+                    for (int i = 0; i < fileNamesListbox.Items.Count; i++) //Loop through filenamesListBox
+                    {
+                        fileNameString = fileNamesListbox.Items[i].ToString(); //Store filename from listbox, make uppercase to eliminate possibilities
+                        Titles.Insert(i, ""); //increases list size as fileNameString increases
+
+                        for (int b = 0; b < cf.FavoriteTitles.Count; b++) //Loop through each name in listbox to see if it matches the filename in the listbox.
                         {
                             testString = cf.FavoriteTitles[b]; //make uppercase to eliminate possibilities
 
@@ -2149,7 +2255,7 @@ namespace MovieDataCollector
 
                                 if (!string.IsNullOrEmpty(title))
                                 {
-                                    NLabelUpdate("Match Found!", Color.GreenYellow);
+                                    NLabelUpdate("Match Found!" + title, Color.GreenYellow);
 
                                     Titles.Insert(i, title); //insert the title in the appropriate spot in the list
                                 }
@@ -2159,6 +2265,7 @@ namespace MovieDataCollector
                         }
 
                     }
+                }
 
                 for (int i = 0; i < fileNamesListbox.Items.Count; i++)
                 {
@@ -2170,7 +2277,7 @@ namespace MovieDataCollector
                 notificationLabel.Visible = false;
 
             }
-            else if (fileNamesListbox.Items.Count > 0) { NLabelUpdate("Auto Feature dependent on \"Favorites List\". No \"Favorites\" saved to check against.",Color.Red; }
+            else if (fileNamesListbox.Items.Count > 0) { NLabelUpdate("Auto Feature dependent on \"Favorites List\". No \"Favorites\" saved to check against.",Color.Red); }
             else if(cf.FavoriteTitles.Count > 0) { NLabelUpdate("No files in list",Color.Red); }
         }
 
