@@ -723,43 +723,51 @@ namespace MovieDataCollector
         }
         private void SaveInfoButton_Click(object sender, EventArgs e)
         {
-            string fileLocation = "";
-            string outputBoxText = MediaInfoTB.Text;
-            outputBoxText = outputBoxText.Replace("\n", "\r\n");
-            //SaveFileDialog
-#pragma warning disable IDE0017 // Simplify object initialization
-            SaveFileDialog SFD = new SaveFileDialog();
-#pragma warning restore IDE0017 // Simplify object initialization
-            SFD.DefaultExt = "txt";
-            if (MediaInfoTB.Text.Contains(separator))
+            if(!string.IsNullOrEmpty(MediaInfoTB.Text)) //only run if there is something in the textbox to save
             {
-                SFD.FileName = "Quick_Media_Info.txt";
+                string fileLocation = "";
+                string outputBoxText = MediaInfoTB.Text;
+                outputBoxText = outputBoxText.Replace("\n", "\r\n");
+                //SaveFileDialog
+#pragma warning disable IDE0017 // Simplify object initialization
+                SaveFileDialog SFD = new SaveFileDialog();
+#pragma warning restore IDE0017 // Simplify object initialization
+                SFD.DefaultExt = "txt";
+                if (MediaInfoTB.Text.Contains(separator))
+                {
+                    SFD.FileName = "Quick_Media_Info.txt";
+                }
+                else
+                {
+                    SFD.FileName = "Detail Info For " + filesListBox.SelectedItem.ToString() + ".txt";
+                }
+
+                SFD.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+
+                if (SFD.ShowDialog() == DialogResult.OK)
+                {
+                    fileLocation = SFD.FileName;
+                    //Create text file
+
+
+                    using (StreamWriter sw = System.IO.File.CreateText(fileLocation))
+                    {
+
+                        sw.WriteLine("File: " + filesListBox.SelectedItem.ToString());
+                        sw.WriteLine("");
+                        sw.WriteLine(outputBoxText);
+                        sw.Close();
+                    }
+
+                    //Open Text file
+                    Process.Start(fileLocation);
+                }
             }
             else
             {
-                SFD.FileName = "Detail Info For " + filesListBox.SelectedItem.ToString() + ".txt";
+                NLabelUpdate("No information to save", Color.Red);
             }
-
-            SFD.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
-
-            if (SFD.ShowDialog() == DialogResult.OK)
-            {
-                fileLocation = SFD.FileName;
-                //Create text file
-
-
-                using (StreamWriter sw = System.IO.File.CreateText(fileLocation))
-                {
-
-                    sw.WriteLine("File: " + filesListBox.SelectedItem.ToString());
-                    sw.WriteLine("");
-                    sw.WriteLine(outputBoxText);
-                    sw.Close();
-                }
-
-                //Open Text file
-                Process.Start(fileLocation);
-            }
+            
         }
         private void GetQuickInfo(string file, string fileName)
         {
