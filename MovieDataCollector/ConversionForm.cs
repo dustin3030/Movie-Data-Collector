@@ -4261,12 +4261,44 @@ namespace MovieDataCollector
             string gain1 = "--gain 0";
             string gain2 = "";
             string gain3 = "";
+            string aacBoost = "0";
+
+            //Audio Stream 1 
+            if (audioCodecComboBox.Text.Contains("AAC"))
+            {
+                gain1 = "--gain " + aacBoost;
+            }
+            else
+            {
+                gain1 = "--gain 0";
+            }
 
             //Audio Stream 2 Enabled
-            if (!disableCheckStream2.Checked) { gain2 = ",0"; }
+            if (!disableCheckStream2.Checked)
+            {
+                if(audioCodecComboBox2.Text.Contains("AAC"))
+                {
+                    gain2 = "," + aacBoost;
+                }
+                else
+                {
+                    gain2 = ",0";
+                }
+                
+            }
 
             //Audio Stream 3 Enabled
-            if (!disableCheckStream3.Checked) { gain3 = ",0"; }
+            if (!disableCheckStream3.Checked)
+            {
+                if (audioCodecComboBox3.Text.Contains("AAC"))
+                {
+                    gain3 = "," + aacBoost;
+                }
+                else
+                {
+                    gain3 = ",0";
+                }
+            }
 
             return gain1 + gain2 + gain3 + " ";
         }
