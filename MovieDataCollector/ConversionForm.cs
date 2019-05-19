@@ -4257,6 +4257,8 @@ namespace MovieDataCollector
         /// <returns></returns>
         private string AudioGain()
         {
+            //Here we can boost AAC audio by checking the AudioCodecCB first and adding the appropriate Gain setting for AAC tracks.
+            string gain1 = "--gain 0";
             string gain2 = "";
             string gain3 = "";
 
@@ -4266,7 +4268,7 @@ namespace MovieDataCollector
             //Audio Stream 3 Enabled
             if (!disableCheckStream3.Checked) { gain3 = ",0"; }
 
-            return "--gain 0" + gain2 + gain3 + " ";
+            return gain1 + gain2 + gain3 + " ";
         }
 
         private string SourceDestinationOptionsString(string filepath, string filename, string outputPath, bool outputLargerThan4Gb)
