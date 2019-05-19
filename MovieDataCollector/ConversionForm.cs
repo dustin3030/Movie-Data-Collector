@@ -2936,7 +2936,7 @@ namespace MovieDataCollector
                             audioOutputList[i] = " --drc " + Program.GeneralParser(drc, "--drc ", ",");
                             break;
                         case 8: //Gain
-                            audioOutputList[i] = " --gain " + Program.GeneralParser(gain, "--gain ", ",");
+                            audioOutputList[i] = " --gain " + Program.GeneralParser(gain, "--gain ", ",") + " ";
                             break;
                         default:
                             break;
