@@ -299,7 +299,7 @@ namespace MovieDataCollector
             mixdownComboBox.Text = CF.DefaultSettings["Mixdown"];
             audioBitrateCombo.Text = CF.DefaultSettings["AudioBitrateCap"];
             sampleRateCombo.Text = CF.DefaultSettings["AudioSampleRate"];
-            
+            gainCB1.Text = CF.DefaultSettings["AudioGain"];
 
 
             if (CF.DefaultSettings["AudioCodec"] == "Filtered Passthru")
@@ -341,8 +341,8 @@ namespace MovieDataCollector
             mixdownComboBox2.Text = CF.DefaultSettings["Mixdown2"];
             audioBitrateCombo2.Text = CF.DefaultSettings["AudioBitrateCap2"];
             sampleRateCombo2.Text = CF.DefaultSettings["AudioSampleRate2"];
+            gainCB2.Text = CF.DefaultSettings["AudioGain2"];
 
-            
 
             if (CF.DefaultSettings["AAC_Passthru2"] == "True") { filteredAACCheck2.Checked = true; } else { filteredAACCheck2.Checked = false; }
             if (CF.DefaultSettings["AC3_Passthru2"] == "True") { filteredAC3Check2.Checked = true; } else { filteredAC3Check2.Checked = false; }
@@ -412,7 +412,7 @@ namespace MovieDataCollector
             mixdownComboBox3.Text = CF.DefaultSettings["Mixdown3"];
             audioBitrateCombo3.Text = CF.DefaultSettings["AudioBitrateCap3"];
             sampleRateCombo3.Text = CF.DefaultSettings["AudioSampleRate3"];
-
+            gainCB3.Text = CF.DefaultSettings["AudioGain3"];
 
 
             if (CF.DefaultSettings["AAC_Passthru3"] == "True") { filteredAACCheck3.Checked = true; } else { filteredAACCheck3.Checked = false; }
@@ -4257,50 +4257,33 @@ namespace MovieDataCollector
         /// <returns></returns>
         private string AudioGain()
         {
-            //Here we can boost AAC audio by checking the AudioCodecCB first and adding the appropriate Gain setting for AAC tracks.
-            string gain1 = "--gain 0";
-            string gain2 = "";
-            string gain3 = "";
-            string aacBoost = "0";
+            //Check that gain text is an integer
+            string gainStart = "--gain ";
 
-            //Audio Stream 1 
-            if (audioCodecComboBox.Text.Contains("AAC"))
-            {
-                gain1 = "--gain " + aacBoost;
-            }
-            else
-            {
-                gain1 = "--gain 0";
-            }
+            int gain1num = -1;
+            int gain2num = -1;
+            int gain3num = -1;
 
-            //Audio Stream 2 Enabled
-            if (!disableCheckStream2.Checked)
+            string gain1 = gainCB1.Text;
+            string gain2 = gainCB2.Text;
+            string gain3 = gainCB3.Text;
+
+            int.TryParse(gainCB1.Text, out gain1num);
+            if(gain1num != -1) { gain1 = gain1num.ToString(); } else { gain1 = "0"; }
+
+            if(!disableCheckStream2.Checked)
             {
-                if(audioCodecComboBox2.Text.Contains("AAC"))
-                {
-                    gain2 = "," + aacBoost;
-                }
-                else
-                {
-                    gain2 = ",0";
-                }
-                
+                int.TryParse(gainCB2.Text, out gain2num);
+                if (gain2num != -1) { gain2 = "," + gain2num.ToString(); } else { gain2 = ",0"; }
+            }
+            
+            if(!disableCheckStream3.Checked)
+            {
+                int.TryParse(gainCB3.Text, out gain3num);
+                if (gain3num != -1) { gain3 = "," + gain3num.ToString(); } else { gain3 = ",0"; }
             }
 
-            //Audio Stream 3 Enabled
-            if (!disableCheckStream3.Checked)
-            {
-                if (audioCodecComboBox3.Text.Contains("AAC"))
-                {
-                    gain3 = "," + aacBoost;
-                }
-                else
-                {
-                    gain3 = ",0";
-                }
-            }
-
-            return gain1 + gain2 + gain3 + " ";
+            return gainStart + gain1 + gain2 + gain3 + " ";
         }
 
         private string SourceDestinationOptionsString(string filepath, string filename, string outputPath, bool outputLargerThan4Gb)
@@ -4924,6 +4907,22 @@ namespace MovieDataCollector
             CF.DefaultSettings["AudioBitrateCap3"] = audioBitrateCombo3.Text;
         }
 
+        private void gainCB1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Update default in dictionary
+            CF.DefaultSettings["AudioGain"] = gainCB1.Text;
+        }
+        private void gainCB2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Update default in dictionary
+            CF.DefaultSettings["AudioGain2"] = gainCB2.Text;
+        }
+        private void gainCB3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Update default in dictionary
+            CF.DefaultSettings["AudioGain3"] = gainCB3.Text;
+        }
+
         //Audio Combobox Text Changed
         private void AudioCodecComboBox_TextChanged(object sender, EventArgs e)
         {
@@ -5109,6 +5108,55 @@ namespace MovieDataCollector
             CF.DefaultSettings["AudioSampleRate3"] = sampleRateCombo3.Text;
         }
 
+        private void gainCB1_TextChanged(object sender, EventArgs e)
+        {
+            int gain = -1;
+            try { int.TryParse(gainCB1.Text, out gain); }
+            catch { gain = 0;}
+
+            if(gain!=-1)
+            {
+                gainCB1.Text = gain.ToString();
+            }
+            else
+            {
+                gainCB1.Text = "0";
+            }
+            CF.DefaultSettings["AudioGain"] = gainCB1.Text;
+        }
+        private void gainCB2_TextChanged(object sender, EventArgs e)
+        {
+            int gain = -1;
+            try { int.TryParse(gainCB2.Text, out gain); }
+            catch { gain = 0; }
+
+            if (gain != -1)
+            {
+                gainCB2.Text = gain.ToString();
+            }
+            else
+            {
+                gainCB2.Text = "0";
+            }
+            CF.DefaultSettings["AudioGain2"] = gainCB2.Text;
+        }
+        private void gainCB3_TextChanged(object sender, EventArgs e)
+        {
+            int gain = -1;
+            try { int.TryParse(gainCB3.Text, out gain); }
+            catch { gain = 0; }
+
+            if (gain != -1)
+            {
+                gainCB3.Text = gain.ToString();
+            }
+            else
+            {
+                gainCB3.Text = "0";
+            }
+            CF.DefaultSettings["AudioGain3"] = gainCB3.Text;
+        }
+
         //Audio combobox leave
         private void AudioCodecComboBox_Leave(object sender, EventArgs e)
         {
@@ -5286,6 +5334,55 @@ namespace MovieDataCollector
                 sampleRateCombo3.Text = "44.1";
             }
             CF.DefaultSettings["AudioSampleRate3"] = sampleRateCombo3.Text;
+        }
+
+        private void gainCB1_Leave(object sender, EventArgs e)
+        {
+            int gain = -1;
+            try { int.TryParse(gainCB1.Text, out gain); }
+            catch { gain = 0; }
+
+            if (gain != -1)
+            {
+                gainCB1.Text = gain.ToString();
+            }
+            else
+            {
+                gainCB1.Text = "0";
+            }
+            CF.DefaultSettings["AudioGain"] = gainCB1.Text;
+        }
+        private void gainCB2_Leave(object sender, EventArgs e)
+        {
+            int gain = -1;
+            try { int.TryParse(gainCB2.Text, out gain); }
+            catch { gain = 0; }
+
+            if (gain != -1)
+            {
+                gainCB2.Text = gain.ToString();
+            }
+            else
+            {
+                gainCB2.Text = "0";
+            }
+            CF.DefaultSettings["AudioGain2"] = gainCB2.Text;
+        }
+        private void gainCB3_Leave(object sender, EventArgs e)
+        {
+            int gain = -1;
+            try { int.TryParse(gainCB3.Text, out gain); }
+            catch { gain = 0; }
+
+            if (gain != -1)
+            {
+                gainCB3.Text = gain.ToString();
+            }
+            else
+            {
+                gainCB3.Text = "0";
+            }
+            CF.DefaultSettings["AudioGain3"] = gainCB3.Text;
         }
 
         //Audio Checkboxes
@@ -6709,6 +6806,7 @@ namespace MovieDataCollector
                 if (filteredMP3Check.Checked) { NewPreset.Add("FilteredMP3Check", "true"); } else { NewPreset.Add("FilteredMP3Check", "false"); }
                 if (filteredFLACCheck.Checked) { NewPreset.Add("FilteredFLACCheck", "true"); } else { NewPreset.Add("FilteredFLACCheck", "false"); }
                 NewPreset.Add("AudioBitrate", audioBitrateCombo.Text);
+                NewPreset.Add("AudioGain", gainCB1.Text);
 
 /*Audio Stream 2***********************************************************************************************************************************************************/
                 NewPreset.Add("AudioCodec2", audioCodecComboBox2.Text);
@@ -6724,8 +6822,9 @@ namespace MovieDataCollector
                 if (filteredMP3Check2.Checked) { NewPreset.Add("FilteredMP3Check2", "true"); } else { NewPreset.Add("FilteredMP3Check2", "false"); }
                 if (filteredFLACCheck2.Checked) { NewPreset.Add("FilteredFLACCheck2", "true"); } else { NewPreset.Add("FilteredFLACCheck2", "false"); }
                 NewPreset.Add("AudioBitrate2", audioBitrateCombo2.Text);
+                NewPreset.Add("AudioGain2", gainCB2.Text);
 
-/*Audio Stream 3***********************************************************************************************************************************************************/
+                /*Audio Stream 3***********************************************************************************************************************************************************/
                 NewPreset.Add("AudioCodec3", audioCodecComboBox3.Text);
                 NewPreset.Add("AudioMixdown3", mixdownComboBox3.Text);
                 NewPreset.Add("AudioSampleRate3", sampleRateCombo3.Text);
@@ -6739,7 +6838,9 @@ namespace MovieDataCollector
                 if (filteredMP3Check3.Checked) { NewPreset.Add("FilteredMP3Check3", "true"); } else { NewPreset.Add("FilteredMP3Check3", "false"); }
                 if (filteredFLACCheck3.Checked) { NewPreset.Add("FilteredFLACCheck3", "true"); } else { NewPreset.Add("FilteredFLACCheck3", "false"); }
                 NewPreset.Add("AudioBitrate3", audioBitrateCombo3.Text);
-/*Other Options************************************************************************************************************************************************************/
+                NewPreset.Add("AudioGain3", gainCB3.Text);
+
+                /*Other Options************************************************************************************************************************************************************/
                 NewPreset.Add("EncoderSpeed", encoderSpeedCombo.Text);
                 NewPreset.Add("FrameRateMode", frameRateModeCombo.Text);
                 NewPreset.Add("FrameRate", framerateCombo.Text);
@@ -6825,6 +6926,7 @@ namespace MovieDataCollector
                     mixdownComboBox.Text = PF.PresetList[index]["AudioMixdown"];
                     sampleRateCombo.Text = PF.PresetList[index]["AudioSampleRate"];
                     audioBitrateCombo.Text = PF.PresetList[index]["AudioBitrate"];
+                    gainCB1.Text = PF.PresetList[index]["AudioGain"];
 
                     if (PF.PresetList[index]["FilteredAACCheck"] == "true") { filteredAACCheck.Checked = true; } else { filteredAACCheck.Checked = false; }
                     if (PF.PresetList[index]["FilteredAC3Check"] == "true") { filteredAC3Check.Checked = true; } else { filteredAC3Check.Checked = false; }
@@ -6841,6 +6943,7 @@ namespace MovieDataCollector
                     mixdownComboBox2.Text = PF.PresetList[index]["AudioMixdown2"];
                     sampleRateCombo2.Text = PF.PresetList[index]["AudioSampleRate2"];
                     audioBitrateCombo2.Text = PF.PresetList[index]["AudioBitrate2"];
+                    gainCB2.Text = PF.PresetList[index]["AudioGain2"];
 
                     if (PF.PresetList[index]["FilteredAACCheck2"] == "true") { filteredAACCheck2.Checked = true; } else { filteredAACCheck2.Checked = false; }
                     if (PF.PresetList[index]["FilteredAC3Check2"] == "true") { filteredAC3Check2.Checked = true; } else { filteredAC3Check2.Checked = false; }
@@ -6907,6 +7010,7 @@ namespace MovieDataCollector
                     mixdownComboBox3.Text = PF.PresetList[index]["AudioMixdown3"];
                     sampleRateCombo3.Text = PF.PresetList[index]["AudioSampleRate3"];
                     audioBitrateCombo3.Text = PF.PresetList[index]["AudioBitrate3"];
+                    gainCB3.Text = PF.PresetList[index]["AudioGain3"];
 
                     if (PF.PresetList[index]["FilteredAACCheck3"] == "true") { filteredAACCheck3.Checked = true; } else { filteredAACCheck3.Checked = false; }
                     if (PF.PresetList[index]["FilteredAC3Check3"] == "true") { filteredAC3Check3.Checked = true; } else { filteredAC3Check3.Checked = false; }

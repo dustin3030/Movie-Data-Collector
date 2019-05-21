@@ -58,6 +58,7 @@ namespace MovieDataCollector
                 "Mixdown", //Dolby Prologic 2
                 "AudioBitrateCap", //128
                 "AudioSampleRate", //48
+                "AudioGain", //0
 
                 "EnableTrack2", //false
                 "AudioCodec2", //E-AC3
@@ -73,6 +74,7 @@ namespace MovieDataCollector
                 "Mixdown2", //5.1
                 "AudioBitrateCap2", //128
                 "AudioSampleRate2", //48
+                "AudioGain2", //0
 
                 "EnableTrack3", //false
                 "AudioCodec3", //Passthru
@@ -88,6 +90,7 @@ namespace MovieDataCollector
                 "Mixdown3", //5.1
                 "AudioBitrateCap3", //128
                 "AudioSampleRate3", //48
+                "AudioGain3", //0
 
             };
         List<string> ValueList = new List<string>()
@@ -132,6 +135,7 @@ namespace MovieDataCollector
                 "Dolby Prologic 2", //Mixdown
                 "128", //AudioBitrateCap
                 "48", //AudioSampleRate
+                "0", //AudioGain
 
                 "false", //EnableTrack2
                 "E-AC3", //AudioCodec2
@@ -147,6 +151,7 @@ namespace MovieDataCollector
                 "5.1 Audio", //Mixdown2
                 "128", //AudioBitrateCap2
                 "48", //AudioSampleRate2
+                "0", //AudioGain2
 
                 "false", //EnableTrack3
                 "Filtered Passthru", //AudioCodec3
@@ -162,6 +167,7 @@ namespace MovieDataCollector
                 "5.1 Audio", //Mixdown3
                 "128", //AudioBitrateCap3
                 "48", //AudioSampleRate3
+                "0", //AudioGain3
             };
 
         public ConfigFile()

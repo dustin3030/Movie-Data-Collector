@@ -160,6 +160,12 @@
             this.conversionSettingsLabel = new System.Windows.Forms.Label();
             this.compatibilitySelectionLabel = new System.Windows.Forms.Label();
             this.invisibleCloseButton = new System.Windows.Forms.Button();
+            this.gainCB1 = new System.Windows.Forms.ComboBox();
+            this.gainLbl1 = new System.Windows.Forms.Label();
+            this.gainLbl2 = new System.Windows.Forms.Label();
+            this.gainCB2 = new System.Windows.Forms.ComboBox();
+            this.gainLbl3 = new System.Windows.Forms.Label();
+            this.gainCB3 = new System.Windows.Forms.ComboBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.selectionPicturebox)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -469,9 +475,11 @@
             this.audioPage1.Controls.Add(this.filteredAC3Check);
             this.audioPage1.Controls.Add(this.audioCodecComboBox);
             this.audioPage1.Controls.Add(this.filteredAACCheck);
+            this.audioPage1.Controls.Add(this.gainLbl1);
             this.audioPage1.Controls.Add(this.sampleRateLabel);
             this.audioPage1.Controls.Add(this.kbpsLabel);
             this.audioPage1.Controls.Add(this.mixdownComboBox);
+            this.audioPage1.Controls.Add(this.gainCB1);
             this.audioPage1.Controls.Add(this.audioBitrateCombo);
             this.audioPage1.Controls.Add(this.sampleRateCombo);
             this.audioPage1.Controls.Add(this.passthruFilterLabel);
@@ -715,6 +723,8 @@
             // audioPage2
             // 
             this.audioPage2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.audioPage2.Controls.Add(this.gainLbl2);
+            this.audioPage2.Controls.Add(this.gainCB2);
             this.audioPage2.Controls.Add(this.disableCheckStream2);
             this.audioPage2.Controls.Add(this.codecLabel2);
             this.audioPage2.Controls.Add(this.filteredDTSHDCheck2);
@@ -986,6 +996,8 @@
             // audioPage3
             // 
             this.audioPage3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.audioPage3.Controls.Add(this.gainLbl3);
+            this.audioPage3.Controls.Add(this.gainCB3);
             this.audioPage3.Controls.Add(this.disableCheckStream3);
             this.audioPage3.Controls.Add(this.codecLabel3);
             this.audioPage3.Controls.Add(this.filteredDTSCheck3);
@@ -1918,6 +1930,144 @@
             this.invisibleCloseButton.UseVisualStyleBackColor = true;
             this.invisibleCloseButton.Click += new System.EventHandler(this.InvisibleCloseButton_Click);
             // 
+            // gainCB1
+            // 
+            this.gainCB1.AutoCompleteCustomSource.AddRange(new string[] {
+            "0",
+            "5",
+            "10",
+            "15",
+            "20",
+            "25",
+            "30",
+            "35",
+            "40",
+            "45",
+            "50"});
+            this.gainCB1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.gainCB1.ForeColor = System.Drawing.Color.GreenYellow;
+            this.gainCB1.FormattingEnabled = true;
+            this.gainCB1.Items.AddRange(new object[] {
+            "0",
+            "5",
+            "10",
+            "15",
+            "20",
+            "25",
+            "30",
+            "35",
+            "40",
+            "45",
+            "50"});
+            this.gainCB1.Location = new System.Drawing.Point(205, 64);
+            this.gainCB1.Name = "gainCB1";
+            this.gainCB1.Size = new System.Drawing.Size(53, 21);
+            this.gainCB1.TabIndex = 3;
+            this.gainCB1.SelectedIndexChanged += new System.EventHandler(this.gainCB1_SelectedIndexChanged);
+            this.gainCB1.TextChanged += new System.EventHandler(this.gainCB1_TextChanged);
+            this.gainCB1.Leave += new System.EventHandler(this.gainCB1_Leave);
+            // 
+            // gainLbl1
+            // 
+            this.gainLbl1.AutoSize = true;
+            this.gainLbl1.Location = new System.Drawing.Point(171, 68);
+            this.gainLbl1.Name = "gainLbl1";
+            this.gainLbl1.Size = new System.Drawing.Size(33, 13);
+            this.gainLbl1.TabIndex = 0;
+            this.gainLbl1.Text = "Gain";
+            // 
+            // gainLbl2
+            // 
+            this.gainLbl2.AutoSize = true;
+            this.gainLbl2.Location = new System.Drawing.Point(171, 68);
+            this.gainLbl2.Name = "gainLbl2";
+            this.gainLbl2.Size = new System.Drawing.Size(33, 13);
+            this.gainLbl2.TabIndex = 18;
+            this.gainLbl2.Text = "Gain";
+            // 
+            // gainCB2
+            // 
+            this.gainCB2.AutoCompleteCustomSource.AddRange(new string[] {
+            "0",
+            "5",
+            "10",
+            "15",
+            "20",
+            "25",
+            "30",
+            "35",
+            "40",
+            "45",
+            "50"});
+            this.gainCB2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.gainCB2.ForeColor = System.Drawing.Color.GreenYellow;
+            this.gainCB2.FormattingEnabled = true;
+            this.gainCB2.Items.AddRange(new object[] {
+            "0",
+            "5",
+            "10",
+            "15",
+            "20",
+            "25",
+            "30",
+            "35",
+            "40",
+            "45",
+            "50"});
+            this.gainCB2.Location = new System.Drawing.Point(205, 64);
+            this.gainCB2.Name = "gainCB2";
+            this.gainCB2.Size = new System.Drawing.Size(53, 21);
+            this.gainCB2.TabIndex = 19;
+            this.gainCB2.SelectedIndexChanged += new System.EventHandler(this.gainCB2_SelectedIndexChanged);
+            this.gainCB2.TextChanged += new System.EventHandler(this.gainCB2_TextChanged);
+            this.gainCB2.Leave += new System.EventHandler(this.gainCB2_Leave);
+            // 
+            // gainLbl3
+            // 
+            this.gainLbl3.AutoSize = true;
+            this.gainLbl3.Location = new System.Drawing.Point(171, 68);
+            this.gainLbl3.Name = "gainLbl3";
+            this.gainLbl3.Size = new System.Drawing.Size(33, 13);
+            this.gainLbl3.TabIndex = 20;
+            this.gainLbl3.Text = "Gain";
+            // 
+            // gainCB3
+            // 
+            this.gainCB3.AutoCompleteCustomSource.AddRange(new string[] {
+            "0",
+            "5",
+            "10",
+            "15",
+            "20",
+            "25",
+            "30",
+            "35",
+            "40",
+            "45",
+            "50"});
+            this.gainCB3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.gainCB3.ForeColor = System.Drawing.Color.GreenYellow;
+            this.gainCB3.FormattingEnabled = true;
+            this.gainCB3.Items.AddRange(new object[] {
+            "0",
+            "5",
+            "10",
+            "15",
+            "20",
+            "25",
+            "30",
+            "35",
+            "40",
+            "45",
+            "50"});
+            this.gainCB3.Location = new System.Drawing.Point(205, 64);
+            this.gainCB3.Name = "gainCB3";
+            this.gainCB3.Size = new System.Drawing.Size(53, 21);
+            this.gainCB3.TabIndex = 21;
+            this.gainCB3.SelectedIndexChanged += new System.EventHandler(this.gainCB3_SelectedIndexChanged);
+            this.gainCB3.TextChanged += new System.EventHandler(this.AudioBitrateCombo3_TextChanged);
+            this.gainCB3.Leave += new System.EventHandler(this.gainCB3_Leave);
+            // 
             // ConversionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2104,5 +2254,11 @@
         private System.Windows.Forms.Label SMTPServerLbl;
         private System.Windows.Forms.TextBox SMTPPortTB;
         private System.Windows.Forms.Label SMTPPortLbl;
+        private System.Windows.Forms.Label gainLbl1;
+        private System.Windows.Forms.ComboBox gainCB1;
+        private System.Windows.Forms.Label gainLbl2;
+        private System.Windows.Forms.ComboBox gainCB2;
+        private System.Windows.Forms.Label gainLbl3;
+        private System.Windows.Forms.ComboBox gainCB3;
     }
 }

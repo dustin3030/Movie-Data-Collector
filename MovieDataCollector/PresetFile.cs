@@ -32,6 +32,7 @@ namespace MovieDataCollector
             "FilteredMP3Check", //false
             "FilteredFLACCheck", //false
             "AudioBitrate", //128
+            "AudioGain", //0
 
             "EnableTrack2", //False
             "AudioCodec2", //E-AC3
@@ -46,6 +47,7 @@ namespace MovieDataCollector
             "FilteredMP3Check2", //false
             "FilteredFLACCheck2", //false
             "AudioBitrate2", //128
+            "AudioGain2", //0
 
             "EnableTrack3", //False
             "AudioCodec3", //Filtered Passthru
@@ -60,6 +62,7 @@ namespace MovieDataCollector
             "FilteredMP3Check3", //false
             "FilteredFLACCheck3", //false
             "AudioBitrate3", //128
+            "AudioGain3", //0
 
             "EncoderSpeed", //Very Fast
             "FrameRateMode", //Peak
@@ -90,6 +93,7 @@ namespace MovieDataCollector
             "false", //FilteredMP3Check
             "false", //FilteredFLACCheck
             "128", //AudioBitrate
+            "0", //AudioGain
 
             "false", //EnableTrack2
             "E-AC3", //AudioCodecAAC2
@@ -104,6 +108,7 @@ namespace MovieDataCollector
             "false", //FilteredMP3Check2
             "false", //FilteredFLACCheck2
             "128", //AudioBitrate2
+            "0", //AudioGain2
 
             "false", //EnableTrack3
             "Filtered Passthru", //AudioCodecAAC3
@@ -118,6 +123,7 @@ namespace MovieDataCollector
             "false", //FilteredMP3Check3
             "false", //FilteredFLACCheck3
             "128", //AudioBitrate3
+            "0", //AudioGain3
 
             "Very Fast", //EncoderSpeed
             "Peak", //FrameRateMode
@@ -127,7 +133,7 @@ namespace MovieDataCollector
             "Main", //EncoderProfile
             "4.0", //EncoderLevel
             "true", //Optimize
-            "true", //AutoCrop
+            "false", //AutoCrop
             "true", //TwoPass
             "true", //TurboFirstPass
             "English", //SubtitleSelection
@@ -148,6 +154,7 @@ namespace MovieDataCollector
             "false", //FilteredMP3Check
             "false", //FilteredFLACCheck
             "128", //AudioBitrate
+            "0", //AudioGain
 
             "true", //EnableTrack2
             "E-AC3", //AudioCodecAAC2
@@ -162,6 +169,7 @@ namespace MovieDataCollector
             "false", //FilteredMP3Check2
             "false", //FilteredFLACCheck2
             "128", //AudioBitrate2
+            "0", //AudioGain2
 
             "false", //EnableTrack3
             "Filtered Passthru", //AudioCodecAAC3
@@ -176,6 +184,7 @@ namespace MovieDataCollector
             "false", //FilteredMP3Check3
             "false", //FilteredFLACCheck3
             "128", //AudioBitrate3
+            "0", //AudioGain3
 
             "Medium", //EncoderSpeed
             "Peak", //FrameRateMode
@@ -206,6 +215,7 @@ namespace MovieDataCollector
             "false", //FilteredMP3Check
             "false", //FilteredFLACCheck
             "128", //AudioBitrate
+            "0", //AudioGain
 
             "false", //EnableTrack2
             "E-AC3", //AudioCodecAAC2
@@ -220,6 +230,7 @@ namespace MovieDataCollector
             "false", //FilteredMP3Check2
             "false", //FilteredFLACCheck2
             "128", //AudioBitrate2
+            "0", //AudioGain2
 
             "false", //EnableTrack3
             "Filtered Passthru", //AudioCodecAAC3
@@ -234,6 +245,7 @@ namespace MovieDataCollector
             "false", //FilteredMP3Check3
             "false", //FilteredFLACCheck3
             "128", //AudioBitrate3
+            "0", //AudioGain3
 
             "Faster", //EncoderSpeed
             "Peak", //FrameRateMode
@@ -264,6 +276,7 @@ namespace MovieDataCollector
             "false", //FilteredMP3Check
             "false", //FilteredFLACCheck
             "128", //AudioBitrate
+            "0", //AudioGain
 
             "true", //EnableTrack2
             "E-AC3", //AudioCodecAAC2
@@ -278,6 +291,7 @@ namespace MovieDataCollector
             "false", //FilteredMP3Check2
             "false", //FilteredFLACCheck2
             "128", //AudioBitrate2
+            "0", //AudioGain2
 
             "true", //EnableTrack3
             "Filtered Passthru", //AudioCodecAAC3
@@ -292,6 +306,7 @@ namespace MovieDataCollector
             "false", //FilteredMP3Check3
             "false", //FilteredFLACCheck3
             "128", //AudioBitrate3
+            "0", //AudioGain3
 
             "Medium", //EncoderSpeed
             "Peak", //FrameRateMode
