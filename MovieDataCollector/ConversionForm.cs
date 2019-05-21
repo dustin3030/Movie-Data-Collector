@@ -4268,18 +4268,19 @@ namespace MovieDataCollector
             string gain2 = gainCB2.Text;
             string gain3 = gainCB3.Text;
 
-            int.TryParse(gainCB1.Text, out gain1num);
+            try { int.TryParse(gainCB1.Text, out gain1num); } catch { gain1num = -1; }
+            
             if(gain1num != -1) { gain1 = gain1num.ToString(); } else { gain1 = "0"; }
 
             if(!disableCheckStream2.Checked)
             {
-                int.TryParse(gainCB2.Text, out gain2num);
+                try { int.TryParse(gainCB2.Text, out gain2num); } catch { gain2num = -1; }
                 if (gain2num != -1) { gain2 = "," + gain2num.ToString(); } else { gain2 = ",0"; }
             }
             
             if(!disableCheckStream3.Checked)
             {
-                int.TryParse(gainCB3.Text, out gain3num);
+                try { int.TryParse(gainCB3.Text, out gain3num); } catch { gain3num = -1; }
                 if (gain3num != -1) { gain3 = "," + gain3num.ToString(); } else { gain3 = ",0"; }
             }
 
@@ -4726,6 +4727,8 @@ namespace MovieDataCollector
                     filteredMP3Check.Visible = true;
                     filteredFLACCheck.Visible = true;
                     passthruFilterLabel.Visible = true;
+                    NLabelUpdate("Audio Gain does not work with the passthru option.", Color.Red);
+                    gainCB1.Text = "0";
                     break;
                 case "AAC (FDK)":
                     filteredAACCheck.Visible = false;
@@ -4738,6 +4741,7 @@ namespace MovieDataCollector
                     filteredFLACCheck.Visible = false;
                     passthruFilterLabel.Visible = false;
                     mixdownComboBox.Text = "Dolby ProLogic 2"; //AAC can only mix down to Prologic or Mono
+                    NLabelUpdate("When using the AAC Codec, it is suggested to boost the audio gain +10db", Color.Red);
                     break;
                 default:
                     filteredAACCheck.Visible = false;
@@ -4770,6 +4774,8 @@ namespace MovieDataCollector
                     filteredMP3Check2.Visible = true;
                     filteredFLACCheck2.Visible = true;
                     passthruFilterLabel2.Visible = true;
+                    NLabelUpdate("Audio Gain does not work with the passthru option.", Color.Red);
+                    gainCB2.Text = "0";
                     break;
                 case "AAC (FDK)":
                     filteredAACCheck2.Visible = false;
@@ -4782,6 +4788,7 @@ namespace MovieDataCollector
                     filteredFLACCheck2.Visible = false;
                     passthruFilterLabel2.Visible = false;
                     mixdownComboBox2.Text = "Dolby ProLogic 2"; //AAC can only mix down to Prologic or Mono
+                    NLabelUpdate("When using the AAC Codec, it is suggested to boost the audio gain +10db", Color.Red);
                     break;
                 default:
                     filteredAACCheck2.Visible = false;
@@ -4814,6 +4821,8 @@ namespace MovieDataCollector
                     filteredMP3Check3.Visible = true;
                     filteredFLACCheck3.Visible = true;
                     passthruFilterLabel3.Visible = true;
+                    NLabelUpdate("Audio Gain does not work with the passthru option.", Color.Red);
+                    gainCB3.Text = "0";
                     break;
                 case "AAC (FDK)":
                     filteredAACCheck3.Visible = false;
@@ -4826,6 +4835,7 @@ namespace MovieDataCollector
                     filteredFLACCheck3.Visible = false;
                     passthruFilterLabel3.Visible = false;
                     mixdownComboBox3.Text = "Dolby ProLogic 2"; //AAC can only mix down to Prologic or Mono
+                    NLabelUpdate("When using the AAC Codec, it is suggested to boost the audio gain +10db", Color.Red);
                     break;
                 default:
                     filteredAACCheck3.Visible = false;
@@ -4910,17 +4920,42 @@ namespace MovieDataCollector
         private void gainCB1_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Update default in dictionary
-            CF.DefaultSettings["AudioGain"] = gainCB1.Text;
+            if(audioCodecComboBox.Text.Contains("Filtered Passthru"))
+            {
+                gainCB1.Text = "0";
+                NLabelUpdate("Audio Gain does not work with the passthru option.", Color.Red);
+            }
+            else
+            {
+                CF.DefaultSettings["AudioGain"] = gainCB1.Text;
+            }
+            
         }
         private void gainCB2_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Update default in dictionary
-            CF.DefaultSettings["AudioGain2"] = gainCB2.Text;
+            if (audioCodecComboBox2.Text.Contains("Filtered Passthru"))
+            {
+                CF.DefaultSettings["AudioGain2"] = "0";
+                NLabelUpdate("Audio Gain does not work with the passthru option.", Color.Red);
+            }
+            else
+            {
+                CF.DefaultSettings["AudioGain2"] = gainCB2.Text;
+            }
         }
         private void gainCB3_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Update default in dictionary
-            CF.DefaultSettings["AudioGain3"] = gainCB3.Text;
+            if (audioCodecComboBox3.Text.Contains("Filtered Passthru"))
+            {
+                CF.DefaultSettings["AudioGain3"] = "0";
+                NLabelUpdate("Audio Gain does not work with the passthru option.", Color.Red);
+            }
+            else
+            {
+                CF.DefaultSettings["AudioGain3"] = gainCB3.Text;
+            }
         }
 
         //Audio Combobox Text Changed
@@ -5110,51 +5145,76 @@ namespace MovieDataCollector
 
         private void gainCB1_TextChanged(object sender, EventArgs e)
         {
-            int gain = -1;
-            try { int.TryParse(gainCB1.Text, out gain); }
-            catch { gain = 0;}
-
-            if(gain!=-1)
+            if(audioCodecComboBox.Text == "Filtered Passthru")
             {
-                gainCB1.Text = gain.ToString();
+                gainCB1.Text = "0";
+                NLabelUpdate("Audio Gain does not work with the passthru option.", Color.Red);
             }
             else
             {
-                gainCB1.Text = "0";
+                int gain = -1;
+                try { int.TryParse(gainCB1.Text, out gain); }
+                catch { gain = 0; }
+
+                if (gain != -1)
+                {
+                    gainCB1.Text = gain.ToString();
+                }
+                else
+                {
+                    gainCB1.Text = "0";
+                }
+                CF.DefaultSettings["AudioGain"] = gainCB1.Text;
             }
-            CF.DefaultSettings["AudioGain"] = gainCB1.Text;
+            
         }
         private void gainCB2_TextChanged(object sender, EventArgs e)
         {
-            int gain = -1;
-            try { int.TryParse(gainCB2.Text, out gain); }
-            catch { gain = 0; }
-
-            if (gain != -1)
+            if (audioCodecComboBox2.Text == "Filtered Passthru")
             {
-                gainCB2.Text = gain.ToString();
+                gainCB2.Text = "0";
+                NLabelUpdate("Audio Gain does not work with the passthru option.", Color.Red);
             }
             else
             {
-                gainCB2.Text = "0";
+                int gain = -1;
+                try { int.TryParse(gainCB2.Text, out gain); }
+                catch { gain = 0; }
+
+                if (gain != -1)
+                {
+                    gainCB2.Text = gain.ToString();
+                }
+                else
+                {
+                    gainCB2.Text = "0";
+                }
+                CF.DefaultSettings["AudioGain2"] = gainCB2.Text;
             }
-            CF.DefaultSettings["AudioGain2"] = gainCB2.Text;
         }
         private void gainCB3_TextChanged(object sender, EventArgs e)
         {
-            int gain = -1;
-            try { int.TryParse(gainCB3.Text, out gain); }
-            catch { gain = 0; }
-
-            if (gain != -1)
+            if (audioCodecComboBox3.Text == "Filtered Passthru")
             {
-                gainCB3.Text = gain.ToString();
+                gainCB3.Text = "0";
+                NLabelUpdate("Audio Gain does not work with the passthru option.", Color.Red);
             }
             else
             {
-                gainCB3.Text = "0";
+                int gain = -1;
+                try { int.TryParse(gainCB3.Text, out gain); }
+                catch { gain = 0; }
+
+                if (gain != -1)
+                {
+                    gainCB3.Text = gain.ToString();
+                }
+                else
+                {
+                    gainCB3.Text = "0";
+                }
+                CF.DefaultSettings["AudioGain3"] = gainCB3.Text;
             }
-            CF.DefaultSettings["AudioGain3"] = gainCB3.Text;
         }
 
         //Audio combobox leave
@@ -5338,51 +5398,75 @@ namespace MovieDataCollector
 
         private void gainCB1_Leave(object sender, EventArgs e)
         {
-            int gain = -1;
-            try { int.TryParse(gainCB1.Text, out gain); }
-            catch { gain = 0; }
-
-            if (gain != -1)
+            if (audioCodecComboBox.Text == "Filtered Passthru")
             {
-                gainCB1.Text = gain.ToString();
+                gainCB1.Text = "0";
+                NLabelUpdate("Audio Gain does not work with the passthru option.", Color.Red);
             }
             else
             {
-                gainCB1.Text = "0";
+                int gain = -1;
+                try { int.TryParse(gainCB1.Text, out gain); }
+                catch { gain = 0; }
+
+                if (gain != -1)
+                {
+                    gainCB1.Text = gain.ToString();
+                }
+                else
+                {
+                    gainCB1.Text = "0";
+                }
+                CF.DefaultSettings["AudioGain"] = gainCB1.Text;
             }
-            CF.DefaultSettings["AudioGain"] = gainCB1.Text;
         }
         private void gainCB2_Leave(object sender, EventArgs e)
         {
-            int gain = -1;
-            try { int.TryParse(gainCB2.Text, out gain); }
-            catch { gain = 0; }
-
-            if (gain != -1)
+            if (audioCodecComboBox2.Text == "Filtered Passthru")
             {
-                gainCB2.Text = gain.ToString();
+                gainCB2.Text = "0";
+                NLabelUpdate("Audio Gain does not work with the passthru option.", Color.Red);
             }
             else
             {
-                gainCB2.Text = "0";
+                int gain = -1;
+                try { int.TryParse(gainCB2.Text, out gain); }
+                catch { gain = 0; }
+
+                if (gain != -1)
+                {
+                    gainCB2.Text = gain.ToString();
+                }
+                else
+                {
+                    gainCB2.Text = "0";
+                }
+                CF.DefaultSettings["AudioGain2"] = gainCB2.Text;
             }
-            CF.DefaultSettings["AudioGain2"] = gainCB2.Text;
         }
         private void gainCB3_Leave(object sender, EventArgs e)
         {
-            int gain = -1;
-            try { int.TryParse(gainCB3.Text, out gain); }
-            catch { gain = 0; }
-
-            if (gain != -1)
+            if (audioCodecComboBox3.Text == "Filtered Passthru")
             {
-                gainCB3.Text = gain.ToString();
+                gainCB3.Text = "0";
+                NLabelUpdate("Audio Gain does not work with the passthru option.", Color.Red);
             }
             else
             {
-                gainCB3.Text = "0";
+                int gain = -1;
+                try { int.TryParse(gainCB3.Text, out gain); }
+                catch { gain = 0; }
+
+                if (gain != -1)
+                {
+                    gainCB3.Text = gain.ToString();
+                }
+                else
+                {
+                    gainCB3.Text = "0";
+                }
+                CF.DefaultSettings["AudioGain3"] = gainCB3.Text;
             }
-            CF.DefaultSettings["AudioGain3"] = gainCB3.Text;
         }
 
         //Audio Checkboxes
