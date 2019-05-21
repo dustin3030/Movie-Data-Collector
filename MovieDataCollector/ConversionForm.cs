@@ -276,6 +276,7 @@ namespace MovieDataCollector
             ApplyConfigDefaults();
             PopulatePresets();
             ApplyPreset(); // Applies the preset corresponding to the text in the preset combobox.
+            NLabelUpdate("", Color.GreenYellow);
         }
         private void ApplyConfigDefaults() //Sets encode options to values from file
         {
@@ -4741,7 +4742,7 @@ namespace MovieDataCollector
                     filteredFLACCheck.Visible = false;
                     passthruFilterLabel.Visible = false;
                     mixdownComboBox.Text = "Dolby ProLogic 2"; //AAC can only mix down to Prologic or Mono
-                    NLabelUpdate("When using the AAC Codec, it is suggested to boost the audio gain +10db", Color.Red);
+                    //NLabelUpdate("When using the AAC Codec, it is suggested to boost the audio gain +10db", Color.Red);
                     break;
                 default:
                     filteredAACCheck.Visible = false;
@@ -4788,7 +4789,7 @@ namespace MovieDataCollector
                     filteredFLACCheck2.Visible = false;
                     passthruFilterLabel2.Visible = false;
                     mixdownComboBox2.Text = "Dolby ProLogic 2"; //AAC can only mix down to Prologic or Mono
-                    NLabelUpdate("When using the AAC Codec, it is suggested to boost the audio gain +10db", Color.Red);
+                    //NLabelUpdate("When using the AAC Codec, it is suggested to boost the audio gain +10db", Color.Red);
                     break;
                 default:
                     filteredAACCheck2.Visible = false;
@@ -4835,7 +4836,7 @@ namespace MovieDataCollector
                     filteredFLACCheck3.Visible = false;
                     passthruFilterLabel3.Visible = false;
                     mixdownComboBox3.Text = "Dolby ProLogic 2"; //AAC can only mix down to Prologic or Mono
-                    NLabelUpdate("When using the AAC Codec, it is suggested to boost the audio gain +10db", Color.Red);
+                    //NLabelUpdate("When using the AAC Codec, it is suggested to boost the audio gain +10db", Color.Red);
                     break;
                 default:
                     filteredAACCheck3.Visible = false;
@@ -4919,6 +4920,7 @@ namespace MovieDataCollector
 
         private void gainCB1_SelectedIndexChanged(object sender, EventArgs e)
         {
+
             //Update default in dictionary
             if(audioCodecComboBox.Text.Contains("Filtered Passthru"))
             {
