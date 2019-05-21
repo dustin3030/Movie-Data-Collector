@@ -7122,6 +7122,7 @@ namespace MovieDataCollector
                 mixdownComboBox2.Enabled = true;
                 sampleRateCombo2.Enabled = true;
                 audioBitrateCombo2.Enabled = true;
+                gainCB2.Enabled = true;
 
                 if(audioCodecComboBox2.Text == "Filtered Passthru")
                 {
@@ -7157,6 +7158,7 @@ namespace MovieDataCollector
                 mixdownComboBox2.Enabled = false;
                 sampleRateCombo2.Enabled = false;
                 audioBitrateCombo2.Enabled = false;
+                gainCB2.Enabled = false;
 
                 filteredAACCheck2.Visible = false;
                 filteredAC3Check2.Visible = false;
@@ -7177,6 +7179,7 @@ namespace MovieDataCollector
                 mixdownComboBox3.Enabled = true;
                 sampleRateCombo3.Enabled = true;
                 audioBitrateCombo3.Enabled = true;
+                gainCB3.Enabled = true;
 
                 if (audioCodecComboBox3.Text == "Filtered Passthru")
                 {
@@ -7211,6 +7214,7 @@ namespace MovieDataCollector
                 mixdownComboBox3.Enabled = false;
                 sampleRateCombo3.Enabled = false;
                 audioBitrateCombo3.Enabled = false;
+                gainCB3.Enabled = false;
 
                 filteredAACCheck3.Visible = false;
                 filteredAC3Check3.Visible = false;
