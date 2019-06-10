@@ -1494,7 +1494,14 @@ namespace MovieDataCollector
             switch (audioCodecComboBox.Text)
             {
                 case "Filtered Passthru":
-                    if (!filteredAACCheck.Checked && !filteredAC3Check.Checked && !filteredDTSCheck.Checked)
+                    if (!filteredAACCheck.Checked 
+                        && !filteredAC3Check.Checked 
+                        && !filteredDTSCheck.Checked 
+                        && !filteredDTSHDCheck.Checked 
+                        && !filteredEAC3Check.Checked 
+                        && !filteredFLACCheck.Checked 
+                        && !filteredMP3Check.Checked 
+                        && !filteredTrueHDCheck.Checked)
                     {
                         checksPassed = false;
                         NLabelUpdate(" No Passthru filter Selected!", Color.Red);
@@ -1502,6 +1509,52 @@ namespace MovieDataCollector
                     break;
                 default:
                     break;
+            }
+
+            if(!disableCheckStream2.Checked)
+            {
+                switch (audioCodecComboBox2.Text)
+                {
+                    case "Filtered Passthru":
+                        if (!filteredAACCheck2.Checked
+                            && !filteredAC3Check2.Checked
+                            && !filteredDTSCheck2.Checked
+                            && !filteredDTSHDCheck2.Checked
+                            && !filteredEAC3Check2.Checked
+                            && !filteredFLACCheck2.Checked
+                            && !filteredMP3Check2.Checked
+                            && !filteredTrueHDCheck2.Checked)
+                        {
+                            checksPassed = false;
+                            NLabelUpdate(" No Passthru filter Selected for audio stream 2!", Color.Red);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            if (!disableCheckStream3.Checked)
+            {
+                switch (audioCodecComboBox3.Text)
+                {
+                    case "Filtered Passthru":
+                        if (!filteredAACCheck3.Checked
+                            && !filteredAC3Check3.Checked
+                            && !filteredDTSCheck3.Checked
+                            && !filteredDTSHDCheck3.Checked
+                            && !filteredEAC3Check3.Checked
+                            && !filteredFLACCheck3.Checked
+                            && !filteredMP3Check3.Checked
+                            && !filteredTrueHDCheck3.Checked)
+                        {
+                            checksPassed = false;
+                            NLabelUpdate(" No Passthru filter Selected for audio stream 3!", Color.Red);
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
 
             return checksPassed;
@@ -4265,9 +4318,9 @@ namespace MovieDataCollector
             int gain2num = -1;
             int gain3num = -1;
 
-            string gain1 = gainCB1.Text;
-            string gain2 = gainCB2.Text;
-            string gain3 = gainCB3.Text;
+            string gain1 = "";
+            string gain2 = "";
+            string gain3 = "";
 
             try { int.TryParse(gainCB1.Text, out gain1num); } catch { gain1num = -1; }
             
@@ -4715,6 +4768,7 @@ namespace MovieDataCollector
             //set default value in dictionary.
             CF.DefaultSettings["AudioCodec"] = audioCodecComboBox.Text;
 
+
             //Only show filter options if Filtered Passthru is selected.
             switch (audioCodecComboBox.Text)
             {
@@ -4729,6 +4783,7 @@ namespace MovieDataCollector
                     filteredFLACCheck.Visible = true;
                     passthruFilterLabel.Visible = true;
                     NLabelUpdate("Audio Gain does not work with the passthru option.", Color.Red);
+                    CF.DefaultSettings["AudioGain"] = "0"; //must be 0 as gain doesn't work on passthru codec.
                     gainCB1.Text = "0";
                     break;
                 case "AAC (FDK)":
@@ -4776,6 +4831,7 @@ namespace MovieDataCollector
                     filteredFLACCheck2.Visible = true;
                     passthruFilterLabel2.Visible = true;
                     NLabelUpdate("Audio Gain does not work with the passthru option.", Color.Red);
+                    CF.DefaultSettings["AudioGain2"] = "0"; //must be 0 as gain doesn't work on passthru codec.
                     gainCB2.Text = "0";
                     break;
                 case "AAC (FDK)":
@@ -4823,6 +4879,7 @@ namespace MovieDataCollector
                     filteredFLACCheck3.Visible = true;
                     passthruFilterLabel3.Visible = true;
                     NLabelUpdate("Audio Gain does not work with the passthru option.", Color.Red);
+                    CF.DefaultSettings["AudioGain3"] = "0"; //must be 0 as gain doesn't work on passthru codec.
                     gainCB3.Text = "0";
                     break;
                 case "AAC (FDK)":
