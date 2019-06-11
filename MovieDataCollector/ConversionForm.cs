@@ -3774,12 +3774,12 @@ namespace MovieDataCollector
                         {
                             if(!passthru) //only process if a match hasn't been found
                             {
-                                if (videofile.Audio[selectedTrack1].Format.ToUpper().Contains(PassthruList[i].ToUpper()))
+                                if (cleanString(videofile.Audio[selectedTrack1].Format).ToUpper().Contains(cleanString(PassthruList[i]).ToUpper()))
                                 {
                                     passthru = true;
 
-                                    if(track1Type == "surround") { trackName1 = "\"Surround - " + PassthruList[i] + "\""; }
-                                    else if(track1Type == "stereo") { trackName1 = "\"Stero - " + PassthruList[i] + "\""; }
+                                    if(track1Type == "surround") { trackName1 = "\"Surround - " + PassthruList[i].ToUpper() + "\""; }
+                                    else if(track1Type == "stereo") { trackName1 = "\"Stero - " + PassthruList[i].ToUpper() + "\""; }
                                 }
                             }
                         }
@@ -3789,7 +3789,9 @@ namespace MovieDataCollector
                             if(track1Type == "stereo") { trackName1 = "\"Unknown\""; }
                         }
 
-                        trackName1 = "Dolby Pro Logic 2 - AAC";
+                        //If track can't be determined, use fallback encoder which is Dolby Pro Logic 2 - AAC
+                        if (string.IsNullOrEmpty(trackName1)){ trackName1 = "\"Dolby Pro Logic 2 - AAC\""; }
+
                         break;
                     case "AC3":
                         if(track1Type == "surround") { trackName1 = "\"Surround - AC3\""; }
@@ -3821,12 +3823,12 @@ namespace MovieDataCollector
                         {
                             if (!passthru) //only process if a match hasn't been found
                             {
-                                if (videofile.Audio[selectedTrack2].Format.ToUpper().Contains(PassthruList[i].ToUpper()))
+                                if (cleanString(videofile.Audio[selectedTrack2].Format).ToUpper().Contains(cleanString(PassthruList[i]).ToUpper()))
                                 {
                                     passthru = true;
 
-                                    if (track2Type == "surround") { trackName2 = ",\"Surround - " + PassthruList[i] + "\""; }
-                                    else if (track2Type == "stereo") { trackName2 = ",\"Stereo - " + PassthruList[i] + "\""; }
+                                    if (track2Type == "surround") { trackName2 = ",\"Surround - " + PassthruList[i].ToUpper() + "\""; }
+                                    else if (track2Type == "stereo") { trackName2 = ",\"Stereo - " + PassthruList[i].ToUpper() + "\""; }
                                 }
                             }
                         }
@@ -3836,7 +3838,9 @@ namespace MovieDataCollector
                             if (track2Type == "stereo") { trackName2 = ",\"Unknown\""; }
                         }
 
-                        trackName2 = ",\"Dolby Pro Logic 2 - AAC\"";
+                        //If track can't be determined, use fallback encoder which is Dolby Pro Logic 2 - AAC
+                        if (string.IsNullOrEmpty(trackName2)) { trackName2 = "\"Dolby Pro Logic 2 - AAC\""; }
+
                         break;
                     case "AC3":
                         if (track2Type == "surround") { trackName2 = ",\"Surround - AC3\""; }
@@ -3868,12 +3872,12 @@ namespace MovieDataCollector
                         {
                             if (!passthru) //only process if a match hasn't been found
                             {
-                                if (videofile.Audio[selectedTrack3].Format.ToUpper().Contains(PassthruList[i].ToUpper()))
+                                if (cleanString(videofile.Audio[selectedTrack3].Format).ToUpper().Contains(cleanString(PassthruList[i]).ToUpper()))
                                 {
                                     passthru = true;
 
-                                    if (track3Type == "surround") { trackName3 = ",\"Surround - " + PassthruList[i] + "\""; }
-                                    else if (track3Type == "stereo") { trackName3 = ",\"Stereo - " + PassthruList[i] + "\""; }
+                                    if (track3Type == "surround") { trackName3 = ",\"Surround - " + PassthruList[i].ToUpper() + "\""; }
+                                    else if (track3Type == "stereo") { trackName3 = ",\"Stereo - " + PassthruList[i].ToUpper() + "\""; }
                                 }
                             }
                         }
@@ -3883,7 +3887,9 @@ namespace MovieDataCollector
                             if (track3Type == "stereo") { trackName3 = ",\"Unknown\""; }
                         }
 
-                        trackName3 = ",\"Dolby Pro Logic 2 - AAC\"";
+                        //If track can't be determined, use fallback encoder which is Dolby Pro Logic 2 - AAC
+                        if (string.IsNullOrEmpty(trackName3)) { trackName3 = "\"Dolby Pro Logic 2 - AAC\""; }
+
                         break;
                     case "AC3":
                         if (track3Type == "surround") { trackName3 = ",\"Surround - AC3\""; }
@@ -7371,7 +7377,33 @@ namespace MovieDataCollector
                 passthruFilterLabel3.Visible = false;
             }
         }
+        private string cleanString(string input)
+        {
+            string output = input;
 
-     
+            List<string> reservedCharacters = new List<string>
+            {
+                "<",
+                ">",
+                ":",
+                "\"",
+                "/",
+                "\\",
+                "|",
+                "?",
+                "*",
+                ".",
+                "_",
+                "-"
+            };
+
+            for (int i = 0; i < reservedCharacters.Count(); i++)
+            {
+                output = output.Replace(reservedCharacters[i], "");
+            }
+
+            return output;
+        }
+
     }
 }
