@@ -3016,41 +3016,43 @@ namespace MovieDataCollector
         }
         private void GeneratePassthruList()
         {
+            PassthruList.Clear();
+
             if ((audioCodecComboBox.Text == "Filtered Passthru" && filteredAACCheck.Checked) ||
-                (audioCodecComboBox2.Text == "Filtered Passthru" && filteredAACCheck2.Checked) ||
-                (audioCodecComboBox3.Text == "Filtered Passthru" && filteredAACCheck3.Checked)) { PassthruList.Add("aac"); }
+                (!disableCheckStream2.Checked && audioCodecComboBox2.Text == "Filtered Passthru" && filteredAACCheck2.Checked) ||
+                (!disableCheckStream3.Checked && audioCodecComboBox3.Text == "Filtered Passthru" && filteredAACCheck3.Checked)) { PassthruList.Add("aac"); }
 
             if ((audioCodecComboBox.Text == "Filtered Passthru" && filteredAC3Check.Checked) ||
-                (audioCodecComboBox2.Text == "Filtered Passthru" && filteredAC3Check2.Checked) ||
-                (audioCodecComboBox3.Text == "Filtered Passthru" && filteredAC3Check3.Checked)) { PassthruList.Add("ac3"); }
+                (!disableCheckStream2.Checked && audioCodecComboBox2.Text == "Filtered Passthru" && filteredAC3Check2.Checked) ||
+                (!disableCheckStream3.Checked && audioCodecComboBox3.Text == "Filtered Passthru" && filteredAC3Check3.Checked)) { PassthruList.Add("ac3"); }
 
             if ((audioCodecComboBox.Text == "Filtered Passthru" && filteredEAC3Check.Checked) ||
-                (audioCodecComboBox2.Text == "Filtered Passthru" && filteredEAC3Check2.Checked) ||
-                (audioCodecComboBox3.Text == "Filtered Passthru" && filteredEAC3Check3.Checked)) { PassthruList.Add("eac3"); }
+                (!disableCheckStream2.Checked && audioCodecComboBox2.Text == "Filtered Passthru" && filteredEAC3Check2.Checked) ||
+                (!disableCheckStream3.Checked && audioCodecComboBox3.Text == "Filtered Passthru" && filteredEAC3Check3.Checked)) { PassthruList.Add("eac3"); }
 
             if ((audioCodecComboBox.Text == "Filtered Passthru" && filteredDTSCheck.Checked) ||
-                (audioCodecComboBox2.Text == "Filtered Passthru" && filteredDTSCheck2.Checked) ||
-                (audioCodecComboBox3.Text == "Filtered Passthru" && filteredDTSCheck3.Checked)) { PassthruList.Add("dts"); }
+                (!disableCheckStream2.Checked && audioCodecComboBox2.Text == "Filtered Passthru" && filteredDTSCheck2.Checked) ||
+                (!disableCheckStream3.Checked && audioCodecComboBox3.Text == "Filtered Passthru" && filteredDTSCheck3.Checked)) { PassthruList.Add("dts"); }
 
             if ((audioCodecComboBox.Text == "Filtered Passthru" && filteredDTSHDCheck.Checked) ||
-                (audioCodecComboBox2.Text == "Filtered Passthru" && filteredDTSHDCheck2.Checked) ||
-                (audioCodecComboBox3.Text == "Filtered Passthru" && filteredDTSHDCheck3.Checked)) { PassthruList.Add("dtshd"); }
+                (!disableCheckStream2.Checked && audioCodecComboBox2.Text == "Filtered Passthru" && filteredDTSHDCheck2.Checked) ||
+                (!disableCheckStream3.Checked && audioCodecComboBox3.Text == "Filtered Passthru" && filteredDTSHDCheck3.Checked)) { PassthruList.Add("dtshd"); }
 
             if ((audioCodecComboBox.Text == "Filtered Passthru" && filteredTrueHDCheck.Checked) ||
-                (audioCodecComboBox2.Text == "Filtered Passthru" && filteredTrueHDCheck2.Checked) ||
-                (audioCodecComboBox3.Text == "Filtered Passthru" && filteredTrueHDCheck3.Checked)) { PassthruList.Add("truehd"); }
+                (!disableCheckStream2.Checked && audioCodecComboBox2.Text == "Filtered Passthru" && filteredTrueHDCheck2.Checked) ||
+                (!disableCheckStream3.Checked && audioCodecComboBox3.Text == "Filtered Passthru" && filteredTrueHDCheck3.Checked)) { PassthruList.Add("truehd"); }
 
             if ((audioCodecComboBox.Text == "Filtered Passthru" && filteredMP3Check.Checked) ||
-                (audioCodecComboBox2.Text == "Filtered Passthru" && filteredMP3Check2.Checked) ||
-                (audioCodecComboBox3.Text == "Filtered Passthru" && filteredMP3Check3.Checked)) { PassthruList.Add("mp3"); }
+                (!disableCheckStream2.Checked && audioCodecComboBox2.Text == "Filtered Passthru" && filteredMP3Check2.Checked) ||
+                (!disableCheckStream3.Checked && audioCodecComboBox3.Text == "Filtered Passthru" && filteredMP3Check3.Checked)) { PassthruList.Add("mp3"); }
 
             if ((audioCodecComboBox.Text == "Filtered Passthru" && filteredFLACCheck.Checked) ||
-                (audioCodecComboBox2.Text == "Filtered Passthru" && filteredFLACCheck2.Checked) ||
-                (audioCodecComboBox3.Text == "Filtered Passthru" && filteredFLACCheck3.Checked)) { PassthruList.Add("flac16"); }
+                (!disableCheckStream2.Checked && audioCodecComboBox2.Text == "Filtered Passthru" && filteredFLACCheck2.Checked) ||
+                (!disableCheckStream3.Checked && audioCodecComboBox3.Text == "Filtered Passthru" && filteredFLACCheck3.Checked)) { PassthruList.Add("flac16"); }
 
             if ((audioCodecComboBox.Text == "Filtered Passthru" && filteredFLACCheck.Checked) ||
-                (audioCodecComboBox2.Text == "Filtered Passthru" && filteredFLACCheck2.Checked) ||
-                (audioCodecComboBox3.Text == "Filtered Passthru" && filteredFLACCheck3.Checked)) { PassthruList.Add("flac24"); }
+                (!disableCheckStream2.Checked && audioCodecComboBox2.Text == "Filtered Passthru" && filteredFLACCheck2.Checked) ||
+                (!disableCheckStream3.Checked && audioCodecComboBox3.Text == "Filtered Passthru" && filteredFLACCheck3.Checked)) { PassthruList.Add("flac24"); }
 
         }
         /*--audio "1,1,1" -A "Track1,Track2,Track3" --aencoder "fdk_aac,eac3,copy:dtshd" --audio-fallback "eac3" --ab 256,768,1509 --arate 48,48,48 --mixdown "dpl2,5point1,5point1" --drc 0,0,0 --gain 0,0,0*/
@@ -3070,7 +3072,6 @@ namespace MovieDataCollector
             surroundTracks.Clear();
             surroundBitrates.Clear();
             stereoBitrates.Clear();
-            PassthruList.Clear();
 
             int maxSurroundBitrate = -1;
             int maxStereoBitrate = -1;
