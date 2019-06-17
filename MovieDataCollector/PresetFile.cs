@@ -64,6 +64,7 @@ namespace MovieDataCollector
             "AudioBitrate3", //128
             "AudioGain3", //0
 
+            "Encoder", //x264
             "EncoderSpeed", //Very Fast
             "FrameRateMode", //Peak
             "FrameRate", //Roku Compliant\
@@ -125,6 +126,7 @@ namespace MovieDataCollector
             "128", //AudioBitrate3
             "0", //AudioGain3
 
+            "x264", //Encoder
             "Very Fast", //EncoderSpeed
             "Peak", //FrameRateMode
             "23.976", //FrameRate
@@ -186,6 +188,7 @@ namespace MovieDataCollector
             "128", //AudioBitrate3
             "0", //AudioGain3
 
+            "x264", //Encoder
             "Medium", //EncoderSpeed
             "Peak", //FrameRateMode
             "23.976", //FrameRate
@@ -247,6 +250,7 @@ namespace MovieDataCollector
             "128", //AudioBitrate3
             "0", //AudioGain3
 
+            "x264", //Encoder
             "Faster", //EncoderSpeed
             "Peak", //FrameRateMode
             "23.976", //FrameRate
@@ -308,6 +312,7 @@ namespace MovieDataCollector
             "128", //AudioBitrate3
             "0", //AudioGain3
 
+            "x264", //Encoder
             "Medium", //EncoderSpeed
             "Peak", //FrameRateMode
             "23.976", //FrameRate

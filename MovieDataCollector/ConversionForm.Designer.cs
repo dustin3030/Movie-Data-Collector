@@ -63,14 +63,18 @@
             this.filteredAC3Check = new System.Windows.Forms.CheckBox();
             this.audioCodecComboBox = new System.Windows.Forms.ComboBox();
             this.filteredAACCheck = new System.Windows.Forms.CheckBox();
+            this.gainLbl1 = new System.Windows.Forms.Label();
             this.sampleRateLabel = new System.Windows.Forms.Label();
             this.kbpsLabel = new System.Windows.Forms.Label();
             this.mixdownComboBox = new System.Windows.Forms.ComboBox();
+            this.gainCB1 = new System.Windows.Forms.ComboBox();
             this.audioBitrateCombo = new System.Windows.Forms.ComboBox();
             this.sampleRateCombo = new System.Windows.Forms.ComboBox();
             this.passthruFilterLabel = new System.Windows.Forms.Label();
             this.ABitrateLabel = new System.Windows.Forms.Label();
             this.audioPage2 = new System.Windows.Forms.TabPage();
+            this.gainLbl2 = new System.Windows.Forms.Label();
+            this.gainCB2 = new System.Windows.Forms.ComboBox();
             this.disableCheckStream2 = new System.Windows.Forms.CheckBox();
             this.codecLabel2 = new System.Windows.Forms.Label();
             this.filteredDTSHDCheck2 = new System.Windows.Forms.CheckBox();
@@ -91,6 +95,8 @@
             this.passthruFilterLabel2 = new System.Windows.Forms.Label();
             this.ABitrateLabel2 = new System.Windows.Forms.Label();
             this.audioPage3 = new System.Windows.Forms.TabPage();
+            this.gainLbl3 = new System.Windows.Forms.Label();
+            this.gainCB3 = new System.Windows.Forms.ComboBox();
             this.disableCheckStream3 = new System.Windows.Forms.CheckBox();
             this.codecLabel3 = new System.Windows.Forms.Label();
             this.filteredDTSCheck3 = new System.Windows.Forms.CheckBox();
@@ -140,6 +146,7 @@
             this.encoderLevelComboBox = new System.Windows.Forms.ComboBox();
             this.encoderProfileComboBox = new System.Windows.Forms.ComboBox();
             this.encoderTuneComboBox = new System.Windows.Forms.ComboBox();
+            this.videoEncoderCB = new System.Windows.Forms.ComboBox();
             this.encoderSpeedCombo = new System.Windows.Forms.ComboBox();
             this.turboCheckBox = new System.Windows.Forms.CheckBox();
             this.autoCropCB = new System.Windows.Forms.CheckBox();
@@ -150,6 +157,7 @@
             this.framerateLabel = new System.Windows.Forms.Label();
             this.avgBitrateLabel = new System.Windows.Forms.Label();
             this.encoderProfileLabel = new System.Windows.Forms.Label();
+            this.videoEncoderCBLabel = new System.Windows.Forms.Label();
             this.encoderTuneLabel = new System.Windows.Forms.Label();
             this.encoderSpeedLabel = new System.Windows.Forms.Label();
             this.videoSettingsLabel = new System.Windows.Forms.Label();
@@ -160,12 +168,6 @@
             this.conversionSettingsLabel = new System.Windows.Forms.Label();
             this.compatibilitySelectionLabel = new System.Windows.Forms.Label();
             this.invisibleCloseButton = new System.Windows.Forms.Button();
-            this.gainCB1 = new System.Windows.Forms.ComboBox();
-            this.gainLbl1 = new System.Windows.Forms.Label();
-            this.gainLbl2 = new System.Windows.Forms.Label();
-            this.gainCB2 = new System.Windows.Forms.ComboBox();
-            this.gainLbl3 = new System.Windows.Forms.Label();
-            this.gainCB3 = new System.Windows.Forms.ComboBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.selectionPicturebox)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -624,6 +626,15 @@
             this.filteredAACCheck.Visible = false;
             this.filteredAACCheck.CheckedChanged += new System.EventHandler(this.FilteredAACCheck_CheckedChanged);
             // 
+            // gainLbl1
+            // 
+            this.gainLbl1.AutoSize = true;
+            this.gainLbl1.Location = new System.Drawing.Point(171, 68);
+            this.gainLbl1.Name = "gainLbl1";
+            this.gainLbl1.Size = new System.Drawing.Size(33, 13);
+            this.gainLbl1.TabIndex = 0;
+            this.gainLbl1.Text = "Gain";
+            // 
             // sampleRateLabel
             // 
             this.sampleRateLabel.AutoSize = true;
@@ -657,6 +668,43 @@
             this.mixdownComboBox.SelectedIndexChanged += new System.EventHandler(this.MixdownComboBox_SelectedIndexChanged);
             this.mixdownComboBox.TextChanged += new System.EventHandler(this.MixdownComboBox_TextChanged);
             this.mixdownComboBox.Leave += new System.EventHandler(this.MixdownComboBox_Leave);
+            // 
+            // gainCB1
+            // 
+            this.gainCB1.AutoCompleteCustomSource.AddRange(new string[] {
+            "0",
+            "5",
+            "10",
+            "15",
+            "20",
+            "25",
+            "30",
+            "35",
+            "40",
+            "45",
+            "50"});
+            this.gainCB1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.gainCB1.ForeColor = System.Drawing.Color.GreenYellow;
+            this.gainCB1.FormattingEnabled = true;
+            this.gainCB1.Items.AddRange(new object[] {
+            "0",
+            "5",
+            "10",
+            "15",
+            "20",
+            "25",
+            "30",
+            "35",
+            "40",
+            "45",
+            "50"});
+            this.gainCB1.Location = new System.Drawing.Point(205, 64);
+            this.gainCB1.Name = "gainCB1";
+            this.gainCB1.Size = new System.Drawing.Size(53, 21);
+            this.gainCB1.TabIndex = 3;
+            this.gainCB1.SelectedIndexChanged += new System.EventHandler(this.gainCB1_SelectedIndexChanged);
+            this.gainCB1.TextChanged += new System.EventHandler(this.gainCB1_TextChanged);
+            this.gainCB1.Leave += new System.EventHandler(this.gainCB1_Leave);
             // 
             // audioBitrateCombo
             // 
@@ -750,6 +798,52 @@
             this.audioPage2.Size = new System.Drawing.Size(506, 94);
             this.audioPage2.TabIndex = 1;
             this.audioPage2.Text = "Stream 2";
+            // 
+            // gainLbl2
+            // 
+            this.gainLbl2.AutoSize = true;
+            this.gainLbl2.Location = new System.Drawing.Point(171, 68);
+            this.gainLbl2.Name = "gainLbl2";
+            this.gainLbl2.Size = new System.Drawing.Size(33, 13);
+            this.gainLbl2.TabIndex = 18;
+            this.gainLbl2.Text = "Gain";
+            // 
+            // gainCB2
+            // 
+            this.gainCB2.AutoCompleteCustomSource.AddRange(new string[] {
+            "0",
+            "5",
+            "10",
+            "15",
+            "20",
+            "25",
+            "30",
+            "35",
+            "40",
+            "45",
+            "50"});
+            this.gainCB2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.gainCB2.ForeColor = System.Drawing.Color.GreenYellow;
+            this.gainCB2.FormattingEnabled = true;
+            this.gainCB2.Items.AddRange(new object[] {
+            "0",
+            "5",
+            "10",
+            "15",
+            "20",
+            "25",
+            "30",
+            "35",
+            "40",
+            "45",
+            "50"});
+            this.gainCB2.Location = new System.Drawing.Point(205, 64);
+            this.gainCB2.Name = "gainCB2";
+            this.gainCB2.Size = new System.Drawing.Size(53, 21);
+            this.gainCB2.TabIndex = 19;
+            this.gainCB2.SelectedIndexChanged += new System.EventHandler(this.gainCB2_SelectedIndexChanged);
+            this.gainCB2.TextChanged += new System.EventHandler(this.gainCB2_TextChanged);
+            this.gainCB2.Leave += new System.EventHandler(this.gainCB2_Leave);
             // 
             // disableCheckStream2
             // 
@@ -1022,6 +1116,52 @@
             this.audioPage3.Size = new System.Drawing.Size(506, 94);
             this.audioPage3.TabIndex = 2;
             this.audioPage3.Text = "Stream 3";
+            // 
+            // gainLbl3
+            // 
+            this.gainLbl3.AutoSize = true;
+            this.gainLbl3.Location = new System.Drawing.Point(171, 68);
+            this.gainLbl3.Name = "gainLbl3";
+            this.gainLbl3.Size = new System.Drawing.Size(33, 13);
+            this.gainLbl3.TabIndex = 20;
+            this.gainLbl3.Text = "Gain";
+            // 
+            // gainCB3
+            // 
+            this.gainCB3.AutoCompleteCustomSource.AddRange(new string[] {
+            "0",
+            "5",
+            "10",
+            "15",
+            "20",
+            "25",
+            "30",
+            "35",
+            "40",
+            "45",
+            "50"});
+            this.gainCB3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.gainCB3.ForeColor = System.Drawing.Color.GreenYellow;
+            this.gainCB3.FormattingEnabled = true;
+            this.gainCB3.Items.AddRange(new object[] {
+            "0",
+            "5",
+            "10",
+            "15",
+            "20",
+            "25",
+            "30",
+            "35",
+            "40",
+            "45",
+            "50"});
+            this.gainCB3.Location = new System.Drawing.Point(205, 64);
+            this.gainCB3.Name = "gainCB3";
+            this.gainCB3.Size = new System.Drawing.Size(53, 21);
+            this.gainCB3.TabIndex = 21;
+            this.gainCB3.SelectedIndexChanged += new System.EventHandler(this.gainCB3_SelectedIndexChanged);
+            this.gainCB3.TextChanged += new System.EventHandler(this.AudioBitrateCombo3_TextChanged);
+            this.gainCB3.Leave += new System.EventHandler(this.gainCB3_Leave);
             // 
             // disableCheckStream3
             // 
@@ -1467,6 +1607,7 @@
             this.videoSettingsPanel.Controls.Add(this.encoderLevelComboBox);
             this.videoSettingsPanel.Controls.Add(this.encoderProfileComboBox);
             this.videoSettingsPanel.Controls.Add(this.encoderTuneComboBox);
+            this.videoSettingsPanel.Controls.Add(this.videoEncoderCB);
             this.videoSettingsPanel.Controls.Add(this.encoderSpeedCombo);
             this.videoSettingsPanel.Controls.Add(this.turboCheckBox);
             this.videoSettingsPanel.Controls.Add(this.autoCropCB);
@@ -1477,6 +1618,7 @@
             this.videoSettingsPanel.Controls.Add(this.framerateLabel);
             this.videoSettingsPanel.Controls.Add(this.avgBitrateLabel);
             this.videoSettingsPanel.Controls.Add(this.encoderProfileLabel);
+            this.videoSettingsPanel.Controls.Add(this.videoEncoderCBLabel);
             this.videoSettingsPanel.Controls.Add(this.encoderTuneLabel);
             this.videoSettingsPanel.Controls.Add(this.encoderSpeedLabel);
             this.videoSettingsPanel.Location = new System.Drawing.Point(6, 176);
@@ -1575,7 +1717,7 @@
             "Constant",
             "Peak",
             "Variable"});
-            this.frameRateModeCombo.Location = new System.Drawing.Point(296, 20);
+            this.frameRateModeCombo.Location = new System.Drawing.Point(296, 32);
             this.frameRateModeCombo.Name = "frameRateModeCombo";
             this.frameRateModeCombo.Size = new System.Drawing.Size(85, 21);
             this.frameRateModeCombo.TabIndex = 2;
@@ -1603,7 +1745,7 @@
             "50",
             "59.94",
             "60"});
-            this.framerateCombo.Location = new System.Drawing.Point(393, 20);
+            this.framerateCombo.Location = new System.Drawing.Point(393, 32);
             this.framerateCombo.Name = "framerateCombo";
             this.framerateCombo.Size = new System.Drawing.Size(120, 21);
             this.framerateCombo.TabIndex = 3;
@@ -1637,7 +1779,7 @@
             "9",
             "9.5",
             "10"});
-            this.avgBitrateCombo.Location = new System.Drawing.Point(321, 51);
+            this.avgBitrateCombo.Location = new System.Drawing.Point(321, 59);
             this.avgBitrateCombo.Name = "avgBitrateCombo";
             this.avgBitrateCombo.Size = new System.Drawing.Size(51, 21);
             this.avgBitrateCombo.TabIndex = 5;
@@ -1665,7 +1807,7 @@
             "3.2",
             "4.0",
             "4.1"});
-            this.encoderLevelComboBox.Location = new System.Drawing.Point(238, 84);
+            this.encoderLevelComboBox.Location = new System.Drawing.Point(238, 97);
             this.encoderLevelComboBox.Name = "encoderLevelComboBox";
             this.encoderLevelComboBox.Size = new System.Drawing.Size(52, 21);
             this.encoderLevelComboBox.TabIndex = 7;
@@ -1682,7 +1824,7 @@
             "Baseline",
             "Main",
             "High"});
-            this.encoderProfileComboBox.Location = new System.Drawing.Point(112, 84);
+            this.encoderProfileComboBox.Location = new System.Drawing.Point(112, 97);
             this.encoderProfileComboBox.Name = "encoderProfileComboBox";
             this.encoderProfileComboBox.Size = new System.Drawing.Size(76, 21);
             this.encoderProfileComboBox.TabIndex = 6;
@@ -1703,13 +1845,32 @@
             "None",
             "Still Image",
             "Zero Latency"});
-            this.encoderTuneComboBox.Location = new System.Drawing.Point(112, 51);
+            this.encoderTuneComboBox.Location = new System.Drawing.Point(112, 59);
             this.encoderTuneComboBox.Name = "encoderTuneComboBox";
             this.encoderTuneComboBox.Size = new System.Drawing.Size(105, 21);
             this.encoderTuneComboBox.TabIndex = 4;
             this.encoderTuneComboBox.SelectedIndexChanged += new System.EventHandler(this.EncoderTuneComboBox_SelectedIndexChanged);
             this.encoderTuneComboBox.TextChanged += new System.EventHandler(this.EncoderTuneComboBox_TextChanged);
             this.encoderTuneComboBox.Leave += new System.EventHandler(this.EncoderTuneComboBox_Leave);
+            // 
+            // videoEncoderCB
+            // 
+            this.videoEncoderCB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.videoEncoderCB.ForeColor = System.Drawing.Color.GreenYellow;
+            this.videoEncoderCB.FormattingEnabled = true;
+            this.videoEncoderCB.Items.AddRange(new object[] {
+            "x264 (FFMPEG)",
+            "Quick Sync H.264",
+            "NVIDIA Encoding H.264",
+            "x265 (FFMPEG)",
+            "x265_10bit (FFMPEG)",
+            "NVIDIA Encoding H.265"});
+            this.videoEncoderCB.Location = new System.Drawing.Point(112, 5);
+            this.videoEncoderCB.Name = "videoEncoderCB";
+            this.videoEncoderCB.Size = new System.Drawing.Size(188, 21);
+            this.videoEncoderCB.TabIndex = 1;
+            this.videoEncoderCB.SelectedIndexChanged += new System.EventHandler(this.videoEncoderCB_SelectedIndexChanged);
+            this.videoEncoderCB.Leave += new System.EventHandler(this.videoEncoderCB_Leave);
             // 
             // encoderSpeedCombo
             // 
@@ -1727,7 +1888,7 @@
             "Slower",
             "Very Slow",
             "Placebo"});
-            this.encoderSpeedCombo.Location = new System.Drawing.Point(112, 20);
+            this.encoderSpeedCombo.Location = new System.Drawing.Point(112, 32);
             this.encoderSpeedCombo.Name = "encoderSpeedCombo";
             this.encoderSpeedCombo.Size = new System.Drawing.Size(105, 21);
             this.encoderSpeedCombo.TabIndex = 1;
@@ -1753,7 +1914,7 @@
             // 
             this.autoCropCB.AutoSize = true;
             this.autoCropCB.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.autoCropCB.Location = new System.Drawing.Point(208, 111);
+            this.autoCropCB.Location = new System.Drawing.Point(208, 122);
             this.autoCropCB.Name = "autoCropCB";
             this.autoCropCB.Size = new System.Drawing.Size(82, 17);
             this.autoCropCB.TabIndex = 11;
@@ -1768,7 +1929,7 @@
             this.twoPassCheckbox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.twoPassCheckbox.Checked = true;
             this.twoPassCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.twoPassCheckbox.Location = new System.Drawing.Point(60, 134);
+            this.twoPassCheckbox.Location = new System.Drawing.Point(60, 139);
             this.twoPassCheckbox.Name = "twoPassCheckbox";
             this.twoPassCheckbox.Size = new System.Drawing.Size(111, 17);
             this.twoPassCheckbox.TabIndex = 9;
@@ -1782,7 +1943,7 @@
             this.optimizeStreamingCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.optimizeStreamingCheckBox.Checked = true;
             this.optimizeStreamingCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.optimizeStreamingCheckBox.Location = new System.Drawing.Point(15, 111);
+            this.optimizeStreamingCheckBox.Location = new System.Drawing.Point(15, 122);
             this.optimizeStreamingCheckBox.Name = "optimizeStreamingCheckBox";
             this.optimizeStreamingCheckBox.Size = new System.Drawing.Size(156, 17);
             this.optimizeStreamingCheckBox.TabIndex = 8;
@@ -1793,7 +1954,7 @@
             // mbpsLabel
             // 
             this.mbpsLabel.AutoSize = true;
-            this.mbpsLabel.Location = new System.Drawing.Point(378, 54);
+            this.mbpsLabel.Location = new System.Drawing.Point(378, 62);
             this.mbpsLabel.Name = "mbpsLabel";
             this.mbpsLabel.Size = new System.Drawing.Size(37, 13);
             this.mbpsLabel.TabIndex = 6;
@@ -1802,7 +1963,7 @@
             // encoderLevelLabel
             // 
             this.encoderLevelLabel.AutoSize = true;
-            this.encoderLevelLabel.Location = new System.Drawing.Point(194, 87);
+            this.encoderLevelLabel.Location = new System.Drawing.Point(194, 100);
             this.encoderLevelLabel.Name = "encoderLevelLabel";
             this.encoderLevelLabel.Size = new System.Drawing.Size(38, 13);
             this.encoderLevelLabel.TabIndex = 5;
@@ -1811,7 +1972,7 @@
             // framerateLabel
             // 
             this.framerateLabel.AutoSize = true;
-            this.framerateLabel.Location = new System.Drawing.Point(227, 23);
+            this.framerateLabel.Location = new System.Drawing.Point(227, 35);
             this.framerateLabel.Name = "framerateLabel";
             this.framerateLabel.Size = new System.Drawing.Size(63, 13);
             this.framerateLabel.TabIndex = 4;
@@ -1820,7 +1981,7 @@
             // avgBitrateLabel
             // 
             this.avgBitrateLabel.AutoSize = true;
-            this.avgBitrateLabel.Location = new System.Drawing.Point(227, 54);
+            this.avgBitrateLabel.Location = new System.Drawing.Point(227, 62);
             this.avgBitrateLabel.Name = "avgBitrateLabel";
             this.avgBitrateLabel.Size = new System.Drawing.Size(88, 13);
             this.avgBitrateLabel.TabIndex = 3;
@@ -1829,16 +1990,25 @@
             // encoderProfileLabel
             // 
             this.encoderProfileLabel.AutoSize = true;
-            this.encoderProfileLabel.Location = new System.Drawing.Point(12, 87);
+            this.encoderProfileLabel.Location = new System.Drawing.Point(12, 100);
             this.encoderProfileLabel.Name = "encoderProfileLabel";
             this.encoderProfileLabel.Size = new System.Drawing.Size(94, 13);
             this.encoderProfileLabel.TabIndex = 2;
             this.encoderProfileLabel.Text = "Encoder Profile";
             // 
+            // videoEncoderCBLabel
+            // 
+            this.videoEncoderCBLabel.AutoSize = true;
+            this.videoEncoderCBLabel.Location = new System.Drawing.Point(52, 8);
+            this.videoEncoderCBLabel.Name = "videoEncoderCBLabel";
+            this.videoEncoderCBLabel.Size = new System.Drawing.Size(54, 13);
+            this.videoEncoderCBLabel.TabIndex = 0;
+            this.videoEncoderCBLabel.Text = "Encoder";
+            // 
             // encoderTuneLabel
             // 
             this.encoderTuneLabel.AutoSize = true;
-            this.encoderTuneLabel.Location = new System.Drawing.Point(19, 54);
+            this.encoderTuneLabel.Location = new System.Drawing.Point(19, 62);
             this.encoderTuneLabel.Name = "encoderTuneLabel";
             this.encoderTuneLabel.Size = new System.Drawing.Size(87, 13);
             this.encoderTuneLabel.TabIndex = 1;
@@ -1847,7 +2017,7 @@
             // encoderSpeedLabel
             // 
             this.encoderSpeedLabel.AutoSize = true;
-            this.encoderSpeedLabel.Location = new System.Drawing.Point(12, 23);
+            this.encoderSpeedLabel.Location = new System.Drawing.Point(12, 35);
             this.encoderSpeedLabel.Name = "encoderSpeedLabel";
             this.encoderSpeedLabel.Size = new System.Drawing.Size(94, 13);
             this.encoderSpeedLabel.TabIndex = 0;
@@ -1929,144 +2099,6 @@
             this.invisibleCloseButton.Text = "button1";
             this.invisibleCloseButton.UseVisualStyleBackColor = true;
             this.invisibleCloseButton.Click += new System.EventHandler(this.InvisibleCloseButton_Click);
-            // 
-            // gainCB1
-            // 
-            this.gainCB1.AutoCompleteCustomSource.AddRange(new string[] {
-            "0",
-            "5",
-            "10",
-            "15",
-            "20",
-            "25",
-            "30",
-            "35",
-            "40",
-            "45",
-            "50"});
-            this.gainCB1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.gainCB1.ForeColor = System.Drawing.Color.GreenYellow;
-            this.gainCB1.FormattingEnabled = true;
-            this.gainCB1.Items.AddRange(new object[] {
-            "0",
-            "5",
-            "10",
-            "15",
-            "20",
-            "25",
-            "30",
-            "35",
-            "40",
-            "45",
-            "50"});
-            this.gainCB1.Location = new System.Drawing.Point(205, 64);
-            this.gainCB1.Name = "gainCB1";
-            this.gainCB1.Size = new System.Drawing.Size(53, 21);
-            this.gainCB1.TabIndex = 3;
-            this.gainCB1.SelectedIndexChanged += new System.EventHandler(this.gainCB1_SelectedIndexChanged);
-            this.gainCB1.TextChanged += new System.EventHandler(this.gainCB1_TextChanged);
-            this.gainCB1.Leave += new System.EventHandler(this.gainCB1_Leave);
-            // 
-            // gainLbl1
-            // 
-            this.gainLbl1.AutoSize = true;
-            this.gainLbl1.Location = new System.Drawing.Point(171, 68);
-            this.gainLbl1.Name = "gainLbl1";
-            this.gainLbl1.Size = new System.Drawing.Size(33, 13);
-            this.gainLbl1.TabIndex = 0;
-            this.gainLbl1.Text = "Gain";
-            // 
-            // gainLbl2
-            // 
-            this.gainLbl2.AutoSize = true;
-            this.gainLbl2.Location = new System.Drawing.Point(171, 68);
-            this.gainLbl2.Name = "gainLbl2";
-            this.gainLbl2.Size = new System.Drawing.Size(33, 13);
-            this.gainLbl2.TabIndex = 18;
-            this.gainLbl2.Text = "Gain";
-            // 
-            // gainCB2
-            // 
-            this.gainCB2.AutoCompleteCustomSource.AddRange(new string[] {
-            "0",
-            "5",
-            "10",
-            "15",
-            "20",
-            "25",
-            "30",
-            "35",
-            "40",
-            "45",
-            "50"});
-            this.gainCB2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.gainCB2.ForeColor = System.Drawing.Color.GreenYellow;
-            this.gainCB2.FormattingEnabled = true;
-            this.gainCB2.Items.AddRange(new object[] {
-            "0",
-            "5",
-            "10",
-            "15",
-            "20",
-            "25",
-            "30",
-            "35",
-            "40",
-            "45",
-            "50"});
-            this.gainCB2.Location = new System.Drawing.Point(205, 64);
-            this.gainCB2.Name = "gainCB2";
-            this.gainCB2.Size = new System.Drawing.Size(53, 21);
-            this.gainCB2.TabIndex = 19;
-            this.gainCB2.SelectedIndexChanged += new System.EventHandler(this.gainCB2_SelectedIndexChanged);
-            this.gainCB2.TextChanged += new System.EventHandler(this.gainCB2_TextChanged);
-            this.gainCB2.Leave += new System.EventHandler(this.gainCB2_Leave);
-            // 
-            // gainLbl3
-            // 
-            this.gainLbl3.AutoSize = true;
-            this.gainLbl3.Location = new System.Drawing.Point(171, 68);
-            this.gainLbl3.Name = "gainLbl3";
-            this.gainLbl3.Size = new System.Drawing.Size(33, 13);
-            this.gainLbl3.TabIndex = 20;
-            this.gainLbl3.Text = "Gain";
-            // 
-            // gainCB3
-            // 
-            this.gainCB3.AutoCompleteCustomSource.AddRange(new string[] {
-            "0",
-            "5",
-            "10",
-            "15",
-            "20",
-            "25",
-            "30",
-            "35",
-            "40",
-            "45",
-            "50"});
-            this.gainCB3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.gainCB3.ForeColor = System.Drawing.Color.GreenYellow;
-            this.gainCB3.FormattingEnabled = true;
-            this.gainCB3.Items.AddRange(new object[] {
-            "0",
-            "5",
-            "10",
-            "15",
-            "20",
-            "25",
-            "30",
-            "35",
-            "40",
-            "45",
-            "50"});
-            this.gainCB3.Location = new System.Drawing.Point(205, 64);
-            this.gainCB3.Name = "gainCB3";
-            this.gainCB3.Size = new System.Drawing.Size(53, 21);
-            this.gainCB3.TabIndex = 21;
-            this.gainCB3.SelectedIndexChanged += new System.EventHandler(this.gainCB3_SelectedIndexChanged);
-            this.gainCB3.TextChanged += new System.EventHandler(this.AudioBitrateCombo3_TextChanged);
-            this.gainCB3.Leave += new System.EventHandler(this.gainCB3_Leave);
             // 
             // ConversionForm
             // 
@@ -2260,5 +2292,7 @@
         private System.Windows.Forms.ComboBox gainCB2;
         private System.Windows.Forms.Label gainLbl3;
         private System.Windows.Forms.ComboBox gainCB3;
+        private System.Windows.Forms.ComboBox videoEncoderCB;
+        private System.Windows.Forms.Label videoEncoderCBLabel;
     }
 }

@@ -92,6 +92,8 @@ namespace MovieDataCollector
               {"greek","el","gre"},
               {"greek","el","ell"}}; //Language Codes
 
+        
+
         List<string> subtitleComboList = new List<string>()
         {
             "None",
@@ -145,7 +147,48 @@ namespace MovieDataCollector
             "256"
         };
 
-        List<string> encoderSpeedList = new List<string>()
+        List<string> videoEncoders = new List<string>()
+        {
+            "x264 (FFMPEG)",
+            "Quick Sync H.264",
+            "NVIDIA Encoding H.264",
+            "x265 (FFMPEG)",
+            "x265_10bit (FFMPEG)",
+            "NVIDIA Encoding H.265"
+        };
+
+        List<string> x264SpeedList = new List<string>()
+        {
+            "Very Fast", //Default
+            "Ultra Fast",
+            "Super Fast",
+            "Faster",
+            "Fast",
+            "Medium",
+            "Slow",
+            "Slower",
+            "Very Slow",
+            "Placebo"
+        };
+        //Intel Quick Sync Video
+        List<string> qsv_h264SpeedList = new List<string>()
+        {
+            "Quality", //Default
+            "Balanced",
+            "Speed"
+        };
+        //Nvidia GPU Enabled Encoding (covers both h264 and h265)
+        List<string> nvencSpeedList = new List<string>()
+        {
+            "HQ", //Default "High Quality"
+            "HP", // High Performance
+            "Fast",
+            "Medium",
+            "Slow",
+            "Default"
+        };
+        //x265, also 10bit h265, 
+        List<string> x265SpeedList = new List<string>()
         {
             "Very Fast", //Default
             "Ultra Fast",
@@ -159,7 +202,9 @@ namespace MovieDataCollector
             "Placebo"
         };
 
-        List<string> encoderTuneList = new List<string>()
+
+        //Covers standard and 10 bit
+        List<string> x264TuneList = new List<string>()
         {
             "Fast Decode", //Default
             "Animation",
@@ -169,17 +214,50 @@ namespace MovieDataCollector
             "Still Image",
             "Zero Latency"
         };
+        //Covers standard and 10 bit
+        List<string> x265TuneList = new List<string>()
+        {
+            "Fast Decode", //Default
+            "SSIM",
+            "PSNR",
+            "Grain",
+            "Zero Latency"
+        };
 
-        List<string> encoderProfileList = new List<string>()
+
+        List<string> x264ProfileList = new List<string>()
         {
             "High", //Default
             "Baseline",
             "Main"
         };
 
-        List<string> encoderLevelList = new List<string>()
+        List<string> x264_10bitProfileList = new List<string>()
         {
-            "4.1", //Default
+            "High 10" //Default
+        };
+
+        List<string> x265ProfileList = new List<string>()
+        {
+            "Main", //Default - Roku Compliant
+            "Auto",
+            "Main Still Picture"
+        };
+
+        List<string> x265_10bitProfileList = new List<string>()
+        {
+            "Main 10", //Default - Roku Compliant
+            "Main 10-intra"
+        };
+        List<string> nvenc_h265ProfileList = new List<string>()
+        {
+            "Main"
+        };
+
+        //Covers all versions of 264 codec
+        List<string> x264LevelList = new List<string>()
+        {
+            "4.0", //Default, Most Supported
             "Auto",
             "1.0",
             "1b",
@@ -192,11 +270,31 @@ namespace MovieDataCollector
             "3.0",
             "3.1",
             "3.2",
-            "4.0",
-            "4.2",
+            "4.1", //Roku Compliant
+            "4.2", //Roku Compliant
             "5.0",
             "5.1",
             "5.2"
+        };
+
+        //Covers all version of 265 codec
+        List<string> x265LevelList = new List<string>()
+        {
+            "4.1", //Default
+            "Auto", 
+            "1.0",
+            "2.0",
+            "2.1",
+            "3.0",
+            "3.1",
+            "4.0",
+            "4.1", //Roku Compliant
+            "5.0", //Roku Compliant
+            "5.1", //Roku Compliant
+            "5.2",
+            "6.0",
+            "6.1",
+            "6.2"
         };
 
         List<string> videoBitrateCapList = new List<string>()
@@ -1624,8 +1722,26 @@ namespace MovieDataCollector
         private string VideoConversionString(MediaFile videoFile)
         {
             //Output Variables
-            string outputEncoder = BuildEncoderString(videoFile); //Encoder, level, tune, 
-            string outputEncopts = BuildEncoptsString(videoFile); //Encopts & Video Bitrate
+            string outputEncoder = BuildEncoderString(videoFile); //Encoder, level, tune,
+            string outputEncoderOptions = "";
+
+            switch (videoEncoderCB.Text)
+            {
+                case "Quick Sync H.264":
+                    outputEncoderOptions = QuickSyncEncoderOptions(videoFile); //EncoderOptions & Video Bitrate
+                    break;
+                case "NVIDIA Encoding H.264":
+                    outputEncoderOptions = NVIDIAEncoderOptions(videoFile); //Video Bitrate - Encoder Options don't apply
+                    break;
+                case "NVIDIA Encoding H.265":
+                    outputEncoderOptions = NVIDIAEncoderOptions(videoFile); //Video Bitrate - Encoder Options don't apply
+                    break;
+                default: //All other encoders will use the standard x264/265 encoder options.
+                    outputEncoderOptions = x264EncoderOptions(videoFile); //EncoderOptions & Video Bitrate
+                    break;
+            }
+
+            
             string outputFrameRate = BuildFramerateString(videoFile); //Video Framerate
             string subtitleString = BuildSubString(videoFile);
 
@@ -1637,7 +1753,7 @@ namespace MovieDataCollector
             if (twoPassCheckbox.Checked) { outputTwoPass = "--two-pass "; }
             if (turboCheckBox.Checked) { outputTurbo = "--turbo "; }
 
-            return outputEncoder + subtitleString + outputEncopts + outputTwoPass + outputTurbo + outputFrameRate ;
+            return outputEncoder + subtitleString + outputEncoderOptions + outputTwoPass + outputTurbo + outputFrameRate ;
         }
 
         //Framrate string
@@ -2264,22 +2380,641 @@ namespace MovieDataCollector
             }
             return outputFrameRate;
         }
-
-        //Encopts String & Video Bitrate
-        private string BuildEncoptsString(MediaFile videoFile)
+        private string BuildEncoderString(MediaFile vidoeFile)
         {
+            string selectedEncoder = "";
+            string outputEncoder = ""; //encoder and speed preset
+            string outputEncoderSpeed = "";
+            string outputEncoderTune = ""; //Encoder tune
+            string outputEncoderProfile = "";
+            string outputEncoderLevel = "";
+
+            /*Encoder * **********************************************************************************************************************************************************************************************/
+            //outputEncoder = "--encoder x264 ";
+            switch (videoEncoderCB.Text)
+            {
+                case "x264(FFMPEG)":
+                    selectedEncoder = "x264";
+                    break;
+                case "Quick Sync H.264":
+                    selectedEncoder = "qsv_h264";
+                    break;
+                case "NVIDIA Encoding H.264":
+                    selectedEncoder = "nvenc_h264";
+                    break;
+                case "x265 (FFMPEG)":
+                    selectedEncoder = "x265";
+                    break;
+                case "x265_10bit (FFMPEG)":
+                    selectedEncoder = "x265_10bit";
+                    break;
+                case "NVIDIA Encoding H.265":
+                    selectedEncoder = "nvenc_h265";
+                    break;
+                default:
+                    selectedEncoder = "x264";
+                    break;
+
+            }
+
+            outputEncoder = "--encoder " + selectedEncoder + " ";
+            /*Encoder Speed***********************************************************************************************************************************************************************************************/
+            if (videoEncoderCB.Text == "x264 (FFMPEG)")
+            {
+                switch (encoderSpeedCombo.Text)
+                {
+                    case "Ultra Fast":
+                        outputEncoderSpeed = "--encoder-preset ultrafast ";
+                        break;
+                    case "Super Fast":
+                        outputEncoderSpeed = "--encoder-preset superfast ";
+                        break;
+                    case "Very Fast":
+                        outputEncoderSpeed = "--encoder-preset veryfast ";
+                        break;
+                    case "Faster":
+                        outputEncoderSpeed = "--encoder-preset faster ";
+                        break;
+                    case "Fast":
+                        outputEncoderSpeed = "--encoder-preset fast ";
+                        break;
+                    case "Medium":
+                        outputEncoderSpeed = "--encoder-preset medium ";
+                        break;
+                    case "Slow":
+                        outputEncoderSpeed = "--encoder-preset slow ";
+                        break;
+                    case "Slower":
+                        outputEncoderSpeed = "--encoder-preset slower ";
+                        break;
+                    case "Very Slow":
+                        outputEncoderSpeed = "--encoder-preset veryslow ";
+                        break;
+                    case "Placebo":
+                        outputEncoderSpeed = "--encoder-preset placebo ";
+                        break;
+                    default:
+                        outputEncoderSpeed = "--encoder-preset medium ";
+                        break;
+                }
+            }
+
+            else if (videoEncoderCB.Text == "Quick Sync H.264")
+            {
+                switch (encoderSpeedCombo.Text)
+                {
+                    case "Speed":
+                        outputEncoderSpeed = "--encoder-preset speed ";
+                        break;
+                    case "Balance":
+                        outputEncoderSpeed = "--encoder-preset balance ";
+                        break;
+                    case "Quality":
+                        outputEncoderSpeed = "--encoder-preset quality ";
+                        break;
+                    default:
+                        outputEncoderSpeed = "--encoder-preset quality ";
+                        break;
+                }
+            }
+
+            else if (videoEncoderCB.Text == "NVIDIA Encoding H.264")
+            {
+                switch (encoderSpeedCombo.Text)
+                {
+                    case "HP":
+                        outputEncoderSpeed = "--encoder-preset hp ";
+                        break;
+                    case "HQ":
+                        outputEncoderSpeed = "--encoder-preset hq ";
+                        break;
+                    case "Fast":
+                        outputEncoderSpeed = "--encoder-preset fast ";
+                        break;
+                    case "Medium":
+                        outputEncoderSpeed = "--encoder-preset medium ";
+                        break;
+                    case "Slow":
+                        outputEncoderSpeed = "--encoder-preset slow ";
+                        break;
+                    case "Default":
+                        outputEncoderSpeed = "--encoder-preset default ";
+                        break;
+                    default:
+                        outputEncoderSpeed = "--encoder-preset hq ";
+                        break;
+                }
+            }
+
+            else if (videoEncoderCB.Text == "x265 (FFMPEG)")
+            {
+                switch (encoderSpeedCombo.Text)
+                {
+                    case "Ultra Fast":
+                        outputEncoderSpeed = "--encoder-preset ultrafast ";
+                        break;
+                    case "Super Fast":
+                        outputEncoderSpeed = "--encoder-preset superfast ";
+                        break;
+                    case "Very Fast":
+                        outputEncoderSpeed = "--encoder-preset veryfast ";
+                        break;
+                    case "Faster":
+                        outputEncoderSpeed = "--encoder-preset faster ";
+                        break;
+                    case "Fast":
+                        outputEncoderSpeed = "--encoder-preset fast ";
+                        break;
+                    case "Medium":
+                        outputEncoderSpeed = "--encoder-preset medium ";
+                        break;
+                    case "Slow":
+                        outputEncoderSpeed = "--encoder-preset slow ";
+                        break;
+                    case "Slower":
+                        outputEncoderSpeed = "--encoder-preset slower ";
+                        break;
+                    case "Very Slow":
+                        outputEncoderSpeed = "--encoder-preset veryslow ";
+                        break;
+                    case "Placebo":
+                        outputEncoderSpeed = "--encoder-preset placebo ";
+                        break;
+                    default:
+                        outputEncoderSpeed = "--encoder-preset medium ";
+                        break;
+                }
+            }
+
+            else if (videoEncoderCB.Text == "x265_10bit (FFMPEG)")
+            {
+                switch (encoderSpeedCombo.Text)
+                {
+                    case "Ultra Fast":
+                        outputEncoderSpeed = "--encoder-preset ultrafast ";
+                        break;
+                    case "Super Fast":
+                        outputEncoderSpeed = "--encoder-preset superfast ";
+                        break;
+                    case "Very Fast":
+                        outputEncoderSpeed = "--encoder-preset veryfast ";
+                        break;
+                    case "Faster":
+                        outputEncoderSpeed = "--encoder-preset faster ";
+                        break;
+                    case "Fast":
+                        outputEncoderSpeed = "--encoder-preset fast ";
+                        break;
+                    case "Medium":
+                        outputEncoderSpeed = "--encoder-preset medium ";
+                        break;
+                    case "Slow":
+                        outputEncoderSpeed = "--encoder-preset slow ";
+                        break;
+                    case "Slower":
+                        outputEncoderSpeed = "--encoder-preset slower ";
+                        break;
+                    case "Very Slow":
+                        outputEncoderSpeed = "--encoder-preset veryslow ";
+                        break;
+                    case "Placebo":
+                        outputEncoderSpeed = "--encoder-preset placebo ";
+                        break;
+                    default:
+                        outputEncoderSpeed = "--encoder-preset medium ";
+                        break;
+                }
+            }
+
+            else if (videoEncoderCB.Text == "NVIDIA Encoding H.265")
+            {
+                switch (encoderSpeedCombo.Text)
+                {
+                    case "HP":
+                        outputEncoderSpeed = "--encoder-preset hp ";
+                        break;
+                    case "HQ":
+                        outputEncoderSpeed = "--encoder-preset hq ";
+                        break;
+                    case "Fast":
+                        outputEncoderSpeed = "--encoder-preset fast ";
+                        break;
+                    case "Medium":
+                        outputEncoderSpeed = "--encoder-preset medium ";
+                        break;
+                    case "Slow":
+                        outputEncoderSpeed = "--encoder-preset slow ";
+                        break;
+                    case "Default":
+                        outputEncoderSpeed = "--encoder-preset default ";
+                        break;
+                    default:
+                        outputEncoderSpeed = "--encoder-preset medium ";
+                        break;
+                }
+            }
+
+            /*Encoder Tune***********************************************************************************************************************************************************************************************/
+
+            if (videoEncoderCB.Text == "x264 (FFMPEG)")
+            {
+                switch (encoderTuneComboBox.Text)
+                {
+                    case "Animation":
+                        outputEncoderTune = "--encoder-tune animation ";
+                        break;
+                    case "Fast Decode":
+                        outputEncoderTune = "--encoder-tune fastdecode ";
+                        break;
+                    case "Film":
+                        outputEncoderTune = "--encoder-tune film ";
+                        break;
+                    case "Grain":
+                        outputEncoderTune = "--encoder-tune grain ";
+                        break;
+                    case "None":
+                        outputEncoderTune = "";
+                        break;
+                    case "Still Image":
+                        outputEncoderTune = "--encoder-tune stillimage ";
+                        break;
+                    case "Zero Latency":
+                        outputEncoderTune = "--encoder-tune zerolatency ";
+                        break;
+                    default:
+                        outputEncoderTune = "";
+                        break;
+                }
+            }
+            else if (videoEncoderCB.Text == "Quick Sync H.264")
+            {
+                switch (encoderTuneComboBox.Text)
+                {
+                    case "Animation":
+                        outputEncoderTune = "";
+                        break;
+                    case "Fast Decode":
+                        outputEncoderTune = "";
+                        break;
+                    case "Film":
+                        outputEncoderTune = "";
+                        break;
+                    case "Grain":
+                        outputEncoderTune = "";
+                        break;
+                    case "None":
+                        outputEncoderTune = "";
+                        break;
+                    case "Still Image":
+                        outputEncoderTune = "";
+                        break;
+                    case "Zero Latency":
+                        outputEncoderTune = "";
+                        break;
+                    default:
+                        outputEncoderTune = "";
+                        break;
+                }
+            }
+
+            else if (videoEncoderCB.Text == "NVIDIA Encoding H.264")
+            {
+                switch (encoderTuneComboBox.Text)
+                {
+                    case "Animation":
+                        outputEncoderTune = "";
+                        break;
+                    case "Fast Decode":
+                        outputEncoderTune = "";
+                        break;
+                    case "Film":
+                        outputEncoderTune = "";
+                        break;
+                    case "Grain":
+                        outputEncoderTune = "";
+                        break;
+                    case "None":
+                        outputEncoderTune = "";
+                        break;
+                    case "Still Image":
+                        outputEncoderTune = "";
+                        break;
+                    case "Zero Latency":
+                        outputEncoderTune = "";
+                        break;
+                    default:
+                        outputEncoderTune = "";
+                        break;
+                }
+            }
+
+            else if (videoEncoderCB.Text == "x265 (FFMPEG)")
+            {
+                switch (encoderTuneComboBox.Text)
+                {
+                    case "SSIM":
+                        outputEncoderTune = "--encoder-tune ssim ";
+                        break;
+                    case "PSNR":
+                        outputEncoderTune = "--encoder-tune psnr ";
+                        break;
+                    case "Fast Decode":
+                        outputEncoderTune = "--encoder-tune fastdecode ";
+                        break;
+                    case "Grain":
+                        outputEncoderTune = "--encoder-tune grain ";
+                        break;
+                    case "Zero Latency":
+                        outputEncoderTune = "--encoder-tune zerolatency ";
+                        break;
+                    default:
+                        outputEncoderTune = "";
+                        break;
+                }
+            }
+
+            else if (videoEncoderCB.Text == "x265_10bit (FFMPEG)")
+            {
+                switch (encoderTuneComboBox.Text)
+                {
+                    case "SSIM":
+                        outputEncoderTune = "--encoder-tune ssim ";
+                        break;
+                    case "PSNR":
+                        outputEncoderTune = "--encoder-tune psnr ";
+                        break;
+                    case "Fast Decode":
+                        outputEncoderTune = "--encoder-tune fastdecode ";
+                        break;
+                    case "Grain":
+                        outputEncoderTune = "--encoder-tune grain ";
+                        break;
+                    case "Zero Latency":
+                        outputEncoderTune = "--encoder-tune zerolatency ";
+                        break;
+                    default:
+                        outputEncoderTune = "";
+                        break;
+                }
+            }
+
+            else if (videoEncoderCB.Text == "NVIDIA Encoding H.265")
+            {
+                switch (encoderTuneComboBox.Text)
+                {
+                    case "SSIM":
+                        outputEncoderTune = "";
+                        break;
+                    case "PSNR":
+                        outputEncoderTune = "";
+                        break;
+                    case "Fast Decode":
+                        outputEncoderTune = "";
+                        break;
+                    case "Grain":
+                        outputEncoderTune = "";
+                        break;
+                    case "Zero Latency":
+                        outputEncoderTune = "";
+                        break;
+                    default:
+                        outputEncoderTune = "";
+                        break;
+                }
+            }
+
+
+            /*Encoder Profile***********************************************************************************************************************************************************************************************/
+
+            if (videoEncoderCB.Text == "x264 (FFMPEG)")
+            {
+                switch (encoderProfileComboBox.Text)
+                {
+                    case "Baseline":
+                        outputEncoderProfile = "--encoder-profile baseline ";
+                        break;
+                    case "Main":
+                        outputEncoderProfile = "--encoder-profile main ";
+                        break;
+                    case "High":
+                        outputEncoderProfile = "--encoder-profile high ";
+                        break;
+                    default:
+                        outputEncoderProfile = "--encoder-profile high ";
+                        break;
+                }
+            }
+
+            else if (videoEncoderCB.Text == "Quick Sync H.264")
+            {
+                switch (encoderProfileComboBox.Text)
+                {
+                    case "Baseline":
+                        outputEncoderProfile = "--encoder-profile baseline ";
+                        break;
+                    case "Main":
+                        outputEncoderProfile = "--encoder-profile main ";
+                        break;
+                    case "High":
+                        outputEncoderProfile = "--encoder-profile high ";
+                        break;
+                    default:
+                        outputEncoderProfile = "--encoder-profile high ";
+                        break;
+                }
+            }
+
+            else if (videoEncoderCB.Text == "NVIDIA Encoding H.264")
+            {
+                switch (encoderProfileComboBox.Text)
+                {
+                    case "Baseline":
+                        outputEncoderProfile = "--encoder-profile baseline ";
+                        break;
+                    case "Main":
+                        outputEncoderProfile = "--encoder-profile main ";
+                        break;
+                    case "High":
+                        outputEncoderProfile = "--encoder-profile high ";
+                        break;
+                    default:
+                        outputEncoderProfile = "--encoder-profile high ";
+                        break;
+                }
+            }
+
+            else if (videoEncoderCB.Text == "x265 (FFMPEG)")
+            {
+                switch (encoderProfileComboBox.Text)
+                {
+                    case "Auto":
+                        outputEncoderProfile = "--encoder-profile auto ";
+                        break;
+                    case "Main":
+                        outputEncoderProfile = "--encoder-profile main ";
+                        break;
+                    case "Main Still Picture":
+                        outputEncoderProfile = "--encoder-profile mainstillpicture ";
+                        break;
+                    default:
+                        outputEncoderProfile = "--encoder-profile main ";
+                        break;
+                }
+            }
+
+            else if (videoEncoderCB.Text == "x265_10bit (FFMPEG)")
+            {
+                switch (encoderProfileComboBox.Text)
+                {
+                    case "Main 10":
+                        outputEncoderProfile = "--encoder-profile main10 ";
+                        break;
+                    case "Main 10-intra":
+                        outputEncoderProfile = "--encoder-profile main10-intra ";
+                        break;
+                    default:
+                        outputEncoderProfile = "--encoder-profile main10 ";
+                        break;
+                }
+            }
+
+            else if (videoEncoderCB.Text == "NVIDIA Encoding H.265")
+            {
+                switch (encoderProfileComboBox.Text)
+                {
+                    case "Main":
+                        outputEncoderProfile = "--encoder-profile main ";
+                        break;
+                    default:
+                        outputEncoderProfile = "--encoder-profile main10 ";
+                        break;
+                }
+            }
+
+            /*Encoder Level***********************************************************************************************************************************************************************************************/
+            if (videoEncoderCB.Text == "x264 (FFMPEG)" ||
+                videoEncoderCB.Text == "Quick Sync H.264" ||
+                videoEncoderCB.Text == "NVIDIA Encoding H.264")
+            {
+                switch (encoderLevelComboBox.Text)
+                {
+                    case "1.0":
+                        outputEncoderLevel = "--encoder-level 1.0 ";
+                        break;
+                    case "1b":
+                        outputEncoderLevel = "--encoder-level 1b ";
+                        break;
+                    case "1.1":
+                        outputEncoderLevel = "--encoder-level 1.1 ";
+                        break;
+                    case "1.2":
+                        outputEncoderLevel = "--encoder-level 1.2 ";
+                        break;
+                    case "1.3":
+                        outputEncoderLevel = "--encoder-level 1.3 ";
+                        break;
+                    case "2.0":
+                        outputEncoderLevel = "--encoder-level 2.0 ";
+                        break;
+                    case "2.1":
+                        outputEncoderLevel = "--encoder-level 2.1 ";
+                        break;
+                    case "2.2":
+                        outputEncoderLevel = "--encoder-level 2.2 ";
+                        break;
+                    case "3.0":
+                        outputEncoderLevel = "--encoder-level 3.0 ";
+                        break;
+                    case "3.1":
+                        outputEncoderLevel = "--encoder-level 3.1 ";
+                        break;
+                    case "3.2":
+                        outputEncoderLevel = "--encoder-level 3.2 ";
+                        break;
+                    case "4.0":
+                        outputEncoderLevel = "--encoder-level 4.0 ";
+                        break;
+                    case "4.1":
+                        outputEncoderLevel = "--encoder-level 4.1 ";
+                        break;
+                    default:
+                        outputEncoderLevel = "--encoder-level 4.0 ";
+                        break;
+                }
+            }
+            else if (videoEncoderCB.Text == "x265 (FFMPEG)" ||
+                videoEncoderCB.Text == "x265_10bit (FFMPEG)" ||
+                videoEncoderCB.Text == "NVIDIA Encoding H.265")
+            {
+                switch (encoderLevelComboBox.Text)
+                {
+                    case "1.0":
+                        outputEncoderLevel = "--encoder-level 1.0 ";
+                        break;
+                    case "2.0":
+                        outputEncoderLevel = "--encoder-level 2.0 ";
+                        break;
+                    case "2.1":
+                        outputEncoderLevel = "--encoder-level 2.1 ";
+                        break;
+                    case "3.0":
+                        outputEncoderLevel = "--encoder-level 3.0 ";
+                        break;
+                    case "3.1":
+                        outputEncoderLevel = "--encoder-level 3.1 ";
+                        break;
+                    case "4.0":
+                        outputEncoderLevel = "--encoder-level 4.0 ";
+                        break;
+                    case "4.1":
+                        outputEncoderLevel = "--encoder-level 4.1 ";
+                        break;
+                    case "5.0":
+                        outputEncoderLevel = "--encoder-level 5.0 ";
+                        break;
+                    case "5.1":
+                        outputEncoderLevel = "--encoder-level 5.1 ";
+                        break;
+                    case "5.2":
+                        outputEncoderLevel = "--encoder-level 5.2 ";
+                        break;
+                    case "6.0":
+                        outputEncoderLevel = "--encoder-level 6.0 ";
+                        break;
+                    case "6.1":
+                        outputEncoderLevel = "--encoder-level 6.1 ";
+                        break;
+                    case "6.2":
+                        outputEncoderLevel = "--encoder-level 6.2 ";
+                        break;
+                    default:
+                        outputEncoderLevel = "--encoder-level 4.0 ";
+                        break;
+                }
+            }
+
+
+
+            return outputEncoder + outputEncoderLevel + outputEncoderProfile + outputEncoderSpeed + outputEncoderTune;
+        }
+        private string x264EncoderOptions(MediaFile videoFile)
+        {
+            string encoder = videoEncoderCB.Text;
             double avgBitrateCap = 0.0;
             string MaxBitrate = "";
             string BufferSize = "";
             double BitrateMultiplier = 1.5; //Size of the Maximum bitrate for the video portion of the file
             double BufferMultiplier = 2; //Size of the buffer
-            string outputEncopts = "";
+            string InitialBufferFill = ":vbv-init=0.9";  //How much of the buffer to fill before video start. Default is 0.9 or 90%
+            string outputEncoderOptions = "";
             double videoBitrate = 0.0;
             string outputVideoBitrate = "";
 
+            
+
             if (videoFile.Video.Count > 0) //video stream found
             {
-                /*Encopts***********************************************************************************************************************************************************************************************/
+                /*EncoderOptions***********************************************************************************************************************************************************************************************/
                 if (videoFile.Video[0].Properties.ContainsKey("Bit rate"))
                 {
                     if (videoFile.Video[0].Properties["Bit rate"].Contains("Mbps")) //If file bitrate is in Mbps
@@ -2368,7 +3103,7 @@ namespace MovieDataCollector
             }
             else
             {
-                /*Encopts***********************************************************************************************************************************************************************************************/
+                /*EncoderOptions***********************************************************************************************************************************************************************************************/
                 //Need to adjust for number of channels of audio, currently it is the value for mono not stereo which is typical.
 
                 double.TryParse(avgBitrateCombo.Text, out avgBitrateCap);
@@ -2390,157 +3125,228 @@ namespace MovieDataCollector
                 }
 
                 //These settings set the buffer size and maximum video bitrate, also setting the encoder level
-                outputEncopts = "--encopts level=" + encoderLevelComboBox.Text + ":vbv-bufsize=" + BufferSize + ":vbv-maxrate=" + MaxBitrate + " --verbose=1 --encoder-level=\"" + encoderLevelComboBox.Text + "\" --encoder-profile=" + encoderProfileComboBox.Text.ToLower() + " --verbose=1 ";
+                outputEncoderOptions = "--EncoderOptions level=" + encoderLevelComboBox.Text + ":vbv-bufsize=" + BufferSize + InitialBufferFill + ":vbv-maxrate=" + MaxBitrate + " --verbose=1 --encoder-level=\"" + encoderLevelComboBox.Text + "\" --encoder-profile=" + encoderProfileComboBox.Text.ToLower() + " --verbose=1 ";
 
             }
 
             //These settings set the buffer size and maximum video bitrate, also setting the encoder level
-            outputEncopts = "--encopts level=" + encoderLevelComboBox.Text + ":vbv-bufsize=" + BufferSize + ":vbv-maxrate=" + MaxBitrate + " --verbose=1 --encoder-level=\"" + encoderLevelComboBox.Text + "\" --encoder-profile=" + encoderProfileComboBox.Text.ToLower() + " --verbose=1 ";
-            return outputEncopts + outputVideoBitrate;
+            outputEncoderOptions = "--EncoderOptions level=" + encoderLevelComboBox.Text + ":vbv-bufsize=" + BufferSize + InitialBufferFill + ":vbv-maxrate=" + MaxBitrate + " --verbose=1 --encoder-level=\"" + encoderLevelComboBox.Text + "\" --encoder-profile=" + encoderProfileComboBox.Text.ToLower() + " --verbose=1 ";
+            return outputEncoderOptions + outputVideoBitrate;
         }
-        private string BuildEncoderString(MediaFile vidoeFile)
+        private string QuickSyncEncoderOptions(MediaFile videoFile)
         {
-            string outputEncoder = ""; //encoder and speed preset
-            string outputEncoderSpeed = "";
-            string outputEncoderTune = ""; //Encoder tune
-            string outputEncoderProfile = "";
-            string outputEncoderLevel = "";
+            string encoder = videoEncoderCB.Text;
+            double avgBitrateCap = 0.0;
+            string MaxBitrate = "";
+            string BufferSize = "";
+            double BitrateMultiplier = 1.5; //Size of the Maximum bitrate for the video portion of the file
+            double BufferMultiplier = 2; //Size of the buffer
+            string InitialBufferFill = ":vbv-init=0.9";  //How much of the buffer to fill before video start. Default is 0.9 or 90%
+            string outputEncoderOptions = "";
+            double videoBitrate = 0.0;
+            string outputVideoBitrate = "";
 
-            /*Encoder * **********************************************************************************************************************************************************************************************/
-            outputEncoder = "--encoder x264 ";
-            /*Encoder Speed***********************************************************************************************************************************************************************************************/
-            switch (encoderSpeedCombo.Text)
+
+
+            if (videoFile.Video.Count > 0) //video stream found
             {
-                case "Ultra Fast":
-                    outputEncoderSpeed = "--x264-preset ultrafast ";
-                    break;
-                case "Super Fast":
-                    outputEncoderSpeed = "--x264-preset superfast ";
-                    break;
-                case "Very Fast":
-                    outputEncoderSpeed = "--x264-preset veryfast ";
-                    break;
-                case "Faster":
-                    outputEncoderSpeed = "--x264-preset faster ";
-                    break;
-                case "Fast":
-                    outputEncoderSpeed = "--x264-preset fast ";
-                    break;
-                case "Medium":
-                    outputEncoderSpeed = "--x264-preset medium ";
-                    break;
-                case "Slow":
-                    outputEncoderSpeed = "--x264-preset slow ";
-                    break;
-                case "Slower":
-                    outputEncoderSpeed = "--x264-preset slower ";
-                    break;
-                case "Very Slow":
-                    outputEncoderSpeed = "--x264-preset veryslow ";
-                    break;
-                case "Placebo":
-                    outputEncoderSpeed = "--x264-preset placebo ";
-                    break;
-                default:
-                    outputEncoderSpeed = "--x264-preset medium ";
-                    break;
+                /*EncoderOptions***********************************************************************************************************************************************************************************************/
+                if (videoFile.Video[0].Properties.ContainsKey("Bit rate"))
+                {
+                    if (videoFile.Video[0].Properties["Bit rate"].Contains("Mbps")) //If file bitrate is in Mbps
+                    {
+                        double.TryParse(videoFile.Video[0].Properties["Bit rate"].Replace(" ", "").Replace("Mbps", ""), out videoBitrate);
+                        videoBitrate = videoBitrate * 1000; //accounts for reading in Mbps rather than Kbps
+                    }
+                    else if (videoFile.Video[0].Properties["Bit rate"].Contains("Kbps")) //If file bitrate is in Mbps
+                    {
+                        double.TryParse(videoFile.Video[0].Properties["Bit rate"].Replace(" ", "").Replace("Kbps", ""), out videoBitrate);
+                    }
+                }
+
+                if (videoBitrate == 0 && videoFile.General.Bitrate > 0)
+                {
+                    //check for audio bitrate and subtract from general bitrate
+                    videoBitrate = videoFile.General.Bitrate; //- videoFile.Audio[audioTrack - 1].Bitrate; - Audio Track info changed in previous version. This breaks the code. use gneral bitrate if no other is foudn.
+                }
+
+                if (videoBitrate == 0 && videoFile.General.Properties.ContainsKey("Overall bit rate"))
+                {
+                    if (videoFile.General.Properties["Overall bit rate"].Contains("Mbps"))
+                    {
+                        double.TryParse(videoFile.General.Properties["Overall bit rate"].Replace(" ", "").Replace("Mbps", ""), out videoBitrate);
+                        videoBitrate = videoBitrate * 1000; //accounts for reading in Mbps rather than Kbps
+                    }
+                    else if (videoFile.General.Properties["Overall bit rate"].Contains("Kbps"))
+                    {
+                        double.TryParse(videoFile.General.Properties["Overall bit rate"].Replace(" ", "").Replace("Kbps", ""), out videoBitrate);
+                    }
+                }
+
+                double.TryParse(avgBitrateCombo.Text, out avgBitrateCap);
+                avgBitrateCap = avgBitrateCap * 1000; //This changes the value in the dropdown from Mbps to Kbps
+
+                /*https://www.chaneru.com/Roku/HLS/X264_Settings.htm#vbv-maxrate
+                  vbv-maxrate
+                  Default: 0
+                  Sets the maximum rate the VBV buffer should be assumed to refill at.
+                  VBV reduces quality, so you should only use this if you're encoding for a playback scenario that requires it.
+                  See also: --vbv-bufsize, --vbv-init, VBV Encoding Suggestions
+
+                  vbv-bufsize
+                  Default: 0
+                  Sets the size of the VBV buffer in kilobits.
+                  VBV reduces quality, so you should only use this if you're encoding for a playback scenario that requires it.
+                  See also: --vbv-maxsize, --vbv-init, VBV Encoding Suggestions
+
+                  vbv-init
+                  Default: 0.9
+                  Sets how full the VBV Buffer must be before playback starts.
+                  If it is less than 1, the the initial fill is: vbv-init * vbv-bufsize. Otherwise it is interpreted as the initial fill in kbits.
+                  See also: --vbv-maxsize, --vbv-bufsize, VBV Encoding Suggestions*/
+
+                //Abide by avgBitrateCap value                   
+                if (videoBitrate > avgBitrateCap)
+                {
+                    outputVideoBitrate = "--vb " + avgBitrateCap + " ";
+                    if (Math.Floor(avgBitrateCap * BitrateMultiplier) < 10000)
+                    {
+                        MaxBitrate = Math.Floor(avgBitrateCap * BitrateMultiplier).ToString();
+                        BufferSize = Math.Floor((avgBitrateCap * BitrateMultiplier) * BufferMultiplier).ToString(); //Buffer of 2 seconds
+                    }
+                    else
+                    {
+                        MaxBitrate = "10000"; //Max value for Roku Players
+                        BufferSize = "20000"; // buffer of 2 seconds
+                    }
+                }
+                else
+                {
+                    outputVideoBitrate = "--vb " + videoBitrate.ToString() + " ";
+
+                    if (Math.Floor(videoBitrate * BitrateMultiplier) < 10000)
+                    {
+                        MaxBitrate = Math.Floor(videoBitrate * BitrateMultiplier).ToString();
+                        BufferSize = Math.Floor((videoBitrate * BitrateMultiplier) * BufferMultiplier).ToString();
+                    }
+                    else
+                    {
+                        MaxBitrate = "10000";
+                        BufferSize = "20000";
+                    }
+
+                }
             }
-            /*Encoder Tune***********************************************************************************************************************************************************************************************/
-
-            switch (encoderTuneComboBox.Text)
+            else
             {
-                case "Animation":
-                    outputEncoderTune = "--x264-tune animation ";
-                    break;
-                case "Fast Decode":
-                    outputEncoderTune = "--x264-tune fastdecode ";
-                    break;
-                case "Film":
-                    outputEncoderTune = "--x264-tune film ";
-                    break;
-                case "Grain":
-                    outputEncoderTune = "--x264-tune grain ";
-                    break;
-                case "None":
-                    outputEncoderTune = "";
-                    break;
-                case "Still Image":
-                    outputEncoderTune = "--x264-tune stillimage ";
-                    break;
-                case "Zero Latency":
-                    outputEncoderTune = "--x264-tune zerolatency ";
-                    break;
-                default:
-                    outputEncoderTune = "";
-                    break;
-            }
+                /*EncoderOptions***********************************************************************************************************************************************************************************************/
+                //Need to adjust for number of channels of audio, currently it is the value for mono not stereo which is typical.
 
-            /*Encoder Profile***********************************************************************************************************************************************************************************************/
+                double.TryParse(avgBitrateCombo.Text, out avgBitrateCap);
+                avgBitrateCap = avgBitrateCap * 1000; //This changes the value in the dropdown from Mbps to Kbps
+                videoBitrate = avgBitrateCap;
+                double.TryParse(audioBitrateCombo.Text, out double audioBitrate);
 
-            switch (encoderProfileComboBox.Text)
-            {
-                case "Baseline":
-                    outputEncoderProfile = "--x264-profile baseline ";
-                    break;
-                case "Main":
-                    outputEncoderProfile = "--x264-profile main ";
-                    break;
-                case "High":
-                    outputEncoderProfile = "--x264-profile high ";
-                    break;
-                default:
-                    outputEncoderProfile = "--x264-profile high ";
-                    break;
-            }
-            /*Encoder Level***********************************************************************************************************************************************************************************************/
-            switch (encoderLevelComboBox.Text)
-            {
-                case "1.0":
-                    outputEncoderLevel = "--encoder-level 1.0 ";
-                    break;
-                case "1b":
-                    outputEncoderLevel = "--encoder-level 1b ";
-                    break;
-                case "1.1":
-                    outputEncoderLevel = "--encoder-level 1.1 ";
-                    break;
-                case "1.2":
-                    outputEncoderLevel = "--encoder-level 1.2 ";
-                    break;
-                case "1.3":
-                    outputEncoderLevel = "--encoder-level 1.3 ";
-                    break;
-                case "2.0":
-                    outputEncoderLevel = "--encoder-level 2.0 ";
-                    break;
-                case "2.1":
-                    outputEncoderLevel = "--encoder-level 2.1 ";
-                    break;
-                case "2.2":
-                    outputEncoderLevel = "--encoder-level 2.2 ";
-                    break;
-                case "3.0":
-                    outputEncoderLevel = "--encoder-level 3.0 ";
-                    break;
-                case "3.1":
-                    outputEncoderLevel = "--encoder-level 3.1 ";
-                    break;
-                case "3.2":
-                    outputEncoderLevel = "--encoder-level 3.2 ";
-                    break;
-                case "4.0":
-                    outputEncoderLevel = "--encoder-level 4.0 ";
-                    break;
-                case "4.1":
-                    outputEncoderLevel = "--encoder-level 4.1 ";
-                    break;
-                default:
-                    outputEncoderLevel = "--encoder-level 4.0 ";
-                    break;
+                outputVideoBitrate = "--vb " + videoBitrate.ToString() + " ";
+
+                if (Math.Floor(videoBitrate * BitrateMultiplier) < 10000) //Ensures max bitrate doesn't go over 10 which is the limit for Roku compatibility
+                {
+                    MaxBitrate = Math.Floor(videoBitrate * BitrateMultiplier).ToString();
+                    BufferSize = Math.Floor((videoBitrate * BitrateMultiplier) * BufferMultiplier).ToString();
+                }
+                else
+                {
+                    MaxBitrate = "10000"; //Max for Roku Devices
+                    BufferSize = "20000"; //2 times the MaxBitrate
+                }
+
+                //These settings set the buffer size and maximum video bitrate, also setting the encoder level
+                outputEncoderOptions = "--EncoderOptions level=" + encoderLevelComboBox.Text + ":vbv-bufsize=" + BufferSize + InitialBufferFill + ":vbv-maxrate=" + MaxBitrate + " --verbose=1 --encoder-level=\"" + encoderLevelComboBox.Text + "\" --encoder-profile=" + encoderProfileComboBox.Text.ToLower() + " --verbose=1 ";
+
             }
 
-            return outputEncoder + outputEncoderLevel + outputEncoderProfile + outputEncoderSpeed + outputEncoderTune;
+            //These settings set the buffer size and maximum video bitrate, also setting the encoder level
+            outputEncoderOptions = "--EncoderOptions level=" + encoderLevelComboBox.Text + ":vbv-bufsize=" + BufferSize + InitialBufferFill + ":vbv-maxrate=" + MaxBitrate + " --verbose=1 --encoder-level=\"" + encoderLevelComboBox.Text + "\" --encoder-profile=" + encoderProfileComboBox.Text.ToLower() + " --verbose=1 ";
+            return outputEncoderOptions + outputVideoBitrate;
         }
+        private string NVIDIAEncoderOptions(MediaFile videoFile)
+        {
+            /*Option        Type	    H.264	H.265	Comment
+            coder	        string	    X		Options: auto, cabac, cavlc
+            temporal-aq	    boolean	    X	X	
+            spatial-aq	    boolean	    X	X	For H.265, use “spatial_aq” for H.265 encodes. Note the underscore
+            aq-strength	    int	        X	    X	When Spatial AQ is enabled, the scale is from 1 (low) - 15 (aggressive)
+            nonref_p	    boolean	    X	X	Enable automatic insertion of non-reference P-frames
+            strict_gop	    boolean	    X	X	Minimise GOP to GOP rate fluctuations
+            weighted_pred	boolean	    X	X	
+            rc-lookahead	int	        X	    X	0 to 27
+            b_adapt	        boolean	    X		Set this to 0 to disable adaptive B-frame decision when lookahead is enabled
+            no-scenecut	    boolean	    X	X	1 = Disable adaptive I-frame insertion at scene cuts when using lookahead*/
+
+            double avgBitrateCap = 0.0;
+            double videoBitrate = 0.0;
+            string outputVideoBitrate = "";
+
+
+            if (videoFile.Video.Count > 0) //video stream found
+            {
+                /*Video Bitrate Calc***********************************************************************************************************************************************************************************************/
+                if (videoFile.Video[0].Properties.ContainsKey("Bit rate"))
+                {
+                    if (videoFile.Video[0].Properties["Bit rate"].Contains("Mbps")) //If file bitrate is in Mbps
+                    {
+                        double.TryParse(videoFile.Video[0].Properties["Bit rate"].Replace(" ", "").Replace("Mbps", ""), out videoBitrate);
+                        videoBitrate = videoBitrate * 1000; //accounts for reading in Mbps rather than Kbps
+                    }
+                    else if (videoFile.Video[0].Properties["Bit rate"].Contains("Kbps")) //If file bitrate is in Mbps
+                    {
+                        double.TryParse(videoFile.Video[0].Properties["Bit rate"].Replace(" ", "").Replace("Kbps", ""), out videoBitrate);
+                    }
+                }
+
+                if (videoBitrate == 0 && videoFile.General.Bitrate > 0)
+                {
+                    //check for audio bitrate and subtract from general bitrate
+                    videoBitrate = videoFile.General.Bitrate; //- videoFile.Audio[audioTrack - 1].Bitrate; - Audio Track info changed in previous version. This breaks the code. use gneral bitrate if no other is foudn.
+                }
+
+                if (videoBitrate == 0 && videoFile.General.Properties.ContainsKey("Overall bit rate"))
+                {
+                    if (videoFile.General.Properties["Overall bit rate"].Contains("Mbps"))
+                    {
+                        double.TryParse(videoFile.General.Properties["Overall bit rate"].Replace(" ", "").Replace("Mbps", ""), out videoBitrate);
+                        videoBitrate = videoBitrate * 1000; //accounts for reading in Mbps rather than Kbps
+                    }
+                    else if (videoFile.General.Properties["Overall bit rate"].Contains("Kbps"))
+                    {
+                        double.TryParse(videoFile.General.Properties["Overall bit rate"].Replace(" ", "").Replace("Kbps", ""), out videoBitrate);
+                    }
+                }
+
+                double.TryParse(avgBitrateCombo.Text, out avgBitrateCap);
+                avgBitrateCap = avgBitrateCap * 1000; //This changes the value in the dropdown from Mbps to Kbps
+
+                //Abide by avgBitrateCap value                   
+                if (videoBitrate > avgBitrateCap)
+                {
+                    outputVideoBitrate = "--vb " + avgBitrateCap + " ";
+                }
+                else
+                {
+                    outputVideoBitrate = "--vb " + videoBitrate.ToString() + " ";
+                }
+            }
+            else
+            {
+                double.TryParse(avgBitrateCombo.Text, out avgBitrateCap);
+                avgBitrateCap = avgBitrateCap * 1000; //This changes the value in the dropdown from Mbps to Kbps
+                videoBitrate = avgBitrateCap;
+                outputVideoBitrate = "--vb " + videoBitrate.ToString() + " ";
+            }
+            return outputVideoBitrate;
+        }
+
+       
         
         //The following methods are for creating the command string for subtitle Selection
         private string BuildSubString(MediaFile videoFile)
@@ -4453,6 +5259,189 @@ namespace MovieDataCollector
             //Update default in dictionary
             CF.DefaultSettings["SubtitleSelection"] = subtitleCombo.Text;
         }
+        private void videoEncoderCB_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Ensure the options in the other Combo Boxes reflect only what is possible for the selected encoder
+            switch (videoEncoderCB.Text)
+            {
+                case "x264 (FFMPEG)":
+                    //Encoder Speed
+                    encoderSpeedCombo.Items.Clear();
+                    for (int i = 0; i < x264SpeedList.Count; i++)
+                    {
+                        encoderSpeedCombo.Items.Add(x264SpeedList[i]);
+                    }
+                    if (!encoderSpeedCombo.Items.Contains(encoderSpeedCombo.Text)) { encoderSpeedCombo.Text = encoderSpeedCombo.Items[0].ToString(); }
+                    //Encoder Tune
+                    encoderTuneComboBox.Items.Clear();
+                    for (int i = 0; i < x264TuneList.Count; i++)
+                    {
+                        encoderTuneComboBox.Items.Add(x264TuneList[i]);
+                    }
+                    if (!encoderTuneComboBox.Items.Contains(encoderTuneComboBox.Text)) { encoderTuneComboBox.Text = encoderTuneComboBox.Items[0].ToString(); }
+                    //Encoder Profile
+                    encoderProfileComboBox.Items.Clear();
+                    for (int i = 0; i < x264ProfileList.Count; i++)
+                    {
+                        encoderProfileComboBox.Items.Add(x264ProfileList[i]);
+                    }
+                    if (!encoderProfileComboBox.Items.Contains(encoderProfileComboBox.Text)) { encoderProfileComboBox.Text = encoderProfileComboBox.Items[0].ToString(); }
+                    //Encoder Level
+                    encoderLevelComboBox.Items.Clear();
+                    for (int i = 0; i < x264LevelList.Count; i++)
+                    {
+                        encoderLevelComboBox.Items.Add(x264LevelList[i]);
+                    }
+                    if (!encoderLevelComboBox.Items.Contains(encoderLevelComboBox.Text)) { encoderLevelComboBox.Text = encoderLevelComboBox.Items[0].ToString(); }
+                    break;
+                case "Quick Sync H.264":
+                    //Encoder Speed
+                    encoderSpeedCombo.Items.Clear();
+                    for (int i = 0; i < qsv_h264SpeedList.Count; i++)
+                    {
+                        encoderSpeedCombo.Items.Add(qsv_h264SpeedList[i]);
+                    }
+                    if (!encoderSpeedCombo.Items.Contains(encoderSpeedCombo.Text)) { encoderSpeedCombo.Text = encoderSpeedCombo.Items[0].ToString(); }
+                    //Encoder Tune
+                    encoderTuneComboBox.Items.Clear();
+                    encoderTuneComboBox.Text = "";
+                    //Encoder Profile same as other x264
+                    encoderProfileComboBox.Items.Clear();
+                    for (int i = 0; i < x264ProfileList.Count; i++)
+                    {
+                        encoderProfileComboBox.Items.Add(x264ProfileList[i]);
+                    }
+                    if (!encoderProfileComboBox.Items.Contains(encoderProfileComboBox.Text)) { encoderProfileComboBox.Text = encoderProfileComboBox.Items[0].ToString(); }
+                    //Encoder Level same as other x264
+                    encoderLevelComboBox.Items.Clear();
+                    for (int i = 0; i < x264LevelList.Count; i++)
+                    {
+                        encoderLevelComboBox.Items.Add(x264LevelList[i]);
+                    }
+                    if (!encoderLevelComboBox.Items.Contains(encoderLevelComboBox.Text)) { encoderLevelComboBox.Text = encoderLevelComboBox.Items[0].ToString(); }
+                    break;
+
+                case "NVIDIA Encoding H.264":
+                    //Encoder Speed
+                    encoderSpeedCombo.Items.Clear();
+                    for (int i = 0; i < nvencSpeedList.Count; i++)
+                    {
+                        encoderSpeedCombo.Items.Add(nvencSpeedList[i]);
+                    }
+                    if (!encoderSpeedCombo.Items.Contains(encoderSpeedCombo.Text)) { encoderSpeedCombo.Text = encoderSpeedCombo.Items[0].ToString(); }
+                    //Encoder Tune
+                    encoderTuneComboBox.Items.Clear();
+                    encoderTuneComboBox.Text = "";
+                    //Encoder Profile same as other x264
+                    encoderProfileComboBox.Items.Clear();
+                    for (int i = 0; i < x264ProfileList.Count; i++)
+                    {
+                        encoderProfileComboBox.Items.Add(x264ProfileList[i]);
+                    }
+                    if (!encoderProfileComboBox.Items.Contains(encoderProfileComboBox.Text)) { encoderProfileComboBox.Text = encoderProfileComboBox.Items[0].ToString(); }
+                    //Encoder Level same as other x264
+                    encoderLevelComboBox.Items.Clear();
+                    for (int i = 0; i < x264LevelList.Count; i++)
+                    {
+                        encoderLevelComboBox.Items.Add(x264LevelList[i]);
+                    }
+                    if (!encoderLevelComboBox.Items.Contains(encoderLevelComboBox.Text)) { encoderLevelComboBox.Text = encoderLevelComboBox.Items[0].ToString(); }
+                    break;
+
+                case "x265 (FFMPEG)":
+                    //Encoder Speed
+                    encoderSpeedCombo.Items.Clear();
+                    for (int i = 0; i < x265SpeedList.Count; i++)
+                    {
+                        encoderSpeedCombo.Items.Add(x265SpeedList[i]);
+                    }
+                    if (!encoderSpeedCombo.Items.Contains(encoderSpeedCombo.Text)) { encoderSpeedCombo.Text = encoderSpeedCombo.Items[0].ToString(); }
+                    //Encoder Tune
+                    encoderTuneComboBox.Items.Clear();
+                    for (int i = 0; i < x265TuneList.Count; i++)
+                    {
+                        encoderTuneComboBox.Items.Add(x265TuneList[i]);
+                    }
+                    if (!encoderTuneComboBox.Items.Contains(encoderTuneComboBox.Text)) { encoderTuneComboBox.Text = encoderTuneComboBox.Items[0].ToString(); }
+                    //Encoder Profile
+                    encoderProfileComboBox.Items.Clear();
+                    for (int i = 0; i < x265ProfileList.Count; i++)
+                    {
+                        encoderProfileComboBox.Items.Add(x265ProfileList[i]);
+                    }
+                    if (!encoderProfileComboBox.Items.Contains(encoderProfileComboBox.Text)) { encoderProfileComboBox.Text = encoderProfileComboBox.Items[0].ToString(); }
+                    //Encoder Level
+                    encoderLevelComboBox.Items.Clear();
+                    for (int i = 0; i < x265LevelList.Count; i++)
+                    {
+                        encoderLevelComboBox.Items.Add(x265LevelList[i]);
+                    }
+                    if (!encoderLevelComboBox.Items.Contains(encoderLevelComboBox.Text)) { encoderLevelComboBox.Text = encoderLevelComboBox.Items[0].ToString(); }
+                    break;
+
+                case "x265_10bit (FFMPEG)":
+                    //Encoder Speed same as other x265 speed options
+                    encoderSpeedCombo.Items.Clear();
+                    for (int i = 0; i < x265SpeedList.Count; i++)
+                    {
+                        encoderSpeedCombo.Items.Add(x265SpeedList[i]);
+                    }
+                    if (!encoderSpeedCombo.Items.Contains(encoderSpeedCombo.Text)) { encoderSpeedCombo.Text = encoderSpeedCombo.Items[0].ToString(); }
+                    //Encoder Tune same as other x265 tune options
+                    encoderTuneComboBox.Items.Clear();
+                    for (int i = 0; i < x265TuneList.Count; i++)
+                    {
+                        encoderTuneComboBox.Items.Add(x265TuneList[i]);
+                    }
+                    if (!encoderTuneComboBox.Items.Contains(encoderTuneComboBox.Text)) { encoderTuneComboBox.Text = encoderTuneComboBox.Items[0].ToString(); }
+                    //Encoder Profile 
+                    encoderProfileComboBox.Items.Clear();
+                    for (int i = 0; i < x265_10bitProfileList.Count; i++)
+                    {
+                        encoderProfileComboBox.Items.Add(x265_10bitProfileList[i]);
+                    }
+                    if (!encoderProfileComboBox.Items.Contains(encoderProfileComboBox.Text)) { encoderProfileComboBox.Text = encoderProfileComboBox.Items[0].ToString(); }
+                    //Encoder Level same as other x265 option
+                    encoderLevelComboBox.Items.Clear();
+                    for (int i = 0; i < x265LevelList.Count; i++)
+                    {
+                        encoderLevelComboBox.Items.Add(x265LevelList[i]);
+                    }
+                    if (!encoderLevelComboBox.Items.Contains(encoderLevelComboBox.Text)) { encoderLevelComboBox.Text = encoderLevelComboBox.Items[0].ToString(); }
+                    break;
+
+                case "NVIDIA Encoding H.265":
+                    //Encoder Speed same as other NVIDIA encoding speed list
+                    encoderSpeedCombo.Items.Clear();
+                    for (int i = 0; i < nvencSpeedList.Count; i++)
+                    {
+                        encoderSpeedCombo.Items.Add(nvencSpeedList[i]);
+                    }
+                    if (!encoderSpeedCombo.Items.Contains(encoderSpeedCombo.Text)) { encoderSpeedCombo.Text = encoderSpeedCombo.Items[0].ToString(); }
+                    //Encoder Tune same as other x265 tune options
+                    encoderTuneComboBox.Items.Clear();
+                    encoderTuneComboBox.Text = "";
+                    //Encoder Profile 
+                    encoderProfileComboBox.Items.Clear();
+                    for (int i = 0; i < nvenc_h265ProfileList.Count; i++)
+                    {
+                        encoderProfileComboBox.Items.Add(nvenc_h265ProfileList[i]);
+                    }
+                    if (!encoderProfileComboBox.Items.Contains(encoderProfileComboBox.Text)) { encoderProfileComboBox.Text = encoderProfileComboBox.Items[0].ToString(); }
+                    //Encoder Level same as other x265 option
+                    encoderLevelComboBox.Items.Clear();
+                    for (int i = 0; i < x265LevelList.Count; i++)
+                    {
+                        encoderLevelComboBox.Items.Add(x265LevelList[i]);
+                    }
+                    if (!encoderLevelComboBox.Items.Contains(encoderLevelComboBox.Text)) { encoderLevelComboBox.Text = encoderLevelComboBox.Items[0].ToString(); }
+                    break;
+
+                default: // Default to x264 options
+                    encoderSpeedCombo.Text = "";
+                    break;
+            }
+        }
 
 
         //Video Checkboxes
@@ -4571,13 +5560,54 @@ namespace MovieDataCollector
         }
         private void EncoderLevelComboBox_Leave(object sender, EventArgs e)
         {
-            if (!encoderLevelList.Contains(encoderLevelComboBox.Text))
+            if (encoderLevelComboBox.Text == "x264 (FFMPEG)" && !x264LevelList.Contains(encoderLevelComboBox.Text))
             {
-                encoderLevelComboBox.Text = encoderLevelList[0];
+                encoderLevelComboBox.Text = x264LevelList[0];
 
                 //Update Dictionary default
-                CF.DefaultSettings["EncoderLevel"] = encoderLevelList[0];
+                CF.DefaultSettings["EncoderLevel"] = x264LevelList[0];
             }
+
+            else if (encoderLevelComboBox.Text == "Quick Sync H.264" && !x264LevelList.Contains(encoderLevelComboBox.Text))
+            {
+                encoderLevelComboBox.Text = x264LevelList[0];
+
+                //Update Dictionary default
+                CF.DefaultSettings["EncoderLevel"] = x264LevelList[0];
+            }
+
+            else if (encoderLevelComboBox.Text == "NVIDIA Encoding H.264" && !x264LevelList.Contains(encoderLevelComboBox.Text))
+            {
+                encoderLevelComboBox.Text = x264LevelList[0];
+
+                //Update Dictionary default
+                CF.DefaultSettings["EncoderLevel"] = x264LevelList[0];
+            }
+
+            else if (encoderLevelComboBox.Text == "x265 (FFMPEG)" && !x265LevelList.Contains(encoderLevelComboBox.Text))
+            {
+                encoderLevelComboBox.Text = x265LevelList[0];
+
+                //Update Dictionary default
+                CF.DefaultSettings["EncoderLevel"] = x265LevelList[0];
+            }
+
+            else if (encoderLevelComboBox.Text == "x265_10bit (FFMPEG)" && !x265LevelList.Contains(encoderLevelComboBox.Text))
+            {
+                encoderLevelComboBox.Text = x265LevelList[0];
+
+                //Update Dictionary default
+                CF.DefaultSettings["EncoderLevel"] = x265LevelList[0];
+            }
+
+            else if (encoderLevelComboBox.Text == "NVIDIA Encoding H.265" && !x265LevelList.Contains(encoderLevelComboBox.Text))
+            {
+                encoderLevelComboBox.Text = x265LevelList[0];
+
+                //Update Dictionary default
+                CF.DefaultSettings["EncoderLevel"] = x265LevelList[0];
+            }
+
             else
             {
                 //Update Dictionary default
@@ -4586,12 +5616,52 @@ namespace MovieDataCollector
         }
         private void EncoderProfileComboBox_Leave(object sender, EventArgs e)
         {
-            if (!encoderProfileList.Contains(encoderProfileComboBox.Text))
+            if (encoderProfileComboBox.Text == "x264 (FFMPEG)" && !x264ProfileList.Contains(encoderProfileComboBox.Text))
             {
-                encoderProfileComboBox.Text = encoderProfileList[0];
+                encoderProfileComboBox.Text = x264ProfileList[0];
 
                 //Update Default in Dictionary
-                CF.DefaultSettings["EncoderProfile"] = encoderProfileList[0];
+                CF.DefaultSettings["EncoderProfile"] = x264ProfileList[0];
+            }
+
+            else if (encoderProfileComboBox.Text == "Quick Sync H.264" && !x264ProfileList.Contains(encoderProfileComboBox.Text))
+            {
+                encoderProfileComboBox.Text = x264ProfileList[0];
+
+                //Update Default in Dictionary
+                CF.DefaultSettings["EncoderProfile"] = x264ProfileList[0];
+            }
+
+            else if (encoderProfileComboBox.Text == "NVIDIA Encoding H.264" && !x264ProfileList.Contains(encoderProfileComboBox.Text))
+            {
+                encoderProfileComboBox.Text = x264ProfileList[0];
+
+                //Update Default in Dictionary
+                CF.DefaultSettings["EncoderProfile"] = x264ProfileList[0];
+            }
+
+            else if (encoderProfileComboBox.Text == "x265 (FFMPEG)" && !x265ProfileList.Contains(encoderProfileComboBox.Text))
+            {
+                encoderProfileComboBox.Text = x265ProfileList[0];
+
+                //Update Default in Dictionary
+                CF.DefaultSettings["EncoderProfile"] = x265ProfileList[0];
+            }
+
+            else if (encoderProfileComboBox.Text == "x265_10bit (FFMPEG)" && !x264_10bitProfileList.Contains(encoderProfileComboBox.Text))
+            {
+                encoderProfileComboBox.Text = x264_10bitProfileList[0];
+
+                //Update Default in Dictionary
+                CF.DefaultSettings["EncoderProfile"] = x264_10bitProfileList[0];
+            }
+
+            else if (encoderProfileComboBox.Text == "NVIDIA Encoding H.265" && !nvenc_h265ProfileList.Contains(encoderProfileComboBox.Text))
+            {
+                encoderProfileComboBox.Text = nvenc_h265ProfileList[0];
+
+                //Update Default in Dictionary
+                CF.DefaultSettings["EncoderProfile"] = nvenc_h265ProfileList[0];
             }
             else
             {
@@ -4601,13 +5671,54 @@ namespace MovieDataCollector
         }
         private void EncoderTuneComboBox_Leave(object sender, EventArgs e)
         {
-            if (!encoderTuneList.Contains(encoderTuneComboBox.Text))
+
+            if (encoderTuneComboBox.Text== "x264 (FFMPEG)" && !x264TuneList.Contains(encoderTuneComboBox.Text))
             {
-                encoderTuneComboBox.Text = encoderTuneList[0];
+                encoderTuneComboBox.Text = x264TuneList[0];
 
                 //Update default in dictionary
-                CF.DefaultSettings["EncoderTune"] = encoderTuneList[0];
+                CF.DefaultSettings["EncoderTune"] = x264TuneList[0];
             }
+            else if (encoderTuneComboBox.Text == "Quick Sync H.264")
+            {
+                encoderTuneComboBox.Text = "";
+
+                //Update default in dictionary
+                CF.DefaultSettings["EncoderTune"] = "";
+            }
+
+            else if (encoderTuneComboBox.Text == "NVIDIA Encoding H.264")
+            {
+                encoderTuneComboBox.Text = "";
+
+                //Update default in dictionary
+                CF.DefaultSettings["EncoderTune"] = "";
+            }
+
+            else if (encoderTuneComboBox.Text == "x265 (FFMPEG)" && !x265TuneList.Contains(encoderTuneComboBox.Text))
+            {
+                encoderTuneComboBox.Text = x265TuneList[0];
+
+                //Update default in dictionary
+                CF.DefaultSettings["EncoderTune"] = x265TuneList[0];
+            }
+
+            else if (encoderTuneComboBox.Text == "x265_10bit (FFMPEG)" && !x265TuneList.Contains(encoderTuneComboBox.Text))
+            {
+                encoderTuneComboBox.Text = x265TuneList[0];
+
+                //Update default in dictionary
+                CF.DefaultSettings["EncoderTune"] = x265TuneList[0];
+            }
+
+            else if (encoderTuneComboBox.Text == "NVIDIA Encoding H.265")
+            {
+                encoderTuneComboBox.Text = ""; ;
+
+                //Update default in dictionary
+                CF.DefaultSettings["EncoderTune"] = "";
+            }
+
             else
             {
                 //Update default in dictionary
@@ -4617,17 +5728,68 @@ namespace MovieDataCollector
         private void EncoderSpeedCombo_Leave(object sender, EventArgs e)
         {
             //Verify text is in list
-            if (!encoderSpeedList.Contains(encoderSpeedCombo.Text))
+            if (videoEncoderCB.Text== "x264 (FFMPEG)" && !x264SpeedList.Contains(encoderSpeedCombo.Text))
             {
-                encoderSpeedCombo.Text = encoderSpeedList[0];
+                encoderSpeedCombo.Text = x264SpeedList[0];
 
                 //Update default in Dictionary
-                CF.DefaultSettings["EncoderSpeed"] = encoderSpeedList[0];
+                CF.DefaultSettings["EncoderSpeed"] = x264SpeedList[0];
             }
+
+            else if (videoEncoderCB.Text == "Quick Sync H.264" && !qsv_h264SpeedList.Contains(encoderSpeedCombo.Text))
+            {
+                encoderSpeedCombo.Text = qsv_h264SpeedList[0];
+
+                //Update default in Dictionary
+                CF.DefaultSettings["EncoderSpeed"] = qsv_h264SpeedList[0];
+            }
+
+            else if (videoEncoderCB.Text == "NVIDIA Encoding H.264" && !nvencSpeedList.Contains(encoderSpeedCombo.Text))
+            {
+                encoderSpeedCombo.Text = nvencSpeedList[0];
+
+                //Update default in Dictionary
+                CF.DefaultSettings["EncoderSpeed"] = nvencSpeedList[0];
+            }
+
+            else if(videoEncoderCB.Text== "x265 (FFMPEG)" && !x265SpeedList.Contains(encoderSpeedCombo.Text))
+            {
+                encoderSpeedCombo.Text = x265SpeedList[0];
+
+                //Update default in Dictionary
+                CF.DefaultSettings["EncoderSpeed"] = x265SpeedList[0];
+            }
+
+            else if (videoEncoderCB.Text == "x265_10bit (FFMPEG)" && !x265SpeedList.Contains(encoderSpeedCombo.Text))
+            {
+                encoderSpeedCombo.Text = x265SpeedList[0];
+
+                //Update default in Dictionary
+                CF.DefaultSettings["EncoderSpeed"] = x265SpeedList[0];
+            }
+
+            else if (videoEncoderCB.Text == "NVIDIA Encoding H.265" && !nvencSpeedList.Contains(encoderSpeedCombo.Text))
+            {
+                encoderSpeedCombo.Text = nvencSpeedList[0];
+
+                //Update default in Dictionary
+                CF.DefaultSettings["EncoderSpeed"] = nvencSpeedList[0];
+            }
+
             else
             {
                 CF.DefaultSettings["EncoderSpeed"] = encoderSpeedCombo.Text;
             }
+        }
+        private void videoEncoderCB_Leave(object sender, EventArgs e)
+        {
+            //Verify the text is in the approved list
+            if(!videoEncoders.Contains(videoEncoderCB.Text))
+            {
+                //Set default x264
+                videoEncoderCB.Text = "x264 (FFMPEG)";
+            }
+
         }
         private void SubtitleCombo_Leave_1(object sender, EventArgs e)
         {
@@ -4693,13 +5855,54 @@ namespace MovieDataCollector
         }
         private void EncoderLevelComboBox_TextChanged(object sender, EventArgs e)
         {
-            if (!encoderLevelList.Contains(encoderLevelComboBox.Text))
+            if (videoEncoderCB.Text == "x264 (FFMPEG)" && !x264LevelList.Contains(encoderLevelComboBox.Text))
             {
-                encoderLevelComboBox.Text = encoderLevelList[0];
+                encoderLevelComboBox.Text = x264LevelList[0];
 
                 //Update Dictionary default
-                CF.DefaultSettings["EncoderLevel"] = encoderLevelList[0];
+                CF.DefaultSettings["EncoderLevel"] = x264LevelList[0];
             }
+
+            else if (videoEncoderCB.Text == "Quick Sync H.264" && !x264LevelList.Contains(encoderLevelComboBox.Text))
+            {
+                encoderLevelComboBox.Text = x264LevelList[0];
+
+                //Update Dictionary default
+                CF.DefaultSettings["EncoderLevel"] = x264LevelList[0];
+            }
+
+            else if (videoEncoderCB.Text == "NVIDIA Encoding H.264" && !x264LevelList.Contains(encoderLevelComboBox.Text))
+            {
+                encoderLevelComboBox.Text = x264LevelList[0];
+
+                //Update Dictionary default
+                CF.DefaultSettings["EncoderLevel"] = x264LevelList[0];
+            }
+
+            else if(videoEncoderCB.Text == "x265 (FFMPEG)" && !x265LevelList.Contains(encoderLevelComboBox.Text))
+            {
+                encoderLevelComboBox.Text = x265LevelList[0];
+
+                //Update Dictionary default
+                CF.DefaultSettings["EncoderLevel"] = x265LevelList[0];
+            }
+
+            else if (videoEncoderCB.Text == "x265_10bit (FFMPEG)" && !x265LevelList.Contains(encoderLevelComboBox.Text))
+            {
+                encoderLevelComboBox.Text = x265LevelList[0];
+
+                //Update Dictionary default
+                CF.DefaultSettings["EncoderLevel"] = x265LevelList[0];
+            }
+
+            else if (videoEncoderCB.Text == "NVIDIA Encoding H.265" && !x265LevelList.Contains(encoderLevelComboBox.Text))
+            {
+                encoderLevelComboBox.Text = x265LevelList[0];
+
+                //Update Dictionary default
+                CF.DefaultSettings["EncoderLevel"] = x265LevelList[0];
+            }
+
             else
             {
                 //Update Dictionary default
@@ -4708,13 +5911,54 @@ namespace MovieDataCollector
         }
         private void EncoderProfileComboBox_TextChanged(object sender, EventArgs e)
         {
-            if (!encoderProfileList.Contains(encoderProfileComboBox.Text))
+            if (videoEncoderCB.Text == "x264 (FFMPEG)" && !x264ProfileList.Contains(encoderProfileComboBox.Text))
             {
-                encoderProfileComboBox.Text = encoderProfileList[0];
+                encoderProfileComboBox.Text = x264ProfileList[0];
 
                 //Update Default in Dictionary
-                CF.DefaultSettings["EncoderProfile"] = encoderProfileList[0];
+                CF.DefaultSettings["EncoderProfile"] = x264ProfileList[0];
             }
+
+            else if (videoEncoderCB.Text == "Quick Sync H.264" && !x264ProfileList.Contains(encoderProfileComboBox.Text))
+            {
+                encoderProfileComboBox.Text = x264ProfileList[0];
+
+                //Update Default in Dictionary
+                CF.DefaultSettings["EncoderProfile"] = x264ProfileList[0];
+            }
+
+            else if (videoEncoderCB.Text == "NVIDIA Encoding H.264" && !x264ProfileList.Contains(encoderProfileComboBox.Text))
+            {
+                encoderProfileComboBox.Text = x264ProfileList[0];
+
+                //Update Default in Dictionary
+                CF.DefaultSettings["EncoderProfile"] = x264ProfileList[0];
+            }
+
+            else if(videoEncoderCB.Text == "x265 (FFMPEG)" && !x265ProfileList.Contains(encoderProfileComboBox.Text))
+            {
+                encoderProfileComboBox.Text = x265ProfileList[0];
+
+                //Update Default in Dictionary
+                CF.DefaultSettings["EncoderProfile"] = x265ProfileList[0];
+            }
+
+            else if (videoEncoderCB.Text == "x265_10bit (FFMPEG)" && !x265_10bitProfileList.Contains(encoderProfileComboBox.Text))
+            {
+                encoderProfileComboBox.Text = x265_10bitProfileList[0];
+
+                //Update Default in Dictionary
+                CF.DefaultSettings["EncoderProfile"] = x265_10bitProfileList[0];
+            }
+
+            else if (videoEncoderCB.Text == "NVIDIA Encoding H.265" && !nvenc_h265ProfileList.Contains(encoderProfileComboBox.Text))
+            {
+                encoderProfileComboBox.Text = nvenc_h265ProfileList[0];
+
+                //Update Default in Dictionary
+                CF.DefaultSettings["EncoderProfile"] = nvenc_h265ProfileList[0];
+            }
+
             else
             {
                 //Update Default in Dictionary
@@ -4723,13 +5967,54 @@ namespace MovieDataCollector
         }
         private void EncoderTuneComboBox_TextChanged(object sender, EventArgs e)
         {
-            if (!encoderTuneList.Contains(encoderTuneComboBox.Text))
+            if (videoEncoderCB.Text == "x264 (FFMPEG)" && !x264TuneList.Contains(encoderTuneComboBox.Text))
             {
-                encoderTuneComboBox.Text = encoderTuneList[0];
+                encoderTuneComboBox.Text = x264TuneList[0];
 
                 //Update default in dictionary
-                CF.DefaultSettings["EncoderTune"] = encoderTuneList[0];
+                CF.DefaultSettings["EncoderTune"] = x264TuneList[0];
             }
+
+            else if (videoEncoderCB.Text == "Quick Sync H.264")
+            {
+                encoderTuneComboBox.Text = "";
+
+                //Update default in dictionary
+                CF.DefaultSettings["EncoderTune"] = "";
+            }
+
+            else if (videoEncoderCB.Text == "NVIDIA Encoding H.264")
+            {
+                encoderTuneComboBox.Text = "";
+
+                //Update default in dictionary
+                CF.DefaultSettings["EncoderTune"] = "";
+            }
+
+            else if(videoEncoderCB.Text== "x265 (FFMPEG)" && !x265TuneList.Contains(encoderTuneComboBox.Text))
+            {
+                encoderTuneComboBox.Text = x265TuneList[0];
+
+                //Update default in dictionary
+                CF.DefaultSettings["EncoderTune"] = x265TuneList[0];
+            }
+
+            else if (videoEncoderCB.Text == "x265_10bit (FFMPEG)" && !x265TuneList.Contains(encoderTuneComboBox.Text))
+            {
+                encoderTuneComboBox.Text = x265TuneList[0];
+
+                //Update default in dictionary
+                CF.DefaultSettings["EncoderTune"] = x265TuneList[0];
+            }
+
+            else if (videoEncoderCB.Text == "NVIDIA Encoding H.265")
+            {
+                encoderTuneComboBox.Text = "";
+
+                //Update default in dictionary
+                CF.DefaultSettings["EncoderTune"] = "";
+            }
+
             else
             {
                 //Update default in dictionary
@@ -4739,13 +6024,54 @@ namespace MovieDataCollector
         private void EncoderSpeedCombo_TextUpdate(object sender, EventArgs e)
         {
             //Verify text is in list
-            if (!encoderSpeedList.Contains(encoderSpeedCombo.Text))
+            if (videoEncoderCB.Text == "x264 (FFMPEG)" && !x264SpeedList.Contains(encoderSpeedCombo.Text))
             {
-                encoderSpeedCombo.Text = encoderSpeedList[0];
+                encoderSpeedCombo.Text = x264SpeedList[0];
 
                 //Update default in Dictionary
-                CF.DefaultSettings["EncoderSpeed"] = encoderSpeedList[0];
+                CF.DefaultSettings["EncoderSpeed"] = x264SpeedList[0];
             }
+
+            else if (videoEncoderCB.Text == "Quick Sync H.264" && !qsv_h264SpeedList.Contains(encoderSpeedCombo.Text))
+            {
+                encoderSpeedCombo.Text = qsv_h264SpeedList[0];
+
+                //Update default in Dictionary
+                CF.DefaultSettings["EncoderSpeed"] = qsv_h264SpeedList[0];
+            }
+
+            else if (videoEncoderCB.Text == "NVIDIA Encoding H.264" && !nvencSpeedList.Contains(encoderSpeedCombo.Text))
+            {
+                encoderSpeedCombo.Text = nvencSpeedList[0];
+
+                //Update default in Dictionary
+                CF.DefaultSettings["EncoderSpeed"] = nvencSpeedList[0];
+            }
+
+            else if(videoEncoderCB.Text == "x265 (FFMPEG)" && !x265SpeedList.Contains(encoderSpeedCombo.Text))
+            {
+                encoderSpeedCombo.Text = x265SpeedList[0];
+
+                //Update default in Dictionary
+                CF.DefaultSettings["EncoderSpeed"] = x265SpeedList[0];
+            }
+
+            else if (videoEncoderCB.Text == "x265_10bit (FFMPEG)" && !x265SpeedList.Contains(encoderSpeedCombo.Text))
+            {
+                encoderSpeedCombo.Text = x265SpeedList[0];
+
+                //Update default in Dictionary
+                CF.DefaultSettings["EncoderSpeed"] = x265SpeedList[0];
+            }
+
+            else if (videoEncoderCB.Text == "NVIDIA Encoding H.265" && !nvencSpeedList.Contains(encoderSpeedCombo.Text))
+            {
+                encoderSpeedCombo.Text = nvencSpeedList[0];
+
+                //Update default in Dictionary
+                CF.DefaultSettings["EncoderSpeed"] = nvencSpeedList[0];
+            }
+
             else
             {
                 CF.DefaultSettings["EncoderSpeed"] = encoderSpeedCombo.Text;
@@ -6268,7 +7594,7 @@ namespace MovieDataCollector
                 "HEVC",
                 "H265",
                 "H.265",
-                "X265",
+                "x265",
             };
 
             List<string> AudioCodecs = new List<string>()
@@ -6460,7 +7786,7 @@ namespace MovieDataCollector
                 }
 
                 //H265 / HEVC
-                if (videoFile.Video[i].Format.ToUpper() == "HEVC" || videoFile.Video[i].Format.ToUpper() == "H265" || videoFile.Video[i].Format.ToUpper() == "X265" || videoFile.Video[i].Format.ToUpper() == "H.265")
+                if (videoFile.Video[i].Format.ToUpper() == "HEVC" || videoFile.Video[i].Format.ToUpper() == "H265" || videoFile.Video[i].Format.ToUpper() == "x265" || videoFile.Video[i].Format.ToUpper() == "H.265")
                 {
                     if (videoFile.Video[i].Properties.ContainsKey("Maximum bit rate") && videoFile.Video[i].Properties.ContainsKey("Bit rate"))
                     {
@@ -6974,7 +8300,7 @@ namespace MovieDataCollector
                 NewPreset.Add("AudioBitrate2", audioBitrateCombo2.Text);
                 NewPreset.Add("AudioGain2", gainCB2.Text);
 
-                /*Audio Stream 3***********************************************************************************************************************************************************/
+/*Audio Stream 3***********************************************************************************************************************************************************/
                 NewPreset.Add("AudioCodec3", audioCodecComboBox3.Text);
                 NewPreset.Add("AudioMixdown3", mixdownComboBox3.Text);
                 NewPreset.Add("AudioSampleRate3", sampleRateCombo3.Text);
@@ -6991,6 +8317,7 @@ namespace MovieDataCollector
                 NewPreset.Add("AudioGain3", gainCB3.Text);
 
                 /*Other Options************************************************************************************************************************************************************/
+                NewPreset.Add("Encoder", videoEncoderCB.Text);
                 NewPreset.Add("EncoderSpeed", encoderSpeedCombo.Text);
                 NewPreset.Add("FrameRateMode", frameRateModeCombo.Text);
                 NewPreset.Add("FrameRate", framerateCombo.Text);
@@ -7222,6 +8549,7 @@ namespace MovieDataCollector
                     }
 
                     /*Other Options******************************************************************************************************************************************************************************/
+                    videoEncoderCB.Text = PF.PresetList[index]["Encoder"];
                     encoderSpeedCombo.Text = PF.PresetList[index]["EncoderSpeed"];
                     frameRateModeCombo.Text = PF.PresetList[index]["FrameRateMode"];
                     framerateCombo.Text = PF.PresetList[index]["FrameRate"];
@@ -7404,6 +8732,9 @@ namespace MovieDataCollector
 
             return output;
         }
+
+ 
+
 
     }
 }

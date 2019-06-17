@@ -29,6 +29,7 @@ namespace MovieDataCollector
                 "TurboFirstPass", //True
                 "Optimize", //True
                 "AutoCrop", //True
+                "Encoder", //x264
                 "EncoderSpeed", //Medium
                 "EncoderTune", //Fast Decode
                 "EncoderProfile", //High
@@ -106,6 +107,7 @@ namespace MovieDataCollector
                 "True", //TurboFirstPass
                 "True", //Optimize
                 "True", //Autocrop
+                "x264", //Encoder
                 "Medium", //EncoderSpeed
                 "Fast Decode", //EncoderTune
                 "High", //EncoderProfile
