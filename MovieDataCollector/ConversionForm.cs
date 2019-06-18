@@ -1145,7 +1145,7 @@ namespace MovieDataCollector
                 {
                     for (int i = 0; i < VideoFilesList.Count(); i++)
                     {
-                        NLabelUpdate("Processing file " + (i + 1).ToString() + " of " + VideoFilesList.Count().ToString(), Color.GreenYellow);
+                        NLabelUpdate("Processing file " + (i + 1).ToString() + " of " + filesListBox.Items.Count.ToString(), Color.GreenYellow);
 
                         GetQuickInfo(VideoFilesList[i], filesListBox.Items[i].ToString());
                     }
@@ -1319,7 +1319,10 @@ namespace MovieDataCollector
         {
             CF.UpdateDefaults();
             CommandOutPutTextBox.Text = ""; //Clear output text
-            
+
+            int filesProcessed = 0; //Value for number of files processed, may not be all files in list.
+
+            if (filesListBox.SelectedIndices.Count > 0) { filesProcessed = filesListBox.SelectedIndices.Count; } else { filesProcessed = filesListBox.Items.Count; }
 
             //Check for location of HandbrakeCLI
             string handBrakeCLILocation = CheckForHandbrakeCLI();
@@ -1551,7 +1554,8 @@ namespace MovieDataCollector
                             MediaInfoTB.Text = "Files skipped due to error:\r\n" + errorString;
 
                             if (VideoFilesList.Count == 1) { NLabelUpdate("The transcoding que initiated " + startTime.ToString() + " failed. HandbrakeCLI exited with code " + exitCode.ToString(), Color.GreenYellow); }
-                            if (VideoFilesList.Count > 1) { NLabelUpdate("The transcoding que initiated " + startTime.ToString() + " is now complete. " + (VideoFilesList.Count() - Errors.Count()).ToString() + " of " + VideoFilesList.Count().ToString() + " files processed successfully in " + totalProcessingTime, Color.GreenYellow); }
+
+                            if (VideoFilesList.Count > 1) { NLabelUpdate("The transcoding que initiated " + startTime.ToString() + " is now complete. " + (filesProcessed - Errors.Count()).ToString() + " of " + filesProcessed.ToString() + " files processed successfully in " + totalProcessingTime, Color.GreenYellow); }
 
 
 
@@ -1575,7 +1579,7 @@ namespace MovieDataCollector
                                 if (VideoFilesList.Count > 1)
                                 {
                                     {
-                                        SendNotification(server, port, username, password, sendTo, "Movie Data Collector Notification", "The transcoding que initiated " + startTime.ToString() + " is now complete. " + (VideoFilesList.Count() - Errors.Count()).ToString() + " of " + VideoFilesList.Count().ToString() + " files processed successfully in " + totalProcessingTime);
+                                        SendNotification(server, port, username, password, sendTo, "Movie Data Collector Notification", "The transcoding que initiated " + startTime.ToString() + " is now complete. " + (filesProcessed - Errors.Count()).ToString() + " of " + filesProcessed.ToString() + " files processed successfully in " + totalProcessingTime);
                                     }
                                 }
                             }
@@ -1585,7 +1589,7 @@ namespace MovieDataCollector
                             MediaInfoTB.Text = ""; //Clears Output Box on successful Encode
 
                             if (filesListBox.SelectedIndices.Count == 1) { NLabelUpdate("The transcoding que initiated " + startTime.ToString() + " is now complete. The file was processed in " + totalProcessingTime, Color.GreenYellow); }
-                            if (filesListBox.SelectedIndices.Count > 1) { NLabelUpdate("The transcoding que initiated " + startTime.ToString() + " is now complete. " + filesListBox.SelectedIndices.Count.ToString() + " files were processed in " + totalProcessingTime, Color.GreenYellow); }
+                            if (filesListBox.SelectedIndices.Count > 1) { NLabelUpdate("The transcoding que initiated " + startTime.ToString() + " is now complete. " + filesProcessed.ToString() + " files were processed in " + totalProcessingTime, Color.GreenYellow); }
 
                             if (notificationCheck.Checked)
                             {
@@ -1596,7 +1600,7 @@ namespace MovieDataCollector
                                 string sendTo = sendToBox.Text;
 
                                 if (filesListBox.SelectedIndices.Count == 1) { SendNotification(server, port, username, password, sendTo, "Movie Data Collector Notification", "The transcoding que initiated " + startTime.ToString() + " is now complete. The file was processed in " + totalProcessingTime); }
-                                if (filesListBox.SelectedIndices.Count > 1) { SendNotification(server, port, username, password, sendTo, "Movie Data Collector Notification", "The transcoding que initiated " + startTime.ToString() + " is now complete. " + filesListBox.SelectedIndices.Count.ToString() + " files were processed in " + totalProcessingTime); }
+                                if (filesListBox.SelectedIndices.Count > 1) { SendNotification(server, port, username, password, sendTo, "Movie Data Collector Notification", "The transcoding que initiated " + startTime.ToString() + " is now complete. " + filesProcessed.ToString() + " files were processed in " + totalProcessingTime); }
                             }
                         }
                         else
@@ -1604,7 +1608,7 @@ namespace MovieDataCollector
                             MediaInfoTB.Text = ""; //Clears Output Box on successful Encode
 
                             if (VideoFilesList.Count == 1) { NLabelUpdate("The transcoding que initiated " + startTime.ToString() + " is now complete. The file was processed in " + totalProcessingTime, Color.GreenYellow); }
-                            if (VideoFilesList.Count > 1) { NLabelUpdate("The transcoding que initiated " + startTime.ToString() + " is now complete. " + VideoFilesList.Count().ToString() + " files were processed in " + totalProcessingTime, Color.GreenYellow); }
+                            if (VideoFilesList.Count > 1) { NLabelUpdate("The transcoding que initiated " + startTime.ToString() + " is now complete. " + filesProcessed.ToString() + " files were processed in " + totalProcessingTime, Color.GreenYellow); }
 
                             if (notificationCheck.Checked)
                             {
@@ -1615,7 +1619,7 @@ namespace MovieDataCollector
                                 string sendTo = sendToBox.Text;
 
                                 if (VideoFilesList.Count == 1) { SendNotification(server, port, username, password, sendTo, "Movie Data Collector Notification", "The transcoding que initiated " + startTime.ToString() + " is now complete. The file was processed in " + totalProcessingTime); }
-                                if (VideoFilesList.Count > 1) { SendNotification(server, port, username, password, sendTo, "Movie Data Collector Notification", "The transcoding que initiated " + startTime.ToString() + " is now complete. " + VideoFilesList.Count().ToString() + " files were processed in " + totalProcessingTime); }
+                                if (VideoFilesList.Count > 1) { SendNotification(server, port, username, password, sendTo, "Movie Data Collector Notification", "The transcoding que initiated " + startTime.ToString() + " is now complete. " + filesProcessed.ToString() + " files were processed in " + totalProcessingTime); }
                             }
                         }
                     }
@@ -8819,9 +8823,5 @@ namespace MovieDataCollector
 
             return output;
         }
-
- 
-
-
     }
 }
