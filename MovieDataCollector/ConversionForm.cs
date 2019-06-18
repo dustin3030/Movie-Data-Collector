@@ -7,6 +7,7 @@ using System.Diagnostics; //Allows for using Process.Start codes lines
 using System.Drawing;
 using System.IO; //allows for file manipulation
 using System.Text;
+using System.Management; // Get System Info
 using System.Net.Mail; // For Notification
 using MediaInfoNET; /* https://teejeetech.blogspot.com/2013/01/mediainfo-wrapper-for-net-projects.html Copyright (c) 2013 Tony George (teejee2008@gmail.com)
                       GNU General Public License version 2.0 (GPLv2)
@@ -19,6 +20,9 @@ namespace MovieDataCollector
 {
     public partial class ConversionForm : Form
     {
+        bool NVIDIAEncodingCapable = false;
+        bool QuickSyncCapable = false;
+
         //string folderPath = ""; //Contains path for parent directory
         List<string> VideoFilesList = new List<string>(); //Contains File Paths for video files 
         List<string> ParentDirectoryList = new List<string>();
@@ -374,7 +378,50 @@ namespace MovieDataCollector
             ApplyConfigDefaults();
             PopulatePresets();
             ApplyPreset(); // Applies the preset corresponding to the text in the preset combobox.
+            //DetermineEncoderCompatibility(); //For future if I get around to it. For now it will just fail if you don't have a compatible card.
             NLabelUpdate("", Color.GreenYellow);
+        }
+        private void DetermineEncoderCompatibility()
+        {
+            int loopCount = 0;
+            string GPUstring = "";
+            string CPUstring = "";
+
+            ManagementObjectSearcher GPU = new ManagementObjectSearcher("select * from Win32_VideoController");
+
+            foreach (ManagementObject obj in GPU.Get())
+            {
+                loopCount += 1;
+                GPUstring += "<GPU" + loopCount.ToString() + ">\r\n"; 
+                GPUstring += "<Name>" + obj["Name"].ToString() + "</Name>\r\n";
+                GPUstring += "<VideoProcessor>" + obj["VideoProcessor"].ToString() + "</VideoProcessor>\r\n";
+                GPUstring += "<VideoArchitecture>" + obj["VideoArchitecture"].ToString() + "</VideoArchitecture>\r\n";
+                GPUstring += "<DeviceID>" + obj["DeviceID"].ToString() + "</DeviceID>\r\n";
+                GPUstring += "</GPU" + loopCount.ToString() + ">\r\n\r\n";
+
+            }
+
+            loopCount = 0; //reset loopcount
+
+            ManagementObjectSearcher CPU = new ManagementObjectSearcher("select * from cim_processor");
+
+            foreach (ManagementObject obj in CPU.Get())
+            {
+                loopCount += 1;
+                CPUstring += "<CPU" + loopCount.ToString() + ">\r\n";
+                CPUstring += "<Caption>" + obj["Caption"].ToString() + "</Caption>\r\n";
+                CPUstring += "<DeviceID>" + obj["DeviceID"].ToString() + "</DeviceID>\r\n";
+                CPUstring += "<Manufacturer>" + obj["Manufacturer"].ToString() + "</Manufacturer>\r\n";
+                CPUstring += "<Name>" + obj["Name"].ToString() + "</Name>\r\n";
+                CPUstring += "</CPU" + loopCount.ToString() + ">\r\n\r\n";
+            }
+
+
+
+            NVIDIAEncodingCapable = true;
+            QuickSyncCapable = true;
+
+
         }
         private void ApplyConfigDefaults() //Sets encode options to values from file
         {
@@ -2997,6 +3044,41 @@ namespace MovieDataCollector
 
             return outputEncoder + outputEncoderLevel + outputEncoderProfile + outputEncoderSpeed + outputEncoderTune;
         }
+        private string getEncoderProfile(string input)
+        {
+            string output = "";
+
+            switch (input)
+            { 
+            case "Baseline":
+                output = "baseline";
+                break;
+            case "Main":
+                output = "main";
+                break;
+            case "High":
+                output = "high";
+                break;
+            case "Auto":
+                output = "auto";
+                break;
+            case "Main Still Picture":
+                output = "mainstillpicture";
+                break;
+            case "Main 10":
+                output = "main10";
+                break;
+            case "Main 10-intra":
+                output = "main10-intra";
+                break;
+            default:
+                output = "";
+                break;
+            }
+
+            return output;
+      
+        }
         private string x264EncoderOptions(MediaFile videoFile)
         {
             string encoder = videoEncoderCB.Text;
@@ -3125,12 +3207,12 @@ namespace MovieDataCollector
                 }
 
                 //These settings set the buffer size and maximum video bitrate, also setting the encoder level
-                outputEncoderOptions = "--EncoderOptions level=" + encoderLevelComboBox.Text + ":vbv-bufsize=" + BufferSize + InitialBufferFill + ":vbv-maxrate=" + MaxBitrate + " --verbose=1 --encoder-level=\"" + encoderLevelComboBox.Text + "\" --encoder-profile=" + encoderProfileComboBox.Text.ToLower() + " --verbose=1 ";
+                outputEncoderOptions = "--encopts level=" + encoderLevelComboBox.Text + ":vbv-bufsize=" + BufferSize + InitialBufferFill + ":vbv-maxrate=" + MaxBitrate + " --verbose=1 --encoder-level=\"" + encoderLevelComboBox.Text + "\" --encoder-profile=" + getEncoderProfile(encoderProfileComboBox.Text) + " --verbose=1 ";
 
             }
 
             //These settings set the buffer size and maximum video bitrate, also setting the encoder level
-            outputEncoderOptions = "--EncoderOptions level=" + encoderLevelComboBox.Text + ":vbv-bufsize=" + BufferSize + InitialBufferFill + ":vbv-maxrate=" + MaxBitrate + " --verbose=1 --encoder-level=\"" + encoderLevelComboBox.Text + "\" --encoder-profile=" + encoderProfileComboBox.Text.ToLower() + " --verbose=1 ";
+            outputEncoderOptions = "--encopts level=" + encoderLevelComboBox.Text + ":vbv-bufsize=" + BufferSize + InitialBufferFill + ":vbv-maxrate=" + MaxBitrate + " --verbose=1 --encoder-level=\"" + encoderLevelComboBox.Text + "\" --encoder-profile=" + getEncoderProfile(encoderProfileComboBox.Text) + " --verbose=1 ";
             return outputEncoderOptions + outputVideoBitrate;
         }
         private string QuickSyncEncoderOptions(MediaFile videoFile)
@@ -3261,12 +3343,12 @@ namespace MovieDataCollector
                 }
 
                 //These settings set the buffer size and maximum video bitrate, also setting the encoder level
-                outputEncoderOptions = "--EncoderOptions level=" + encoderLevelComboBox.Text + ":vbv-bufsize=" + BufferSize + InitialBufferFill + ":vbv-maxrate=" + MaxBitrate + " --verbose=1 --encoder-level=\"" + encoderLevelComboBox.Text + "\" --encoder-profile=" + encoderProfileComboBox.Text.ToLower() + " --verbose=1 ";
+                outputEncoderOptions = "--encopts level=" + encoderLevelComboBox.Text + ":vbv-bufsize=" + BufferSize + InitialBufferFill + ":vbv-maxrate=" + MaxBitrate + " --verbose=1 --encoder-level=\"" + encoderLevelComboBox.Text + "\" --encoder-profile=" + getEncoderProfile(encoderProfileComboBox.Text) + " --verbose=1 ";
 
             }
 
             //These settings set the buffer size and maximum video bitrate, also setting the encoder level
-            outputEncoderOptions = "--EncoderOptions level=" + encoderLevelComboBox.Text + ":vbv-bufsize=" + BufferSize + InitialBufferFill + ":vbv-maxrate=" + MaxBitrate + " --verbose=1 --encoder-level=\"" + encoderLevelComboBox.Text + "\" --encoder-profile=" + encoderProfileComboBox.Text.ToLower() + " --verbose=1 ";
+            outputEncoderOptions = "--encopts level=" + encoderLevelComboBox.Text + ":vbv-bufsize=" + BufferSize + InitialBufferFill + ":vbv-maxrate=" + MaxBitrate + " --verbose=1 --encoder-level=\"" + encoderLevelComboBox.Text + "\" --encoder-profile=" + getEncoderProfile(encoderProfileComboBox.Text) + " --verbose=1 ";
             return outputEncoderOptions + outputVideoBitrate;
         }
         private string NVIDIAEncoderOptions(MediaFile videoFile)
@@ -3581,7 +3663,7 @@ namespace MovieDataCollector
                                     subString += ", " + (nonPGSIndexes[i] + 1).ToString();
                                 }
                             }
-                            subString += "\" ";
+                            if (!string.IsNullOrEmpty(subString)) { subString += "\" "; ; }
                         }
                         else //Nothing to add
                         {
@@ -3610,7 +3692,7 @@ namespace MovieDataCollector
                             }
                             
                         }
-                        subString += "\" ";
+                        if (!string.IsNullOrEmpty(subString)) { subString += "\" "; ; }
                         break;
                 }
             }
@@ -5295,6 +5377,8 @@ namespace MovieDataCollector
                     if (!encoderLevelComboBox.Items.Contains(encoderLevelComboBox.Text)) { encoderLevelComboBox.Text = encoderLevelComboBox.Items[0].ToString(); }
                     break;
                 case "Quick Sync H.264":
+                    //Check for compatibility
+
                     //Encoder Speed
                     encoderSpeedCombo.Items.Clear();
                     for (int i = 0; i < qsv_h264SpeedList.Count; i++)
@@ -5322,7 +5406,10 @@ namespace MovieDataCollector
                     break;
 
                 case "NVIDIA Encoding H.264":
+                    //Check for compatibility
+                    
                     //Encoder Speed
+
                     encoderSpeedCombo.Items.Clear();
                     for (int i = 0; i < nvencSpeedList.Count; i++)
                     {
