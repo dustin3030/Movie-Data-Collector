@@ -64,7 +64,7 @@ namespace MovieDataCollector
             "AudioBitrate3", //128
             "AudioGain3", //0
 
-            "Encoder", //x264
+            "Encoder", //x264 (FFMPEG)
             "EncoderSpeed", //Very Fast
             "FrameRateMode", //Peak
             "FrameRate", //Roku Compliant\
@@ -94,9 +94,9 @@ namespace MovieDataCollector
             "false", //FilteredMP3Check
             "false", //FilteredFLACCheck
             "128", //AudioBitrate
-            "0", //AudioGain
+            "10", //AudioGain
 
-            "false", //EnableTrack2
+            "true", //EnableTrack2
             "E-AC3", //AudioCodecAAC2
             "5.1 Audio", //AudioMixdown2
             "48", //AudioSampleRate2
@@ -126,7 +126,7 @@ namespace MovieDataCollector
             "128", //AudioBitrate3
             "0", //AudioGain3
 
-            "x264", //Encoder
+            "x264 (FFMPEG)", //Encoder
             "Very Fast", //EncoderSpeed
             "Peak", //FrameRateMode
             "23.976", //FrameRate
@@ -156,7 +156,7 @@ namespace MovieDataCollector
             "false", //FilteredMP3Check
             "false", //FilteredFLACCheck
             "128", //AudioBitrate
-            "0", //AudioGain
+            "10", //AudioGain
 
             "true", //EnableTrack2
             "E-AC3", //AudioCodecAAC2
@@ -188,7 +188,7 @@ namespace MovieDataCollector
             "128", //AudioBitrate3
             "0", //AudioGain3
 
-            "x264", //Encoder
+            "x264 (FFMPEG)", //Encoder
             "Medium", //EncoderSpeed
             "Peak", //FrameRateMode
             "23.976", //FrameRate
@@ -250,8 +250,8 @@ namespace MovieDataCollector
             "128", //AudioBitrate3
             "0", //AudioGain3
 
-            "x264", //Encoder
-            "Faster", //EncoderSpeed
+            "x264 (FFMPEG)", //Encoder
+            "Very Fast", //EncoderSpeed
             "Peak", //FrameRateMode
             "23.976", //FrameRate
             "Fast Decode", //EncoderTune
@@ -280,7 +280,7 @@ namespace MovieDataCollector
             "false", //FilteredMP3Check
             "false", //FilteredFLACCheck
             "128", //AudioBitrate
-            "0", //AudioGain
+            "10", //AudioGain
 
             "true", //EnableTrack2
             "E-AC3", //AudioCodecAAC2
@@ -312,7 +312,7 @@ namespace MovieDataCollector
             "128", //AudioBitrate3
             "0", //AudioGain3
 
-            "x264", //Encoder
+            "x265 (FFMPEG)", //Encoder
             "Medium", //EncoderSpeed
             "Peak", //FrameRateMode
             "23.976", //FrameRate
@@ -441,6 +441,7 @@ namespace MovieDataCollector
                         string parsedValue = Program.GeneralParser(Tokens[i], "<" + keyList[a] + ">", "</" + keyList[a] + ">");
                         if (!string.IsNullOrEmpty(parsedValue))
                         {
+
                             presets.Add(keyList[a], parsedValue);
                         }
                         else
