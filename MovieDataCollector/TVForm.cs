@@ -760,7 +760,8 @@ namespace MovieDataCollector
                             {
                                 if (SeriesInfo.episodes[a].ContainsKey("EpisodeName"))
                                 {
-                                    if ((cleanString(fileNamesListbox.Items[i].ToString()).ToUpper()).Contains(" " + cleanString(SeriesInfo.episodes[a]["EpisodeName"]).ToUpper() + " "))
+
+                                    if ((cleanString(fileNamesListbox.Items[i].ToString()).ToUpper()).Contains(cleanString(SeriesInfo.episodes[a]["EpisodeName"]).ToUpper()))
                                     {
 
                                         if (int.Parse(SeriesInfo.episodes[a]["SeasonNumber"]) < 10)
@@ -830,7 +831,7 @@ namespace MovieDataCollector
                         {
                             if (SeriesInfo.episodes[a].ContainsKey("EpisodeName"))
                             {
-                                if ((cleanString(fileNamesListbox.Items[i].ToString()).ToUpper()).Contains(" " + cleanString(SeriesInfo.episodes[a]["EpisodeName"]).ToUpper() + " "))
+                                if ((cleanString(fileNamesListbox.Items[i].ToString()).ToUpper()).Contains(cleanString(SeriesInfo.episodes[a]["EpisodeName"]).ToUpper()))
                                 {
 
                                     if (int.Parse(SeriesInfo.episodes[a]["SeasonNumber"]) < 10)

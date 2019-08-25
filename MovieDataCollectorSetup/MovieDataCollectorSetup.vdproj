@@ -3079,7 +3079,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Movie Data Collector"
         "ProductCode" = "8:{CC984BDF-4F45-40C2-BD88-753DB6F1AC94}"
-        "PackageCode" = "8:{0AABAD93-7115-4DD4-B675-4E01BECEA20E}"
+        "PackageCode" = "8:{A87B398E-D26D-47D6-912C-9BC2DC2DF831}"
         "UpgradeCode" = "8:{A0ECBEB5-1F6F-430E-83C7-09CCE4E392C2}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
