@@ -761,7 +761,7 @@ namespace MovieDataCollector
                                 if (SeriesInfo.episodes[a].ContainsKey("EpisodeName"))
                                 {
 
-                                    if ((cleanString(fileNamesListbox.Items[i].ToString()).ToUpper()).Contains(cleanString(SeriesInfo.episodes[a]["EpisodeName"]).ToUpper()))
+                                    if ((cleanString(fileNamesListbox.Items[i].ToString()).ToUpper()).Replace(SeriesInfo.series["SeriesName"], "").Contains(cleanString(SeriesInfo.episodes[a]["EpisodeName"]).ToUpper()))
                                     {
 
                                         if (int.Parse(SeriesInfo.episodes[a]["SeasonNumber"]) < 10)
@@ -831,7 +831,9 @@ namespace MovieDataCollector
                         {
                             if (SeriesInfo.episodes[a].ContainsKey("EpisodeName"))
                             {
-                                if ((cleanString(fileNamesListbox.Items[i].ToString()).ToUpper()).Contains(cleanString(SeriesInfo.episodes[a]["EpisodeName"]).ToUpper()))
+                                //Cleans filename of Series Name, common space replacing characters before checking that episode title is in filename. 
+                                //This ensures if an epsisode is named the same as the series name, only that episode with fail and every file won't be matched to that episode.
+                                if ((cleanString(fileNamesListbox.Items[i].ToString()).ToUpper()).Replace(SeriesInfo.series["SeriesName"],"").Contains(cleanString(SeriesInfo.episodes[a]["EpisodeName"]).ToUpper()))
                                 {
 
                                     if (int.Parse(SeriesInfo.episodes[a]["SeasonNumber"]) < 10)
@@ -929,7 +931,7 @@ namespace MovieDataCollector
                     if ((string.IsNullOrEmpty(season) | string.IsNullOrEmpty(episode)))
                     {
                         // Add filter for absolute episode numbers here
-                        newTitle = CheckAbsolutNumber(fileNamesListbox.Items[i].ToString());
+                        newTitle = CheckAbsoluteNumber(fileNamesListbox.Items[i].ToString());
                         if (string.IsNullOrEmpty(newTitle)) { newTitle = "EPISODE COULD NOT BE DETERMINED"; }
                     }
 
@@ -1222,7 +1224,7 @@ namespace MovieDataCollector
             Array.Clear(characterBlocks, 0, characterBlocks.Length);
             return "";
         }
-        private string CheckAbsolutNumber(string FileName)
+        private string CheckAbsoluteNumber(string FileName)
         {
             characterBlocks = FileName.Split(separators, StringSplitOptions.RemoveEmptyEntries);
             foreach (string block in characterBlocks)
@@ -1234,7 +1236,7 @@ namespace MovieDataCollector
                 }
                 if (blockOfDigits)
                 {
-                    if (int.Parse(block) <= SeriesInfo.episodes.Count() + 1)
+                    if (int.Parse(block) <= SeriesInfo.episodes.Count() + 1 && int.Parse(block) > 0)
                     {
                         string newTitle = "";
 
@@ -1988,7 +1990,7 @@ namespace MovieDataCollector
             if ((string.IsNullOrEmpty(season) | string.IsNullOrEmpty(episode)))
             {
                 // Add filter for absolute episode numbers here
-                newTitle = CheckAbsolutNumber(fileNameToCheck);
+                newTitle = CheckAbsoluteNumber(fileNameToCheck);
                 if (string.IsNullOrEmpty(newTitle)) { newTitle = "EPISODE COULD NOT BE DETERMINED"; }
             }
 
