@@ -12,14 +12,70 @@ namespace MovieDataCollector
         public string Series_ID { get; set; }
         public Dictionary<string, string> series { get; set; }
         public List<Dictionary<string, string>> episodes { get; set; }
+        private List<string> episodeTags { get; set; }
+        private List<string> seriesTags { get; set; }
         public TVSeriesInfo(string APIKey, string SeriesID)
         {
+            episodeTags = new List<string>
+            { "id",
+                "Combined_episodenumber",
+                "Combined_season",
+                "DVD_chapter",
+                "DVD_discid",
+                "DVD_episodenumber",
+                "DVD_season",
+                "Director",
+                "EpImgFlag",
+                "EpisodeName",
+                "EpisodeNumber",
+                "FirstAired",
+                "GuestStars",
+                "IMDB_ID",
+                "Language",
+                "Overview",
+                "ProductionCode",
+                "Rating",
+                "RatingCount",
+                "SeasonNumber",
+                "Writer",
+                "absolute_number",
+                "airsafter_season",
+                "airsbefore_episode",
+                "airsbefore_season",
+                "filename",
+                "lastupdated",
+                "seasonid",
+                "seriesid",
+            };
+            seriesTags = new List<string>()
+            { "Actors",
+                "ContentRating",
+                "Airs_DayOfWeek",
+                "Airs_Time",
+                "FirstAired",
+                "Genre",
+                "IMDB_ID",
+                "Language",
+                "Network",
+                "NetworkID",
+                "Overview",
+                "Rating",
+                "RatingCount",
+                "Runtime",
+                "SeriesID",
+                "SeriesName",
+                "Status",
+                "banner",
+                "fanart",
+                "poster",
+            };
             episodes = new List<Dictionary<string, string>>();
             series = new Dictionary<string, string>();
 
             API_Key = APIKey;
             Series_ID = SeriesID;
             GatherSeriesInfo();
+            VerifyDictionarySeriesInfo();
         }
         private void GatherSeriesInfo()
         {
@@ -135,38 +191,13 @@ namespace MovieDataCollector
         }
         private void CreateSeriesDictionary(string inputString)
         {
-            List<string> tags = new List<string>()
-            { "Actors",
-                "ContentRating",
-                "Airs_DayOfWeek",
-                "Airs_Time",
-                "FirstAired",
-                "Genre",
-                "IMDB_ID",
-                "Language",
-                "Network",
-                "NetworkID",
-                "Overview",
-                "Rating",
-                "RatingCount",
-                "Runtime",
-                "SeriesID",
-                "SeriesName",
-                "Status",
-                "banner",
-                "fanart",
-                "poster",
-            };
-
-            for (int i = 0; i < tags.Count(); i++)
+            for (int i = 0; i < seriesTags.Count(); i++)
             {
-                if (!string.IsNullOrEmpty(Program.GeneralParser(inputString, "<" + tags[i] + ">", "</" + tags[i] + ">")))
+                if (!string.IsNullOrEmpty(Program.GeneralParser(inputString, "<" + seriesTags[i] + ">", "</" + seriesTags[i] + ">")))
                 {
-                    series.Add(tags[i], Program.GeneralParser(inputString, "<" + tags[i] + ">", "</" + tags[i] + ">"));
+                    series.Add(seriesTags[i], Program.GeneralParser(inputString, "<" + seriesTags[i] + ">", "</" + seriesTags[i] + ">"));
                 }
             }
-
-            tags.Clear();
 
         }
         private void CreateEpisodeDictionary(string inputString)
@@ -174,49 +205,45 @@ namespace MovieDataCollector
             //create dictionary
             Dictionary<string, string> episodeDictionary = new Dictionary<string, string>();
 
-            List<string> tags = new List<string>
-            { "id",
-                "Combined_episodenumber",
-                "Combined_season",
-                "DVD_chapter",
-                "DVD_discid",
-                "DVD_episodenumber",
-                "DVD_season",
-                "Director",
-                "EpImgFlag",
-                "EpisodeName",
-                "EpisodeNumber",
-                "FirstAired",
-                "GuestStars",
-                "IMDB_ID",
-                "Language",
-                "Overview",
-                "ProductionCode",
-                "Rating",
-                "RatingCount",
-                "SeasonNumber",
-                "Writer",
-                "absolute_number",
-                "airsafter_season",
-                "airsbefore_episode",
-                "airsbefore_season",
-                "filename",
-                "lastupdated",
-                "seasonid",
-                "seriesid",
-            };
-
-            for (int i = 0; i < tags.Count(); i++)
+            for (int i = 0; i < episodeTags.Count(); i++)
             {
-                if (!string.IsNullOrEmpty(Program.GeneralParser(inputString, "<" + tags[i] + ">", "</" + tags[i] + ">")))
+                if (!string.IsNullOrEmpty(Program.GeneralParser(inputString, "<" + episodeTags[i] + ">", "</" + episodeTags[i] + ">")))
                 {
                     //add information to dictionary
-                    episodeDictionary.Add(tags[i], Program.GeneralParser(inputString, "<" + tags[i] + ">", "</" + tags[i] + ">"));
+                    episodeDictionary.Add(episodeTags[i], Program.GeneralParser(inputString, "<" + episodeTags[i] + ">", "</" + episodeTags[i] + ">"));
                 }
             }
 
             episodes.Add(episodeDictionary); //add dictionary to list
-            tags.Clear();
         }
+        private void VerifyDictionarySeriesInfo()
+        {
+
+            for (int i = 0; i < episodes.Count(); i++)
+            {
+                //ensure all episode keys have a value
+                for (int a = 0; a < episodeTags.Count(); a++)
+                {
+                    //If key is missing, create key with empty string as value
+                    if (!episodes[i].ContainsKey(episodeTags[a]))
+                    {
+                        episodes[i].Add(episodeTags[a], "No Info Provided by Web");
+                    }
+                }
+
+                //ensure all series keys have value
+                for (int a = 0; a < seriesTags.Count(); a++)
+                {
+                    //If key is missing, create key with empty string as value
+                    if (!series.ContainsKey(seriesTags[a]))
+                    {
+                        series.Add(seriesTags[a], "No Info Provided by Web");
+                    }
+                }
+            }
+
+        }
+
+
     }
 }
