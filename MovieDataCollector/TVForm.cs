@@ -398,13 +398,9 @@ namespace MovieDataCollector
                             //Once show is selected, use selected shows ID to gather episode information
                             TVSeriesInfo T = new TVSeriesInfo(APIKey, M.SelectedID);
 
-                            T = VerifyDictionarySeriesInfo(T); //Adds missing keys, fills with string value
-
                             //display Series banner 
                             SeriesImagePicturebox.ImageLocation = "https://thetvdb.com/banners/" + T.series["banner"];
                             SeriesInfo = T;
-
-                            T = VerifyDictionarySeriesInfo(T); //Adds missing keys, fills with string value
 
                             if (T.series.ContainsKey("SeriesName")) { favoritesCombo.Text = T.series["SeriesName"]; }
                             SeriesIDTitleTextbox.Text = T.Series_ID;
