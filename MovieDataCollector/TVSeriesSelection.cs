@@ -20,7 +20,9 @@ namespace MovieDataCollector
         }
         private void SeriesNameListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (Series_List[SeriesNameListBox.SelectedIndex].ContainsKey("banner")) { SeriesPosterPictureBox.ImageLocation = "https://thetvdb.com" + Series_List[SeriesNameListBox.SelectedIndex]["banner"]; }
+            //https://artworks.thetvdb.com/banners/posters/255316-2.jpg
+            ///banners/posters/5d353f9f602ec.jpg
+            if (Series_List[SeriesNameListBox.SelectedIndex].ContainsKey("banner")) { SeriesPosterPictureBox.ImageLocation = "https://artworks.thetvdb.com" + Series_List[SeriesNameListBox.SelectedIndex]["banner"]; }
             else { SeriesPosterPictureBox.ImageLocation = ""; };
 
             if (Series_List[SeriesNameListBox.SelectedIndex].ContainsKey("overview")) { overviewTextBox.Text = Series_List[SeriesNameListBox.SelectedIndex]["overview"]; }
@@ -70,7 +72,7 @@ namespace MovieDataCollector
             {
                 SeriesNameListBox.SelectedIndex = 0;
 
-                if (Series_List[0].ContainsKey("banner")) { SeriesPosterPictureBox.ImageLocation = "https://thetvdb.com" + Series_List[0]["banner"]; }
+                if (Series_List[0].ContainsKey("banner")) { SeriesPosterPictureBox.ImageLocation = "https://artworks.thetvdb.com" + Series_List[0]["banner"]; }
                 else { /*Provide default picture incase no banner is found*/ };
 
                 if (Series_List[0].ContainsKey("overview")) { overviewTextBox.Text = Series_List[0]["overview"]; }

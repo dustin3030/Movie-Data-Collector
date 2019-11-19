@@ -416,7 +416,7 @@ namespace MovieDataCollector
 
                     TVSeriesInfo T = new TVSeriesInfo(Authorization_Token, ID.ToString());
 
-                    SeriesImagePicturebox.ImageLocation = "https://thetvdb.com/" + T.series["banner"];
+                    SeriesImagePicturebox.ImageLocation = "https://artworks.thetvdb.com/banners/" + T.series["banner"];
                     SeriesInfo = T;
                     if (T.series.ContainsKey("seriesName")) { favoritesCombo.Text = T.series["seriesName"]; }
                     SeriesIDTitleTextbox.Text = T.Series_ID;
@@ -445,7 +445,7 @@ namespace MovieDataCollector
                             TVSeriesInfo T = new TVSeriesInfo(Authorization_Token, M.SelectedID);
 
                             //display Series banner 
-                            SeriesImagePicturebox.ImageLocation = "https://thetvdb.com/" + T.series["banner"];
+                            SeriesImagePicturebox.ImageLocation = "https://artworks.thetvdb.com/banners/" + T.series["banner"];
                             SeriesInfo = T;
 
                             if (T.series.ContainsKey("seriesName")) { favoritesCombo.Text = T.series["seriesName"]; }
@@ -459,7 +459,7 @@ namespace MovieDataCollector
 
 
                         TVSeriesInfo T = new TVSeriesInfo(Authorization_Token, S.SeriesList[0]["seriesid"]);
-                        SeriesImagePicturebox.ImageLocation = "https://thetvdb.com/" + T.series["banner"];
+                        SeriesImagePicturebox.ImageLocation = "https://artworks.thetvdb.com/banners/" + T.series["banner"];
                         SeriesInfo = T;
                         if (T.series.ContainsKey("seriesName")) { favoritesCombo.Text = T.series["seriesName"]; }
                         SeriesIDTitleTextbox.Text = T.Series_ID;
@@ -492,7 +492,7 @@ namespace MovieDataCollector
                         //display Series banner 
                         if (T.series.ContainsKey("banner"))
                         {
-                            SeriesImagePicturebox.ImageLocation = "https://thetvdb.com/" + T.series["banner"];
+                            SeriesImagePicturebox.ImageLocation = "https://artworks.thetvdb.com/banners/" + T.series["banner"];
                         }
                         SeriesInfo = T;
                         if (T.series.ContainsKey("seriesName")) { favoritesCombo.Text = T.series["seriesName"]; }
@@ -504,10 +504,10 @@ namespace MovieDataCollector
                 {
                     NLabelUpdate("Series Identified, gathering Series info", Color.GreenYellow);
 
-                    TVSeriesInfo T = new TVSeriesInfo(Authorization_Token, S.SeriesList[0]["seriesid"]);
+                    TVSeriesInfo T = new TVSeriesInfo(Authorization_Token, S.SeriesList[0]["id"]);
                     if (T.series.ContainsKey("banner"))
                     {
-                        SeriesImagePicturebox.ImageLocation = "https://thetvdb.com/" + T.series["banner"];
+                        SeriesImagePicturebox.ImageLocation = "https://artworks.thetvdb.com/banners/" + T.series["banner"];
                     }
                     
                     SeriesInfo = T;

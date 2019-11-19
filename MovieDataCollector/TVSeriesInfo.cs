@@ -102,7 +102,7 @@ namespace MovieDataCollector
             string responseFromSite = "";
             using (var httpClient = new HttpClient())
             {
-                using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://api.thetvdb.com/series/73762"))
+                using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://api.thetvdb.com/series/" + Series_ID))
                 {
                     request.Headers.TryAddWithoutValidation("Accept", "application/json");
                     request.Headers.TryAddWithoutValidation("Accept-Language", "eng");
@@ -344,6 +344,7 @@ namespace MovieDataCollector
                         }
                         
                     }
+
                 }
 
                 EpisodeList.Add(episodeDictionary); //add dictionary to list
