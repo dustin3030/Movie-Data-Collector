@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,45 +9,54 @@ namespace MovieDataCollector
 {
     class TVSeriesInfo
     {
-        public string API_Key { get; set; }
+
+        public List<Dictionary<string, string>> EpisodeList {get; set;}
+        public List<string> episodeTags { get; set; }
         public string Series_ID { get; set; }
+        public string Authorization_Token { get; set; }
         public Dictionary<string, string> series { get; set; }
         public List<Dictionary<string, string>> episodes { get; set; }
-        private List<string> episodeTags { get; set; }
         private List<string> seriesTags { get; set; }
-        public TVSeriesInfo(string APIKey, string SeriesID)
+        public TVSeriesInfo(string Token, string SeriesID)
         {
+            EpisodeList = new List<Dictionary<string, string>>();
             episodeTags = new List<string>
-            { "id",
-                "Combined_episodenumber",
-                "Combined_season",
-                "DVD_chapter",
-                "DVD_discid",
-                "DVD_episodenumber",
-                "DVD_season",
-                "Director",
-                "EpImgFlag",
-                "EpisodeName",
-                "EpisodeNumber",
-                "FirstAired",
-                "GuestStars",
-                "IMDB_ID",
-                "Language",
-                "Overview",
-                "ProductionCode",
-                "Rating",
-                "RatingCount",
-                "SeasonNumber",
-                "Writer",
-                "absolute_number",
-                "airsafter_season",
-                "airsbefore_episode",
-                "airsbefore_season",
-                "filename",
-                "lastupdated",
-                "seasonid",
-                "seriesid",
-            };
+                {
+                    "id",
+                    "airedSeason",
+                    "airedSeasonID",
+                    "airedEpisodeNumber",
+                    "episodeName",
+                    "firstAired",
+                    "guestStars",
+                    "directors",
+                    "writers",
+                    "overview",
+                    "language",
+                    "productionCode",
+                    "showUrl",
+                    "lastUpdated",
+                    "dvdDiscid",
+                    "dvdSeason",
+                    "dvdEpisodeNumber",
+                    "dvdChapter",
+                    "absoluteNumber",
+                    "filename",
+                    "seriesId",
+                    "lastUpdatedBy",
+                    "airsAfterSeason",
+                    "airsBeforeSeason",
+                    "airsBeforeEpisode",
+                    "imdbId",
+                    "contentRating",
+                    "thumbAuthor",
+                    "thumbAdded",
+                    "thumbWidth",
+                    "thumbHeight",
+                    "siteRating",
+                    "siteRatingCount",
+                    "isMovie"
+                };
             seriesTags = new List<string>()
             { "Actors",
                 "ContentRating",
@@ -72,14 +82,32 @@ namespace MovieDataCollector
             episodes = new List<Dictionary<string, string>>();
             series = new Dictionary<string, string>();
 
-            API_Key = APIKey;
+            Authorization_Token = Token;
             Series_ID = SeriesID;
-            GatherSeriesInfo();
-            VerifyDictionarySeriesInfo();
+            //GatherSeriesInfo();
+            //VerifyDictionarySeriesInfo();
+            GetEpisodes(Series_ID);
         }
-        private void GatherSeriesInfo()
+        private void GatherSeriesInfo(string Series_ID)
         {
-            System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls11 | System.Net.SecurityProtocolType.Tls12;
+            string id = Series_ID;
+            string responseFromSite = "";
+
+            using (var httpClient = new HttpClient())
+            {
+                using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://api.thetvdb.com/series/" + id ))
+                {
+                    request.Headers.TryAddWithoutValidation("Accept", "application/json");
+                    request.Headers.TryAddWithoutValidation("Authorization", "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NzQxNzA2MzgsImlkIjoiT2xkcm95ZCBNZWRpYSBGaWxlIFJlbmFtZXIiLCJvcmlnX2lhdCI6MTU3NDA4NDIzOCwidXNlcmlkIjoxMTU5NTksInVzZXJuYW1lIjoiRHVzdGluLk9sZHJveWRAZ21haWwuY29tIn0.2ZHj400dcPxG9FEfi-LF0hWEPG6V0L-rbqp4eNt_I7xmkxPU8H6fVI_BVtRfI7gGE31mBqvTPkOhR9nz1KL-lrZcz2JCtNkQeqwfY0eTGHFlbxt3YO-2NPTgT0Va2YhQp4Jxa9yMXaAXgyal52DMfPPKlRpyff7PYedshTuRR0TVl6uDIUyi4fKM0cMi3YvunbXpB2JklC4zf1Fwr02X12cwj03OQ-3peTQMH4swXwJtmE3duyYSTWWfbrF80Widz5-kwQX7lkjOPUO-DtsuUBUuJou1ZDYDlqcDEG-PXWdX0VItI7nGF7_YjL8e9HhzwsHSmdzmNDiEPpX2_s5veg");
+
+                    var response = httpClient.SendAsync(request).Result;
+                    var result = response.Content.ReadAsStringAsync().Result;
+                    responseFromSite = result.ToString();
+                }
+            }
+
+
+            /*System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls11 | System.Net.SecurityProtocolType.Tls12;
             string responseContent; //stores response from web request
             string URL = "https://thetvdb.com/api/" + API_Key + "/series/" + Series_ID + "/all";
 
@@ -91,11 +119,11 @@ namespace MovieDataCollector
             responseContent = responseContent.Replace("&lt;", "<");
             responseContent = responseContent.Replace("&gt;", ">");
 
-            ExtractEpisodes(responseContent);
+            ExtractEpisodes(responseContent);*/
         }
         private string MyWebRequest(string URL)
         {
-            if (string.IsNullOrEmpty(URL)) { return ""; }
+            /*if (string.IsNullOrEmpty(URL)) { return ""; }
 
             var request = System.Net.WebRequest.Create(URL) as System.Net.HttpWebRequest;
             request.Method = "GET";
@@ -169,11 +197,12 @@ namespace MovieDataCollector
                 }
                 CustomMessageBox.Show(e.ToString(), 300, 300);
                 return "";
-            }
+            }*/
+            return "";
         }
         private void ExtractEpisodes(string InputString)
         {
-            string[] tokens = InputString.Split(new[] { "</Series>", "</Episode>" }, StringSplitOptions.None);
+            /*string[] tokens = InputString.Split(new[] { "</Series>", "</Episode>" }, StringSplitOptions.None);
 
             //use this to create a list of dictionaries containing the information for each episode and series.
 
@@ -187,22 +216,22 @@ namespace MovieDataCollector
                 {
                     CreateEpisodeDictionary(s);
                 }
-            }
+            }*/
         }
         private void CreateSeriesDictionary(string inputString)
         {
-            for (int i = 0; i < seriesTags.Count(); i++)
+            /*for (int i = 0; i < seriesTags.Count(); i++)
             {
                 if (!string.IsNullOrEmpty(Program.GeneralParser(inputString, "<" + seriesTags[i] + ">", "</" + seriesTags[i] + ">")))
                 {
                     series.Add(seriesTags[i], Program.GeneralParser(inputString, "<" + seriesTags[i] + ">", "</" + seriesTags[i] + ">"));
                 }
-            }
+            }*/
 
         }
         private void CreateEpisodeDictionary(string inputString)
         {
-            //create dictionary
+            /*//create dictionary
             Dictionary<string, string> episodeDictionary = new Dictionary<string, string>();
 
             for (int i = 0; i < episodeTags.Count(); i++)
@@ -214,12 +243,12 @@ namespace MovieDataCollector
                 }
             }
 
-            episodes.Add(episodeDictionary); //add dictionary to list
+            episodes.Add(episodeDictionary); //add dictionary to list*/
         }
         private void VerifyDictionarySeriesInfo()
         {
 
-            for (int i = 0; i < episodes.Count(); i++)
+            /*for (int i = 0; i < episodes.Count(); i++)
             {
                 //ensure all episode keys have a value
                 for (int a = 0; a < episodeTags.Count(); a++)
@@ -240,10 +269,58 @@ namespace MovieDataCollector
                         series.Add(seriesTags[a], "No Info Provided by Web");
                     }
                 }
+            }*/
+
+        }
+        private void GetEpisodes(string seriesID)
+        {
+            string authToken = Authorization_Token;
+            string responseFromSite = "";
+            int pagesInResult = 1;
+            StringBuilder episodesString = new StringBuilder();
+            EpisodeList.Clear();
+
+            for (int i = 1; i < pagesInResult + 1; i++)
+            {
+                using (var httpClient = new HttpClient())
+                {
+                    using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://api.thetvdb.com/series/" + seriesID + "/episodes?page=" + i))
+                    {
+                        request.Headers.TryAddWithoutValidation("Accept", "application/json");
+                        request.Headers.TryAddWithoutValidation("Authorization", "Bearer " + authToken); //Authenticates to website using the token granted by them earlier...Only lasts 24 hours at a time
+
+                        var response = httpClient.SendAsync(request).Result;
+                        var result = response.Content.ReadAsStringAsync().Result;
+
+                        responseFromSite = result.ToString();
+                        pagesInResult = int.Parse(Program.GeneralParser(responseFromSite, "\"last\":", ","));
+                        episodesString.Append(responseFromSite);
+
+
+                    }
+                }
+            }
+
+            string[] delim = { "},{" };
+            string[] episodes = episodesString.ToString().Split(delim, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var textBlock in episodes)
+            {
+                //create dictionary
+                Dictionary<string, string> episodeDictionary = new Dictionary<string, string>();
+
+                for (int i = 0; i < episodeTags.Count(); i++)
+                {
+                    if (!string.IsNullOrEmpty(Program.GeneralParser(textBlock, "\"" + episodeTags[i] + "\":", ",")))
+                    {
+                        //add information to dictionary
+                        episodeDictionary.Add(episodeTags[i], Program.GeneralParser(textBlock, "\"" + episodeTags[i] + "\":", ","));
+                    }
+                }
+
+                EpisodeList.Add(episodeDictionary); //add dictionary to list
             }
 
         }
-
 
     }
 }

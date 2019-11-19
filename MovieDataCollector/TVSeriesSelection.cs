@@ -20,15 +20,15 @@ namespace MovieDataCollector
         }
         private void SeriesNameListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (Series_List[SeriesNameListBox.SelectedIndex].ContainsKey("banner")) { SeriesPosterPictureBox.ImageLocation = "https://thetvdb.com/banners/" + Series_List[SeriesNameListBox.SelectedIndex]["banner"]; }
+            if (Series_List[SeriesNameListBox.SelectedIndex].ContainsKey("banner")) { SeriesPosterPictureBox.ImageLocation = "https://thetvdb.com" + Series_List[SeriesNameListBox.SelectedIndex]["banner"]; }
             else { SeriesPosterPictureBox.ImageLocation = ""; };
 
-            if (Series_List[SeriesNameListBox.SelectedIndex].ContainsKey("Overview")) { overviewTextBox.Text = Series_List[SeriesNameListBox.SelectedIndex]["Overview"]; }
+            if (Series_List[SeriesNameListBox.SelectedIndex].ContainsKey("overview")) { overviewTextBox.Text = Series_List[SeriesNameListBox.SelectedIndex]["overview"]; }
             else { overviewTextBox.Text = "No Overview provided"; }
         }
         private void AcceptBtn_Click(object sender, EventArgs e)
         {
-            SelectedID = Series_List[SeriesNameListBox.SelectedIndex]["seriesid"];
+            SelectedID = Series_List[SeriesNameListBox.SelectedIndex]["id"];
             DialogResult = DialogResult.OK;
             this.Close();
         }
@@ -44,36 +44,36 @@ namespace MovieDataCollector
             if (yearRbtn.Checked)
             {
                 Series_List = (from x in Series_List
-                               orderby x["FirstAired"] descending
+                               orderby x["firstAired"] descending
                                select x).ToList();
             }
             else
             {
                 Series_List = (from x in Series_List
-                               orderby x["SeriesName"] ascending
+                               orderby x["seriesName"] ascending
                                select x).ToList();
             }
 
             for (int i = 0; i < Series_List.Count(); i++)
             {
 
-                if (Series_List[i].ContainsKey("SeriesName") & Series_List[i].ContainsKey("seriesid"))
+                if (Series_List[i].ContainsKey("seriesName") & Series_List[i].ContainsKey("id"))
                 {
-                    if (Series_List[i].ContainsKey("FirstAired") & !string.IsNullOrEmpty(Series_List[i]["FirstAired"]))
+                    if (Series_List[i].ContainsKey("firstAired") & !string.IsNullOrEmpty(Series_List[i]["firstAired"]) & !Series_List[i]["firstAired"].Contains("null"))
                     {
-                        SeriesNameListBox.Items.Add(Series_List[i]["SeriesName"] + " - (" + (Series_List[i]["FirstAired"].Remove(Series_List[i]["FirstAired"].Length - 6, 6)) + ")");
+                        SeriesNameListBox.Items.Add(Series_List[i]["seriesName"] + " - (" + (Series_List[i]["firstAired"].Remove(Series_List[i]["firstAired"].Length - 6, 5)) + ")");
                     }
-                    else { SeriesNameListBox.Items.Add(Series_List[i]["SeriesName"]); }
+                    else { SeriesNameListBox.Items.Add(Series_List[i]["seriesName"]); }
                 }
             }
             if (SeriesNameListBox.Items.Count > 0)
             {
                 SeriesNameListBox.SelectedIndex = 0;
 
-                if (Series_List[0].ContainsKey("banner")) { SeriesPosterPictureBox.ImageLocation = "https://thetvdb.com/banners/" + Series_List[0]["banner"]; }
+                if (Series_List[0].ContainsKey("banner")) { SeriesPosterPictureBox.ImageLocation = "https://thetvdb.com" + Series_List[0]["banner"]; }
                 else { /*Provide default picture incase no banner is found*/ };
 
-                if (Series_List[0].ContainsKey("Overview")) { overviewTextBox.Text = Series_List[0]["Overview"]; }
+                if (Series_List[0].ContainsKey("overview")) { overviewTextBox.Text = Series_List[0]["overview"]; }
                 else { overviewTextBox.Text = "No Overview provided"; }
             }
         }
