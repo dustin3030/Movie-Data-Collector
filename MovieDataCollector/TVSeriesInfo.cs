@@ -58,35 +58,33 @@ namespace MovieDataCollector
                     "isMovie"
                 };
             seriesTags = new List<string>()
-            { "Actors",
-                "ContentRating",
-                "Airs_DayOfWeek",
-                "Airs_Time",
-                "FirstAired",
-                "Genre",
-                "IMDB_ID",
-                "Language",
-                "Network",
-                "NetworkID",
-                "Overview",
-                "Rating",
-                "RatingCount",
-                "Runtime",
-                "SeriesID",
-                "SeriesName",
-                "Status",
+            {
+                "id",
+                "seriesId",
+                "seriesName",
+                "aliases",
+                "season",
+                "poster",
                 "banner",
                 "fanart",
-                "poster",
+                "status",
+                "firstAired",
+                "network",
+                "networkId",
+                "runtime",
+                "language",
+                "genre",
+
             };
             episodes = new List<Dictionary<string, string>>();
             series = new Dictionary<string, string>();
 
             Authorization_Token = Token;
             Series_ID = SeriesID;
-            //GatherSeriesInfo();
-            //VerifyDictionarySeriesInfo();
             GetEpisodes(Series_ID);
+            //GatherSeriesInfo();
+            VerifyDictionarySeriesInfo();
+
         }
         private void GatherSeriesInfo(string Series_ID)
         {
@@ -103,6 +101,18 @@ namespace MovieDataCollector
                     var response = httpClient.SendAsync(request).Result;
                     var result = response.Content.ReadAsStringAsync().Result;
                     responseFromSite = result.ToString();
+                }
+            }
+
+            //create series dictionary
+            Dictionary<string, string> series = new Dictionary<string, string>();
+
+            for (int i = 0; i < seriesTags.Count(); i++)
+            {
+                if (!string.IsNullOrEmpty(Program.GeneralParser(responseFromSite, "\"" + seriesTags[i] + "\":", ",")))
+                {
+                    //add information to dictionary
+                    series.Add(seriesTags[i], Program.GeneralParser(responseFromSite, "\"" + seriesTags[i] + "\":", ","));
                 }
             }
 
@@ -248,15 +258,15 @@ namespace MovieDataCollector
         private void VerifyDictionarySeriesInfo()
         {
 
-            /*for (int i = 0; i < episodes.Count(); i++)
+            for (int i = 0; i < EpisodeList.Count(); i++)
             {
                 //ensure all episode keys have a value
                 for (int a = 0; a < episodeTags.Count(); a++)
                 {
                     //If key is missing, create key with empty string as value
-                    if (!episodes[i].ContainsKey(episodeTags[a]))
+                    if (!EpisodeList[i].ContainsKey(episodeTags[a]))
                     {
-                        episodes[i].Add(episodeTags[a], "No Info Provided by Web");
+                        EpisodeList[i].Add(episodeTags[a], "No Info Provided by Web");
                     }
                 }
 
@@ -269,7 +279,7 @@ namespace MovieDataCollector
                         series.Add(seriesTags[a], "No Info Provided by Web");
                     }
                 }
-            }*/
+            }
 
         }
         private void GetEpisodes(string seriesID)
