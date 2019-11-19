@@ -414,9 +414,9 @@ namespace MovieDataCollector
                 { 
                     NLabelUpdate("ID found, gathering Series info.",Color.GreenYellow);
 
-                    TVSeriesInfo T = new TVSeriesInfo(API_Key, ID.ToString());
+                    TVSeriesInfo T = new TVSeriesInfo(Authorization_Token, ID.ToString());
 
-                    SeriesImagePicturebox.ImageLocation = "https://thetvdb.com/banners/" + T.series["banner"];
+                    SeriesImagePicturebox.ImageLocation = "https://thetvdb.com/" + T.series["banner"];
                     SeriesInfo = T;
                     if (T.series.ContainsKey("seriesName")) { favoritesCombo.Text = T.series["seriesName"]; }
                     SeriesIDTitleTextbox.Text = T.Series_ID;
@@ -442,10 +442,10 @@ namespace MovieDataCollector
 
 
                             //Once show is selected, use selected shows ID to gather episode information
-                            TVSeriesInfo T = new TVSeriesInfo(API_Key, M.SelectedID);
+                            TVSeriesInfo T = new TVSeriesInfo(Authorization_Token, M.SelectedID);
 
                             //display Series banner 
-                            SeriesImagePicturebox.ImageLocation = "https://thetvdb.com/banners/" + T.series["banner"];
+                            SeriesImagePicturebox.ImageLocation = "https://thetvdb.com/" + T.series["banner"];
                             SeriesInfo = T;
 
                             if (T.series.ContainsKey("seriesName")) { favoritesCombo.Text = T.series["seriesName"]; }
@@ -458,8 +458,8 @@ namespace MovieDataCollector
                         NLabelUpdate("Series Identified, gathering Series info", Color.GreenYellow);
 
 
-                        TVSeriesInfo T = new TVSeriesInfo(API_Key, S.SeriesList[0]["seriesid"]);
-                        SeriesImagePicturebox.ImageLocation = "https://thetvdb.com/banners/" + T.series["banner"];
+                        TVSeriesInfo T = new TVSeriesInfo(Authorization_Token, S.SeriesList[0]["seriesid"]);
+                        SeriesImagePicturebox.ImageLocation = "https://thetvdb.com/" + T.series["banner"];
                         SeriesInfo = T;
                         if (T.series.ContainsKey("seriesName")) { favoritesCombo.Text = T.series["seriesName"]; }
                         SeriesIDTitleTextbox.Text = T.Series_ID;
@@ -492,7 +492,7 @@ namespace MovieDataCollector
                         //display Series banner 
                         if (T.series.ContainsKey("banner"))
                         {
-                            SeriesImagePicturebox.ImageLocation = "https://thetvdb.com/banners/" + T.series["banner"];
+                            SeriesImagePicturebox.ImageLocation = "https://thetvdb.com/" + T.series["banner"];
                         }
                         SeriesInfo = T;
                         if (T.series.ContainsKey("seriesName")) { favoritesCombo.Text = T.series["seriesName"]; }
@@ -507,7 +507,7 @@ namespace MovieDataCollector
                     TVSeriesInfo T = new TVSeriesInfo(Authorization_Token, S.SeriesList[0]["seriesid"]);
                     if (T.series.ContainsKey("banner"))
                     {
-                        SeriesImagePicturebox.ImageLocation = "https://thetvdb.com/banners/" + T.series["banner"];
+                        SeriesImagePicturebox.ImageLocation = "https://thetvdb.com/" + T.series["banner"];
                     }
                     
                     SeriesInfo = T;
@@ -518,34 +518,34 @@ namespace MovieDataCollector
             }
             else { CustomMessageBox.Show("Please enter Series ID, or name, or URL", 182, 317); return; }
 
-            for (int i = 0; i < SeriesInfo.episodes.Count; i++)
+            for (int i = 0; i < SeriesInfo.EpisodeList.Count; i++)
             {
-                if (SeriesInfo.episodes[i].ContainsKey("EpisodeName")
-                    & SeriesInfo.episodes[i].ContainsKey("EpisodeNumber")
-                    & SeriesInfo.episodes[i].ContainsKey("SeasonNumber"))
+                if (SeriesInfo.EpisodeList[i].ContainsKey("episodeName")
+                    & SeriesInfo.EpisodeList[i].ContainsKey("airedEpisodeNumber")
+                    & SeriesInfo.EpisodeList[i].ContainsKey("airedSeason"))
                 {
                     string Snum = "";
                     string Enum = "";
-                    if (int.Parse(SeriesInfo.episodes[i]["SeasonNumber"]) < 10)
+                    if (int.Parse(SeriesInfo.EpisodeList[i]["airedSeason"]) < 10)
                     {
-                        Snum = "S0" + SeriesInfo.episodes[i]["SeasonNumber"];
+                        Snum = "S0" + SeriesInfo.EpisodeList[i]["airedSeason"];
                     }
                     else
                     {
-                        Snum = "S" + SeriesInfo.episodes[i]["SeasonNumber"];
+                        Snum = "S" + SeriesInfo.EpisodeList[i]["airedSeason"];
                     }
-                    if (int.Parse(SeriesInfo.episodes[i]["EpisodeNumber"]) < 10)
+                    if (int.Parse(SeriesInfo.EpisodeList[i]["airedEpisodeNumber"]) < 10)
                     {
-                        Enum = "E0" + SeriesInfo.episodes[i]["EpisodeNumber"];
+                        Enum = "E0" + SeriesInfo.EpisodeList[i]["airedEpisodeNumber"];
                     }
                     else
                     {
-                        Enum = "E" + SeriesInfo.episodes[i]["EpisodeNumber"];
+                        Enum = "E" + SeriesInfo.EpisodeList[i]["airedEpisodeNumber"];
                     }
                     //ext not populated yet
-                    PLEXEpisodeNames.Add(SeriesInfo.series["seriesName"] + " - " + Snum.ToLower() + Enum.ToLower() + " - " + SeriesInfo.episodes[i]["EpisodeName"]);
-                    KODIEpisodeNames.Add(SeriesInfo.series["seriesName"] + "_" + Snum.ToLower() + Enum.ToLower() + "_" + SeriesInfo.episodes[i]["EpisodeName"]);
-                    SynologyEpisodeName.Add(SeriesInfo.series["seriesName"] + "." + Snum + "." + Enum + "." + SeriesInfo.episodes[i]["EpisodeName"]);
+                    PLEXEpisodeNames.Add(SeriesInfo.series["seriesName"] + " - " + Snum.ToLower() + Enum.ToLower() + " - " + SeriesInfo.EpisodeList[i]["episodeName"]);
+                    KODIEpisodeNames.Add(SeriesInfo.series["seriesName"] + "_" + Snum.ToLower() + Enum.ToLower() + "_" + SeriesInfo.EpisodeList[i]["episodeName"]);
+                    SynologyEpisodeName.Add(SeriesInfo.series["seriesName"] + "." + Snum + "." + Enum + "." + SeriesInfo.EpisodeList[i]["episodeName"]);
                 }
             }
 
@@ -760,22 +760,22 @@ namespace MovieDataCollector
             {
                 
                 //look for highest season number, highest episode nmber and build list of all Episodes of the show.
-                for (int i = 0; i < SeriesInfo.episodes.Count(); i++)
+                for (int i = 0; i < SeriesInfo.EpisodeList.Count(); i++)
                 {
-                    if (SeriesInfo.episodes[i].ContainsKey("SeasonNumber") && int.Parse(SeriesInfo.episodes[i]["SeasonNumber"]) > maxSeason)
+                    if (SeriesInfo.EpisodeList[i].ContainsKey("airedSeason") && int.Parse(SeriesInfo.EpisodeList[i]["airedSeason"]) > maxSeason)
                     {
-                        maxSeason = int.Parse(SeriesInfo.episodes[i]["SeasonNumber"]);
+                        maxSeason = int.Parse(SeriesInfo.EpisodeList[i]["airedSeason"]);
                     }
 
                     //Look for largest episode number in all seasons of the show.
-                    if (SeriesInfo.episodes[i].ContainsKey("EpisodeNumber") && int.Parse(SeriesInfo.episodes[i]["EpisodeNumber"]) > maxEpisode)
+                    if (SeriesInfo.EpisodeList[i].ContainsKey("airedEpisodeNumber") && int.Parse(SeriesInfo.EpisodeList[i]["airedEpisodeNumber"]) > maxEpisode)
                     {
-                        maxEpisode = int.Parse(SeriesInfo.episodes[i]["EpisodeNumber"]);
+                        maxEpisode = int.Parse(SeriesInfo.EpisodeList[i]["airedEpisodeNumber"]);
                     }
 
-                    if (SeriesInfo.episodes[i].ContainsKey("EpisodeName"))
+                    if (SeriesInfo.EpisodeList[i].ContainsKey("episodeName"))
                     {
-                        episodeNames.Add(SeriesInfo.episodes[i]["EpisodeName"]);
+                        episodeNames.Add(SeriesInfo.EpisodeList[i]["episodeName"]);
                     }
                 }
 
@@ -805,30 +805,30 @@ namespace MovieDataCollector
                         if (isSelected)
                         {
                             //Add loop for each episode to see if an episode title in the SeriesInfo object matches a filename. If so return the episode and season from that.
-                            for (int a = 0; a < SeriesInfo.episodes.Count; a++)
+                            for (int a = 0; a < SeriesInfo.EpisodeList.Count; a++)
                             {
-                                if (SeriesInfo.episodes[a].ContainsKey("EpisodeName"))
+                                if (SeriesInfo.EpisodeList[a].ContainsKey("episodeName"))
                                 {
 
-                                    if ((cleanString(fileNamesListbox.Items[i].ToString()).ToUpper()).Replace(SeriesInfo.series["seriesName"], "").Contains(cleanString(SeriesInfo.episodes[a]["EpisodeName"]).ToUpper()))
+                                    if ((cleanString(fileNamesListbox.Items[i].ToString()).ToUpper()).Replace(SeriesInfo.series["seriesName"], "").Contains(cleanString(SeriesInfo.EpisodeList[a]["episodeName"]).ToUpper()))
                                     {
 
-                                        if (int.Parse(SeriesInfo.episodes[a]["SeasonNumber"]) < 10)
+                                        if (int.Parse(SeriesInfo.EpisodeList[a]["airedSeason"]) < 10)
                                         {
-                                            season = "S0" + SeriesInfo.episodes[a]["SeasonNumber"];
+                                            season = "S0" + SeriesInfo.EpisodeList[a]["airedSeason"];
                                         }
                                         else
                                         {
-                                            season = "S" + SeriesInfo.episodes[a]["SeasonNumber"];
+                                            season = "S" + SeriesInfo.EpisodeList[a]["airedSeason"];
                                         }
 
-                                        if (int.Parse(SeriesInfo.episodes[a]["EpisodeNumber"]) < 10)
+                                        if (int.Parse(SeriesInfo.EpisodeList[a]["airedEpisodeNumber"]) < 10)
                                         {
-                                            episode = "E0" + SeriesInfo.episodes[a]["EpisodeNumber"];
+                                            episode = "E0" + SeriesInfo.EpisodeList[a]["airedEpisodeNumber"];
                                         }
                                         else
                                         {
-                                            episode = "E" + SeriesInfo.episodes[a]["EpisodeNumber"];
+                                            episode = "E" + SeriesInfo.EpisodeList[a]["airedEpisodeNumber"];
                                         }
 
                                         //add episode and season info to the newTitle variable;
@@ -849,19 +849,19 @@ namespace MovieDataCollector
                                         {
 
                                             case 0: //PLEX
-                                                newTitle = SeriesInfo.series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
+                                                newTitle = SeriesInfo.series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
                                                 break;
                                             case 1: //KODI
-                                                newTitle = SeriesInfo.series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
+                                                newTitle = SeriesInfo.series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
                                                 break;
                                             case 2: //Synology
-                                                newTitle = SeriesInfo.series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
+                                                newTitle = SeriesInfo.series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
                                                 break;
                                             default: //Plex
-                                                newTitle = SeriesInfo.series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
+                                                newTitle = SeriesInfo.series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
                                                 break;
                                         }
-                                        //newTitle = SeriesInfo.series["seriesName"] + " " + season + episode + " " + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
+                                        //newTitle = SeriesInfo.series["seriesName"] + " " + season + episode + " " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
                                     }
                                 }
                             }
@@ -876,31 +876,31 @@ namespace MovieDataCollector
                     else
                     {
                         //Add loop for each episode to see if an episode title in the SeriesInfo object matches a filename. If so return the episode and season from that.
-                        for (int a = 0; a < SeriesInfo.episodes.Count; a++)
+                        for (int a = 0; a < SeriesInfo.EpisodeList.Count; a++)
                         {
-                            if (SeriesInfo.episodes[a].ContainsKey("EpisodeName"))
+                            if (SeriesInfo.EpisodeList[a].ContainsKey("episodeName"))
                             {
                                 //Cleans filename of Series Name, common space replacing characters before checking that episode title is in filename. 
                                 //This ensures if an epsisode is named the same as the series name, only that episode with fail and every file won't be matched to that episode.
-                                if ((cleanString(fileNamesListbox.Items[i].ToString()).ToUpper()).Replace(SeriesInfo.series["seriesName"],"").Contains(cleanString(SeriesInfo.episodes[a]["EpisodeName"]).ToUpper()))
+                                if ((cleanString(fileNamesListbox.Items[i].ToString()).ToUpper()).Replace(SeriesInfo.series["seriesName"],"").Contains(cleanString(SeriesInfo.EpisodeList[a]["episodeName"]).ToUpper()))
                                 {
 
-                                    if (int.Parse(SeriesInfo.episodes[a]["SeasonNumber"]) < 10)
+                                    if (int.Parse(SeriesInfo.EpisodeList[a]["airedSeason"]) < 10)
                                     {
-                                        season = "S0" + SeriesInfo.episodes[a]["SeasonNumber"];
+                                        season = "S0" + SeriesInfo.EpisodeList[a]["airedSeason"];
                                     }
                                     else
                                     {
-                                        season = "S" + SeriesInfo.episodes[a]["SeasonNumber"];
+                                        season = "S" + SeriesInfo.EpisodeList[a]["airedSeason"];
                                     }
 
-                                    if (int.Parse(SeriesInfo.episodes[a]["EpisodeNumber"]) < 10)
+                                    if (int.Parse(SeriesInfo.EpisodeList[a]["airedEpisodeNumber"]) < 10)
                                     {
-                                        episode = "E0" + SeriesInfo.episodes[a]["EpisodeNumber"];
+                                        episode = "E0" + SeriesInfo.EpisodeList[a]["airedEpisodeNumber"];
                                     }
                                     else
                                     {
-                                        episode = "E" + SeriesInfo.episodes[a]["EpisodeNumber"];
+                                        episode = "E" + SeriesInfo.EpisodeList[a]["airedEpisodeNumber"];
                                     }
 
                                     //add episode and season info to the newTitle variable;
@@ -921,19 +921,19 @@ namespace MovieDataCollector
                                     {
 
                                         case 0: //PLEX
-                                            newTitle = SeriesInfo.series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
+                                            newTitle = SeriesInfo.series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
                                             break;
                                         case 1: //KODI
-                                            newTitle = SeriesInfo.series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
+                                            newTitle = SeriesInfo.series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
                                             break;
                                         case 2: //Synology
-                                            newTitle = SeriesInfo.series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
+                                            newTitle = SeriesInfo.series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
                                             break;
                                         default: //Plex
-                                            newTitle = SeriesInfo.series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
+                                            newTitle = SeriesInfo.series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
                                             break;
                                     }
-                                    //newTitle = SeriesInfo.series["seriesName"] + " " + season + episode + " " + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
+                                    //newTitle = SeriesInfo.series["seriesName"] + " " + season + episode + " " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
                                 }
                             }
                         }
@@ -986,13 +986,13 @@ namespace MovieDataCollector
 
                     if (string.IsNullOrEmpty(newTitle))//Check for matching episode and season entry
                     {
-                        for (int e = 0; e < SeriesInfo.episodes.Count(); e++)
+                        for (int e = 0; e < SeriesInfo.EpisodeList.Count(); e++)
                         {
-                            if (SeriesInfo.episodes[e].ContainsKey("EpisodeNumber")
-                                & SeriesInfo.episodes[e]["EpisodeNumber"] == episode)
+                            if (SeriesInfo.EpisodeList[e].ContainsKey("airedEpisodeNumber")
+                                & SeriesInfo.EpisodeList[e]["airedEpisodeNumber"] == episode)
                             {
-                                if (SeriesInfo.episodes[e].ContainsKey("SeasonNumber")
-                                    & SeriesInfo.episodes[e]["SeasonNumber"] == season)
+                                if (SeriesInfo.EpisodeList[e].ContainsKey("airedSeason")
+                                    & SeriesInfo.EpisodeList[e]["airedSeason"] == season)
                                 {
                                     if (int.Parse(season) < 10) { season = "S0" + season; }
                                     else { season = "S" + season; }
@@ -1017,19 +1017,19 @@ namespace MovieDataCollector
                                     {
                                         
                                         case 0: //PLEX
-                                            newTitle = SeriesInfo.series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.episodes[e]["EpisodeName"] + "." + ext;
+                                            newTitle = SeriesInfo.series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
                                             break;
                                         case 1: //KODI
-                                            newTitle = SeriesInfo.series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.episodes[e]["EpisodeName"] + "." + ext;
+                                            newTitle = SeriesInfo.series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
                                             break;
                                         case 2: //Synology
-                                            newTitle = SeriesInfo.series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.episodes[e]["EpisodeName"] + "." + ext;
+                                            newTitle = SeriesInfo.series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
                                             break;
                                         default: //Synology
-                                            newTitle = SeriesInfo.series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.episodes[e]["EpisodeName"] + "." + ext;
+                                            newTitle = SeriesInfo.series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
                                             break;
                                     }
-                                    //newTitle = SeriesInfo.series["seriesName"] + " " + season + episode + " " + SeriesInfo.episodes[e]["EpisodeName"] + "." + ext;
+                                    //newTitle = SeriesInfo.series["seriesName"] + " " + season + episode + " " + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
                                 }
                             }
                         }
@@ -1285,21 +1285,21 @@ namespace MovieDataCollector
                 }
                 if (blockOfDigits)
                 {
-                    if (int.Parse(block) <= SeriesInfo.episodes.Count() + 1 && int.Parse(block) > 0)
+                    if (int.Parse(block) <= SeriesInfo.EpisodeList.Count() + 1 && int.Parse(block) > 0)
                     {
                         string newTitle = "";
 
-                        if (int.Parse(SeriesInfo.episodes[int.Parse(block) - 1]["SeasonNumber"]) >= 10)
+                        if (int.Parse(SeriesInfo.EpisodeList[int.Parse(block) - 1]["airedSeason"]) >= 10)
                         {
-                            season = "S" + SeriesInfo.episodes[int.Parse(block) - 1]["SeasonNumber"];
+                            season = "S" + SeriesInfo.EpisodeList[int.Parse(block) - 1]["airedSeason"];
                         }
-                        else { season = "S0" + SeriesInfo.episodes[int.Parse(block) - 1]["SeasonNumber"]; }
+                        else { season = "S0" + SeriesInfo.EpisodeList[int.Parse(block) - 1]["airedSeason"]; }
 
-                        if (int.Parse(SeriesInfo.episodes[int.Parse(block) - 1]["EpisodeNumber"]) >= 10)
+                        if (int.Parse(SeriesInfo.EpisodeList[int.Parse(block) - 1]["airedEpisodeNumber"]) >= 10)
                         {
-                            episode = "E" + SeriesInfo.episodes[int.Parse(block) - 1]["EpisodeNumber"];
+                            episode = "E" + SeriesInfo.EpisodeList[int.Parse(block) - 1]["airedEpisodeNumber"];
                         }
-                        else { episode = "E0" + SeriesInfo.episodes[int.Parse(block) - 1]["EpisodeNumber"]; }
+                        else { episode = "E0" + SeriesInfo.EpisodeList[int.Parse(block) - 1]["airedEpisodeNumber"]; }
 
                         //add episode and season info to the newTitle variable;
 
@@ -1319,16 +1319,16 @@ namespace MovieDataCollector
                         {
                             
                             case 0: //PLEX
-                                newTitle = SeriesInfo.series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.episodes[int.Parse(block) - 1]["EpisodeName"] + "." + ext;
+                                newTitle = SeriesInfo.series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[int.Parse(block) - 1]["episodeName"] + "." + ext;
                                 break;
                             case 1: //KODI
-                                newTitle = SeriesInfo.series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.episodes[int.Parse(block) - 1]["EpisodeName"] + "." + ext;
+                                newTitle = SeriesInfo.series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.EpisodeList[int.Parse(block) - 1]["episodeName"] + "." + ext;
                                 break;
                             case 2: //Synology
-                                newTitle = SeriesInfo.series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.episodes[int.Parse(block) - 1]["EpisodeName"] + "." + ext;
+                                newTitle = SeriesInfo.series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[int.Parse(block) - 1]["episodeName"] + "." + ext;
                                 break;
                             default: //Synology
-                                newTitle = SeriesInfo.series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.episodes[int.Parse(block) - 1]["EpisodeName"] + "." + ext;
+                                newTitle = SeriesInfo.series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[int.Parse(block) - 1]["episodeName"] + "." + ext;
                                 break;
                         }
                         return newTitle;
@@ -1918,42 +1918,42 @@ namespace MovieDataCollector
 
 
             //look for highest season number, highest episode number and build list of all Episodes of the show.
-            for (int i = 0; i < SeriesInfo.episodes.Count(); i++)
+            for (int i = 0; i < SeriesInfo.EpisodeList.Count(); i++)
             {
-                if (SeriesInfo.episodes[i].ContainsKey("SeasonNumber") && int.Parse(SeriesInfo.episodes[i]["SeasonNumber"]) > maxSeason)
+                if (SeriesInfo.EpisodeList[i].ContainsKey("airedSeason") && int.Parse(SeriesInfo.EpisodeList[i]["airedSeason"]) > maxSeason)
                 {
-                    maxSeason = int.Parse(SeriesInfo.episodes[i]["SeasonNumber"]);
+                    maxSeason = int.Parse(SeriesInfo.EpisodeList[i]["airedSeason"]);
                 }
 
                 //Look for largest episode number in all seasons of the show.
-                if (SeriesInfo.episodes[i].ContainsKey("EpisodeNumber") && int.Parse(SeriesInfo.episodes[i]["EpisodeNumber"]) > maxEpisode)
+                if (SeriesInfo.EpisodeList[i].ContainsKey("airedEpisodeNumber") && int.Parse(SeriesInfo.EpisodeList[i]["airedEpisodeNumber"]) > maxEpisode)
                 {
-                    maxEpisode = int.Parse(SeriesInfo.episodes[i]["EpisodeNumber"]);
+                    maxEpisode = int.Parse(SeriesInfo.EpisodeList[i]["airedEpisodeNumber"]);
                 }
 
-                if (SeriesInfo.episodes[i].ContainsKey("EpisodeName"))
+                if (SeriesInfo.EpisodeList[i].ContainsKey("episodeName"))
                 {
-                    episodeNames.Add(SeriesInfo.episodes[i]["EpisodeName"]);
+                    episodeNames.Add(SeriesInfo.EpisodeList[i]["episodeName"]);
                 }
             }
 
-            //look for highest season number, highest episode nmber and build list of all Episodes of the show.
-            for (int i = 0; i < SeriesInfo.episodes.Count(); i++)
+            //look for highest season number, highest episode nmber and build list of all EpisodeList of the show.
+            for (int i = 0; i < SeriesInfo.EpisodeList.Count(); i++)
             {
-                if (SeriesInfo.episodes[i].ContainsKey("SeasonNumber") && int.Parse(SeriesInfo.episodes[i]["SeasonNumber"]) > maxSeason)
+                if (SeriesInfo.EpisodeList[i].ContainsKey("airedSeason") && int.Parse(SeriesInfo.EpisodeList[i]["airedSeason"]) > maxSeason)
                 {
-                    maxSeason = int.Parse(SeriesInfo.episodes[i]["SeasonNumber"]);
+                    maxSeason = int.Parse(SeriesInfo.EpisodeList[i]["airedSeason"]);
                 }
 
                 //Look for largest episode number in all seasons of the show.
-                if (SeriesInfo.episodes[i].ContainsKey("EpisodeNumber") && int.Parse(SeriesInfo.episodes[i]["EpisodeNumber"]) > maxEpisode)
+                if (SeriesInfo.EpisodeList[i].ContainsKey("airedEpisodeNumber") && int.Parse(SeriesInfo.EpisodeList[i]["airedEpisodeNumber"]) > maxEpisode)
                 {
-                    maxEpisode = int.Parse(SeriesInfo.episodes[i]["EpisodeNumber"]);
+                    maxEpisode = int.Parse(SeriesInfo.EpisodeList[i]["airedEpisodeNumber"]);
                 }
 
-                if (SeriesInfo.episodes[i].ContainsKey("EpisodeName"))
+                if (SeriesInfo.EpisodeList[i].ContainsKey("episodeName"))
                 {
-                    episodeNames.Add(SeriesInfo.episodes[i]["EpisodeName"]);
+                    episodeNames.Add(SeriesInfo.EpisodeList[i]["episodeName"]);
                 }
             }
 
@@ -1966,29 +1966,29 @@ namespace MovieDataCollector
 
             //Check for episode title in filename first
             //Add loop for each episode to see if an episode title in the SeriesInfo object matches a filename. If so return the episode and season from that.
-            for (int a = 0; a < SeriesInfo.episodes.Count; a++)
+            for (int a = 0; a < SeriesInfo.EpisodeList.Count; a++)
             {
-                if (SeriesInfo.episodes[a].ContainsKey("EpisodeName"))
+                if (SeriesInfo.EpisodeList[a].ContainsKey("episodeName"))
                 {
-                    if ((cleanString(fileNameToCheck).ToUpper()).Contains(" " + cleanString(SeriesInfo.episodes[a]["EpisodeName"]).ToUpper() + " "))
+                    if ((cleanString(fileNameToCheck).ToUpper()).Contains(" " + cleanString(SeriesInfo.EpisodeList[a]["episodeName"]).ToUpper() + " "))
                     {
 
-                        if (int.Parse(SeriesInfo.episodes[a]["SeasonNumber"]) < 10)
+                        if (int.Parse(SeriesInfo.EpisodeList[a]["airedSeason"]) < 10)
                         {
-                            season = "S0" + SeriesInfo.episodes[a]["SeasonNumber"];
+                            season = "S0" + SeriesInfo.EpisodeList[a]["airedSeason"];
                         }
                         else
                         {
-                            season = "S" + SeriesInfo.episodes[a]["SeasonNumber"];
+                            season = "S" + SeriesInfo.EpisodeList[a]["airedSeason"];
                         }
 
-                        if (int.Parse(SeriesInfo.episodes[a]["EpisodeNumber"]) < 10)
+                        if (int.Parse(SeriesInfo.EpisodeList[a]["airedEpisodeNumber"]) < 10)
                         {
-                            episode = "E0" + SeriesInfo.episodes[a]["EpisodeNumber"];
+                            episode = "E0" + SeriesInfo.EpisodeList[a]["airedEpisodeNumber"];
                         }
                         else
                         {
-                            episode = "E" + SeriesInfo.episodes[a]["EpisodeNumber"];
+                            episode = "E" + SeriesInfo.EpisodeList[a]["airedEpisodeNumber"];
                         }
 
                         //add episode and season info to the newTitle variable;
@@ -2009,16 +2009,16 @@ namespace MovieDataCollector
                         {
 
                             case 0: //PLEX
-                                newTitle = SeriesInfo.series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
+                                newTitle = SeriesInfo.series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
                                 break;
                             case 1: //KODI
-                                newTitle = SeriesInfo.series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
+                                newTitle = SeriesInfo.series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
                                 break;
                             case 2: //Synology
-                                newTitle = SeriesInfo.series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
+                                newTitle = SeriesInfo.series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
                                 break;
                             default: //Plex
-                                newTitle = SeriesInfo.series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.episodes[a]["EpisodeName"] + "." + ext;
+                                newTitle = SeriesInfo.series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
                                 break;
                         }
                     }
@@ -2045,13 +2045,13 @@ namespace MovieDataCollector
 
             if (string.IsNullOrEmpty(newTitle))//Check for matching episode and season entry
             {
-                for (int e = 0; e < SeriesInfo.episodes.Count(); e++)
+                for (int e = 0; e < SeriesInfo.EpisodeList.Count(); e++)
                 {
-                    if (SeriesInfo.episodes[e].ContainsKey("EpisodeNumber")
-                        & SeriesInfo.episodes[e]["EpisodeNumber"] == episode)
+                    if (SeriesInfo.EpisodeList[e].ContainsKey("airedEpisodeNumber")
+                        & SeriesInfo.EpisodeList[e]["airedEpisodeNumber"] == episode)
                     {
-                        if (SeriesInfo.episodes[e].ContainsKey("SeasonNumber")
-                            & SeriesInfo.episodes[e]["SeasonNumber"] == season)
+                        if (SeriesInfo.EpisodeList[e].ContainsKey("airedSeason")
+                            & SeriesInfo.EpisodeList[e]["airedSeason"] == season)
                         {
                             if (int.Parse(season) < 10) { season = "S0" + season; }
                             else { season = "S" + season; }
@@ -2076,19 +2076,19 @@ namespace MovieDataCollector
                             {
 
                                 case 0: //PLEX
-                                    newTitle = SeriesInfo.series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.episodes[e]["EpisodeName"] + "." + ext;
+                                    newTitle = SeriesInfo.series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
                                     break;
                                 case 1: //KODI
-                                    newTitle = SeriesInfo.series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.episodes[e]["EpisodeName"] + "." + ext;
+                                    newTitle = SeriesInfo.series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
                                     break;
                                 case 2: //Synology
-                                    newTitle = SeriesInfo.series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.episodes[e]["EpisodeName"] + "." + ext;
+                                    newTitle = SeriesInfo.series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
                                     break;
                                 default: //Synology
-                                    newTitle = SeriesInfo.series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.episodes[e]["EpisodeName"] + "." + ext;
+                                    newTitle = SeriesInfo.series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
                                     break;
                             }
-                            //newTitle = SeriesInfo.series["seriesName"] + " " + season + episode + " " + SeriesInfo.episodes[e]["EpisodeName"] + "." + ext;
+                            //newTitle = SeriesInfo.series["seriesName"] + " " + season + episode + " " + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
                         }
                     }
                 }
@@ -2205,7 +2205,7 @@ namespace MovieDataCollector
                                 {
                                     NLabelUpdate("Match found! Identifyting episode.", Color.GreenYellow);
 
-                                    TVSeriesInfo SI = new TVSeriesInfo(API_Key, cf.FavoriteIDs[b].ToString());
+                                    TVSeriesInfo SI = new TVSeriesInfo(Authorization_Token, cf.FavoriteIDs[b].ToString());
                                     SeriesInfo = SI; //Makes the seriesinfo global
                                     title = AutoDetermineEpisodeFromFileName(fileNameString);
                                     //Scrub incompatible characters from file name
@@ -2297,7 +2297,7 @@ namespace MovieDataCollector
                             {
                                 NLabelUpdate("Match found! Identifyting episode.", Color.GreenYellow);
 
-                                TVSeriesInfo SI = new TVSeriesInfo(API_Key, cf.FavoriteIDs[b].ToString());
+                                TVSeriesInfo SI = new TVSeriesInfo(Authorization_Token, cf.FavoriteIDs[b].ToString());
                                 SeriesInfo = SI; //Makes the seriesinfo global
                                 title = AutoDetermineEpisodeFromFileName(fileNameString);
                                 //Scrub incompatible characters from file name
