@@ -56,9 +56,10 @@
             // SeriesPosterPictureBox
             // 
             this.SeriesPosterPictureBox.BackColor = System.Drawing.Color.Transparent;
-            this.SeriesPosterPictureBox.Location = new System.Drawing.Point(12, 52);
+            this.SeriesPosterPictureBox.ImageLocation = "https://artworks.thetvdb.com/banners/posters/81189-10.jpg";
+            this.SeriesPosterPictureBox.Location = new System.Drawing.Point(424, 12);
             this.SeriesPosterPictureBox.Name = "SeriesPosterPictureBox";
-            this.SeriesPosterPictureBox.Size = new System.Drawing.Size(661, 167);
+            this.SeriesPosterPictureBox.Size = new System.Drawing.Size(216, 311);
             this.SeriesPosterPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.SeriesPosterPictureBox.TabIndex = 1;
             this.SeriesPosterPictureBox.TabStop = false;
@@ -70,7 +71,7 @@
             this.groupBox1.Controls.Add(this.titleRbtn);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.groupBox1.Location = new System.Drawing.Point(12, 225);
+            this.groupBox1.Location = new System.Drawing.Point(12, 48);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(168, 28);
             this.groupBox1.TabIndex = 2;
@@ -119,9 +120,9 @@
             this.SeriesNameListBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.SeriesNameListBox.ForeColor = System.Drawing.Color.GreenYellow;
             this.SeriesNameListBox.FormattingEnabled = true;
-            this.SeriesNameListBox.Location = new System.Drawing.Point(12, 259);
+            this.SeriesNameListBox.Location = new System.Drawing.Point(12, 82);
             this.SeriesNameListBox.Name = "SeriesNameListBox";
-            this.SeriesNameListBox.Size = new System.Drawing.Size(336, 160);
+            this.SeriesNameListBox.Size = new System.Drawing.Size(336, 407);
             this.SeriesNameListBox.TabIndex = 3;
             this.SeriesNameListBox.SelectedIndexChanged += new System.EventHandler(this.SeriesNameListBox_SelectedIndexChanged);
             // 
@@ -129,10 +130,10 @@
             // 
             this.overviewTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.overviewTextBox.ForeColor = System.Drawing.Color.GreenYellow;
-            this.overviewTextBox.Location = new System.Drawing.Point(354, 259);
+            this.overviewTextBox.Location = new System.Drawing.Point(354, 329);
             this.overviewTextBox.Multiline = true;
             this.overviewTextBox.Name = "overviewTextBox";
-            this.overviewTextBox.Size = new System.Drawing.Size(319, 160);
+            this.overviewTextBox.Size = new System.Drawing.Size(357, 160);
             this.overviewTextBox.TabIndex = 4;
             this.overviewTextBox.Text = "Overview";
             // 
@@ -141,7 +142,7 @@
             this.exitButton.BackColor = System.Drawing.Color.GreenYellow;
             this.exitButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.exitButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.exitButton.Location = new System.Drawing.Point(12, 425);
+            this.exitButton.Location = new System.Drawing.Point(12, 495);
             this.exitButton.Name = "exitButton";
             this.exitButton.Size = new System.Drawing.Size(207, 42);
             this.exitButton.TabIndex = 5;
@@ -153,7 +154,7 @@
             // 
             this.AcceptBtn.BackColor = System.Drawing.Color.GreenYellow;
             this.AcceptBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.AcceptBtn.Location = new System.Drawing.Point(466, 425);
+            this.AcceptBtn.Location = new System.Drawing.Point(466, 495);
             this.AcceptBtn.Name = "AcceptBtn";
             this.AcceptBtn.Size = new System.Drawing.Size(207, 42);
             this.AcceptBtn.TabIndex = 6;
@@ -168,7 +169,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.CancelButton = this.exitButton;
-            this.ClientSize = new System.Drawing.Size(684, 477);
+            this.ClientSize = new System.Drawing.Size(723, 549);
             this.Controls.Add(this.AcceptBtn);
             this.Controls.Add(this.exitButton);
             this.Controls.Add(this.overviewTextBox);

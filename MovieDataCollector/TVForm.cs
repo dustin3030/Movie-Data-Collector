@@ -60,29 +60,14 @@ namespace MovieDataCollector
             System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls11 | System.Net.SecurityProtocolType.Tls12;
 
             InitializeComponent();
+            NLabelUpdate("Authenticating with TheTVDB.com.....", Color.YellowGreen);
             AuthenticateWithTVDB(User_Name, User_Key, API_Key); //Writes Authorization token to global variable...
-
+            
             this.fileNamesListbox.DragDrop += new System.Windows.Forms.DragEventHandler(this.fileNamesListbox_DragDrop);
             this.fileNamesListbox.DragEnter += new System.Windows.Forms.DragEventHandler(this.fileNamesListbox_DragEnter);
 
             this.parentPathLabel.DragDrop += new System.Windows.Forms.DragEventHandler(this.parentPathLabel_DragDrop);
             this.parentPathLabel.DragEnter += new System.Windows.Forms.DragEventHandler(this.parentPathLabel_DragEnter);
-        }
-        private async void GETRequest(string AuthToken, string URL)
-        {
-            using (var httpClient = new HttpClient())
-            {
-                using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://api.thetvdb.com/search/series?name=Titans"))
-                {
-                    request.Headers.TryAddWithoutValidation("Accept", "application/json");
-                    request.Headers.TryAddWithoutValidation("Authorization", "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NzQxNzA2MzgsImlkIjoiT2xkcm95ZCBNZWRpYSBGaWxlIFJlbmFtZXIiLCJvcmlnX2lhdCI6MTU3NDA4NDIzOCwidXNlcmlkIjoxMTU5NTksInVzZXJuYW1lIjoiRHVzdGluLk9sZHJveWRAZ21haWwuY29tIn0.2ZHj400dcPxG9FEfi-LF0hWEPG6V0L-rbqp4eNt_I7xmkxPU8H6fVI_BVtRfI7gGE31mBqvTPkOhR9nz1KL-lrZcz2JCtNkQeqwfY0eTGHFlbxt3YO-2NPTgT0Va2YhQp4Jxa9yMXaAXgyal52DMfPPKlRpyff7PYedshTuRR0TVl6uDIUyi4fKM0cMi3YvunbXpB2JklC4zf1Fwr02X12cwj03OQ-3peTQMH4swXwJtmE3duyYSTWWfbrF80Widz5-kwQX7lkjOPUO-DtsuUBUuJou1ZDYDlqcDEG-PXWdX0VItI7nGF7_YjL8e9HhzwsHSmdzmNDiEPpX2_s5veg");
-
-                    var response = await httpClient.SendAsync(request);
-                    var result = response.Content.ReadAsStringAsync();
-                    dynamic jsonObject = JObject.Parse(result.Result);
-                    dynamic jsonObejct2 = JsonConvert.DeserializeObject(result.Result.ToString());
-                }
-            }
         }
         private async void AuthenticateWithTVDB(string UserName, string UserKey, string APIKey)
         {
@@ -97,9 +82,19 @@ namespace MovieDataCollector
 
                     HttpResponseMessage response = await httpClient.SendAsync(request);
 
-                    var result = response.Content.ReadAsStringAsync();
+                    var result = response.Content.ReadAsStringAsync().Result;
 
-                    Authorization_Token = Program.GeneralParser(result.Result.ToString(), "\":\"", "\"}");
+                    Authorization_Token = Program.GeneralParser(result.ToString(), "\":\"", "\"}");
+
+                    if(!string.IsNullOrEmpty(Authorization_Token))
+                    {
+                        NLabelUpdate("Authentication Completed Successfully...", Color.YellowGreen);
+                    }
+                    else
+                    {
+                        NLabelUpdate("Authentication Failed", Color.Red);
+                    }
+                    
 
                 }
             }
