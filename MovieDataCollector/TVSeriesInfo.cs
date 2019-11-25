@@ -211,7 +211,7 @@ namespace MovieDataCollector
 
             //"data":[
             string[] delim = { "},{" };
-            string[] episodes = episodesString.ToString().Split(delim, StringSplitOptions.RemoveEmptyEntries); //Make sure to purge line "data":[ from textblock. Sometimes there is more than one.
+            string[] episodes = episodesString.ToString().Split(delim, StringSplitOptions.RemoveEmptyEntries);
             foreach (var textBlock in episodes)
             {
                 //create dictionary
@@ -219,7 +219,7 @@ namespace MovieDataCollector
                 string modifiedTextBlock = "";
                 modifiedTextBlock = textBlock + ",";
 
-                if(!modifiedTextBlock.Contains("{\"links\":"))
+                if(modifiedTextBlock.Contains("\"id\":"))
                 {
                     //Add check to see if textblock holds any tags
                     for (int i = 0; i < EpisodeTags.Count(); i++)

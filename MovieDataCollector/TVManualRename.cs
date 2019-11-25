@@ -20,6 +20,7 @@ namespace MovieDataCollector
         {
             InitializeComponent();
             listOfEpisodeNames = listOfEpisodes;
+            listOfEpisodeNames.Sort();
             ChangedFileName = fileForEdit;
             originalTB.Text = file1;
             renameCB.Text = fileForEdit;
@@ -58,6 +59,7 @@ namespace MovieDataCollector
             {
                 renameCB.Items.Add(S + "." + ext);
             }
+
         }
         private void FilterComboBox()
         {
