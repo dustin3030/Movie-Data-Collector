@@ -702,9 +702,9 @@
             this.gainCB1.Name = "gainCB1";
             this.gainCB1.Size = new System.Drawing.Size(53, 21);
             this.gainCB1.TabIndex = 3;
-            this.gainCB1.SelectedIndexChanged += new System.EventHandler(this.gainCB1_SelectedIndexChanged);
-            this.gainCB1.TextChanged += new System.EventHandler(this.gainCB1_TextChanged);
-            this.gainCB1.Leave += new System.EventHandler(this.gainCB1_Leave);
+            this.gainCB1.SelectedIndexChanged += new System.EventHandler(this.GainCB1_SelectedIndexChanged);
+            this.gainCB1.TextChanged += new System.EventHandler(this.GainCB1_TextChanged);
+            this.gainCB1.Leave += new System.EventHandler(this.GainCB1_Leave);
             // 
             // audioBitrateCombo
             // 
@@ -841,9 +841,9 @@
             this.gainCB2.Name = "gainCB2";
             this.gainCB2.Size = new System.Drawing.Size(53, 21);
             this.gainCB2.TabIndex = 19;
-            this.gainCB2.SelectedIndexChanged += new System.EventHandler(this.gainCB2_SelectedIndexChanged);
-            this.gainCB2.TextChanged += new System.EventHandler(this.gainCB2_TextChanged);
-            this.gainCB2.Leave += new System.EventHandler(this.gainCB2_Leave);
+            this.gainCB2.SelectedIndexChanged += new System.EventHandler(this.GainCB2_SelectedIndexChanged);
+            this.gainCB2.TextChanged += new System.EventHandler(this.GainCB2_TextChanged);
+            this.gainCB2.Leave += new System.EventHandler(this.GainCB2_Leave);
             // 
             // disableCheckStream2
             // 
@@ -857,7 +857,7 @@
             this.disableCheckStream2.TabIndex = 0;
             this.disableCheckStream2.Text = "Disable";
             this.disableCheckStream2.UseVisualStyleBackColor = false;
-            this.disableCheckStream2.CheckedChanged += new System.EventHandler(this.disableCheckStream2_CheckedChanged);
+            this.disableCheckStream2.CheckedChanged += new System.EventHandler(this.DisableCheckStream2_CheckedChanged);
             // 
             // codecLabel2
             // 
@@ -975,7 +975,7 @@
             this.audioCodecComboBox2.Name = "audioCodecComboBox2";
             this.audioCodecComboBox2.Size = new System.Drawing.Size(133, 21);
             this.audioCodecComboBox2.TabIndex = 1;
-            this.audioCodecComboBox2.SelectedIndexChanged += new System.EventHandler(this.audioCodecComboBox2_SelectedIndexChanged);
+            this.audioCodecComboBox2.SelectedIndexChanged += new System.EventHandler(this.AudioCodecComboBox2_SelectedIndexChanged);
             this.audioCodecComboBox2.TextChanged += new System.EventHandler(this.AudioCodecComboBox2_TextChanged);
             this.audioCodecComboBox2.Leave += new System.EventHandler(this.AudioCodecComboBox2_Leave);
             // 
@@ -1159,9 +1159,9 @@
             this.gainCB3.Name = "gainCB3";
             this.gainCB3.Size = new System.Drawing.Size(53, 21);
             this.gainCB3.TabIndex = 21;
-            this.gainCB3.SelectedIndexChanged += new System.EventHandler(this.gainCB3_SelectedIndexChanged);
+            this.gainCB3.SelectedIndexChanged += new System.EventHandler(this.GainCB3_SelectedIndexChanged);
             this.gainCB3.TextChanged += new System.EventHandler(this.AudioBitrateCombo3_TextChanged);
-            this.gainCB3.Leave += new System.EventHandler(this.gainCB3_Leave);
+            this.gainCB3.Leave += new System.EventHandler(this.GainCB3_Leave);
             // 
             // disableCheckStream3
             // 
@@ -1175,7 +1175,7 @@
             this.disableCheckStream3.TabIndex = 0;
             this.disableCheckStream3.Text = "Disable";
             this.disableCheckStream3.UseVisualStyleBackColor = false;
-            this.disableCheckStream3.CheckedChanged += new System.EventHandler(this.disableCheckStream3_CheckedChanged);
+            this.disableCheckStream3.CheckedChanged += new System.EventHandler(this.DisableCheckStream3_CheckedChanged);
             // 
             // codecLabel3
             // 
@@ -1293,7 +1293,7 @@
             this.audioCodecComboBox3.Name = "audioCodecComboBox3";
             this.audioCodecComboBox3.Size = new System.Drawing.Size(133, 21);
             this.audioCodecComboBox3.TabIndex = 1;
-            this.audioCodecComboBox3.SelectedIndexChanged += new System.EventHandler(this.audioCodecComboBox3_SelectedIndexChanged);
+            this.audioCodecComboBox3.SelectedIndexChanged += new System.EventHandler(this.AudioCodecComboBox3_SelectedIndexChanged);
             this.audioCodecComboBox3.TextChanged += new System.EventHandler(this.AudioCodecComboBox3_TextChanged);
             this.audioCodecComboBox3.Leave += new System.EventHandler(this.AudioCodecComboBox3_Leave);
             // 
@@ -1869,8 +1869,8 @@
             this.videoEncoderCB.Name = "videoEncoderCB";
             this.videoEncoderCB.Size = new System.Drawing.Size(188, 21);
             this.videoEncoderCB.TabIndex = 1;
-            this.videoEncoderCB.SelectedIndexChanged += new System.EventHandler(this.videoEncoderCB_SelectedIndexChanged);
-            this.videoEncoderCB.Leave += new System.EventHandler(this.videoEncoderCB_Leave);
+            this.videoEncoderCB.SelectedIndexChanged += new System.EventHandler(this.VideoEncoderCB_SelectedIndexChanged);
+            this.videoEncoderCB.Leave += new System.EventHandler(this.VideoEncoderCB_Leave);
             // 
             // encoderSpeedCombo
             // 
@@ -1920,7 +1920,7 @@
             this.autoCropCB.TabIndex = 11;
             this.autoCropCB.Text = "Auto Crop";
             this.autoCropCB.UseVisualStyleBackColor = true;
-            this.autoCropCB.CheckedChanged += new System.EventHandler(this.autoCropCB_CheckedChanged_1);
+            this.autoCropCB.CheckedChanged += new System.EventHandler(this.AutoCropCB_CheckedChanged_1);
             this.autoCropCB.CheckStateChanged += new System.EventHandler(this.TwoPassCheckbox_CheckStateChanged);
             // 
             // twoPassCheckbox

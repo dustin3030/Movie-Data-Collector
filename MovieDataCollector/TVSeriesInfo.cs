@@ -4,24 +4,24 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace MovieDataCollector
 {
     class TVSeriesInfo
     {
 
         public List<Dictionary<string, string>> EpisodeList {get; set;}
-        public List<string> episodeTags { get; set; }
+        public List<string> EpisodeTags { get; set; }
         public string Series_ID { get; set; }
         public string Authorization_Token { get; set; }
-        public Dictionary<string, string> series { get; set; }
-        public List<Dictionary<string, string>> episodes { get; set; }
-        private List<string> seriesTags { get; set; }
-        public TVSeriesInfo(string Token, string SeriesID)
+        public string API_Version { get; set; }
+        public Dictionary<string, string> Series { get; set; }
+        public List<Dictionary<string, string>> Episodes { get; set; }
+        private List<string> SeriesTags { get; set; }
+        public TVSeriesInfo(string Token, string APIVersion, string SeriesID)
         {
             EpisodeList = new List<Dictionary<string, string>>();
-            series = new Dictionary<string, string>();
-            episodeTags = new List<string>
+            Series = new Dictionary<string, string>();
+            EpisodeTags = new List<string>
                 {
                     "id",
                     "airedSeason",
@@ -43,7 +43,7 @@ namespace MovieDataCollector
                     "dvdChapter",
                     "absoluteNumber",
                     "filename",
-                    "seriesId",
+                    "SeriesId",
                     "lastUpdatedBy",
                     "airsAfterSeason",
                     "airsBeforeSeason",
@@ -58,7 +58,7 @@ namespace MovieDataCollector
                     "siteRatingCount",
                     "isMovie"
                 };
-            seriesTags = new List<string>()
+            SeriesTags = new List<string>()
             {
                 "id",
                 "seriesName",
@@ -87,9 +87,10 @@ namespace MovieDataCollector
                 "siteRatingCount",
                 "slug"
             };
-            episodes = new List<Dictionary<string, string>>();
-            series = new Dictionary<string, string>();
+            Episodes = new List<Dictionary<string, string>>();
+            Series = new Dictionary<string, string>();
 
+            API_Version = APIVersion;
             Authorization_Token = Token;
             Series_ID = SeriesID;
             GetEpisodes(Series_ID);
@@ -106,145 +107,42 @@ namespace MovieDataCollector
                 {
                     request.Headers.TryAddWithoutValidation("Accept", "application/json");
                     request.Headers.TryAddWithoutValidation("Accept-Language", "eng");
+                    request.Headers.TryAddWithoutValidation("Accept", "application/vnd.thetvdb.v" + API_Version); //Set Version Number
                     request.Headers.TryAddWithoutValidation("Authorization", "Bearer " + Authorization_Token);
 
                     var response = httpClient.SendAsync(request).Result;
                     var result = response.Content.ReadAsStringAsync().Result;
 
-                    responseFromSite = result.ToString().Replace("{\"data\":{", "").Replace("}","");
+                    responseFromSite = result.ToString().Replace("{\"data\":{", "").Replace("}", "");
                 }
             }
 
 
-            //populate series dictionary
+            //populate Series dictionary
 
-            for (int i = 0; i < seriesTags.Count(); i++)
+            for (int i = 0; i < SeriesTags.Count(); i++)
             {
-                if (!string.IsNullOrEmpty(Program.GeneralParser(responseFromSite, "\"" + seriesTags[i] + "\":", ",")))
+                if (!string.IsNullOrEmpty(Program.GeneralParser(responseFromSite, "\"" + SeriesTags[i] + "\":", ",")))
                 {
-                    if(seriesTags[i] == "genre" || seriesTags[i] == "aliases")
+                    if (SeriesTags[i] == "genre" || SeriesTags[i] == "aliases")
                     {
                         //genre & aliases potentially have multiple entries and uses a different parse filter.
-                        series.Add(seriesTags[i], Program.GeneralParser(responseFromSite, "\"" + seriesTags[i] + "\":[", "],").Replace("\"", "").Replace("]", "").Replace("[", ""));
+                        Series.Add(SeriesTags[i], Program.GeneralParser(responseFromSite, "\"" + SeriesTags[i] + "\":[", "],").Replace("\"", "").Replace("]", "").Replace("[", ""));
+                    }
+                    else if (SeriesTags[i] == "seriesName")
+                    {
+                        Series.Add(SeriesTags[i], Program.GeneralParser(responseFromSite, "\"" + SeriesTags[i] + "\":", ",").Replace("\"", "").Replace("]", "").Replace("[", ""));
                     }
                     else
                     {
                         //add information to dictionary
-                        series.Add(seriesTags[i], Program.GeneralParser(responseFromSite, "\"" + seriesTags[i] + "\":", ",").Replace("\"", "").Replace("]", "").Replace("[", ""));
+                        Series.Add(SeriesTags[i], Program.GeneralParser(responseFromSite, "\"" + SeriesTags[i] + "\":", ",").Replace("\"", "").Replace("]", "").Replace("[", ""));
                     }
-                    
+
                 }
             }
 
 
-
-        }
-        private string MyWebRequest(string URL)
-        {
-            /*if (string.IsNullOrEmpty(URL)) { return ""; }
-
-            var request = System.Net.WebRequest.Create(URL) as System.Net.HttpWebRequest;
-            request.Method = "GET";
-            request.Accept = "application/json";
-            request.ContentLength = 0;
-            string responseContent;
-
-            try
-            {
-                using (var response = request.GetResponse() as System.Net.HttpWebResponse)
-                {
-                    using (var reader = new System.IO.StreamReader(response.GetResponseStream()))
-                    {
-                        responseContent = reader.ReadToEnd();
-                    }
-                }
-                return responseContent;
-            }
-
-            catch (Exception e)
-            {
-                if (e.ToString().Contains("400"))
-                {
-                    CustomMessageBox.Show("Request to TheTVDB.com returned Bad Request Error", 170, 310);
-                    return "";
-                }
-                else if (e.ToString().Contains("401"))
-                {
-                    CustomMessageBox.Show("Request to TheTVDB.com returned Authorization Required Error", 170, 310);
-                    return "";
-                }
-                else if (e.ToString().Contains("403"))
-                {
-                    CustomMessageBox.Show("Request to TheTVDB.com returned Forbidden Page Error", 170, 310);
-                    return "";
-                }
-                else if (e.ToString().Contains("404"))
-                {
-                    CustomMessageBox.Show("Request to TheTVDB.com returned Page not found Error 404", 170, 310);
-                    return "";
-                }
-                else if (e.ToString().Contains("408"))
-                {
-                    CustomMessageBox.Show("Request to TheTVDB.com returned Request Timeout Error", 170, 310);
-                    return "";
-                }
-                else if (e.ToString().Contains("500"))
-                {
-                    CustomMessageBox.Show("Request to TheTVDB.com returned Internal Server Error", 170, 310);
-                    return "";
-                }
-                else if (e.ToString().Contains("502"))
-                {
-                    CustomMessageBox.Show("Request to TheTVDB.com returned Bad Gateway Error", 170, 310);
-                    return "";
-                }
-                else if (e.ToString().Contains("503"))
-                {
-                    CustomMessageBox.Show("Request to TheTVDB.com returned Service Temporarily Unavailable Error", 170, 310);
-                    return "";
-                }
-                else if (e.ToString().Contains("504"))
-                {
-                    CustomMessageBox.Show("Request to TheTVDB.com returned Gateway Timeout Error", 170, 310);
-                    return "";
-                }
-                else if (e.ToString().Contains("500"))
-                {
-                    CustomMessageBox.Show("Request to TheTVDB.com returned Internal Server Error", 170, 310);
-                    return "";
-                }
-                CustomMessageBox.Show(e.ToString(), 300, 300);
-                return "";
-            }*/
-            return "";
-        }
-        private void ExtractEpisodes(string InputString)
-        {
-            /*string[] tokens = InputString.Split(new[] { "</Series>", "</Episode>" }, StringSplitOptions.None);
-
-            //use this to create a list of dictionaries containing the information for each episode and series.
-
-            foreach (string s in tokens)
-            {
-                if (s.Contains("<Series>"))
-                {
-                    CreateSeriesDictionary(s);
-                }
-                else if (s.Contains("<Episode>"))
-                {
-                    CreateEpisodeDictionary(s);
-                }
-            }*/
-        }
-        private void CreateSeriesDictionary(string inputString)
-        {
-            /*for (int i = 0; i < seriesTags.Count(); i++)
-            {
-                if (!string.IsNullOrEmpty(Program.GeneralParser(inputString, "<" + seriesTags[i] + ">", "</" + seriesTags[i] + ">")))
-                {
-                    series.Add(seriesTags[i], Program.GeneralParser(inputString, "<" + seriesTags[i] + ">", "</" + seriesTags[i] + ">"));
-                }
-            }*/
 
         }
         private void VerifyDictionarySeriesInfo()
@@ -253,34 +151,34 @@ namespace MovieDataCollector
             for (int i = 0; i < EpisodeList.Count(); i++)
             {
                 //ensure all episode keys have a value
-                for (int a = 0; a < episodeTags.Count(); a++)
+                for (int a = 0; a < EpisodeTags.Count(); a++)
                 {
                     //If key is missing, create key with value "No Info Provided by Web"
-                    if (!EpisodeList[i].ContainsKey(episodeTags[a]))
+                    if (!EpisodeList[i].ContainsKey(EpisodeTags[a]))
                     {
                         //If no entry exists in dictionary add one so there are no null values.
-                        EpisodeList[i].Add(episodeTags[a], "No Info Provided by Web");
+                        EpisodeList[i].Add(EpisodeTags[a], "No Info Provided by Web");
                     }
-                    if (EpisodeList[i][episodeTags[a]] == "null" || string.IsNullOrEmpty(EpisodeList[i][episodeTags[a]]))
+                    if (EpisodeList[i][EpisodeTags[a]] == "null" || string.IsNullOrEmpty(EpisodeList[i][EpisodeTags[a]]))
                     {
                         //change value to no info provided... for null entries
-                        EpisodeList[i][episodeTags[a]] = "No Info Provided by Web";
+                        EpisodeList[i][EpisodeTags[a]] = "No Info Provided by Web";
                     }
                 }
 
-                //ensure all series keys have value
-                for (int a = 0; a < seriesTags.Count(); a++)
+                //ensure all Series keys have value
+                for (int a = 0; a < SeriesTags.Count(); a++)
                 {
                     //If key is missing, create key with empty string as value
-                    if (!series.ContainsKey(seriesTags[a]))
+                    if (!Series.ContainsKey(SeriesTags[a]))
                     {
-                        series.Add(seriesTags[a], "No Info Provided by Web");
+                        Series.Add(SeriesTags[a], "No Info Provided by Web");
                     }
                 }
             }
 
         }
-        private void GetEpisodes(string seriesID)
+        private void GetEpisodes(string SeriesID)
         {
             string authToken = Authorization_Token;
             string responseFromSite = "";
@@ -292,15 +190,17 @@ namespace MovieDataCollector
             {
                 using (var httpClient = new HttpClient())
                 {
-                    using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://api.thetvdb.com/series/" + seriesID + "/episodes?page=" + i))
+                    using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://api.thetvdb.com/series/" + SeriesID + "/episodes?page=" + i))
                     {
                         request.Headers.TryAddWithoutValidation("Accept", "application/json");
+                        request.Headers.TryAddWithoutValidation("Accept-Language", "eng");
+                        request.Headers.TryAddWithoutValidation("Accept", "application/vnd.thetvdb.v" + API_Version); //Set Version Number
                         request.Headers.TryAddWithoutValidation("Authorization", "Bearer " + authToken); //Authenticates to website using the token granted by them earlier...Only lasts 24 hours at a time
 
                         var response = httpClient.SendAsync(request).Result;
                         var result = response.Content.ReadAsStringAsync().Result;
 
-                        responseFromSite = result.ToString().Replace("{\"data\":", "");
+                        responseFromSite = result.ToString().Replace("{\"data\":", "").Replace("\"data\":[","");
                         pagesInResult = int.Parse(Program.GeneralParser(responseFromSite, "\"last\":", ","));
                         episodesString.Append(responseFromSite);
 
@@ -309,45 +209,55 @@ namespace MovieDataCollector
                 }
             }
 
+            //"data":[
             string[] delim = { "},{" };
-            string[] episodes = episodesString.ToString().Split(delim, StringSplitOptions.RemoveEmptyEntries);
+            string[] episodes = episodesString.ToString().Split(delim, StringSplitOptions.RemoveEmptyEntries); //Make sure to purge line "data":[ from textblock. Sometimes there is more than one.
             foreach (var textBlock in episodes)
             {
                 //create dictionary
                 Dictionary<string, string> episodeDictionary = new Dictionary<string, string>();
                 string modifiedTextBlock = "";
                 modifiedTextBlock = textBlock + ",";
-                for (int i = 0; i < episodeTags.Count(); i++)
+
+                if(!modifiedTextBlock.Contains("{\"links\":"))
                 {
-                    if (!string.IsNullOrEmpty(Program.GeneralParser(modifiedTextBlock, "\"" + episodeTags[i] + "\":", ",")))
+                    //Add check to see if textblock holds any tags
+                    for (int i = 0; i < EpisodeTags.Count(); i++)
                     {
-                        //select case
-                        switch (episodeTags[i])
+                        if (!string.IsNullOrEmpty(Program.GeneralParser(modifiedTextBlock, "\"" + EpisodeTags[i] + "\":", ",\"")))
                         {
-                            case "language":
-                                //add information to dictionary
-                                episodeDictionary.Add(episodeTags[i], Program.GeneralParser(modifiedTextBlock, "\"" + episodeTags[i] + "\":{\"episodeName\":", ",").Replace("\"", "").Replace("[", "").Replace("]", ""));
-                                break;
-                            case "guestStars":
-                                episodeDictionary.Add(episodeTags[i], Program.GeneralParser(modifiedTextBlock, "\"" + episodeTags[i] + "\":[", "]").Replace("\"", "").Replace("[", "").Replace("]", ""));
-                                break;
-                            case "directors":
-                                episodeDictionary.Add(episodeTags[i], Program.GeneralParser(modifiedTextBlock, "\"" + episodeTags[i] + "\":[", "]").Replace("\"", "").Replace("[", "").Replace("]", ""));
-                                break;
-                            case "writers":
-                                episodeDictionary.Add(episodeTags[i], Program.GeneralParser(modifiedTextBlock, "\"" + episodeTags[i] + "\":[", "]").Replace("\"", "").Replace("[", "").Replace("]", ""));
-                                break;
-                            default:
-                                //add information to dictionary
-                                episodeDictionary.Add(episodeTags[i], Program.GeneralParser(modifiedTextBlock, "\"" + episodeTags[i] + "\":", ",").Replace("\"", "").Replace("[", "").Replace("]", ""));
-                                break;
+                            if (modifiedTextBlock.Contains(EpisodeTags[i]))
+                            {
+                                //select case
+                                switch (EpisodeTags[i])
+                                {
+                                    case "language":
+                                        //add information to dictionary
+                                        episodeDictionary.Add(EpisodeTags[i], Program.GeneralParser(modifiedTextBlock, "\"" + EpisodeTags[i] + "\":{\"episodeName\":", ",\"").Replace("\"", "").Replace("[", "").Replace("]", ""));
+                                        break;
+                                    case "guestStars":
+                                        episodeDictionary.Add(EpisodeTags[i], Program.GeneralParser(modifiedTextBlock, "\"" + EpisodeTags[i] + "\":[", "],\"").Replace("\"", "").Replace("[", "").Replace("]", ""));
+                                        break;
+                                    case "directors":
+                                        episodeDictionary.Add(EpisodeTags[i], Program.GeneralParser(modifiedTextBlock, "\"" + EpisodeTags[i] + "\":[", "],\"").Replace("\"", "").Replace("[", "").Replace("]", ""));
+                                        break;
+                                    case "writers":
+                                        episodeDictionary.Add(EpisodeTags[i], Program.GeneralParser(modifiedTextBlock, "\"" + EpisodeTags[i] + "\":[", "],\"").Replace("\"", "").Replace("[", "").Replace("]", ""));
+                                        break;
+                                    default:
+                                        //add information to dictionary
+                                        episodeDictionary.Add(EpisodeTags[i], Program.GeneralParser(modifiedTextBlock, "\"" + EpisodeTags[i] + "\":", ",\"").Replace("\"", "").Replace("[", "").Replace("]", ""));
+                                        break;
+                                }
+
+                            }
+
                         }
-                        
                     }
 
+                    EpisodeList.Add(episodeDictionary); //add dictionary to list
                 }
 
-                EpisodeList.Add(episodeDictionary); //add dictionary to list
             }
 
         }

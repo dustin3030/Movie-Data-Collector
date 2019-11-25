@@ -9,13 +9,15 @@ namespace MovieDataCollector
     {
         public string InputString { get; set; }
         public string APIKey { get; set; }
+        public string APIVersion { get; set; }
         public string Token { get; set; }
         public List<Dictionary<string, string>> SeriesList { get; set; }
-        public TVSeriesSearch(string Input_String, string Authorization_Token)
+        public TVSeriesSearch(string Input_String, string Authorization_Token, string API_Version)
         {
             System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls11 | System.Net.SecurityProtocolType.Tls12;
             InputString = Input_String;
             Token = Authorization_Token;
+            APIVersion = API_Version;
             //ReturnSeriesInfo();
             SearchSeries(InputString);
         }
@@ -78,6 +80,7 @@ namespace MovieDataCollector
                 using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://api.thetvdb.com/search/series?name=" + series))
                 {
                     request.Headers.TryAddWithoutValidation("Accept", "application/json"); //Specifies return as JSON
+                    request.Headers.TryAddWithoutValidation("Accept", "application/vnd.thetvdb.v" + APIVersion); //Set Version Number
                     request.Headers.TryAddWithoutValidation("Accept-Language", "eng"); //Specifies English Language
                     request.Headers.TryAddWithoutValidation("Authorization", "Bearer " + authToken); //Authenticates to website using the token granted by them earlier...Only lasts 24 hours at a time
 
@@ -98,10 +101,10 @@ namespace MovieDataCollector
 
                 for (int i = 0; i < tags.Count(); i++)
                 {
-                    if (!string.IsNullOrEmpty(GeneralParser(textBlock, "\"" + tags[i] + "\":", ",").Replace("\"", "")))
+                    if (!string.IsNullOrEmpty(GeneralParser(textBlock, "\"" + tags[i] + "\":", ",\"").Replace("\"", "")))
                     {
                         //add information to dictionary
-                        SeriesDictionary.Add(tags[i], GeneralParser(textBlock, "\"" + tags[i] + "\":", ",").Replace("\"",""));
+                        SeriesDictionary.Add(tags[i], GeneralParser(textBlock, "\"" + tags[i] + "\":", ",\"").Replace("\"",""));
                     }
                 }
 

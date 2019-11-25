@@ -19,6 +19,7 @@ namespace MovieDataCollector
         const string API_Key = "8AC38B77755B00A0"; //API Key for the TheTVDB.com
         const string User_Key = "04DD483577DACF8E"; //User Key for the TheTVDB.com
         const string User_Name = "dustin.oldroyd@gmail.com"; //UserName for TheTVDB.com Access
+        const string API_Version = "2"; //Sets the API Version, Version 3 is the newest but still buggy.
         string Authorization_Token = ""; //Authorization Token used for querying theTVDB.com databases.
 
         //string SeriesURL = ""; //contains the URL from TVDB.com for the all season link for Series your are using
@@ -63,11 +64,11 @@ namespace MovieDataCollector
             NLabelUpdate("Authenticating with TheTVDB.com.....", Color.YellowGreen);
             AuthenticateWithTVDB(User_Name, User_Key, API_Key); //Writes Authorization token to global variable...
             
-            this.fileNamesListbox.DragDrop += new System.Windows.Forms.DragEventHandler(this.fileNamesListbox_DragDrop);
-            this.fileNamesListbox.DragEnter += new System.Windows.Forms.DragEventHandler(this.fileNamesListbox_DragEnter);
+            this.fileNamesListbox.DragDrop += new System.Windows.Forms.DragEventHandler(this.FileNamesListbox_DragDrop);
+            this.fileNamesListbox.DragEnter += new System.Windows.Forms.DragEventHandler(this.FileNamesListbox_DragEnter);
 
-            this.parentPathLabel.DragDrop += new System.Windows.Forms.DragEventHandler(this.parentPathLabel_DragDrop);
-            this.parentPathLabel.DragEnter += new System.Windows.Forms.DragEventHandler(this.parentPathLabel_DragEnter);
+            this.parentPathLabel.DragDrop += new System.Windows.Forms.DragEventHandler(this.ParentPathLabel_DragDrop);
+            this.parentPathLabel.DragEnter += new System.Windows.Forms.DragEventHandler(this.ParentPathLabel_DragEnter);
         }
         private async void AuthenticateWithTVDB(string UserName, string UserKey, string APIKey)
         {
@@ -76,6 +77,7 @@ namespace MovieDataCollector
                 using (var request = new HttpRequestMessage(new HttpMethod("POST"), "https://api.thetvdb.com/login"))
                 {
                     request.Headers.TryAddWithoutValidation("Accept", "application/json");
+                    request.Headers.TryAddWithoutValidation("Accept", "application/vnd.thetvdb.v" + API_Version); //Set Version Number
 
                     request.Content = new StringContent("{\n  \"apikey\": \"" + APIKey + "\",\n  \"userkey\": \"" + UserKey + "\",\n  \"username\": \"" + UserName + "\"\n}");
                     request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
@@ -102,7 +104,7 @@ namespace MovieDataCollector
 
 
 
-        private void fileNamesListbox_DragEnter(object sender, System.Windows.Forms.DragEventArgs e)
+        private void FileNamesListbox_DragEnter(object sender, System.Windows.Forms.DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
@@ -113,7 +115,7 @@ namespace MovieDataCollector
                 e.Effect = DragDropEffects.None;
             }
         }
-        private void fileNamesListbox_DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
+        private void FileNamesListbox_DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
         {
             string[] s = (string[])e.Data.GetData(DataFormats.FileDrop, false);
             string fileName = "";
@@ -241,7 +243,7 @@ namespace MovieDataCollector
         }
 
 
-        private void parentPathLabel_DragEnter(object sender, System.Windows.Forms.DragEventArgs e)
+        private void ParentPathLabel_DragEnter(object sender, System.Windows.Forms.DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
@@ -252,7 +254,7 @@ namespace MovieDataCollector
                 e.Effect = DragDropEffects.None;
             }
         }
-        private void parentPathLabel_DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
+        private void ParentPathLabel_DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
         {
             string[] s = (string[])e.Data.GetData(DataFormats.FileDrop, false);
             string fileName = "";
@@ -409,11 +411,21 @@ namespace MovieDataCollector
                 { 
                     NLabelUpdate("ID found, gathering Series info.",Color.GreenYellow);
 
-                    TVSeriesInfo T = new TVSeriesInfo(Authorization_Token, ID.ToString());
+                    TVSeriesInfo T = new TVSeriesInfo(Authorization_Token, API_Version, ID.ToString());
 
-                    SeriesImagePicturebox.ImageLocation = "https://artworks.thetvdb.com/banners/" + T.series["banner"];
+                    //Returns missing banner
+                    if(T.Series["banner"].Contains("https://beta.thetvdb.com/images/missing/movie.jpg"))
+                    {
+                    
+                        SeriesImagePicturebox.ImageLocation = "https://beta.thetvdb.com/images/missing/movie.jpg";
+                    }
+                    else
+                    {
+                        SeriesImagePicturebox.ImageLocation = "https://artworks.thetvdb.com/banners/" + T.Series["banner"];
+                    }
+                    
                     SeriesInfo = T;
-                    if (T.series.ContainsKey("seriesName")) { favoritesCombo.Text = T.series["seriesName"]; }
+                    if (T.Series.ContainsKey("seriesName")) { favoritesCombo.Text = T.Series["seriesName"]; }
                     SeriesIDTitleTextbox.Text = T.Series_ID;
                 }
                 catch //ID Search returned error, attempt search as a Series title instead.
@@ -421,7 +433,7 @@ namespace MovieDataCollector
                     NLabelUpdate("ID search failed, searching " + TitleBox + "as text", Color.Red);
 
                     //Create object that looks up possible TV Series based on text in SeriesURLBox
-                    TVSeriesSearch S = new TVSeriesSearch(TitleBox, Authorization_Token);
+                    TVSeriesSearch S = new TVSeriesSearch(TitleBox, Authorization_Token, API_Version);
                     //Create form object to hold results from search
                     if (S.SeriesList.Count > 1)
                     {
@@ -437,13 +449,24 @@ namespace MovieDataCollector
 
 
                             //Once show is selected, use selected shows ID to gather episode information
-                            TVSeriesInfo T = new TVSeriesInfo(Authorization_Token, M.SelectedID);
+                            TVSeriesInfo T = new TVSeriesInfo(Authorization_Token, API_Version, M.SelectedID);
 
                             //display Series banner 
-                            SeriesImagePicturebox.ImageLocation = "https://artworks.thetvdb.com/banners/" + T.series["banner"];
+
+                            //Returns missing banner
+                            if (T.Series["banner"].Contains("https://beta.thetvdb.com/images/missing/movie.jpg"))
+                            {
+
+                                SeriesImagePicturebox.ImageLocation = "https://beta.thetvdb.com/images/missing/movie.jpg";
+                            }
+                            else
+                            {
+                                SeriesImagePicturebox.ImageLocation = "https://artworks.thetvdb.com/banners/" + T.Series["banner"];
+                            }
+
                             SeriesInfo = T;
 
-                            if (T.series.ContainsKey("seriesName")) { favoritesCombo.Text = T.series["seriesName"]; }
+                            if (T.Series.ContainsKey("seriesName")) { favoritesCombo.Text = T.Series["seriesName"]; }
                             SeriesIDTitleTextbox.Text = T.Series_ID;
                         }
                         else if (M.DialogResult == DialogResult.Abort || M.DialogResult == DialogResult.Cancel) { return; }
@@ -453,10 +476,20 @@ namespace MovieDataCollector
                         NLabelUpdate("Series Identified, gathering Series info", Color.GreenYellow);
 
 
-                        TVSeriesInfo T = new TVSeriesInfo(Authorization_Token, S.SeriesList[0]["seriesid"]);
-                        SeriesImagePicturebox.ImageLocation = "https://artworks.thetvdb.com/banners/" + T.series["banner"];
+                        TVSeriesInfo T = new TVSeriesInfo(Authorization_Token, API_Version, S.SeriesList[0]["seriesid"]);
+                        //Returns missing banner
+                        if (T.Series["banner"].Contains("https://beta.thetvdb.com/images/missing/movie.jpg"))
+                        {
+
+                            SeriesImagePicturebox.ImageLocation = "https://beta.thetvdb.com/images/missing/movie.jpg";
+                        }
+                        else
+                        {
+                            SeriesImagePicturebox.ImageLocation = "https://artworks.thetvdb.com/banners/" + T.Series["banner"];
+                        }
+
                         SeriesInfo = T;
-                        if (T.series.ContainsKey("seriesName")) { favoritesCombo.Text = T.series["seriesName"]; }
+                        if (T.Series.ContainsKey("seriesName")) { favoritesCombo.Text = T.Series["seriesName"]; }
                         SeriesIDTitleTextbox.Text = T.Series_ID;
                     }
                     else { CustomMessageBox.Show("No such show found", 170, 310); return; }
@@ -468,7 +501,7 @@ namespace MovieDataCollector
                 NLabelUpdate("Searching..." + SeriesIDTitleTextbox.Text, Color.GreenYellow);
 
                 //Create object that looks up possible TV Series based on text in SeriesURLBox
-                TVSeriesSearch S = new TVSeriesSearch(TitleBox, Authorization_Token);
+                TVSeriesSearch S = new TVSeriesSearch(TitleBox, Authorization_Token, API_Version);
                 //Create form object to hold results from search
                 if (S.SeriesList.Count > 1)
                 {
@@ -483,14 +516,25 @@ namespace MovieDataCollector
                         NLabelUpdate("Selection Accepted, gathering Series info", Color.GreenYellow);
 
                         //Once show is selected, use selected shows ID to gather episode information
-                        TVSeriesInfo T = new TVSeriesInfo(Authorization_Token, M.SelectedID);
+                        TVSeriesInfo T = new TVSeriesInfo(Authorization_Token, API_Version, M.SelectedID);
                         //display Series banner 
-                        if (T.series.ContainsKey("banner"))
+                        if (T.Series.ContainsKey("banner"))
                         {
-                            SeriesImagePicturebox.ImageLocation = "https://artworks.thetvdb.com/banners/" + T.series["banner"];
+                            //Returns missing banner
+                            if (T.Series["banner"].Contains("https://beta.thetvdb.com/images/missing/movie.jpg"))
+                            {
+
+                                SeriesImagePicturebox.ImageLocation = "https://beta.thetvdb.com/images/missing/movie.jpg";
+                            }
+                            else
+                            {
+                                SeriesImagePicturebox.ImageLocation = "https://artworks.thetvdb.com/banners/" + T.Series["banner"];
+                            }
+
                         }
                         SeriesInfo = T;
-                        if (T.series.ContainsKey("seriesName")) { favoritesCombo.Text = T.series["seriesName"]; }
+
+                        if (T.Series.ContainsKey("seriesName")) { favoritesCombo.Text = T.Series["seriesName"]; }
                         SeriesIDTitleTextbox.Text = T.Series_ID;
                     }
                     else if (M.DialogResult == DialogResult.Abort || M.DialogResult == DialogResult.Cancel) { return; }
@@ -499,14 +543,24 @@ namespace MovieDataCollector
                 {
                     NLabelUpdate("Series Identified, gathering Series info", Color.GreenYellow);
 
-                    TVSeriesInfo T = new TVSeriesInfo(Authorization_Token, S.SeriesList[0]["id"]);
-                    if (T.series.ContainsKey("banner"))
+                    TVSeriesInfo T = new TVSeriesInfo(Authorization_Token, API_Version, S.SeriesList[0]["id"]);
+                    if (T.Series.ContainsKey("banner"))
                     {
-                        SeriesImagePicturebox.ImageLocation = "https://artworks.thetvdb.com/banners/" + T.series["banner"];
+                        //Returns missing banner
+                        if (T.Series["banner"].Contains("https://beta.thetvdb.com/images/missing/movie.jpg"))
+                        {
+
+                            SeriesImagePicturebox.ImageLocation = "https://beta.thetvdb.com/images/missing/movie.jpg";
+                        }
+                        else
+                        {
+                            SeriesImagePicturebox.ImageLocation = "https://artworks.thetvdb.com/banners/" + T.Series["banner"];
+                        }
+
                     }
-                    
+
                     SeriesInfo = T;
-                    if (T.series.ContainsKey("seriesName")) { favoritesCombo.Text = T.series["seriesName"]; }
+                    if (T.Series.ContainsKey("seriesName")) { favoritesCombo.Text = T.Series["seriesName"]; }
                     SeriesIDTitleTextbox.Text = T.Series_ID;
                 }
                 else { CustomMessageBox.Show("No such show found", 170, 310); return; }
@@ -538,9 +592,9 @@ namespace MovieDataCollector
                         Enum = "E" + SeriesInfo.EpisodeList[i]["airedEpisodeNumber"];
                     }
                     //ext not populated yet
-                    PLEXEpisodeNames.Add(SeriesInfo.series["seriesName"] + " - " + Snum.ToLower() + Enum.ToLower() + " - " + SeriesInfo.EpisodeList[i]["episodeName"]);
-                    KODIEpisodeNames.Add(SeriesInfo.series["seriesName"] + "_" + Snum.ToLower() + Enum.ToLower() + "_" + SeriesInfo.EpisodeList[i]["episodeName"]);
-                    SynologyEpisodeName.Add(SeriesInfo.series["seriesName"] + "." + Snum + "." + Enum + "." + SeriesInfo.EpisodeList[i]["episodeName"]);
+                    PLEXEpisodeNames.Add(SeriesInfo.Series["seriesName"] + " - " + Snum.ToLower() + Enum.ToLower() + " - " + SeriesInfo.EpisodeList[i]["episodeName"]);
+                    KODIEpisodeNames.Add(SeriesInfo.Series["seriesName"] + "_" + Snum.ToLower() + Enum.ToLower() + "_" + SeriesInfo.EpisodeList[i]["episodeName"]);
+                    SynologyEpisodeName.Add(SeriesInfo.Series["seriesName"] + "." + Snum + "." + Enum + "." + SeriesInfo.EpisodeList[i]["episodeName"]);
                 }
             }
 
@@ -707,7 +761,7 @@ namespace MovieDataCollector
             PreviewChanges();
         }
 
-        private string cleanString(string input)
+        private string CleanString(string input)
         {
             string output = input;
             List<string> spaceReplace = new List<string>
@@ -805,7 +859,7 @@ namespace MovieDataCollector
                                 if (SeriesInfo.EpisodeList[a].ContainsKey("episodeName"))
                                 {
 
-                                    if ((cleanString(fileNamesListbox.Items[i].ToString()).ToUpper()).Replace(SeriesInfo.series["seriesName"], "").Contains(cleanString(SeriesInfo.EpisodeList[a]["episodeName"]).ToUpper()))
+                                    if ((CleanString(fileNamesListbox.Items[i].ToString()).ToUpper()).Replace(SeriesInfo.Series["seriesName"], "").Contains(CleanString(SeriesInfo.EpisodeList[a]["episodeName"]).ToUpper()))
                                     {
 
                                         if (int.Parse(SeriesInfo.EpisodeList[a]["airedSeason"]) < 10)
@@ -844,19 +898,19 @@ namespace MovieDataCollector
                                         {
 
                                             case 0: //PLEX
-                                                newTitle = SeriesInfo.series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
+                                                newTitle = SeriesInfo.Series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
                                                 break;
                                             case 1: //KODI
-                                                newTitle = SeriesInfo.series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
+                                                newTitle = SeriesInfo.Series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
                                                 break;
                                             case 2: //Synology
-                                                newTitle = SeriesInfo.series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
+                                                newTitle = SeriesInfo.Series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
                                                 break;
                                             default: //Plex
-                                                newTitle = SeriesInfo.series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
+                                                newTitle = SeriesInfo.Series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
                                                 break;
                                         }
-                                        //newTitle = SeriesInfo.series["seriesName"] + " " + season + episode + " " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
+                                        //newTitle = SeriesInfo.Series["seriesName"] + " " + season + episode + " " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
                                     }
                                 }
                             }
@@ -877,7 +931,7 @@ namespace MovieDataCollector
                             {
                                 //Cleans filename of Series Name, common space replacing characters before checking that episode title is in filename. 
                                 //This ensures if an epsisode is named the same as the series name, only that episode with fail and every file won't be matched to that episode.
-                                if ((cleanString(fileNamesListbox.Items[i].ToString()).ToUpper()).Replace(SeriesInfo.series["seriesName"],"").Contains(cleanString(SeriesInfo.EpisodeList[a]["episodeName"]).ToUpper()))
+                                if ((CleanString(fileNamesListbox.Items[i].ToString()).ToUpper()).Replace(SeriesInfo.Series["seriesName"],"").Contains(CleanString(SeriesInfo.EpisodeList[a]["episodeName"]).ToUpper()))
                                 {
 
                                     if (int.Parse(SeriesInfo.EpisodeList[a]["airedSeason"]) < 10)
@@ -916,19 +970,19 @@ namespace MovieDataCollector
                                     {
 
                                         case 0: //PLEX
-                                            newTitle = SeriesInfo.series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
+                                            newTitle = SeriesInfo.Series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
                                             break;
                                         case 1: //KODI
-                                            newTitle = SeriesInfo.series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
+                                            newTitle = SeriesInfo.Series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
                                             break;
                                         case 2: //Synology
-                                            newTitle = SeriesInfo.series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
+                                            newTitle = SeriesInfo.Series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
                                             break;
                                         default: //Plex
-                                            newTitle = SeriesInfo.series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
+                                            newTitle = SeriesInfo.Series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
                                             break;
                                     }
-                                    //newTitle = SeriesInfo.series["seriesName"] + " " + season + episode + " " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
+                                    //newTitle = SeriesInfo.Series["seriesName"] + " " + season + episode + " " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
                                 }
                             }
                         }
@@ -1012,19 +1066,19 @@ namespace MovieDataCollector
                                     {
                                         
                                         case 0: //PLEX
-                                            newTitle = SeriesInfo.series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
+                                            newTitle = SeriesInfo.Series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
                                             break;
                                         case 1: //KODI
-                                            newTitle = SeriesInfo.series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
+                                            newTitle = SeriesInfo.Series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
                                             break;
                                         case 2: //Synology
-                                            newTitle = SeriesInfo.series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
+                                            newTitle = SeriesInfo.Series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
                                             break;
                                         default: //Synology
-                                            newTitle = SeriesInfo.series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
+                                            newTitle = SeriesInfo.Series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
                                             break;
                                     }
-                                    //newTitle = SeriesInfo.series["seriesName"] + " " + season + episode + " " + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
+                                    //newTitle = SeriesInfo.Series["seriesName"] + " " + season + episode + " " + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
                                 }
                             }
                         }
@@ -1314,16 +1368,16 @@ namespace MovieDataCollector
                         {
                             
                             case 0: //PLEX
-                                newTitle = SeriesInfo.series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[int.Parse(block) - 1]["episodeName"] + "." + ext;
+                                newTitle = SeriesInfo.Series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[int.Parse(block) - 1]["episodeName"] + "." + ext;
                                 break;
                             case 1: //KODI
-                                newTitle = SeriesInfo.series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.EpisodeList[int.Parse(block) - 1]["episodeName"] + "." + ext;
+                                newTitle = SeriesInfo.Series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.EpisodeList[int.Parse(block) - 1]["episodeName"] + "." + ext;
                                 break;
                             case 2: //Synology
-                                newTitle = SeriesInfo.series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[int.Parse(block) - 1]["episodeName"] + "." + ext;
+                                newTitle = SeriesInfo.Series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[int.Parse(block) - 1]["episodeName"] + "." + ext;
                                 break;
                             default: //Synology
-                                newTitle = SeriesInfo.series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[int.Parse(block) - 1]["episodeName"] + "." + ext;
+                                newTitle = SeriesInfo.Series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[int.Parse(block) - 1]["episodeName"] + "." + ext;
                                 break;
                         }
                         return newTitle;
@@ -1965,7 +2019,7 @@ namespace MovieDataCollector
             {
                 if (SeriesInfo.EpisodeList[a].ContainsKey("episodeName"))
                 {
-                    if ((cleanString(fileNameToCheck).ToUpper()).Contains(" " + cleanString(SeriesInfo.EpisodeList[a]["episodeName"]).ToUpper() + " "))
+                    if ((CleanString(fileNameToCheck).ToUpper()).Contains(" " + CleanString(SeriesInfo.EpisodeList[a]["episodeName"]).ToUpper() + " "))
                     {
 
                         if (int.Parse(SeriesInfo.EpisodeList[a]["airedSeason"]) < 10)
@@ -2004,16 +2058,16 @@ namespace MovieDataCollector
                         {
 
                             case 0: //PLEX
-                                newTitle = SeriesInfo.series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
+                                newTitle = SeriesInfo.Series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
                                 break;
                             case 1: //KODI
-                                newTitle = SeriesInfo.series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
+                                newTitle = SeriesInfo.Series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
                                 break;
                             case 2: //Synology
-                                newTitle = SeriesInfo.series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
+                                newTitle = SeriesInfo.Series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
                                 break;
                             default: //Plex
-                                newTitle = SeriesInfo.series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
+                                newTitle = SeriesInfo.Series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
                                 break;
                         }
                     }
@@ -2071,19 +2125,19 @@ namespace MovieDataCollector
                             {
 
                                 case 0: //PLEX
-                                    newTitle = SeriesInfo.series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
+                                    newTitle = SeriesInfo.Series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
                                     break;
                                 case 1: //KODI
-                                    newTitle = SeriesInfo.series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
+                                    newTitle = SeriesInfo.Series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
                                     break;
                                 case 2: //Synology
-                                    newTitle = SeriesInfo.series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
+                                    newTitle = SeriesInfo.Series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
                                     break;
                                 default: //Synology
-                                    newTitle = SeriesInfo.series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
+                                    newTitle = SeriesInfo.Series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
                                     break;
                             }
-                            //newTitle = SeriesInfo.series["seriesName"] + " " + season + episode + " " + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
+                            //newTitle = SeriesInfo.Series["seriesName"] + " " + season + episode + " " + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
                         }
                     }
                 }
@@ -2200,7 +2254,7 @@ namespace MovieDataCollector
                                 {
                                     NLabelUpdate("Match found! Identifyting episode.", Color.GreenYellow);
 
-                                    TVSeriesInfo SI = new TVSeriesInfo(Authorization_Token, cf.FavoriteIDs[b].ToString());
+                                    TVSeriesInfo SI = new TVSeriesInfo(Authorization_Token, API_Version, cf.FavoriteIDs[b].ToString());
                                     SeriesInfo = SI; //Makes the seriesinfo global
                                     title = AutoDetermineEpisodeFromFileName(fileNameString);
                                     //Scrub incompatible characters from file name
@@ -2292,7 +2346,7 @@ namespace MovieDataCollector
                             {
                                 NLabelUpdate("Match found! Identifyting episode.", Color.GreenYellow);
 
-                                TVSeriesInfo SI = new TVSeriesInfo(Authorization_Token, cf.FavoriteIDs[b].ToString());
+                                TVSeriesInfo SI = new TVSeriesInfo(Authorization_Token, API_Version, cf.FavoriteIDs[b].ToString());
                                 SeriesInfo = SI; //Makes the seriesinfo global
                                 title = AutoDetermineEpisodeFromFileName(fileNameString);
                                 //Scrub incompatible characters from file name
@@ -2328,7 +2382,7 @@ namespace MovieDataCollector
             else if(cf.FavoriteTitles.Count > 0) { NLabelUpdate("No files in list",Color.Red); }
         }
 
-        private void recursiveCB_CheckedChanged(object sender, EventArgs e)
+        private void RecursiveCB_CheckedChanged(object sender, EventArgs e)
         {
             string fileName = "";
 
@@ -2446,7 +2500,7 @@ namespace MovieDataCollector
             
         }
 
-        private void changedFileNamesListbox_MouseClick(object sender, MouseEventArgs e)
+        private void ChangedFileNamesListbox_MouseClick(object sender, MouseEventArgs e)
         {
             //Sets flag if listbox contains items and was clicked
             //Used to control what items are selected
@@ -2457,7 +2511,7 @@ namespace MovieDataCollector
             
         }
 
-        private void fileNamesListbox_MouseClick(object sender, MouseEventArgs e)
+        private void FileNamesListbox_MouseClick(object sender, MouseEventArgs e)
         {
             //Sets flag if listbox contains items and was clicked
             //Used to control what items are selected

@@ -22,8 +22,18 @@ namespace MovieDataCollector
         {
             //https://artworks.thetvdb.com/banners/posters/255316-2.jpg
             ///banners/posters/5d353f9f602ec.jpg
-            if (Series_List[SeriesNameListBox.SelectedIndex].ContainsKey("banner")) { SeriesPosterPictureBox.ImageLocation = "https://artworks.thetvdb.com" + Series_List[SeriesNameListBox.SelectedIndex]["banner"]; }
-            else { SeriesPosterPictureBox.ImageLocation = ""; };
+            if (Series_List[SeriesNameListBox.SelectedIndex].ContainsKey("banner"))
+            {
+                if (Series_List[SeriesNameListBox.SelectedIndex]["banner"].Contains("https://beta.thetvdb.com/images/missing/movie.jpg"))
+                {
+                    SeriesPosterPictureBox.ImageLocation = "https://beta.thetvdb.com/images/missing/movie.jpg";
+                }
+                else
+                {
+                    SeriesPosterPictureBox.ImageLocation = "https://artworks.thetvdb.com" + Series_List[SeriesNameListBox.SelectedIndex]["banner"];
+                }
+            }
+            else { SeriesPosterPictureBox.ImageLocation = "https://beta.thetvdb.com/images/missing/movie.jpg"; };
 
             if (Series_List[SeriesNameListBox.SelectedIndex].ContainsKey("overview")) { overviewTextBox.Text = Series_List[SeriesNameListBox.SelectedIndex]["overview"]; }
             else { overviewTextBox.Text = "No Overview provided"; }
@@ -63,7 +73,7 @@ namespace MovieDataCollector
                 {
                     if (Series_List[i].ContainsKey("firstAired") & !string.IsNullOrEmpty(Series_List[i]["firstAired"]) & !Series_List[i]["firstAired"].Contains("null"))
                     {
-                        SeriesNameListBox.Items.Add(Series_List[i]["seriesName"] + " - (" + (Series_List[i]["firstAired"].Remove(Series_List[i]["firstAired"].Length - 6, 5)) + ")");
+                        SeriesNameListBox.Items.Add(Series_List[i]["seriesName"] + " - (" + (Series_List[i]["firstAired"].Remove(4,Series_List[i]["firstAired"].Length - 4)) + ")");
                     }
                     else { SeriesNameListBox.Items.Add(Series_List[i]["seriesName"]); }
                 }
@@ -72,19 +82,30 @@ namespace MovieDataCollector
             {
                 SeriesNameListBox.SelectedIndex = 0;
 
-                if (Series_List[0].ContainsKey("banner")) { SeriesPosterPictureBox.ImageLocation = "https://artworks.thetvdb.com" + Series_List[0]["banner"]; }
-                else { /*Provide default picture incase no banner is found*/ };
+                if (Series_List[0].ContainsKey("banner"))
+                {
+                    if(Series_List[0]["banner"].Contains("https://beta.thetvdb.com/images/missing/movie.jpg"))
+                    {
+                        SeriesPosterPictureBox.ImageLocation = "https://beta.thetvdb.com/images/missing/movie.jpg";
+                    }
+                    else
+                    {
+                        SeriesPosterPictureBox.ImageLocation = "https://artworks.thetvdb.com" + Series_List[0]["banner"];
+                    }
+                    
+                }
+                else { SeriesPosterPictureBox.ImageLocation = "https://beta.thetvdb.com/images/missing/movie.jpg"; } //Default Empty no picture found
 
                 if (Series_List[0].ContainsKey("overview")) { overviewTextBox.Text = Series_List[0]["overview"]; }
                 else { overviewTextBox.Text = "No Overview provided"; }
             }
         }
-        private void yearRbtn_Click(object sender, EventArgs e)
+        private void YearRbtn_Click(object sender, EventArgs e)
         {
 
             GenerateList();
         }
-        private void defaultRbtn_Click(object sender, EventArgs e)
+        private void DefaultRbtn_Click(object sender, EventArgs e)
         {
             GenerateList();
         }

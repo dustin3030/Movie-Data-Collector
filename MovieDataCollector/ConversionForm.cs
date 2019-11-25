@@ -20,8 +20,8 @@ namespace MovieDataCollector
 {
     public partial class ConversionForm : Form
     {
-        bool NVIDIAEncodingCapable = false;
-        bool QuickSyncCapable = false;
+        //bool NVIDIAEncodingCapable = false;
+        //bool QuickSyncCapable = false;
 
         //string folderPath = ""; //Contains path for parent directory
         List<string> VideoFilesList = new List<string>(); //Contains File Paths for video files 
@@ -369,11 +369,11 @@ namespace MovieDataCollector
         public ConversionForm()
         {
             InitializeComponent(); //Initializes components.
-            this.filesListBox.DragDrop += new System.Windows.Forms.DragEventHandler(this.filesListBox_DragDrop);
-            this.filesListBox.DragEnter += new System.Windows.Forms.DragEventHandler(this.filesListBox_DragEnter);
+            this.filesListBox.DragDrop += new System.Windows.Forms.DragEventHandler(this.FilesListBox_DragDrop);
+            this.filesListBox.DragEnter += new System.Windows.Forms.DragEventHandler(this.FilesListBox_DragEnter);
 
-            this.filenameTextBox.DragDrop += new System.Windows.Forms.DragEventHandler(this.filenameTextBox_DragDrop);
-            this.filenameTextBox.DragEnter += new System.Windows.Forms.DragEventHandler(this.filenameTextBox_DragEnter);
+            this.filenameTextBox.DragDrop += new System.Windows.Forms.DragEventHandler(this.FilenameTextBox_DragDrop);
+            this.filenameTextBox.DragEnter += new System.Windows.Forms.DragEventHandler(this.FilenameTextBox_DragEnter);
 
             ApplyConfigDefaults();
             PopulatePresets();
@@ -418,8 +418,8 @@ namespace MovieDataCollector
 
 
 
-            NVIDIAEncodingCapable = true;
-            QuickSyncCapable = true;
+            //NVIDIAEncodingCapable = true;
+            //QuickSyncCapable = true;
 
 
         }
@@ -1216,7 +1216,7 @@ namespace MovieDataCollector
         }
 
         //Drag and Drop functionality
-        private void filesListBox_DragEnter(object sender, System.Windows.Forms.DragEventArgs e)
+        private void FilesListBox_DragEnter(object sender, System.Windows.Forms.DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
@@ -1227,7 +1227,7 @@ namespace MovieDataCollector
                 e.Effect = DragDropEffects.None;
             }  
         }
-        private void filesListBox_DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
+        private void FilesListBox_DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
         {
             string[] s = (string[])e.Data.GetData(DataFormats.FileDrop, false);
             int loopcount = 0;
@@ -1285,7 +1285,7 @@ namespace MovieDataCollector
 
         }
 
-        private void filenameTextBox_DragEnter(object sender, System.Windows.Forms.DragEventArgs e)
+        private void FilenameTextBox_DragEnter(object sender, System.Windows.Forms.DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
@@ -1296,7 +1296,7 @@ namespace MovieDataCollector
                 e.Effect = DragDropEffects.None;
             }
         }
-        private void filenameTextBox_DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
+        private void FilenameTextBox_DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
         {
             string fileName = "";
             string[] s = (string[])e.Data.GetData(DataFormats.FileDrop, false);
@@ -1788,7 +1788,7 @@ namespace MovieDataCollector
                     outputEncoderOptions = NVIDIAEncoderOptions(videoFile); //Video Bitrate - Encoder Options don't apply
                     break;
                 default: //All other encoders will use the standard x264/265 encoder options.
-                    outputEncoderOptions = x264EncoderOptions(videoFile); //EncoderOptions & Video Bitrate
+                    outputEncoderOptions = X264EncoderOptions(videoFile); //EncoderOptions & Video Bitrate
                     break;
             }
 
@@ -3048,7 +3048,7 @@ namespace MovieDataCollector
 
             return outputEncoder + outputEncoderLevel + outputEncoderProfile + outputEncoderSpeed + outputEncoderTune;
         }
-        private string getEncoderProfile(string input)
+        private string GetEncoderProfile(string input)
         {
             string output = "";
 
@@ -3083,7 +3083,7 @@ namespace MovieDataCollector
             return output;
       
         }
-        private string x264EncoderOptions(MediaFile videoFile)
+        private string X264EncoderOptions(MediaFile videoFile)
         {
             string encoder = videoEncoderCB.Text;
             double avgBitrateCap = 0.0;
@@ -3211,12 +3211,12 @@ namespace MovieDataCollector
                 }
 
                 //These settings set the buffer size and maximum video bitrate, also setting the encoder level
-                outputEncoderOptions = "--encopts level=" + encoderLevelComboBox.Text + ":vbv-bufsize=" + BufferSize + InitialBufferFill + ":vbv-maxrate=" + MaxBitrate + " --verbose=1 --encoder-level=\"" + encoderLevelComboBox.Text + "\" --encoder-profile=" + getEncoderProfile(encoderProfileComboBox.Text) + " --verbose=1 ";
+                outputEncoderOptions = "--encopts level=" + encoderLevelComboBox.Text + ":vbv-bufsize=" + BufferSize + InitialBufferFill + ":vbv-maxrate=" + MaxBitrate + " --verbose=1 --encoder-level=\"" + encoderLevelComboBox.Text + "\" --encoder-profile=" + GetEncoderProfile(encoderProfileComboBox.Text) + " --verbose=1 ";
 
             }
 
             //These settings set the buffer size and maximum video bitrate, also setting the encoder level
-            outputEncoderOptions = "--encopts level=" + encoderLevelComboBox.Text + ":vbv-bufsize=" + BufferSize + InitialBufferFill + ":vbv-maxrate=" + MaxBitrate + " --verbose=1 --encoder-level=\"" + encoderLevelComboBox.Text + "\" --encoder-profile=" + getEncoderProfile(encoderProfileComboBox.Text) + " --verbose=1 ";
+            outputEncoderOptions = "--encopts level=" + encoderLevelComboBox.Text + ":vbv-bufsize=" + BufferSize + InitialBufferFill + ":vbv-maxrate=" + MaxBitrate + " --verbose=1 --encoder-level=\"" + encoderLevelComboBox.Text + "\" --encoder-profile=" + GetEncoderProfile(encoderProfileComboBox.Text) + " --verbose=1 ";
             return outputEncoderOptions + outputVideoBitrate;
         }
         private string QuickSyncEncoderOptions(MediaFile videoFile)
@@ -3347,12 +3347,12 @@ namespace MovieDataCollector
                 }
 
                 //These settings set the buffer size and maximum video bitrate, also setting the encoder level
-                outputEncoderOptions = "--encopts level=" + encoderLevelComboBox.Text + ":vbv-bufsize=" + BufferSize + InitialBufferFill + ":vbv-maxrate=" + MaxBitrate + " --verbose=1 --encoder-level=\"" + encoderLevelComboBox.Text + "\" --encoder-profile=" + getEncoderProfile(encoderProfileComboBox.Text) + " --verbose=1 ";
+                outputEncoderOptions = "--encopts level=" + encoderLevelComboBox.Text + ":vbv-bufsize=" + BufferSize + InitialBufferFill + ":vbv-maxrate=" + MaxBitrate + " --verbose=1 --encoder-level=\"" + encoderLevelComboBox.Text + "\" --encoder-profile=" + GetEncoderProfile(encoderProfileComboBox.Text) + " --verbose=1 ";
 
             }
 
             //These settings set the buffer size and maximum video bitrate, also setting the encoder level
-            outputEncoderOptions = "--encopts level=" + encoderLevelComboBox.Text + ":vbv-bufsize=" + BufferSize + InitialBufferFill + ":vbv-maxrate=" + MaxBitrate + " --verbose=1 --encoder-level=\"" + encoderLevelComboBox.Text + "\" --encoder-profile=" + getEncoderProfile(encoderProfileComboBox.Text) + " --verbose=1 ";
+            outputEncoderOptions = "--encopts level=" + encoderLevelComboBox.Text + ":vbv-bufsize=" + BufferSize + InitialBufferFill + ":vbv-maxrate=" + MaxBitrate + " --verbose=1 --encoder-level=\"" + encoderLevelComboBox.Text + "\" --encoder-profile=" + GetEncoderProfile(encoderProfileComboBox.Text) + " --verbose=1 ";
             return outputEncoderOptions + outputVideoBitrate;
         }
         private string NVIDIAEncoderOptions(MediaFile videoFile)
@@ -4666,7 +4666,7 @@ namespace MovieDataCollector
                         {
                             if(!passthru) //only process if a match hasn't been found
                             {
-                                if (cleanString(videofile.Audio[selectedTrack1].Format).ToUpper().Contains(cleanString(PassthruList[i]).ToUpper()))
+                                if (CleanString(videofile.Audio[selectedTrack1].Format).ToUpper().Contains(CleanString(PassthruList[i]).ToUpper()))
                                 {
                                     passthru = true;
 
@@ -4715,7 +4715,7 @@ namespace MovieDataCollector
                         {
                             if (!passthru) //only process if a match hasn't been found
                             {
-                                if (cleanString(videofile.Audio[selectedTrack2].Format).ToUpper().Contains(cleanString(PassthruList[i]).ToUpper()))
+                                if (CleanString(videofile.Audio[selectedTrack2].Format).ToUpper().Contains(CleanString(PassthruList[i]).ToUpper()))
                                 {
                                     passthru = true;
 
@@ -4764,7 +4764,7 @@ namespace MovieDataCollector
                         {
                             if (!passthru) //only process if a match hasn't been found
                             {
-                                if (cleanString(videofile.Audio[selectedTrack3].Format).ToUpper().Contains(cleanString(PassthruList[i]).ToUpper()))
+                                if (CleanString(videofile.Audio[selectedTrack3].Format).ToUpper().Contains(CleanString(PassthruList[i]).ToUpper()))
                                 {
                                     passthru = true;
 
@@ -4956,9 +4956,15 @@ namespace MovieDataCollector
             string samplerate3 = "";
 
             //If parsing fails set to 48 the standard sample rate.
+#pragma warning disable IDE0018 // Inline variable declaration
             double userSelectedRate1 = 48;
+#pragma warning restore IDE0018 // Inline variable declaration
+#pragma warning disable IDE0018 // Inline variable declaration
             double userSelectedRate2 = 48;
+#pragma warning restore IDE0018 // Inline variable declaration
+#pragma warning disable IDE0018 // Inline variable declaration
             double userSelectedRate3 = 48;
+#pragma warning restore IDE0018 // Inline variable declaration
 
             double.TryParse(sampleRateCombo.Text, out userSelectedRate1);
             double.TryParse(sampleRateCombo2.Text, out userSelectedRate2);
@@ -5345,7 +5351,7 @@ namespace MovieDataCollector
             //Update default in dictionary
             CF.DefaultSettings["SubtitleSelection"] = subtitleCombo.Text;
         }
-        private void videoEncoderCB_SelectedIndexChanged(object sender, EventArgs e)
+        private void VideoEncoderCB_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Ensure the options in the other Combo Boxes reflect only what is possible for the selected encoder
             switch (videoEncoderCB.Text)
@@ -5550,7 +5556,7 @@ namespace MovieDataCollector
             }
 
         }
-        private void autoCropCB_CheckedChanged_1(object sender, EventArgs e)
+        private void AutoCropCB_CheckedChanged_1(object sender, EventArgs e)
         {
             if (autoCropCB.Checked)
             {
@@ -5872,7 +5878,7 @@ namespace MovieDataCollector
                 CF.DefaultSettings["EncoderSpeed"] = encoderSpeedCombo.Text;
             }
         }
-        private void videoEncoderCB_Leave(object sender, EventArgs e)
+        private void VideoEncoderCB_Leave(object sender, EventArgs e)
         {
             //Verify the text is in the approved list
             if(!videoEncoders.Contains(videoEncoderCB.Text))
@@ -6236,7 +6242,7 @@ namespace MovieDataCollector
                     break;
             }
         }
-        private void audioCodecComboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        private void AudioCodecComboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
             //set default value in dictionary.
             CF.DefaultSettings["AudioCodec2"] = audioCodecComboBox2.Text;
@@ -6284,7 +6290,7 @@ namespace MovieDataCollector
                     break;
             }
         }
-        private void audioCodecComboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        private void AudioCodecComboBox3_SelectedIndexChanged(object sender, EventArgs e)
         {
             //set default value in dictionary.
             CF.DefaultSettings["AudioCodec3"] = audioCodecComboBox3.Text;
@@ -6399,7 +6405,7 @@ namespace MovieDataCollector
             CF.DefaultSettings["AudioBitrateCap3"] = audioBitrateCombo3.Text;
         }
 
-        private void gainCB1_SelectedIndexChanged(object sender, EventArgs e)
+        private void GainCB1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
             //Update default in dictionary
@@ -6414,7 +6420,7 @@ namespace MovieDataCollector
             }
             
         }
-        private void gainCB2_SelectedIndexChanged(object sender, EventArgs e)
+        private void GainCB2_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Update default in dictionary
             if (audioCodecComboBox2.Text.Contains("Filtered Passthru"))
@@ -6427,7 +6433,7 @@ namespace MovieDataCollector
                 CF.DefaultSettings["AudioGain2"] = gainCB2.Text;
             }
         }
-        private void gainCB3_SelectedIndexChanged(object sender, EventArgs e)
+        private void GainCB3_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Update default in dictionary
             if (audioCodecComboBox3.Text.Contains("Filtered Passthru"))
@@ -6626,7 +6632,7 @@ namespace MovieDataCollector
             CF.DefaultSettings["AudioSampleRate3"] = sampleRateCombo3.Text;
         }
 
-        private void gainCB1_TextChanged(object sender, EventArgs e)
+        private void GainCB1_TextChanged(object sender, EventArgs e)
         {
             if(audioCodecComboBox.Text == "Filtered Passthru")
             {
@@ -6651,7 +6657,7 @@ namespace MovieDataCollector
             }
             
         }
-        private void gainCB2_TextChanged(object sender, EventArgs e)
+        private void GainCB2_TextChanged(object sender, EventArgs e)
         {
             if (audioCodecComboBox2.Text == "Filtered Passthru")
             {
@@ -6675,7 +6681,7 @@ namespace MovieDataCollector
                 CF.DefaultSettings["AudioGain2"] = gainCB2.Text;
             }
         }
-        private void gainCB3_TextChanged(object sender, EventArgs e)
+        private void GainCB3_TextChanged(object sender, EventArgs e)
         {
             if (audioCodecComboBox3.Text == "Filtered Passthru")
             {
@@ -6879,7 +6885,7 @@ namespace MovieDataCollector
             CF.DefaultSettings["AudioSampleRate3"] = sampleRateCombo3.Text;
         }
 
-        private void gainCB1_Leave(object sender, EventArgs e)
+        private void GainCB1_Leave(object sender, EventArgs e)
         {
             if (audioCodecComboBox.Text == "Filtered Passthru")
             {
@@ -6903,7 +6909,7 @@ namespace MovieDataCollector
                 CF.DefaultSettings["AudioGain"] = gainCB1.Text;
             }
         }
-        private void gainCB2_Leave(object sender, EventArgs e)
+        private void GainCB2_Leave(object sender, EventArgs e)
         {
             if (audioCodecComboBox2.Text == "Filtered Passthru")
             {
@@ -6927,7 +6933,7 @@ namespace MovieDataCollector
                 CF.DefaultSettings["AudioGain2"] = gainCB2.Text;
             }
         }
-        private void gainCB3_Leave(object sender, EventArgs e)
+        private void GainCB3_Leave(object sender, EventArgs e)
         {
             if (audioCodecComboBox3.Text == "Filtered Passthru")
             {
@@ -8683,7 +8689,7 @@ namespace MovieDataCollector
                     break;
             }
         }
-        private void disableCheckStream2_CheckedChanged(object sender, EventArgs e)
+        private void DisableCheckStream2_CheckedChanged(object sender, EventArgs e)
         {
             if (disableCheckStream2.Checked == false) //Track Enabled
             {
@@ -8740,7 +8746,7 @@ namespace MovieDataCollector
                 passthruFilterLabel2.Visible = false;
             }
         }
-        private void disableCheckStream3_CheckedChanged(object sender, EventArgs e)
+        private void DisableCheckStream3_CheckedChanged(object sender, EventArgs e)
         {
             if (disableCheckStream3.Checked == false) //Track Enabled
             {
@@ -8796,7 +8802,7 @@ namespace MovieDataCollector
                 passthruFilterLabel3.Visible = false;
             }
         }
-        private string cleanString(string input)
+        private string CleanString(string input)
         {
             string output = input;
 

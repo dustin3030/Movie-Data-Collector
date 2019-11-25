@@ -56,7 +56,7 @@
             // SeriesPosterPictureBox
             // 
             this.SeriesPosterPictureBox.BackColor = System.Drawing.Color.Transparent;
-            this.SeriesPosterPictureBox.ImageLocation = "https://artworks.thetvdb.com/banners/posters/81189-10.jpg";
+            this.SeriesPosterPictureBox.ImageLocation = "";
             this.SeriesPosterPictureBox.Location = new System.Drawing.Point(424, 12);
             this.SeriesPosterPictureBox.Name = "SeriesPosterPictureBox";
             this.SeriesPosterPictureBox.Size = new System.Drawing.Size(216, 311);
@@ -88,7 +88,7 @@
             this.yearRbtn.TabIndex = 3;
             this.yearRbtn.Text = "Year";
             this.yearRbtn.UseVisualStyleBackColor = true;
-            this.yearRbtn.Click += new System.EventHandler(this.yearRbtn_Click);
+            this.yearRbtn.Click += new System.EventHandler(this.YearRbtn_Click);
             // 
             // titleRbtn
             // 
@@ -103,7 +103,7 @@
             this.titleRbtn.TabStop = true;
             this.titleRbtn.Text = "Title";
             this.titleRbtn.UseVisualStyleBackColor = true;
-            this.titleRbtn.Click += new System.EventHandler(this.defaultRbtn_Click);
+            this.titleRbtn.Click += new System.EventHandler(this.DefaultRbtn_Click);
             // 
             // label2
             // 
