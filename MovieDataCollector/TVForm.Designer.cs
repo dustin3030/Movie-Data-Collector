@@ -300,6 +300,7 @@
             this.fileNamesListbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.fileNamesListbox.ForeColor = System.Drawing.Color.GreenYellow;
             this.fileNamesListbox.FormattingEnabled = true;
+            this.fileNamesListbox.HorizontalScrollbar = true;
             this.fileNamesListbox.Location = new System.Drawing.Point(12, 241);
             this.fileNamesListbox.Name = "fileNamesListbox";
             this.fileNamesListbox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
@@ -315,6 +316,7 @@
             this.changedFileNamesListbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.changedFileNamesListbox.ForeColor = System.Drawing.Color.GreenYellow;
             this.changedFileNamesListbox.FormattingEnabled = true;
+            this.changedFileNamesListbox.HorizontalScrollbar = true;
             this.changedFileNamesListbox.Location = new System.Drawing.Point(419, 241);
             this.changedFileNamesListbox.Name = "changedFileNamesListbox";
             this.changedFileNamesListbox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;

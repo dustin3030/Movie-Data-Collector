@@ -355,6 +355,7 @@
             this.filesListBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.filesListBox.ForeColor = System.Drawing.Color.GreenYellow;
             this.filesListBox.FormattingEnabled = true;
+            this.filesListBox.HorizontalScrollbar = true;
             this.filesListBox.Location = new System.Drawing.Point(12, 204);
             this.filesListBox.Name = "filesListBox";
             this.filesListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
