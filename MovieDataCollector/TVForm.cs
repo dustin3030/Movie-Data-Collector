@@ -1790,6 +1790,7 @@ namespace MovieDataCollector
             {
                 value = fileNamesListbox.SelectedIndex;
                 fileNamesListbox.Items.RemoveAt(value);
+                EpisodePathList.RemoveAt(value);
             }
 
         }
