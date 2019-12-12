@@ -11,6 +11,7 @@ using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
+using System.Text.RegularExpressions;
 
 namespace MovieDataCollector
 {
@@ -32,8 +33,24 @@ namespace MovieDataCollector
         string[] lineStringFilter = { "X264","X.264","H264","H.264","MP4","M4V","MT2S","3GP",
                                     "MPEG2","MPEG-2","MPEG4","MPEG-4","RV40","VP8","VP9",
                                     "1080P","720P","480P"};
-        
 
+        List<string> testNames = new List<string>
+            {
+                "1x02.mp4",
+                "02 Episode Name.mp4",
+                "anything_102.mp4",
+                "anything_s01.e02.mp4",
+                "anything_s01_e02.mp4",
+                "anything_s01e02.mp4",
+                "anything_s1e2.mp4",
+                "s01e02.mp4",
+                "ShowName 1x02.mp4",
+                "ShowName 102.mp4",
+                "ShowName s01.e02.mp4",
+                "Showname s01_e02.mp4",
+                "ShowName s01xe02.mp4",
+                "ShowName S1E2.mp4"
+            };
         string episode = ""; //contains the episode number  (E + episodeNumber)
         string season = ""; //contains season number (S + seasonNumber
         string ext = ""; //contains the extenstion of files in the filenameslistbox
@@ -1099,6 +1116,7 @@ namespace MovieDataCollector
         private string CheckSeason(string FileName, int maxSeason)
         {
             int seasonNumber = -1;
+            string regexOutput = "";
 
             /*Remove items from string that might confuse the program.
             List is stored in string array lineStringFilter*/
@@ -1109,48 +1127,42 @@ namespace MovieDataCollector
                     FileName = FileName.Replace(lineStringFilter[i], "");
                 }
             }
-            /*Check for season # in parent folder
-            char[] delim = { '\\' };
-            string[] Tokens = folderPath.ToUpper().Split(delim);
 
-            for (int i = 0; i < (maxSeason + 1); i++) //loop through season number
-            {
-                //Attempt to parse season info from filename
-                if (Tokens[Tokens.Count() -1].Contains("S0" + i.ToString()) ||
-                    Tokens[Tokens.Count() - 1].Contains("S" + i.ToString()) ||
-                    Tokens[Tokens.Count() - 1].Contains("SEASON_" + i.ToString()) ||
-                    Tokens[Tokens.Count() - 1].Contains("SEASON " + i.ToString()) ||
-                    Tokens[Tokens.Count() - 1].Contains("SEASON 0" + i.ToString()) ||
-                    Tokens[Tokens.Count() - 1].Contains("SEASON0" + i.ToString()) ||
-                    Tokens[Tokens.Count() - 1].Contains("SEASON" + i.ToString()) ||
-                    Tokens[Tokens.Count() - 1].Contains("SEASON." + i.ToString()))
-                {
-                    seasonNumber = i; //Loops through all Episodes check for season number, that way it will check for season 1 as well as 10 and not return only season 1.
-                }
-            }
-            if (seasonNumber != -1) { return seasonNumber.ToString(); }*/
+            //Attemp Regex identification of season number
 
-            //Check for season info in filename e.g. S0 + the loop number like 9, etc
-            //Loop only goes as high as the number of seasons in the Series (Checked by thetvdb.com)
-            for (int i = 0; i < (maxSeason + 1); i++) //loop through season number
+            // ... One or more digits.
+
+            //Test list for debugging
+            for (int i = 0; i < testNames.Count; i++)
             {
-                //Attempt to parse season info from filename
-                if (FileName.Contains("S0" + i.ToString()) ||
-                    FileName.Contains("S" + i.ToString()) ||
-                    FileName.Contains("S" + i.ToString() + "E") ||
-                    FileName.Contains("S0" + i.ToString() + "E") ||
-                    FileName.Contains(i.ToString() + "X") ||
-                    //FileName.Contains(i.ToString() + ".E") ||
-                    FileName.Contains("SEASON_" + i.ToString()) ||
-                    FileName.Contains("SEASON " + i.ToString()) ||
-                    FileName.Contains("SEASON 0" + i.ToString()) ||
-                    FileName.Contains("SEASON0" + i.ToString()) ||
-                    FileName.Contains("SEASON" + i.ToString()) ||
-                    FileName.Contains("SEASON." + i.ToString()))
-                {
-                    seasonNumber = i; //Loops through all Episodes check for season number, that way it will check for season 1 as well as 10 and not return only season 1.
-                }
+                regexOutput = "";
+                Match e = Regex.Match(testNames[i].ToUpper(), @"S\d{1,2}");
+                Match f = Regex.Match(testNames[i].ToUpper(), @"SEASON[_ .]\d{1,2}");
+                Match g = Regex.Match(testNames[i].ToUpper(), @"SEASON\d{1,2}");
+                Match h = Regex.Match(testNames[i].ToUpper(), @"\d{1,2}X");
+                if (e.Success) { regexOutput = e.ToString().Replace("S", ""); }
+                if (f.Success) { regexOutput = f.ToString().Replace("SEASON", "").Replace("_", "").Replace(" ", "").Replace(".", ""); }
+                if (g.Success) { regexOutput = g.ToString().Replace("SEASON", "").Replace("_", "").Replace(" ", "").Replace(".", ""); }
+                if (h.Success) { regexOutput = h.ToString().Replace("X", ""); }
             }
+
+            Match a = Regex.Match(FileName, @"S\d{1,2}");
+            Match b = Regex.Match(FileName, @"SEASON[_ .]\d{1,2}");
+            Match c = Regex.Match(FileName, @"SEASON\d{1,2}");
+            Match d = Regex.Match(FileName, @"\d{1,2}X");
+
+            if (a.Success) { regexOutput = a.ToString().Replace("S", ""); }
+            if (b.Success) { regexOutput = b.ToString().Replace("SEASON", "").Replace("_", "").Replace(" ", "").Replace(".", ""); }
+            if (c.Success) { regexOutput = c.ToString().Replace("SEASON", "").Replace("_", "").Replace(" ", "").Replace(".", ""); }
+            if (d.Success) { regexOutput = d.ToString().Replace("X", ""); }
+
+
+            // ... Write value.
+            if(!string.IsNullOrEmpty(regexOutput))
+            {
+                int.TryParse(regexOutput, out seasonNumber);
+            }
+            
             if (seasonNumber != -1) { return seasonNumber.ToString(); }
 
             else if (seasonNumber == -1) //check for season numbers using 3 or 4 digits such as 101 = S01E01
@@ -1188,6 +1200,21 @@ namespace MovieDataCollector
         }
         private string CheckEpisode(string FileName, int maxEpisode)
         {
+            int episodeNumber = -1;
+            string regexOutput = "";
+            List<string> replaceCharacters = new List<string>
+                {   "E",
+                    "P",
+                    "X",
+                    "-",
+                    "_",
+                    ".",
+                    "}",
+                    "]",
+                    ")"
+                };
+
+            
             /*Remove items from string that might confuse the program.
              List is stored in string array lineStringFilter*/
             for (int i = 0; i < lineStringFilter.Length; i++)
@@ -1198,128 +1225,73 @@ namespace MovieDataCollector
                 }
             }
 
-            for (int i = 0; i < (maxEpisode + 1); i++) //loop through episode number
+
+            //Test loop for debugging
+            /*for (int i = 0; i < testNames.Count; i++)
             {
-                //attempt to determine the episode number from the filename
-                //Plex Format - ShowName – sXXeYY – Optional_Info.ext
-                //Synology Format - ShowName.SXX.EYY.ext
-                /*Kodi Formats - ShowName S01E02.ext
-                 ShowName S1E2.ext
-                 ShowName S01.E02.ext
-                 ShowName S01_E02.ext
-                 ShowName S01xE02.ext
-                 ShowName 1x02.ext
-                 ShowName 102.ext*/
-                /*Othe Formats - anything_s01e02.ext
-                anything_s1e2.ext
-                anything_s01.e02.ext
-                anything_s01_e02.ext
-                anything_1x02.ext
-                anything_102.ext
-                anything_1x02.ext
-                02 Episode Name.avi
-                s01e02.avi
-                1x02.avi*/
-                if (FileName.Contains("E0" + i.ToString() + " ") ||
-                    FileName.Contains("E0" + i.ToString() + "_") ||
-                    FileName.Contains("E0" + i.ToString() + ".") ||
-                    FileName.Contains("E0" + i.ToString() + "-") ||
-                    FileName.Contains("E0" + i.ToString() + "]") ||
-                    FileName.Contains("E0" + i.ToString() + "}") ||
-                    FileName.Contains("E0" + i.ToString() + ")") ||
+                regexOutput = "";
+                Match f = Regex.Match(testNames[i].ToUpper(), @"(E|EP|X|-|_)\d{1,2}( |_|\.|\-|}|\)|\])");
+                //Match g = Regex.Match(testNames[i].ToUpper(), @"(E|EP|X|-|_)\d{1,2}()");
 
-                    FileName.Contains("E" + i.ToString() + " ") ||
-                    FileName.Contains("E" + i.ToString() + "_") ||
-                    FileName.Contains("E" + i.ToString() + "-") ||
-                    FileName.Contains("E" + i.ToString() + ".") ||
-                    FileName.Contains("E" + i.ToString() + "]") ||
-                    FileName.Contains("E" + i.ToString() + "}") ||
-                    FileName.Contains("E" + i.ToString() + ")") ||
-
-                    FileName.Contains(".E" + i.ToString() + " ") ||
-                    FileName.Contains(".E" + i.ToString() + "_") ||
-                    FileName.Contains(".E" + i.ToString() + "-") ||
-                    FileName.Contains(".E" + i.ToString() + ".") ||
-                    FileName.Contains(".E" + i.ToString() + "]") ||
-                    FileName.Contains(".E" + i.ToString() + "}") ||
-                    FileName.Contains(".E" + i.ToString() + ")") ||
-
-                    FileName.Contains("EP" + i.ToString() + " ") ||
-                    FileName.Contains("EP" + i.ToString() + "_") ||
-                    FileName.Contains("EP" + i.ToString() + "-") ||
-                    FileName.Contains("EP" + i.ToString() + ".") ||
-                    FileName.Contains("EP" + i.ToString() + "]") ||
-                    FileName.Contains("EP" + i.ToString() + "}") ||
-                    FileName.Contains("EP" + i.ToString() + ")") ||
-
-                    FileName.Contains("X" + i.ToString() + " ") ||
-                    FileName.Contains("X" + i.ToString() + "_") ||
-                    FileName.Contains("X" + i.ToString() + "-") ||
-                    FileName.Contains("X" + i.ToString() + ".") ||
-                    FileName.Contains("X" + i.ToString() + "]") ||
-                    FileName.Contains("X" + i.ToString() + "}") ||
-                    FileName.Contains("X" + i.ToString() + ")") ||
-
-                    FileName.Contains("X0" + i.ToString() + " ") ||
-                    FileName.Contains("X0" + i.ToString() + "_") ||
-                    FileName.Contains("X0" + i.ToString() + "-") ||
-                    FileName.Contains("X0" + i.ToString() + ".") ||
-                    FileName.Contains("X0" + i.ToString() + "]") ||
-                    FileName.Contains("X0" + i.ToString() + "}") ||
-                    FileName.Contains("X0" + i.ToString() + ")") ||
-
-                    FileName.Contains("-" + i.ToString() + " ") ||
-                    FileName.Contains("-" + i.ToString() + "_") ||
-                    FileName.Contains("-" + i.ToString() + "-") ||
-                    FileName.Contains("-" + i.ToString() + ".") ||
-                    FileName.Contains("-" + i.ToString() + "]") ||
-                    FileName.Contains("-" + i.ToString() + "}") ||
-                    FileName.Contains("-" + i.ToString() + ")") ||
-
-                    FileName.Contains("_" + i.ToString() + " ") ||
-                    FileName.Contains("_" + i.ToString() + "_") ||
-                    FileName.Contains("_" + i.ToString() + "-") ||
-                    FileName.Contains("_" + i.ToString() + ".") ||
-                    FileName.Contains("_" + i.ToString() + "]") ||
-                    FileName.Contains("_" + i.ToString() + "}") ||
-                    FileName.Contains("_" + i.ToString() + ")"))
+                if (f.Success) { regexOutput = f.ToString(); }
+                //if(g.Success) { regexOutput = g.ToString(); }
+                
+                for (int b = 0; b < replaceCharacters.Count; b++)
                 {
-                    return i.ToString();
+                    regexOutput = regexOutput.Replace(replaceCharacters[b], "");
                 }
+            }*/
 
+            //Attempt Regex Match
+            Match a = Regex.Match(FileName, @"(E|EP|X|-|_)\d{1,2}( |_|\.|\-|}|\)|\])");
+
+            if (a.Success) { regexOutput = a.ToString(); }
+
+            for (int c = 0; c < replaceCharacters.Count; c++)
+            {
+                regexOutput = regexOutput.Replace(replaceCharacters[c], "");
             }
 
-            characterBlocks = FileName.Split(separators, StringSplitOptions.RemoveEmptyEntries);
-            foreach (string block in characterBlocks)
+
+            // ... Write value.
+
+            int.TryParse(regexOutput, out episodeNumber);
+            if (episodeNumber != -1)
             {
-                int DigitCounter = 0;
-                foreach (char C in block)
-                {
-                    if (char.IsDigit(C))
-                    {
-                        DigitCounter = DigitCounter + 1;
-                    }
-                }
-
-                if (DigitCounter == 3 || DigitCounter == 4)
-                {
-                    switch (block.Length)
-                    {
-                        case 3:
-                            if (int.Parse(block.Remove(0, 1)) < 10)
-                            { return int.Parse(block.Remove(0, 1)).ToString(); }
-                            else { return block.Remove(0, 1); }
-
-                        case 4:
-                            int.Parse(block.Remove(0, 2));
-                            return block.Remove(0, 2);
-                        default:
-                            break;
-                    }
-                }
-                DigitCounter = 0;
+                return episodeNumber.ToString();
             }
-            Array.Clear(characterBlocks, 0, characterBlocks.Length);
+
+            //attempt to determine the episode number from the filename
+            //Plex Format - ShowName – sXXeYY – Optional_Info.ext
+            //Synology Format - ShowName.SXX.EYY.ext
+            //Kodi Formats - ShowName S01E02.ext
+
+            //Check for 3 digit string
+
+            regexOutput = "";
+
+            Match b = Regex.Match(FileName, @"(\d{3,4}( |_|\.|\-|}|\)|\])");
+
+            if (b.Success) { regexOutput = b.ToString(); }
+
+            for (int c = 0; c < replaceCharacters.Count; c++)
+            {
+                regexOutput = regexOutput.Replace(replaceCharacters[c], "");
+            }
+
+            switch (regexOutput.Length)
+            {
+                case 3:
+                    if (int.Parse(regexOutput.Remove(0, 1)) < 10)
+                    { return int.Parse(regexOutput.Remove(0, 1)).ToString(); }
+                    else { return regexOutput.Remove(0, 1); }
+
+                case 4:
+                    int.Parse(regexOutput.Remove(0, 2));
+                    return regexOutput.Remove(0, 2);
+                default:
+                    break;
+            }
             return "";
         }
         private string CheckAbsoluteNumber(string FileName)
