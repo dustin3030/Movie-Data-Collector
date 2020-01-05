@@ -8,8 +8,6 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Net.Http;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
 
