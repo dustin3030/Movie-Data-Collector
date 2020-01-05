@@ -911,22 +911,46 @@ namespace MovieDataCollector
                                                 Grey's Anatomy_S01E02.avi
                                                 Grey's Anatomy_S01E02_The First Cut is the Deepest.avi
                                             */
-                                        switch (formatCombo.SelectedIndex)
-                                        {
 
-                                            case 0: //PLEX
-                                                newTitle = SeriesInfo.Series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
-                                                break;
-                                            case 1: //KODI
-                                                newTitle = SeriesInfo.Series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
-                                                break;
-                                            case 2: //Synology
-                                                newTitle = SeriesInfo.Series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
-                                                break;
-                                            default: //Plex
-                                                newTitle = SeriesInfo.Series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
-                                                break;
+                                        if(identificationMethodCheckbox.Checked)
+                                        {
+                                            switch (formatCombo.SelectedIndex)
+                                            {
+
+                                                case 0: //PLEX
+                                                    newTitle = SeriesInfo.Series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext + " [EpisodeNameInFileName]";
+                                                    break;
+                                                case 1: //KODI
+                                                    newTitle = SeriesInfo.Series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext + " [EpisodeNameInFileName]";
+                                                    break;
+                                                case 2: //Synology
+                                                    newTitle = SeriesInfo.Series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext + " [EpisodeNameInFileName]";
+                                                    break;
+                                                default: //Plex
+                                                    newTitle = SeriesInfo.Series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext + " [EpisodeNameInFileName]";
+                                                    break;
+                                            }
                                         }
+                                        else
+                                        {
+                                            switch (formatCombo.SelectedIndex)
+                                            {
+
+                                                case 0: //PLEX
+                                                    newTitle = SeriesInfo.Series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
+                                                    break;
+                                                case 1: //KODI
+                                                    newTitle = SeriesInfo.Series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
+                                                    break;
+                                                case 2: //Synology
+                                                    newTitle = SeriesInfo.Series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
+                                                    break;
+                                                default: //Plex
+                                                    newTitle = SeriesInfo.Series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
+                                                    break;
+                                            }
+                                        }
+                                        
                                         //newTitle = SeriesInfo.Series["seriesName"] + " " + season + episode + " " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
                                     }
                                 }
@@ -983,22 +1007,46 @@ namespace MovieDataCollector
                                             Grey's Anatomy_S01E02.avi
                                             Grey's Anatomy_S01E02_The First Cut is the Deepest.avi
                                         */
-                                    switch (formatCombo.SelectedIndex)
-                                    {
 
-                                        case 0: //PLEX
-                                            newTitle = SeriesInfo.Series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
-                                            break;
-                                        case 1: //KODI
-                                            newTitle = SeriesInfo.Series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
-                                            break;
-                                        case 2: //Synology
-                                            newTitle = SeriesInfo.Series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
-                                            break;
-                                        default: //Plex
-                                            newTitle = SeriesInfo.Series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
-                                            break;
+                                    if(identificationMethodCheckbox.Checked)
+                                    {
+                                        switch (formatCombo.SelectedIndex)
+                                        {
+
+                                            case 0: //PLEX
+                                                newTitle = SeriesInfo.Series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext + " [EpisodeNameInFileName]";
+                                                break;
+                                            case 1: //KODI
+                                                newTitle = SeriesInfo.Series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext + " [EpisodeNameInFileName]";
+                                                break;
+                                            case 2: //Synology
+                                                newTitle = SeriesInfo.Series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext + " [EpisodeNameInFileName]";
+                                                break;
+                                            default: //Plex
+                                                newTitle = SeriesInfo.Series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext + " [EpisodeNameInFileName]";
+                                                break;
+                                        }
                                     }
+                                    else
+                                    {
+                                        switch (formatCombo.SelectedIndex)
+                                        {
+
+                                            case 0: //PLEX
+                                                newTitle = SeriesInfo.Series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
+                                                break;
+                                            case 1: //KODI
+                                                newTitle = SeriesInfo.Series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
+                                                break;
+                                            case 2: //Synology
+                                                newTitle = SeriesInfo.Series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
+                                                break;
+                                            default: //Plex
+                                                newTitle = SeriesInfo.Series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
+                                                break;
+                                        }
+                                    }
+                                    
                                     //newTitle = SeriesInfo.Series["seriesName"] + " " + season + episode + " " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
                                 }
                             }
@@ -1079,22 +1127,45 @@ namespace MovieDataCollector
                                             Grey's Anatomy_S01E02.avi
                                             Grey's Anatomy_S01E02_The First Cut is the Deepest.avi
                                      */
-                                    switch (formatCombo.SelectedIndex)
+                                     if(identificationMethodCheckbox.Checked)
                                     {
-                                        
-                                        case 0: //PLEX
-                                            newTitle = SeriesInfo.Series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
-                                            break;
-                                        case 1: //KODI
-                                            newTitle = SeriesInfo.Series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
-                                            break;
-                                        case 2: //Synology
-                                            newTitle = SeriesInfo.Series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
-                                            break;
-                                        default: //Synology
-                                            newTitle = SeriesInfo.Series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
-                                            break;
+                                        switch (formatCombo.SelectedIndex)
+                                        {
+
+                                            case 0: //PLEX
+                                                newTitle = SeriesInfo.Series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext + " [SeasonEpisodeNumbersIsolated]";
+                                                break;
+                                            case 1: //KODI
+                                                newTitle = SeriesInfo.Series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext + " [SeasonEpisodeNumbersIsolated]";
+                                                break;
+                                            case 2: //Synology
+                                                newTitle = SeriesInfo.Series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext + " [SeasonEpisodeNumbersIsolated]";
+                                                break;
+                                            default: //Synology
+                                                newTitle = SeriesInfo.Series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext + " [SeasonEpisodeNumbersIsolated]";
+                                                break;
+                                        }
                                     }
+                                     else
+                                    {
+                                        switch (formatCombo.SelectedIndex)
+                                        {
+
+                                            case 0: //PLEX
+                                                newTitle = SeriesInfo.Series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
+                                                break;
+                                            case 1: //KODI
+                                                newTitle = SeriesInfo.Series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
+                                                break;
+                                            case 2: //Synology
+                                                newTitle = SeriesInfo.Series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
+                                                break;
+                                            default: //Synology
+                                                newTitle = SeriesInfo.Series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
+                                                break;
+                                        }
+                                    }
+                                    
                                     //newTitle = SeriesInfo.Series["seriesName"] + " " + season + episode + " " + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
                                 }
                             }
@@ -1117,6 +1188,17 @@ namespace MovieDataCollector
         {
             int seasonNumber = -1;
             string regexOutput = "";
+            List<string> replaceCharacters = new List<string>
+                {   "E",
+                    "P",
+                    "X",
+                    "-",
+                    "_",
+                    ".",
+                    "}",
+                    "]",
+                    ")"
+                };
 
             /*Remove items from string that might confuse the program.
             List is stored in string array lineStringFilter*/
@@ -1133,7 +1215,7 @@ namespace MovieDataCollector
             // ... One or more digits.
 
             //Test list for debugging
-            for (int i = 0; i < testNames.Count; i++)
+            /*for (int i = 0; i < testNames.Count; i++)
             {
                 regexOutput = "";
                 Match e = Regex.Match(testNames[i].ToUpper(), @"S\d{1,2}");
@@ -1144,7 +1226,7 @@ namespace MovieDataCollector
                 if (f.Success) { regexOutput = f.ToString().Replace("SEASON", "").Replace("_", "").Replace(" ", "").Replace(".", ""); }
                 if (g.Success) { regexOutput = g.ToString().Replace("SEASON", "").Replace("_", "").Replace(" ", "").Replace(".", ""); }
                 if (h.Success) { regexOutput = h.ToString().Replace("X", ""); }
-            }
+            }*/
 
             Match a = Regex.Match(FileName, @"S\d{1,2}");
             Match b = Regex.Match(FileName, @"SEASON[_ .]\d{1,2}");
@@ -1167,36 +1249,40 @@ namespace MovieDataCollector
 
             else if (seasonNumber == -1) //check for season numbers using 3 or 4 digits such as 101 = S01E01
             {
-                characterBlocks = FileName.Split(separators, StringSplitOptions.RemoveEmptyEntries);
-                foreach (string block in characterBlocks)
+                //Check for 3 digit string
+
+                Match e = Regex.Match(FileName, @"(\d{3,4})( |_|\.|\-|}|\)|\])");
+
+                if (e.Success)
                 {
-                    int DigitCounter = 0;
-                    foreach (char C in block)
+                    regexOutput = e.ToString();
+
+                    for (int i = 0; i < replaceCharacters.Count; i++)
                     {
-                        if (char.IsDigit(C)) { DigitCounter = DigitCounter + 1; }
+                        regexOutput = regexOutput.Replace(replaceCharacters[i], "");
                     }
 
-                    if (DigitCounter >= 3 & DigitCounter <= 4)
+                    switch (regexOutput.Length)
                     {
-                        switch (block.Length)
-                        {
-                            case 3:
-                                return block.Remove(1, 2);
-                            case 4:
-                                return block.Remove(2, 2);
-                            default:
-                                break;
-                        }
+                        case 3: //Isolate First Number to get Season
+                            return int.Parse(regexOutput.Remove(1, 2)).ToString();
+
+                        case 4: //Isolate First Number to get Season
+                            if (int.Parse(regexOutput.Remove(2, 2)) < 10)
+                            { return int.Parse(regexOutput.Remove(0, 1).Remove(1,2)).ToString(); }
+                            else
+                            {return int.Parse(regexOutput.Remove(2, 2)).ToString();}
+
+                        default:
+                            break;
                     }
-                    DigitCounter = 0;
+                    return "";
+
                 }
-                Array.Clear(characterBlocks, 0, characterBlocks.Length);
-                return "";
+
             }
 
-
             return "";
-
         }
         private string CheckEpisode(string FileName, int maxEpisode)
         {
@@ -1255,7 +1341,10 @@ namespace MovieDataCollector
 
             // ... Write value.
 
-            int.TryParse(regexOutput, out episodeNumber);
+            if (!string.IsNullOrEmpty(regexOutput))
+            {
+                int.TryParse(regexOutput, out episodeNumber);
+            }
             if (episodeNumber != -1)
             {
                 return episodeNumber.ToString();
@@ -1268,9 +1357,7 @@ namespace MovieDataCollector
 
             //Check for 3 digit string
 
-            regexOutput = "";
-
-            Match b = Regex.Match(FileName, @"(\d{3,4}( |_|\.|\-|}|\)|\])");
+            Match b = Regex.Match(FileName, @"(\d{3,4})( |_|\.|\-|}|\)|\])");
 
             if (b.Success) { regexOutput = b.ToString(); }
 
@@ -1283,12 +1370,15 @@ namespace MovieDataCollector
             {
                 case 3:
                     if (int.Parse(regexOutput.Remove(0, 1)) < 10)
-                    { return int.Parse(regexOutput.Remove(0, 1)).ToString(); }
+                    { return int.Parse(regexOutput.Remove(0, 2)).ToString(); }
                     else { return regexOutput.Remove(0, 1); }
 
                 case 4:
-                    int.Parse(regexOutput.Remove(0, 2));
-                    return regexOutput.Remove(0, 2);
+                    if (int.Parse(regexOutput.Remove(0, 2)) < 10)
+                    { return int.Parse(regexOutput.Remove(0, 3)).ToString();}
+                    else { return regexOutput.Remove(0, 2); }
+                        
+                    
                 default:
                     break;
             }
@@ -1296,6 +1386,8 @@ namespace MovieDataCollector
         }
         private string CheckAbsoluteNumber(string FileName)
         {
+            //Need to make switch for checking absolute numbering...
+
             characterBlocks = FileName.Split(separators, StringSplitOptions.RemoveEmptyEntries);
             foreach (string block in characterBlocks)
             {
@@ -1352,7 +1444,16 @@ namespace MovieDataCollector
                                 newTitle = SeriesInfo.Series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[int.Parse(block) - 1]["episodeName"] + "." + ext;
                                 break;
                         }
-                        return newTitle;
+
+                        if(identificationMethodCheckbox.Checked)
+                        {
+                            return newTitle + " [AbsoluteEpisodeNumbering]";
+                        }
+                        else
+                        {
+                            return newTitle;
+                        }
+                        
                     }
                 }
             }
@@ -1475,7 +1576,34 @@ namespace MovieDataCollector
         }
         private void ChangeFileNamesButton_Click(object sender, EventArgs e)
         {
+            List<string> IdentificationMarkers = new List<string>
+            {
+                " [AbsoluteEpisodeNumbering]",
+                " [EpisodeNameInFileName]",
+                " [SeasonEpisodeNumbersIsolated]"
+            };
+
             NLabelUpdate("Processing File Names", Color.GreenYellow);
+
+
+
+            //Purge info on how the title was identified from the filename
+
+            if(identificationMethodCheckbox.Checked)
+            {
+                for (int i = 0; i < changedFileNamesListbox.Items.Count; i++)
+                {
+                    for (int a = 0; a < IdentificationMarkers.Count; a++)
+                    {
+                        if (changedFileNamesListbox.Items[i].ToString().Contains(IdentificationMarkers[a]))
+                        {
+                            changedFileNamesListbox.Items[i] = changedFileNamesListbox.Items[i].ToString().Replace(IdentificationMarkers[a], "");
+                        }
+                    }
+
+                }
+            }
+            
 
             string errorList = "";
             if (!string.IsNullOrEmpty(parentPathLabel.Text))

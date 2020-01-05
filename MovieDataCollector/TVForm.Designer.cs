@@ -60,6 +60,7 @@
             this.InvisibleCloseButton = new System.Windows.Forms.Button();
             this.autoBtn = new System.Windows.Forms.Button();
             this.recursiveCB = new System.Windows.Forms.CheckBox();
+            this.identificationMethodCheckbox = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SeriesImagePicturebox)).BeginInit();
             this.SuspendLayout();
@@ -434,6 +435,18 @@
             this.recursiveCB.UseVisualStyleBackColor = false;
             this.recursiveCB.CheckedChanged += new System.EventHandler(this.RecursiveCB_CheckedChanged);
             // 
+            // identificationMethodCheckbox
+            // 
+            this.identificationMethodCheckbox.AutoSize = true;
+            this.identificationMethodCheckbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.identificationMethodCheckbox.ForeColor = System.Drawing.Color.GreenYellow;
+            this.identificationMethodCheckbox.Location = new System.Drawing.Point(149, 469);
+            this.identificationMethodCheckbox.Name = "identificationMethodCheckbox";
+            this.identificationMethodCheckbox.Size = new System.Drawing.Size(191, 17);
+            this.identificationMethodCheckbox.TabIndex = 26;
+            this.identificationMethodCheckbox.Text = "Display Identification Method";
+            this.identificationMethodCheckbox.UseVisualStyleBackColor = true;
+            // 
             // TVForm
             // 
             this.AcceptButton = this.getHTMLButton;
@@ -442,6 +455,7 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.CancelButton = this.InvisibleCloseButton;
             this.ClientSize = new System.Drawing.Size(832, 522);
+            this.Controls.Add(this.identificationMethodCheckbox);
             this.Controls.Add(this.changeFileNamesButton);
             this.Controls.Add(this.notificationLabel);
             this.Controls.Add(this.recursiveCB);
@@ -514,5 +528,6 @@
         private System.Windows.Forms.Button InvisibleCloseButton;
         private System.Windows.Forms.Button autoBtn;
         private System.Windows.Forms.CheckBox recursiveCB;
+        private System.Windows.Forms.CheckBox identificationMethodCheckbox;
     }
 }
