@@ -2153,22 +2153,47 @@ namespace MovieDataCollector
                                 Grey's Anatomy_S01E02.avi
                                 Grey's Anatomy_S01E02_The First Cut is the Deepest.avi
                             */
-                        switch (formatCombo.SelectedIndex)
-                        {
 
-                            case 0: //PLEX
-                                newTitle = SeriesInfo.Series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
-                                break;
-                            case 1: //KODI
-                                newTitle = SeriesInfo.Series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
-                                break;
-                            case 2: //Synology
-                                newTitle = SeriesInfo.Series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
-                                break;
-                            default: //Plex
-                                newTitle = SeriesInfo.Series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
-                                break;
+                        if (identificationMethodCheckbox.Checked)
+                        {
+                            switch (formatCombo.SelectedIndex)
+                            {
+
+                                case 0: //PLEX
+                                    newTitle = SeriesInfo.Series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext + " [EpisodeNameInFileName]";
+                                    break;
+                                case 1: //KODI
+                                    newTitle = SeriesInfo.Series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext + " [EpisodeNameInFileName]";
+                                    break;
+                                case 2: //Synology
+                                    newTitle = SeriesInfo.Series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext + " [EpisodeNameInFileName]";
+                                    break;
+                                default: //Synology
+                                    newTitle = SeriesInfo.Series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext + " [EpisodeNameInFileName]";
+                                    break;
+                            }
                         }
+                        else
+                        {
+                            switch (formatCombo.SelectedIndex)
+                            {
+
+                                case 0: //PLEX
+                                    newTitle = SeriesInfo.Series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
+                                    break;
+                                case 1: //KODI
+                                    newTitle = SeriesInfo.Series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
+                                    break;
+                                case 2: //Synology
+                                    newTitle = SeriesInfo.Series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
+                                    break;
+                                default: //Plex
+                                    newTitle = SeriesInfo.Series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[a]["episodeName"] + "." + ext;
+                                    break;
+                            }
+                        }
+                            
+                        
                     }
                 }
             }
@@ -2220,22 +2245,46 @@ namespace MovieDataCollector
                                     Grey's Anatomy_S01E02.avi
                                     Grey's Anatomy_S01E02_The First Cut is the Deepest.avi
                                 */
-                            switch (formatCombo.SelectedIndex)
-                            {
 
-                                case 0: //PLEX
-                                    newTitle = SeriesInfo.Series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
-                                    break;
-                                case 1: //KODI
-                                    newTitle = SeriesInfo.Series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
-                                    break;
-                                case 2: //Synology
-                                    newTitle = SeriesInfo.Series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
-                                    break;
-                                default: //Synology
-                                    newTitle = SeriesInfo.Series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
-                                    break;
+                            if (identificationMethodCheckbox.Checked)
+                            {
+                                switch (formatCombo.SelectedIndex)
+                                {
+
+                                    case 0: //PLEX
+                                        newTitle = SeriesInfo.Series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext + " [SeasonEpisodeNumbersIsolated]";
+                                        break;
+                                    case 1: //KODI
+                                        newTitle = SeriesInfo.Series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext + " [SeasonEpisodeNumbersIsolated]";
+                                        break;
+                                    case 2: //Synology
+                                        newTitle = SeriesInfo.Series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext + " [SeasonEpisodeNumbersIsolated]";
+                                        break;
+                                    default: //Synology
+                                        newTitle = SeriesInfo.Series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext + " [SeasonEpisodeNumbersIsolated]";
+                                        break;
+                                }
                             }
+                            else
+                            {
+                                switch (formatCombo.SelectedIndex)
+                                {
+
+                                    case 0: //PLEX
+                                        newTitle = SeriesInfo.Series["seriesName"] + " - " + season.ToLower() + episode.ToLower() + " - " + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
+                                        break;
+                                    case 1: //KODI
+                                        newTitle = SeriesInfo.Series["seriesName"] + "_" + season.ToLower() + episode.ToLower() + "_" + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
+                                        break;
+                                    case 2: //Synology
+                                        newTitle = SeriesInfo.Series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
+                                        break;
+                                    default: //Synology
+                                        newTitle = SeriesInfo.Series["seriesName"] + "." + season + "." + episode + "." + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
+                                        break;
+                                }
+                            }
+                            
                             //newTitle = SeriesInfo.Series["seriesName"] + " " + season + episode + " " + SeriesInfo.EpisodeList[e]["episodeName"] + "." + ext;
                         }
                     }
