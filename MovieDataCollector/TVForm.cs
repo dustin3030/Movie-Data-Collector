@@ -110,11 +110,13 @@ namespace MovieDataCollector
                         if (!string.IsNullOrEmpty(Authorization_Token))
                         {
                             NLabelUpdate("Authentication Completed Successfully...", Color.YellowGreen);
+                            TVForm.ActiveForm.Text = "TV Episode Identification & Naming (Authenticated)";
                             enableButtons(true);
                         }
                         else
                         {
                             NLabelUpdate("Authentication Failed", Color.Red);
+                            TVForm.ActiveForm.Text = "TV Episode Identification & Naming (Authentication Failed)";
                             enableButtons(false);
                         }
 
@@ -124,6 +126,7 @@ namespace MovieDataCollector
             catch
             {
                 NLabelUpdate("Authentication Failed", Color.Red);
+                TVForm.ActiveForm.Text = "TV Episode Identification & Naming (Authentication Failed)";
                 enableButtons(false);
             }
             
@@ -2702,6 +2705,7 @@ namespace MovieDataCollector
         private void retryAuthenticationToolStripMenuItem_Click(object sender, EventArgs e)
         {
             enableButtons(false); //Disable form until authenticated with TVDB.com
+            TVForm.ActiveForm.Text = "TV Episode Identification & Naming";
             NLabelUpdate("Authenticating with TheTVDB.com.....", Color.YellowGreen);
             AuthenticateWithTVDB(User_Name, User_Key, API_Key); //Writes Authorization token to global variable..
         }
