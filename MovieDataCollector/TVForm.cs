@@ -76,7 +76,9 @@ namespace MovieDataCollector
             System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls11 | System.Net.SecurityProtocolType.Tls12;
 
             InitializeComponent();
+            enableButtons(false); //Disable form until authenticated with TVDB.com
             NLabelUpdate("Authenticating with TheTVDB.com.....", Color.YellowGreen);
+            
             AuthenticateWithTVDB(User_Name, User_Key, API_Key); //Writes Authorization token to global variable...
             
             this.fileNamesListbox.DragDrop += new System.Windows.Forms.DragEventHandler(this.FileNamesListbox_DragDrop);
@@ -87,37 +89,64 @@ namespace MovieDataCollector
         }
         private async void AuthenticateWithTVDB(string UserName, string UserKey, string APIKey)
         {
-            using (var httpClient = new HttpClient())
+            try
             {
-                using (var request = new HttpRequestMessage(new HttpMethod("POST"), "https://api.thetvdb.com/login"))
+                using (var httpClient = new HttpClient())
                 {
-                    request.Headers.TryAddWithoutValidation("Accept", "application/json");
-                    request.Headers.TryAddWithoutValidation("Accept", "application/vnd.thetvdb.v" + API_Version); //Set Version Number
-
-                    request.Content = new StringContent("{\n  \"apikey\": \"" + APIKey + "\",\n  \"userkey\": \"" + UserKey + "\",\n  \"username\": \"" + UserName + "\"\n}");
-                    request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-
-                    HttpResponseMessage response = await httpClient.SendAsync(request);
-
-                    var result = response.Content.ReadAsStringAsync().Result;
-
-                    Authorization_Token = Program.GeneralParser(result.ToString(), "\":\"", "\"}");
-
-                    if(!string.IsNullOrEmpty(Authorization_Token))
+                    using (var request = new HttpRequestMessage(new HttpMethod("POST"), "https://api.thetvdb.com/login"))
                     {
-                        NLabelUpdate("Authentication Completed Successfully...", Color.YellowGreen);
-                    }
-                    else
-                    {
-                        NLabelUpdate("Authentication Failed", Color.Red);
-                    }
-                    
+                        request.Headers.TryAddWithoutValidation("Accept", "application/json");
+                        request.Headers.TryAddWithoutValidation("Accept", "application/vnd.thetvdb.v" + API_Version); //Set Version Number
 
+                        request.Content = new StringContent("{\n  \"apikey\": \"" + APIKey + "\",\n  \"userkey\": \"" + UserKey + "\",\n  \"username\": \"" + UserName + "\"\n}");
+                        request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                        HttpResponseMessage response = await httpClient.SendAsync(request);
+
+                        var result = response.Content.ReadAsStringAsync().Result;
+
+                        Authorization_Token = Program.GeneralParser(result.ToString(), "\":\"", "\"}");
+
+                        if (!string.IsNullOrEmpty(Authorization_Token))
+                        {
+                            NLabelUpdate("Authentication Completed Successfully...", Color.YellowGreen);
+                            enableButtons(true);
+                        }
+                        else
+                        {
+                            NLabelUpdate("Authentication Failed", Color.Red);
+                            enableButtons(false);
+                        }
+
+                    }
                 }
             }
+            catch
+            {
+                NLabelUpdate("Authentication Failed", Color.Red);
+                enableButtons(false);
+            }
+            
         }
 
-
+        private void enableButtons(bool OnOff)
+        {
+            menuStrip1.Enabled = OnOff;
+            favoritesCombo.Enabled = OnOff;
+            SeriesIDTitleTextbox.Enabled = OnOff;
+            getHTMLButton.Enabled = OnOff;
+            addFavoriteButton.Enabled = OnOff;
+            deleteFavoriteButton.Enabled = OnOff;
+            recursiveCB.Enabled = OnOff;
+            getFileNamesButton.Enabled = OnOff;
+            clearButton.Enabled = OnOff;
+            fileNamesListbox.Enabled = OnOff;
+            changedFileNamesListbox.Enabled = OnOff;
+            previewChangesButton.Enabled = OnOff;
+            autoBtn.Enabled = OnOff;
+            identificationMethodCheckbox.Enabled = OnOff;
+            changeFileNamesButton.Enabled = OnOff;
+        }
 
         private void FileNamesListbox_DragEnter(object sender, System.Windows.Forms.DragEventArgs e)
         {
@@ -2668,6 +2697,13 @@ namespace MovieDataCollector
                 filenameListboxFlag = true;
             }
             filenameListboxLastIndex = fileNamesListbox.SelectedIndex;
+        }
+
+        private void retryAuthenticationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            enableButtons(false); //Disable form until authenticated with TVDB.com
+            NLabelUpdate("Authenticating with TheTVDB.com.....", Color.YellowGreen);
+            AuthenticateWithTVDB(User_Name, User_Key, API_Key); //Writes Authorization token to global variable..
         }
     }
 }

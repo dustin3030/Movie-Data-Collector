@@ -61,6 +61,7 @@
             this.autoBtn = new System.Windows.Forms.Button();
             this.recursiveCB = new System.Windows.Forms.CheckBox();
             this.identificationMethodCheckbox = new System.Windows.Forms.CheckBox();
+            this.retryAuthenticationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SeriesImagePicturebox)).BeginInit();
             this.SuspendLayout();
@@ -82,7 +83,8 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openToolStripMenuItem,
-            this.closeToolStripMenuItem});
+            this.closeToolStripMenuItem,
+            this.retryAuthenticationToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(38, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -92,7 +94,7 @@
             this.openToolStripMenuItem.BackColor = System.Drawing.Color.GreenYellow;
             this.openToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(104, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.OpenToolStripMenuItem_Click);
             // 
@@ -101,7 +103,7 @@
             this.closeToolStripMenuItem.BackColor = System.Drawing.Color.GreenYellow;
             this.closeToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(104, 22);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
             this.closeToolStripMenuItem.Text = "Close";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
@@ -118,7 +120,7 @@
             this.theTVDBcomToolStripMenuItem.BackColor = System.Drawing.Color.GreenYellow;
             this.theTVDBcomToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
             this.theTVDBcomToolStripMenuItem.Name = "theTVDBcomToolStripMenuItem";
-            this.theTVDBcomToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.theTVDBcomToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.theTVDBcomToolStripMenuItem.Text = "TheTVDB.com";
             this.theTVDBcomToolStripMenuItem.Click += new System.EventHandler(this.TheTVDBcomToolStripMenuItem_Click);
             // 
@@ -447,6 +449,14 @@
             this.identificationMethodCheckbox.Text = "Display Identification Method";
             this.identificationMethodCheckbox.UseVisualStyleBackColor = true;
             // 
+            // retryAuthenticationToolStripMenuItem
+            // 
+            this.retryAuthenticationToolStripMenuItem.BackColor = System.Drawing.Color.GreenYellow;
+            this.retryAuthenticationToolStripMenuItem.Name = "retryAuthenticationToolStripMenuItem";
+            this.retryAuthenticationToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
+            this.retryAuthenticationToolStripMenuItem.Text = "Retry Authentication";
+            this.retryAuthenticationToolStripMenuItem.Click += new System.EventHandler(this.retryAuthenticationToolStripMenuItem_Click);
+            // 
             // TVForm
             // 
             this.AcceptButton = this.getHTMLButton;
@@ -529,5 +539,6 @@
         private System.Windows.Forms.Button autoBtn;
         private System.Windows.Forms.CheckBox recursiveCB;
         private System.Windows.Forms.CheckBox identificationMethodCheckbox;
+        private System.Windows.Forms.ToolStripMenuItem retryAuthenticationToolStripMenuItem;
     }
 }
